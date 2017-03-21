@@ -8,7 +8,6 @@ Username - real name
 1. Gurr1 - Gustav Engsmyre
 1. annlova - Anton Annlöv
 1. wobblah - Cornelis T. Sjöbeck
-// More info
 
 link to markdown site: (Se before editing readme) https://guides.github.com/features/mastering-markdown/
 
