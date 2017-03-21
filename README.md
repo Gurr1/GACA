@@ -6,11 +6,6 @@ The Project is using noise maps inorder to create terrain.
 
 link to markdown site: (Se before editing readme) https://guides.github.com/features/mastering-markdown/
 
-# Installation
-
-1. Fork project
-1. Create your feature branch: git checkout -b my-new-feature
-
 
 # Contributions to project
 1. Commit your changes: git commit -am 'Add some feature'
