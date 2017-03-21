@@ -23,7 +23,10 @@ link to markdown site: (Se before editing readme) https://guides.github.com/feat
 
 
 # Members of Project:
-Creator: @Gurr1
+Members: 
+@annlova
+@gibsonIT
+@wobblah
 
 # Licence
 Since this is a schoolproject no contributions from outside sources is allowed. 
