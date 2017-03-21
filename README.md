@@ -29,6 +29,13 @@ All Operators should be sorounded by spaces.
 
 start Curly brackets should be on the same lines. 
 
+# Other Notes
+
+The PNG:s that store information saves in Channels according to: 
+
+* Green - Height
+* Red   - Objects
+* Blue  - No Go Zone
 
 # Members of Project:
 Status | Username | Real name | Github account | CID
