@@ -23,12 +23,12 @@ link to markdown site: (Se before editing readme) https://guides.github.com/feat
 
 
 # Members of Project:
-Status | Username | Real name | Github account
------------- | ------------- | ------------ | -------------
-Owner | @Gurr1 | Gustav Engsmyre | https://github.com/Gurr1
-Admin |  @annlova | Anton Annlöv | https://github.com/annlova
-Admin | @gibsonIT | Anders Hansson | https://github.com/GibsonIT
-Admin | @wobblah | Cornelis Sjöbeck | https://github.com/Wobblah
+Status | Username | Real name | Github account | CID
+------------ | ------------- | ------------ | ------------- | ------------- 
+Owner | @Gurr1 | Gustav Engsmyre | https://github.com/Gurr1 | engsmyre
+Admin |  @annlova | Anton Annlöv | https://github.com/annlova | annlova
+Admin | @gibsonIT | Anders Hansson | https://github.com/GibsonIT | anderhan
+Admin | @wobblah | Cornelis Sjöbeck | https://github.com/Wobblah | corsjo
 
 # Licence
 Since this is a schoolproject no contributions from outside sources is allowed. 
