@@ -21,6 +21,14 @@ link to markdown site: (Se before editing readme) https://guides.github.com/feat
 
 **Always pull before pushing someone could have commited changes to that feature's branch**
 
+# Code Conventions
+
+Use JavaDoc, to explain larger methods and classes.
+
+All Operators should be sorounded by spaces. 
+
+start Curly brackets should be on the same lines. 
+
 
 # Members of Project:
 Status | Username | Real name | Github account | CID
