@@ -1,7 +1,10 @@
 package hills.Anders;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
@@ -21,7 +24,7 @@ public class ObjectPlacement {
     List<Point> objects;
 
     ObjectPlacement(String pngFile) {
-        init();
+        init(pngFile);
     }
 
     ObjectPlacement(int width, int color, double density, double radius, String pngFile) {
@@ -29,10 +32,19 @@ public class ObjectPlacement {
         this.density = density;
         this.color = color;
         this.radius = radius;
-        init();
+        init(pngFile);
+
+
     }
 
-    private void init() {
+    private void init(String pngFile) {
+        try {
+            heightMap = ImageIO.read(new File(pngFile));
+        } catch (IOException e) {
+            System.out.println("failed to read file");
+            e.printStackTrace();
+            return;
+        }
         densitymap = new BufferedImage(width, width, BufferedImage.TYPE_INT_RGB);
         clearImage(densitymap);
         objects = new ArrayList<>();
