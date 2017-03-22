@@ -87,6 +87,7 @@ public class ObjectPlacement {
         prob = NormalDistribution.solve(prob, 0.5, 0.2, 0, 1);
         prob *= noisemap.getRGB(x, y);
         prob *= density;
+        //add noisemap
         return prob;
     }
 
