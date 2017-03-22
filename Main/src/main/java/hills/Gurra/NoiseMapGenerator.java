@@ -17,8 +17,8 @@ public class NoiseMapGenerator {
     public void create2DNoise(long seed){        // this should probably be created in a thread, takes about 20 secs with current values
         OpenSimplexNoise noise = new OpenSimplexNoise(0);
         BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-        for(int i = 0; i<HEIGHT; i++){
-            for (int j = 0; j<WIDTH; j++){
+        for(int i = 0; i < HEIGHT; i++){
+            for (int j = 0; j < WIDTH; j++){
                 double value = noise.eval(i / FEATURE_SIZE, j / FEATURE_SIZE);
                 int rgb = 0x010101 * (int)((value + 1) * 127.5);
                 image.setRGB(i, j, rgb);
