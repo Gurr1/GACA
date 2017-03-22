@@ -20,8 +20,6 @@ public class ObjectPlacement {
     BufferedImage densitymap;
     BufferedImage heightMap;
     BufferedImage noisemap;
-    Point currentPoint;
-    List<Point> objects;
 
     ObjectPlacement(String pngFile) {
         init(pngFile);
@@ -47,18 +45,15 @@ public class ObjectPlacement {
         }
         densitymap = new BufferedImage(width, width, BufferedImage.TYPE_INT_RGB);
         clearImage(densitymap);
-        objects = new ArrayList<>();
         CalculatePlacement();
     }
 
     private void CalculatePlacement() {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < width; j++) {
-                currentPoint = new Point(j, i);
                 Color c = new Color(heightMap.getRGB(j, i));
-                if (c.getBlue() == 0 && canPlace(c)) {
+                if (c.getBlue() == 0 && canPlace(c, j, i)) {
                     densitymap.setRGB(j, i, new Color(color, c.getGreen(), c.getBlue()).getRGB());
-                    objects.add(new Point(j,i));
                     j += (int) Math.round(radius);
                 } else
                     densitymap.setRGB(j, i, c.getRGB());
@@ -66,24 +61,31 @@ public class ObjectPlacement {
         }
     }
 
-    private boolean canPlace(Color c) {
-        return ( Math.random() <= GetProbability(c)); // add isClear Later
+    private boolean canPlace(Color c, int x, int y) {
+        return (isClear(x,y) && Math.random() <= GetProbability(c, x, y)); // add isClear Later
     }
 
-    private boolean isClear() {     //TODO
+    private boolean isClear(int x, int y) {     //TODO
         int rounded = (int) Math.round(radius);
-        for (int i = 0; i < rounded; i++) {
-            for (int j = -rounded; j < rounded ; j++) {
-
+        for (int i = 1; i < rounded; i++) {
+            for (int j = -rounded; j < rounded; j++) {
+                int tempX = x - j;
+                int tempY = y - i;
+                if (tempX >= 0 && tempY >= 0 && tempX * tempX + tempY * tempY >= radius * radius) {
+                    Color c = new Color(heightMap.getRGB(x,y));
+                    if(c.getRed()>0){
+                        return false;
+                    }
+                }
             }
         }
         return true;
     }
 
-    private double GetProbability(Color c) {
+    private double GetProbability(Color c, int x, int y) {
         double prob = c.getGreen() / 255;
         prob = NormalDistribution.solve(prob, 0.5, 0.2, 0, 1);
-        prob *= noisemap.getRGB(((int) currentPoint.getX()), ((int) currentPoint.getY()));
+        prob *= noisemap.getRGB(x, y);
         prob *= density;
         return prob;
     }
