@@ -1,9 +1,10 @@
 package hills.Gurra;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 /**
  * Created by gustav on 2017-03-21.
