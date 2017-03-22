@@ -1,5 +1,9 @@
 package hills;
 
+
+import hills.Gurra.NoiseMapGenerator;
+import lombok.Getter;
+=======
 import hills.Anton.Init;
 
 /**
@@ -7,8 +11,10 @@ import hills.Anton.Init;
  */
 public class Main {
     public static void main(String [] args){
+
+        NoiseMapGenerator noise = new NoiseMapGenerator();
+        noise.create2DNoise();
         System.out.println("launching main application");
-        
         Init i = new Init();
         i.init();
     }
