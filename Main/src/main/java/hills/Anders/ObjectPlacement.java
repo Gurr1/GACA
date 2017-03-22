@@ -17,8 +17,8 @@ public class ObjectPlacement {
 
     private int width = 2048;
     private int color = 255;
-    private double density = 0.5;
-    private double radius = 10;
+    private double density = 0.2;
+    private double radius = 1;
     private BufferedImage densitymap;
     private BufferedImage heightMap;
     private BufferedImage noisemap;
@@ -98,9 +98,10 @@ public class ObjectPlacement {
 
     private double GetProbability(Color c, int x, int y) {
         double prob = c.getGreen() / 255.0;
-        prob = NormalDistribution.solve(prob, 0.5, 0.2, 0, 1);
+        prob = NormalDistribution.solve(prob, 0.5, 0.02, 0, 1);
         // prob *= noisemap.getRGB(x, y);
         prob *= density;
+
         //add noisemap
         return prob;
     }

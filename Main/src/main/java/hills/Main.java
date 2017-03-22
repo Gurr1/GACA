@@ -17,7 +17,7 @@ public class Main {
        // NoiseMapGenerator noise = new NoiseMapGenerator();
         //Random rand = new Random();
        //noise.create2DNoise(rand.nextLong());
-        ObjectPlacement placement = new ObjectPlacement("Main/src/main/resources/Height_map_test_1.png");
+        ObjectPlacement placement = new ObjectPlacement("Main/src/main/resources/GreenShades.png");
         Init i = new Init();
         i.init();
     }
