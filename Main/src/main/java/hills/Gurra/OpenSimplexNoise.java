@@ -21,7 +21,7 @@ package hills.Gurra;
 public class OpenSimplexNoise {
         private static final double STRETCH_CONSTANT_2D = -0.211324865405187;    //(1/Math.sqrt(2+1)-1)/2;
         private static final double SQUISH_CONSTANT_2D = 0.366025403784439;      //(Math.sqrt(2+1)-1)/2;
-        private static final double NORM_CONSTANT_2D = 47.0D;
+        private static final double NORM_CONSTANT_2D = 41.0D;
         private static final long DEFAULT_SEED = 0L;
         private short[] perm;
         private short[] permGradIndex3D;
@@ -29,7 +29,7 @@ public class OpenSimplexNoise {
         private static byte[] gradients3D = new byte[]{-11, 4, 4, -4, 11, 4, -4, 4, 11, 11, 4, 4, 4, 11, 4, 4, 4, 11, -11, -4, 4, -4, -11, 4, -4, -4, 11, 11, -4, 4, 4, -11, 4, 4, -4, 11, -11, 4, -4, -4, 11, -4, -4, 4, -11, 11, 4, -4, 4, 11, -4, 4, 4, -11, -11, -4, -4, -4, -11, -4, -4, -4, -11, 11, -4, -4, 4, -11, -4, 4, -4, -11};
 
         public OpenSimplexNoise() {
-            this(0L);
+            this(DEFAULT_SEED);
         }
 
         public OpenSimplexNoise(long seed) {
@@ -149,7 +149,6 @@ public class OpenSimplexNoise {
             attn_ext *= attn_ext;
             value += attn_ext * attn_ext * extrapolate(xsv_ext, ysv_ext, dx_ext, dy_ext);
         }
-
         return value / NORM_CONSTANT_2D;
     }
 

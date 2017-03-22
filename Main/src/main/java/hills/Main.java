@@ -13,9 +13,9 @@ import java.util.Random;
 public class Main {
 
     public static void main(String [] args){
-        NoiseMapGenerator noise = new NoiseMapGenerator();
         Random rand = new Random();
-        noise.create2DNoise(rand.nextLong());
+        NoiseMapGenerator noise = new NoiseMapGenerator(rand.nextLong());
+        noise.create2DNoiseImage("noise");
         Init i = new Init();
         i.init();
     }

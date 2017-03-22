@@ -58,7 +58,6 @@ public class Init {
 				GameLoop.stop();
 			}
 		});
-		
 		// Frame buffer resize callback
 		Display.setFramebufferSizeCallback(new GLFWFramebufferSizeCallback(){
 			public void invoke(long window, int width, int height) {
