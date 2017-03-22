@@ -6,8 +6,8 @@ The Project is using noise maps inorder to create terrain.
 
 link to markdown site: (Se before editing readme) https://guides.github.com/features/mastering-markdown/
 
-link to google Drive folder with docs https://drive.google.com/drive/folders/0B5aA-Ef3TAkrZFRqZVc1U1dNQnc?usp=sharing
 
+link to google Drive folder with docs https://drive.google.com/drive/folders/0B5aA-Ef3TAkrZFRqZVc1U1dNQnc?usp=sharing
 
 # Contributions to project
 1. Commit your changes: git commit -am 'Add some feature'
