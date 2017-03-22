@@ -1,5 +1,7 @@
 package hills.Anders;
 
+import hills.Gurra.NoiseMapGenerator;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -13,19 +15,19 @@ import java.util.List;
  */
 public class ObjectPlacement {
 
-    int width = 2048;
-    int color = 255;
-    double density = 0.5;
-    double radius = 5;
-    BufferedImage densitymap;
-    BufferedImage heightMap;
-    BufferedImage noisemap;
+    private int width = 512;
+    private int color = 255;
+    private double density = 0.5;
+    private double radius = 5;
+    private BufferedImage densitymap;
+    private BufferedImage heightMap;
+    private BufferedImage noisemap;
 
-    ObjectPlacement(String pngFile) {
+    public ObjectPlacement(String pngFile) {
         init(pngFile);
     }
 
-    ObjectPlacement(int width, int color, double density, double radius, String pngFile) {
+    public ObjectPlacement(int width, int color, double density, double radius, String pngFile) {
         this.width = width;
         this.density = density;
         this.color = color;
@@ -38,6 +40,8 @@ public class ObjectPlacement {
     private void init(String pngFile) {
         try {
             heightMap = ImageIO.read(new File(pngFile));
+            //     new NoiseMapGenerator().create2DNoise(1);
+            //   noisemap = ImageIO.read(new File(pngFile));
         } catch (IOException e) {
             System.out.println("failed to read file");
             e.printStackTrace();
@@ -46,34 +50,44 @@ public class ObjectPlacement {
         densitymap = new BufferedImage(width, width, BufferedImage.TYPE_INT_RGB);
         clearImage(densitymap);
         CalculatePlacement();
+        try {
+            ImageIO.write(densitymap, "png", new File("Main/src/main/resources/ObjectMap.png"));
+        } catch (IOException e) {
+            System.out.println("Failed to create File");
+            e.printStackTrace();
+        }
+
     }
 
     private void CalculatePlacement() {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < width; j++) {
                 Color c = new Color(heightMap.getRGB(j, i));
-                if (c.getBlue() == 0 && canPlace(c, j, i)) {
+                if (c.getRed() == 0 && c.getBlue() == 0 && canPlace(c, j, i)) {
                     densitymap.setRGB(j, i, new Color(color, c.getGreen(), c.getBlue()).getRGB());
-                    j += (int) Math.round(radius);
-                } else
+                } else {
                     densitymap.setRGB(j, i, c.getRGB());
+                }
             }
         }
     }
 
     private boolean canPlace(Color c, int x, int y) {
-        return (isClear(x,y) && Math.random() <= GetProbability(c, x, y)); // add isClear Later
+        return (isClear(x, y) && Math.random() <= GetProbability(c, x, y));
     }
 
-    private boolean isClear(int x, int y) {     //TODO
+    private boolean isClear(int x, int y) {
         int rounded = (int) Math.round(radius);
-        for (int i = 1; i < rounded; i++) {
+        for (int i = 0; i < rounded; i++) {
             for (int j = -rounded; j < rounded; j++) {
                 int tempX = x - j;
                 int tempY = y - i;
-                if (tempX >= 0 && tempY >= 0 && tempX * tempX + tempY * tempY >= radius * radius) {
-                    Color c = new Color(heightMap.getRGB(x,y));
-                    if(c.getRed()>0){
+                if (tempY < 0) {
+                    return true;
+                }
+                if (tempX >= 0 && tempX < width && (j * j) + (i * i) <= (radius * radius)) {
+                    Color c = new Color(densitymap.getRGB(tempX, tempY));
+                    if (c.getRed() == 255) {
                         return false;
                     }
                 }
@@ -83,9 +97,9 @@ public class ObjectPlacement {
     }
 
     private double GetProbability(Color c, int x, int y) {
-        double prob = c.getGreen() / 255;
+        double prob = c.getGreen() / 255.0;
         prob = NormalDistribution.solve(prob, 0.5, 0.2, 0, 1);
-        prob *= noisemap.getRGB(x, y);
+        // prob *= noisemap.getRGB(x, y);
         prob *= density;
         //add noisemap
         return prob;

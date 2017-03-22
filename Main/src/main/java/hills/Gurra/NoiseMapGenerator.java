@@ -24,7 +24,7 @@ public class NoiseMapGenerator {
                 image.setRGB(i, j, rgb);
             }
             try {
-                ImageIO.write(image, "png", new File("src/main/resources/noise.png"));
+                ImageIO.write(image, "png", new File("src/main/resources/test.png"));
             }
             catch (IOException io){
                 System.out.println("failed to create file");
