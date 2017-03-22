@@ -15,10 +15,10 @@ import java.util.List;
  */
 public class ObjectPlacement {
 
-    private int width = 512;
+    private int width = 2048;
     private int color = 255;
     private double density = 0.5;
-    private double radius = 5;
+    private double radius = 10;
     private BufferedImage densitymap;
     private BufferedImage heightMap;
     private BufferedImage noisemap;

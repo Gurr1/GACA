@@ -14,10 +14,10 @@ import java.util.Random;
 public class Main {
 
     public static void main(String [] args){
-  //      NoiseMapGenerator noise = new NoiseMapGenerator();
-        Random rand = new Random();
-//        noise.create2DNoise(rand.nextLong());
-        ObjectPlacement placement = new ObjectPlacement("Main/src/main/resources/noise.png");
+       // NoiseMapGenerator noise = new NoiseMapGenerator();
+        //Random rand = new Random();
+       //noise.create2DNoise(rand.nextLong());
+        ObjectPlacement placement = new ObjectPlacement("Main/src/main/resources/Height_map_test_1.png");
         Init i = new Init();
         i.init();
     }
