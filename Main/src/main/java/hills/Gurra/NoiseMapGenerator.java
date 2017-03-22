@@ -14,8 +14,8 @@ public class NoiseMapGenerator {
     private static final double FEATURE_SIZE = 24;
     public NoiseMapGenerator() {
     }
-    public void create2DNoise(){
-        OpenSimplexNoise noise = new OpenSimplexNoise();
+    public void create2DNoise(long seed){        // this should probably be created in a thread, takes about 20 secs with current values
+        OpenSimplexNoise noise = new OpenSimplexNoise(0);
         BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         for(int i = 0; i<HEIGHT; i++){
             for (int j = 0; j<WIDTH; j++){
@@ -24,7 +24,7 @@ public class NoiseMapGenerator {
                 image.setRGB(i, j, rgb);
             }
             try {
-                ImageIO.write(image, "png", new File("noise.png"));
+                ImageIO.write(image, "png", new File("src/main/resources/noise.png"));
             }
             catch (IOException io){
                 System.out.println("failed to create file");

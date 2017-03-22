@@ -9,6 +9,6 @@ import lombok.Getter;
 public class Main {
     public static void main(String [] args){
         NoiseMapGenerator noise = new NoiseMapGenerator();
-        noise.create2DNoise();
+        noise.create2DNoise(15);
     }
 }
