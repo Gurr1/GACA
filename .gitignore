@@ -4,6 +4,7 @@
 .libs/
 .mtj.tmp/
 .idea/libraries/
+.idea/workspace.xml
 
 # Package Files #
 *.jar
