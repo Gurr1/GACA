@@ -1,7 +1,12 @@
 package hills;
 
 
+import hills.Corre.WaterGeneration;
+import hills.Gurra.NoiseMapGenerator;
+import lombok.Getter;
 import hills.Anton.Init;
+
+import java.util.Random;
 
 /**
  * Created by gustav on 2017-03-21.
@@ -9,10 +14,18 @@ import hills.Anton.Init;
 public class Main {
 
     public static void main(String [] args){
-        //NoiseMapGenerator noise = new NoiseMapGenerator();
-        //Random rand = new Random();
-        //noise.create2DNoise(rand.nextLong());
+
+        /*
+        NoiseMapGenerator noise = new NoiseMapGenerator();
+        Random rand = new Random();
+        noise.create2DNoise(rand.nextLong());
         Init i = new Init();
         i.init();
+        */
+
+
+
+        WaterGeneration waterGeneration = new WaterGeneration();
+        waterGeneration.genRiver();
     }
 }
