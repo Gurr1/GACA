@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.List;
 
 /**
  * Created by Anders on 2017-03-21.
@@ -19,14 +20,15 @@ public class ObjectPlacer {
     private int WIDTH;
     private int HEIGHT;
     private int COLOR = 255;
-    private double DENSITY = 0.1;
-    private double RADIUS = 10;
-    private double OPTIMAL_HEIGHT = 0.5;
+    private double DENSITY = 0.2;
+    private double RADIUS = 1;
+    private double OPTIMAL_HEIGHT = 0.3;
     @Setter private String READ_FILE;
     @Setter private String SAVE_FILE;
     private BufferedImage OBJECT_MAP;
     private BufferedImage HEIGHT_MAP;
     private NoiseMapGenerator NOISE_MAP;
+    private List<Point> pointList = new ArrayList<>();
 
     /**
      * Constructor with a File to be read from and a filename to save after placement
@@ -43,7 +45,7 @@ public class ObjectPlacer {
      * @param color value of the color the objects will be marked as, between 0 and 255 (standard 255)
      * @param density value of  objects will be placed between 0 and 1(standard 0.1)
      * @param radius value of the minimum distance objects will have from eachother above 0 (standard 1)
-     * @param optimalHeight value of the most likely height objects will spawn at (standard 0.5)
+     * @param optimalHeight value of the most likely height objects will spawn at (standard 0.3)
      * @param readFile name of the file to be read from
      * @param saveFile name of the file that will be created after ObjectPlacement() is run
      */
@@ -75,7 +77,7 @@ public class ObjectPlacer {
         NOISE_MAP = new NoiseMapGenerator(new Random().nextLong());
         NOISE_MAP.create2DNoiseImage("ObjectDensity");
         OBJECT_MAP = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-        clearImage(OBJECT_MAP);
+        copyImage(OBJECT_MAP, HEIGHT_MAP);
         CalculatePlacement();
 
         try {
@@ -86,6 +88,12 @@ public class ObjectPlacer {
         }
     }
 
+    private void copyImage(BufferedImage copyTo, BufferedImage copyFrom) {
+        for (int i = 0; i < WIDTH; i++)
+            for (int j = 0; j < HEIGHT; j++)
+                copyTo.setRGB(j, i, copyFrom.getRGB(j, i));
+    }
+
 
     private void CalculatePlacement() { //calculates for each pixel if an object will be placed or not and marks it in OBJECT_MAP
         for (int i = 0; i < WIDTH; i++) {
@@ -93,8 +101,8 @@ public class ObjectPlacer {
                 Color c = new Color(HEIGHT_MAP.getRGB(j, i));
                 if (c.getRed() == 0 && c.getBlue() == 0 && canPlace(c, j, i)) {
                     OBJECT_MAP.setRGB(j, i, new Color(COLOR, c.getGreen(), c.getBlue()).getRGB());
-                } else {
-                    OBJECT_MAP.setRGB(j, i, c.getRGB());
+                   // pointList.add(new Point(j,i));
+                    j+=(int)Math.round(RADIUS);
                 }
             }
         }
@@ -106,7 +114,7 @@ public class ObjectPlacer {
 
     private boolean isClear(int x, int y) { // checks the surroundings of point x,y if objects are to close. returns true if not
         int rounded = (int) Math.round(RADIUS);
-        for (int i = 0; i < rounded; i++) {
+        for (int i = 1; i < rounded; i++) {
             for (int j = -rounded; j < rounded; j++) {
                 int tempX = x - j;
                 int tempY = y - i;
@@ -115,12 +123,26 @@ public class ObjectPlacer {
                 }
                 if (tempX >= 0 && tempX < WIDTH && (j * j) + (i * i) <= (RADIUS * RADIUS)) {
                     Color c = new Color(OBJECT_MAP.getRGB(tempX, tempY));
-                    if (c.getRed() == 255) {
+                    if (c.getRed() > 0) {
                         return false;
                     }
                 }
             }
         }
+       /* for (Point p : pointList) {
+            int tempX = x - p.x;
+            int tempY = y - p.y;
+            if (tempY < 0) {
+                return true;
+            }
+            if (tempX >= 0 && tempX < WIDTH && (tempX * tempX) + (tempY * tempY) <= (RADIUS * RADIUS)) {
+                Color c = new Color(OBJECT_MAP.getRGB(tempX, tempY));
+                if (c.getRed() > 0) {
+                    return false;
+                }
+            }*/
+
+
         return true;
     }
 
@@ -132,16 +154,6 @@ public class ObjectPlacer {
         return prob;
     }
 
-    /**
-     * Makes an image entirely black.
-     *
-     * @param image The image to make black
-     */
-    private static void clearImage(final BufferedImage image) {
-        for (int i = 0; i < image.getWidth(); i++)
-            for (int j = 0; j < image.getHeight(); j++)
-                image.setRGB(i, j, Color.BLACK.getRGB());
-    }
 
     private double setToInterval(double fitToInterval, @Nullable Double max, @Nullable Double min) {
         //sets a double to fit in the specified interval, if max or min is null they will be ignored

@@ -13,8 +13,13 @@ public class Main {
        // NoiseMapGenerator noise = new NoiseMapGenerator();
         //Random rand = new Random();
        //noise.create2DNoise(rand.nextLong());
-        ObjectPlacer placement = new ObjectPlacer("Main/src/main/resources/height_map_test_2.png", "ObjectMap");
-        placement.placeObjects();
+        Long s = System.nanoTime();
+        System.out.println();
+        ObjectPlacer placer = new ObjectPlacer("Main/src/main/resources/GreenShades.png", "ObjectMap");
+        placer.placeObjects();
+        System.out.println((System.nanoTime()-s)/1000000);
+
+
         Init i = new Init();
         i.init();
     }
