@@ -1,12 +1,11 @@
 package hills;
 
 
+import hills.Anders.ObjectPlacer;
 import hills.Corre.WaterGeneration;
 import hills.Gurra.NoiseMapGenerator;
 import lombok.Getter;
 import hills.Anton.Init;
-
-import java.util.Random;
 
 /**
  * Created by gustav on 2017-03-21.
@@ -14,6 +13,16 @@ import java.util.Random;
 public class Main {
 
     public static void main(String [] args){
+       // NoiseMapGenerator noise = new NoiseMapGenerator();
+        //Random rand = new Random();
+       //noise.create2DNoise(rand.nextLong());
+        Long s = System.nanoTime();
+        System.out.println();
+        ObjectPlacer placer = new ObjectPlacer("Main/src/main/resources/GreenShades.png", "ObjectMap");
+        placer.placeObjects();
+        System.out.println((System.nanoTime()-s)/1000000);
+
+
 
         /*
         NoiseMapGenerator noise = new NoiseMapGenerator();
