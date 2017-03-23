@@ -1,14 +1,14 @@
 package hills.Anton;
 
+import hills.Anton.engine.GameLoop;
+import hills.Anton.engine.display.AspectRatios;
+import hills.Anton.engine.display.Display;
+import hills.Anton.engine.system.debug.DebugSystem;
+
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
 import org.lwjgl.glfw.GLFWWindowCloseCallback;
 import org.lwjgl.opengl.GL11;
-
-import hills.Anton.engine.GameLoop;
-import hills.Anton.engine.display.Display;
-import hills.Anton.engine.display.AspectRatios;
-import hills.Anton.engine.system.debug.DebugSystem;
 
 /**
  * Created by gustav on 2017-03-21.
@@ -30,7 +30,7 @@ public class Init {
 	 */
 	private static final int HEIGHT = (int) (WIDTH * AspectRatios.SIXTEEN_TO_NINE);
 	
-	public void init(){
+	public void init(){	
 		Display.setErrorCallback(GLFWErrorCallback.createPrint(System.err));
 		Display.create(WIDTH, HEIGHT, TITLE);
 		initDisplayCallbacks();

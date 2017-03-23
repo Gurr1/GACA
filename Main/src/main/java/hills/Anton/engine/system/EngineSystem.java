@@ -1,7 +1,6 @@
 package hills.Anton.engine.system;
 
 import hills.Anton.engine.GameLoop;
-import hills.Anton.engine.system.Clock;
 
 public abstract class EngineSystem {
 	

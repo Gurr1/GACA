@@ -2,6 +2,9 @@ package hills;
 
 
 import hills.Anders.ObjectPlacer;
+import hills.Corre.WaterGeneration;
+import hills.Gurra.NoiseMapGenerator;
+import lombok.Getter;
 import hills.Anton.Init;
 
 /**
@@ -20,7 +23,18 @@ public class Main {
         System.out.println((System.nanoTime()-s)/1000000);
 
 
+
+        /*
+        NoiseMapGenerator noise = new NoiseMapGenerator();
+        Random rand = new Random();
+        noise.create2DNoise(rand.nextLong());
         Init i = new Init();
         i.init();
+        */
+
+
+
+        WaterGeneration waterGeneration = new WaterGeneration();
+        waterGeneration.genRiver();
     }
 }
