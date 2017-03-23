@@ -18,7 +18,7 @@ public class WaterGeneration {
     public WaterGeneration() {
         try {
             //bufferedImage = ImageIO.read(this.getClass().getResource("/noiseG.png"));
-            bufferedImage = ImageIO.read(new File("Main/src/main/resources/noiseG.png"));
+            bufferedImage = ImageIO.read(new File("Main/src/main/resources/noiseGtest.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -46,6 +46,8 @@ public class WaterGeneration {
                     System.out.println(bufferedImage.getRGB(x, y));
                     System.out.println(Pelel.getRGB());
                     */
+
+                    bufferedImage.setRGB(x, y, (new Color(90, 89, 150)).getRGB());
 
 
 
