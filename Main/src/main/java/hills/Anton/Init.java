@@ -5,6 +5,7 @@ import hills.Anton.engine.display.AspectRatios;
 import hills.Anton.engine.display.Display;
 import hills.Anton.engine.system.camera.CameraSystem;
 import hills.Anton.engine.system.debug.DebugSystem;
+import hills.Anton.engine.system.terrain.TerrainSystem;
 import hills.Anton.game.GameSystem;
 import hills.Anton.engine.math.Mat4;
 import hills.Anton.engine.renderer.shader.ShaderProgram;
@@ -54,13 +55,15 @@ public class Init {
 		
 		// TODO MOVE!
 		// Set perspective matrix according to new width and height
-		Mat4 per = Mat4.perspective(0.1f, 100.0f, (float) Display.getWidth() / (float) Display.getHeight(), 70.0f);
+		Mat4 per = Mat4.perspective(0.1f, 1000.0f, (float) Display.getWidth() / (float) Display.getHeight(), 70.0f);
 		ShaderProgram.map("VIEW", "PERSPECTIVE", per.get140Data());
 		
 		DebugSystem.createInstance();					// Create DebugSystem instance
 		DebugSystem.getInstance().setFPSDebugMode(true);// Activate FPS debug mode
 		
 		CameraSystem.createInstance();					// Create CameraSystem instance
+		
+		TerrainSystem.createInstance();					// Create TerrainSystem instance
 		
 		GameSystem.createInstance(1.0f, false, 0.0f);	// Create GameSystem instance
 		
@@ -86,7 +89,7 @@ public class Init {
 				GL11.glViewport(0, 0, width, height);
 				
 				// Set perspective matrix according to new width and height
-				Mat4 per = Mat4.perspective(0.1f, 100.0f, (float) width / (float) height, 70.0f);
+				Mat4 per = Mat4.perspective(0.1f, 1000.0f, (float) width / (float) height, 70.0f);
 				ShaderProgram.map("VIEW", "PERSPECTIVE", per.get140Data());
 			}
 		});

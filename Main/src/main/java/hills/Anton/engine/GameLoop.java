@@ -6,6 +6,7 @@ import hills.Anton.engine.input.Mouse;
 import hills.Anton.engine.loader.ModelLoader;
 import hills.Anton.engine.loader.TextureLoader;
 import hills.Anton.engine.renderer.Renderer;
+import hills.Anton.engine.renderer.TerrainRenderer;
 import hills.Anton.engine.renderer.shader.ShaderProgram;
 import hills.Anton.engine.system.EngineSystem;
 
@@ -94,6 +95,7 @@ public final class GameLoop {
 			system.render();				// Update all systems rendering code
 		
 		Display.clear(true, true, false);	// Clear the screen
+		TerrainRenderer.render();			// Draw batched terrain nodes
 		Renderer.render(); 					// Draw all batched models
 	}
 

@@ -65,8 +65,7 @@ public final class Renderer {
 	 * Renders all batched models (from mesh map).
 	 */
 	public static void render(){
-		// Clear screen for drawing TODO More customized rendering
-		Display.clear(true, true, false);
+		// TODO More customized rendering
 		
 		for(ShaderProgram shaderProgram: batch.keySet()){
 			// Activate shader program

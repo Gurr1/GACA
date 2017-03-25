@@ -23,7 +23,8 @@ import hills.Anton.engine.loader.ShaderLoader;
 
 public enum ShaderProgram {
 	
-	STATIC("static.ver", "static.fra", null, null);
+	STATIC("static.ver", "static.fra", null, null),
+	TERRAIN("terrain.ver", "terrain.fra", null, null);
 	
 	/**
 	 * Map of all uniform buffer objects.
