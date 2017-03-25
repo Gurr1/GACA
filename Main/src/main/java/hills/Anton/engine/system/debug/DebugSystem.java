@@ -3,12 +3,14 @@ package hills.Anton.engine.system.debug;
 import hills.Anton.engine.display.Display;
 import hills.Anton.engine.input.Keyboard;
 import hills.Anton.engine.system.EngineSystem;
+import hills.Anton.engine.util.RenderUtil;
 
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
 public final class DebugSystem extends EngineSystem {
 
+	/** Singleton instance **/
 	private static DebugSystem instance = null;
 	
 	// FPS debug variables
@@ -47,8 +49,8 @@ public final class DebugSystem extends EngineSystem {
 		if(Keyboard.isPressed(GLFW.GLFW_KEY_F1))
 			setWireframeMode(!wireframeMode);
 		
-		//if(Keyboard.isPressed(GLFW.GLFW_KEY_F2))
-			//setCullingMode(!cullingMode);
+		if(Keyboard.isPressed(GLFW.GLFW_KEY_F2))
+			setCullingMode(!cullingMode);
 		
 		if(fpsDebugMode)
 			timePassedSinceFPSTextUpdate += delta; // Update last text update timer
@@ -85,20 +87,17 @@ public final class DebugSystem extends EngineSystem {
 		wireframeMode = mode;
 	}
 	
-	/*
 	public void setCullingMode(boolean mode){
 		if(mode)
-			Renderer.enableCulling();
+			RenderUtil.enableCulling();
 		else
-			Renderer.disableCulling();
+			RenderUtil.disableCulling();
 		
 		cullingMode = mode;
 	}
-	*/
 	
 	public void cleanUp() {
-		
-		//Logger.log("DebugSystem cleaned up!");
+		System.out.println("DebugSystem cleaned up!");
 	}
 	
 	/**

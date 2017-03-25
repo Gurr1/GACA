@@ -3,7 +3,11 @@ package hills.Anton;
 import hills.Anton.engine.GameLoop;
 import hills.Anton.engine.display.AspectRatios;
 import hills.Anton.engine.display.Display;
+import hills.Anton.engine.system.camera.CameraSystem;
 import hills.Anton.engine.system.debug.DebugSystem;
+import hills.Anton.game.GameSystem;
+import hills.Anton.engine.math.Mat4;
+import hills.Anton.engine.renderer.shader.ShaderProgram;
 
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
@@ -30,22 +34,39 @@ public class Init {
 	 */
 	private static final int HEIGHT = (int) (WIDTH * AspectRatios.SIXTEEN_TO_NINE);
 	
-	public void init(){	
+	// Absolute first thing that gets done. (Hacky?)
+	// Initialize GLFW, OpenGL and create a new window.
+	// This allows OpenGL calls when initializing static final variables such as shader programs.
+	static {
+		System.setProperty("org.lwjgl.util.Debug", "true");
+		System.setProperty("org.lwjgl.util.DebugAllocator", "true");
+		
 		Display.setErrorCallback(GLFWErrorCallback.createPrint(System.err));
 		Display.create(WIDTH, HEIGHT, TITLE);
+	}
+	
+	public void init(){
 		initDisplayCallbacks();
 		
-		Display.setClearColor(1.0f, 0.2f, 0.2f, 1.0f);	// Set clear color
+		Display.setClearColor(0.4f, 0.4f, 0.4f, 1.0f);	// Set clear color
 		Display.enableDepthTesting(0.0f, 1.0f);			// Enable depth testing
 		Display.setClearDepth(1.0f);					// Clear depth buffer to 1.0
+		
+		// TODO MOVE!
+		// Set perspective matrix according to new width and height
+		Mat4 per = Mat4.perspective(0.1f, 100.0f, (float) Display.getWidth() / (float) Display.getHeight(), 70.0f);
+		ShaderProgram.map("VIEW", "PERSPECTIVE", per.get140Data());
 		
 		DebugSystem.createInstance();					// Create DebugSystem instance
 		DebugSystem.getInstance().setFPSDebugMode(true);// Activate FPS debug mode
 		
+		CameraSystem.createInstance();					// Create CameraSystem instance
+		
+		GameSystem.createInstance(1.0f, false, 0.0f);	// Create GameSystem instance
+		
 		GameLoop.start();                            	// Start engine game loop
 		
 		Display.destroy();                           	// Terminate GLFW window and GLFW when program ends
-	
 	}
 	
 	/**
@@ -64,7 +85,9 @@ public class Init {
 			public void invoke(long window, int width, int height) {
 				GL11.glViewport(0, 0, width, height);
 				
-				// TODO Set perspective matrix according to new width and height
+				// Set perspective matrix according to new width and height
+				Mat4 per = Mat4.perspective(0.1f, 100.0f, (float) width / (float) height, 70.0f);
+				ShaderProgram.map("VIEW", "PERSPECTIVE", per.get140Data());
 			}
 		});
 	}

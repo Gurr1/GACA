@@ -1,8 +1,12 @@
 package hills.Anton.engine.math;
 
+import java.nio.ByteBuffer;
+
+import org.lwjgl.system.MemoryUtil;
+
 import lombok.Value;
 
-@Value public class Vec4 {
+@Value public class Vec4 implements STD140Formatable {
 	
 	/**
 	 * The dimensions of this vector (4)
@@ -61,7 +65,7 @@ import lombok.Value;
 	}
 
 	/**
-	 * @return This vector normalized
+	 * @return A new vector with the values of this vector normalized
 	 */
 	public Vec4 normalize() {
 		float length = getLength();
@@ -175,5 +179,23 @@ import lombok.Value;
 			return true;
 		
 		return false;
+	}
+
+	@Override
+	public byte[] get140Data() {
+		ByteBuffer bytes = MemoryUtil.memAlloc(Float.BYTES * STD140Formatable.STD140_FLOATS);
+		bytes.putFloat(x);
+		bytes.putFloat(y);
+		bytes.putFloat(z);
+		bytes.putFloat(w);
+		bytes.flip();
+		
+		byte[] data = new byte[Float.BYTES * STD140Formatable.STD140_FLOATS];
+		for(int i = 0; i < data.length; i++)
+			data[i] = bytes.get();
+		
+		MemoryUtil.memFree(bytes);
+		
+		return data;
 	}
 }

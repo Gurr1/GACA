@@ -1,0 +1,15 @@
+#version 330
+
+/* Sampler uniforms */
+uniform sampler2D diffuseMap;
+
+/* Texture coordinate corresponding to this fragment */
+in vec2 texCoords;
+
+/* Fragment output color */
+out vec4 COLOR;
+
+void main(){
+	// Set fragment output color
+	COLOR = vec4(texture2D(diffuseMap, texCoords).rgb, 1.0f);
+}
