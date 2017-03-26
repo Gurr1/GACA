@@ -49,13 +49,13 @@ public class Init {
 	public void init(){
 		initDisplayCallbacks();
 		
-		Display.setClearColor(0.4f, 0.4f, 0.4f, 1.0f);	// Set clear color
+		Display.setClearColor(0.55f, 0.55f, 1.0f, 1.0f);	// Set clear color
 		Display.enableDepthTesting(0.0f, 1.0f);			// Enable depth testing
 		Display.setClearDepth(1.0f);					// Clear depth buffer to 1.0
 		
 		// TODO MOVE!
 		// Set perspective matrix according to new width and height
-		Mat4 per = Mat4.perspective(0.1f, 1000.0f, (float) Display.getWidth() / (float) Display.getHeight(), 70.0f);
+		Mat4 per = Mat4.perspective(0.1f, 3000.0f, (float) Display.getWidth() / (float) Display.getHeight(), 70.0f);
 		ShaderProgram.map("VIEW", "PERSPECTIVE", per.get140Data());
 		
 		DebugSystem.createInstance();					// Create DebugSystem instance
@@ -89,7 +89,7 @@ public class Init {
 				GL11.glViewport(0, 0, width, height);
 				
 				// Set perspective matrix according to new width and height
-				Mat4 per = Mat4.perspective(0.1f, 1000.0f, (float) width / (float) height, 70.0f);
+				Mat4 per = Mat4.perspective(0.1f, 3000.0f, (float) width / (float) height, 70.0f);
 				ShaderProgram.map("VIEW", "PERSPECTIVE", per.get140Data());
 			}
 		});

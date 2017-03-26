@@ -1,17 +1,28 @@
 #version 330
 
-/* Use diffuse map as height map */
-uniform sampler2D diffuseMap;
-
 /* Texture coordinate corresponding to this fragment */
 in vec2 texCoords;
 
 in vec3 normals;
+in float height;
 
 /* Fragment output color */
 out vec4 COLOR;
 
 void main(){
+	vec3 col = vec3(0.0f, 0.0f, 0.0f);
+	if(height < 0.001f)
+		col = vec3(0.4f, 0.4f, 1.0f);
+	else if(height < 5.0f)
+		col = vec3(1.0f, 0.8f, 0.5f);
+	else if(height < 30.0f)
+		col = vec3(0.3f, 0.7f, 0.3f);
+	else if(height < 70.0f)
+		col = vec3(0.6f, 0.6f, 0.6f);
+	else
+		col = vec3(0.9f, 0.9f, 1.0f);
+		
+	
 	// Set fragment output color
-	COLOR = vec4(texture2D(diffuseMap, texCoords).rgb, 1.0f);
+	COLOR = vec4(col, 1.0f);
 }

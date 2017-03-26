@@ -28,9 +28,8 @@ public class TerrainSystem extends EngineSystem {
 
 	@Override
 	protected void update(double delta) {
-		
-		float ranges[] = {16.0f, 32.0f, 64.0f, 128.0f, 256.0f, 512.0f, 1024.0f, 2048.0f, 4096.0f};
-		topNode.genLODNodeTree(cam.getPosition().mul(new Vec3(1.0f, 0.0f, 1.0f)), ranges, 7);
+		float ranges[] = {16.0f, 32.0f, 64.0f, 128.0f, 256.0f, 512.0f, 1024.0f, 2048.0f, 4096.0f, 8192.0f};
+		topNode.genLODNodeTree(cam.getPosition(), ranges, 7);
 		leafNodes = topNode.getLeafNodes();
 	}
 

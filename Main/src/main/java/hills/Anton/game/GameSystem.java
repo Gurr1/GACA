@@ -37,7 +37,6 @@ public final class GameSystem extends EngineSystem {
 	
 	private GameSystem(float scale, boolean isPaused, float startTime) {
 		super(scale, isPaused, startTime);
-		
 		/*
 		BufferedImage terrainMap = null;
 		try {

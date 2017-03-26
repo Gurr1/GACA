@@ -5,9 +5,14 @@ import java.util.List;
 
 import hills.Anton.engine.math.Mat4;
 import hills.Anton.engine.math.STD140Formatable;
+import hills.Anton.engine.math.Vec2;
 import hills.Anton.engine.math.Vec3;
+import hills.Anton.engine.math.Vec4;
 
 public class LODNode implements STD140Formatable {
+	
+	private static final float MAP_WIDTH = 2048.0f;
+	private static final float MAP_DEPTH = 2048.0f;
 	
 	private static final float[] LOD_SCALES = {1.0f, 2.0f, 4.0f, 8.0f, 16.0f, 32.0f, 64.0f, 128.0f, 256.0f};
 	
@@ -139,8 +144,25 @@ public class LODNode implements STD140Formatable {
 	@Override
 	public byte[] get140Data() {
 		float scale = LOD_SCALES[lodLevel];
-		Mat4 matrix = Mat4.identity().setScale(scale, 0.0f, scale).setTranslation(x, 0.0f, z);
 		
-		return matrix.get140Data();
+		byte[] posData = new Vec2(x, z).get140Data();
+		byte[] sizeData = new Vec3(scale, 1.0f, scale).get140Data();
+		byte[] coordsData = new Vec4(x / MAP_WIDTH, z / MAP_DEPTH, (x + width) / MAP_WIDTH, (z + depth) / MAP_DEPTH).get140Data();
+		
+		byte[] data = new byte[posData.length + sizeData.length + coordsData.length];
+		for(int i = 0; i < posData.length; i++)
+			data[i] = posData[i];
+		
+		for(int i = 0; i < sizeData.length; i++)
+			data[posData.length + i] = sizeData[i];
+		
+		for(int i = 0; i < coordsData.length; i++)
+			data[posData.length + sizeData.length + i] = coordsData[i];
+			
+		return data;
+		
+		//Mat4 matrix = Mat4.identity().setScale(scale, 1.0f, scale).setTranslation(x, 0.0f, z);
+		
+		//return matrix.get140Data();
 	}
 }

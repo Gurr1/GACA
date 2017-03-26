@@ -7,6 +7,8 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
 import hills.Anton.engine.loader.TerrainLoader;
+import hills.Anton.engine.math.Mat4;
+import hills.Anton.engine.math.Vec2;
 import hills.Anton.engine.model.Mesh;
 import hills.Anton.engine.model.MeshTexture;
 import hills.Anton.engine.renderer.shader.ShaderAttribute;
@@ -50,7 +52,7 @@ public final class TerrainRenderer {
 		texture.bind();
 		
 		for(LODNode node: nodes){
-			ShaderProgram.map("MODEL", node.get140Data());
+			ShaderProgram.map("TERRAIN", node.get140Data());
 			
 			// Render grid mesh
 			GL11.glDrawElements(GL11.GL_TRIANGLES, gridMesh.getMeshData().getIndicesAmount(), GL11.GL_UNSIGNED_INT, 0);
