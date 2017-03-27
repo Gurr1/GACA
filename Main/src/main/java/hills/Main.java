@@ -1,8 +1,6 @@
 package hills;
 
 
-import hills.Gurra.Terrain;
-=======
 import hills.Anders.ObjectPlacer;
 import hills.Corre.WaterGeneration;
 
