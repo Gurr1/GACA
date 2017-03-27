@@ -3,9 +3,6 @@ package hills;
 
 import hills.Anders.ObjectPlacer;
 import hills.Corre.WaterGeneration;
-import hills.Gurra.NoiseMapGenerator;
-import lombok.Getter;
-import hills.Anton.Init;
 
 /**
  * Created by gustav on 2017-03-21.
