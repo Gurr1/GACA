@@ -1,6 +1,8 @@
 package hills;
 
 
+import hills.Gurra.Terrain;
+=======
 import hills.Anders.ObjectPlacer;
 import hills.Corre.WaterGeneration;
 import hills.Gurra.NoiseMapGenerator;
@@ -27,7 +29,8 @@ public class Main {
         /*
         NoiseMapGenerator noise = new NoiseMapGenerator();
         Random rand = new Random();
-        noise.create2DNoise(rand.nextLong());
+        Terrain noise = new Terrain(rand.nextLong());
+        noise.createHeightMap();
         Init i = new Init();
         i.init();
         */
