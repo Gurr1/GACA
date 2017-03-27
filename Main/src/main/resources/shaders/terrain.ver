@@ -8,10 +8,6 @@ in vec4 tangent;
 /* Use diffuse map as height map */
 uniform sampler2D diffuseMap;
 
-layout (std140) uniform MODEL {
-	mat4 WORLD;
-};
-
 layout (std140) uniform VIEW {
 	vec3 CAMPOSWORLD;
 	mat4 CAMERA;
