@@ -156,11 +156,11 @@ public enum ShaderProgram {
 			// Free variable indices buffer
 			MemoryUtil.memFree(variableIndices);
 			
-			// Create binding point
-			GL31.glUniformBlockBinding(handle, blockIndex, blockIndex);
-			
 			// Map new uniform buffer object
 			ShaderProgram.UBOs.map.put(name, new UniformBuffer(size, variableNames, variableOffsets));
+		
+			// Create binding point
+			GL31.glUniformBlockBinding(handle, blockIndex, ShaderProgram.UBOs.map.get(name).getBindPoint());
 		}
 	}
 	

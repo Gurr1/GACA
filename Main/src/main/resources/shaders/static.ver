@@ -15,12 +15,6 @@ layout (std140) uniform VIEW {
 	mat4 PERSPECTIVE;
 };
 
-layout (std140) uniform TERRAIN {
-	vec2 TERRAIN_POS;
-	vec3 TERRAIN_SCALE;
-	vec4 TERRAIN_MAPCOORDS;
-};
-
 out vec2 texCoords;
 out vec3 normals;
 

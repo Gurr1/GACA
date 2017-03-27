@@ -53,6 +53,7 @@ public class UniformBuffer {
 		this.bindPoint = nextBindPoint++;
 		this.size =  size;
 		
+		
 		for(int variable = 0; variable < varNames.length; variable++){
 			variableOffsets.put(varNames[variable], offsets[variable]);
 			
