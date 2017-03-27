@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="OpenSimplexNoise">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/OpenSimplexNoise.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
