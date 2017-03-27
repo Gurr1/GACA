@@ -3,10 +3,13 @@ package hills.Gurra;
 import javafx.scene.image.Image;
 
 import javax.imageio.ImageIO;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.Buffer;
+
+import javax.imageio.ImageIO;
 
 /**
  * Created by gustav on 2017-03-21.
@@ -14,12 +17,14 @@ import java.nio.Buffer;
 public class NoiseMapGenerator {            // This file should be cleaned up for readability.
     private final int WIDTH = 512;
     private final int HEIGHT = 512;
+
     private static final double FEATURE_SIZE = 24;      // >Zooms in on the picture, good for creating an overall world.
     OpenSimplexNoise noise;
     int[][] greenMatrix = new int[WIDTH][HEIGHT];
     public NoiseMapGenerator(long seed) {
        noise = new OpenSimplexNoise(seed);
     }
+
     public void create2DNoiseImage(String name, double frequency, double scale){        // this should probably be created in a thread, takes about 20 secs with current values
         BufferedImage image = new BufferedImage(WIDTH+1, HEIGHT+1, BufferedImage.TYPE_INT_RGB);
             int[][] greens = createMatrix(frequency, scale);
@@ -37,7 +42,6 @@ public class NoiseMapGenerator {            // This file should be cleaned up fo
             io.printStackTrace();
         }
     }
-
     public double getDoubleValue(int x, int y){
         return greenMatrix[x][y] / 255.0;
     }
@@ -62,6 +66,7 @@ public class NoiseMapGenerator {            // This file should be cleaned up fo
         for(int y = 0; y <= HEIGHT; y++) {
             for (int x = 0; x <= WIDTH; x++) {
                 double value = noise.eval(y / frequency, x / frequency)*scale;
+
                 int green = (0x010101 * (int) ((value + 1) * 127.5) >> 8) & 0xFF;
                 matrix[x][y] = green;
             }

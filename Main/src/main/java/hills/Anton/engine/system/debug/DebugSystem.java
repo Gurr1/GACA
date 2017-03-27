@@ -1,11 +1,11 @@
 package hills.Anton.engine.system.debug;
 
-import org.lwjgl.glfw.GLFW;
-import org.lwjgl.opengl.GL11;
-
 import hills.Anton.engine.display.Display;
 import hills.Anton.engine.input.Keyboard;
 import hills.Anton.engine.system.EngineSystem;
+
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.opengl.GL11;
 
 public final class DebugSystem extends EngineSystem {
 

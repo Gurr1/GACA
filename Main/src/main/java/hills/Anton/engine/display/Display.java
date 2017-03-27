@@ -34,6 +34,8 @@ import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
 import static org.lwjgl.glfw.GLFW.glfwSwapInterval;
 import static org.lwjgl.glfw.GLFW.glfwTerminate;
 import static org.lwjgl.system.MemoryUtil.NULL;
+import hills.Anton.engine.input.Keyboard;
+import hills.Anton.engine.input.Mouse;
 
 import java.nio.IntBuffer;
 
@@ -61,10 +63,6 @@ import org.lwjgl.glfw.GLFWWindowRefreshCallback;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
-
-import hills.Anton.engine.display.Display;
-import hills.Anton.engine.input.Keyboard;
-import hills.Anton.engine.input.Mouse;
 
 public final class Display {
 
