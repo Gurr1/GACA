@@ -1,7 +1,7 @@
 package hills.Anton.engine.math.shape;
 
-import lombok.Getter;
 import hills.Anton.engine.math.Vec3;
+import lombok.Getter;
 
 public class Plane {
 	

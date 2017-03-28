@@ -40,7 +40,7 @@ public class TerrainSystem extends EngineSystem {
 		
 		Frustrum f = new Frustrum(0.1f, 3000.0f, (float) Display.getWidth() / (float) Display.getHeight(), 70.0f, pos, forward, up, right, true);
 		
-		topNode.genLODNodeTree(pos, ranges, 7, f);
+		topNode.genLODNodeTree(cam.getPosition(), ranges, 7, cam.getFrustrum());
 		leafNodes = topNode.getLeafNodes();
 	}
 

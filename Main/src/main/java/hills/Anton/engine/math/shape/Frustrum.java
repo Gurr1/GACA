@@ -84,25 +84,22 @@ public class Frustrum {
 		}
 		
 		// Useful vectors
-		final Vec3 nearPlaneCenter = pos.add(forward.mul(near));
+		final Vec3 nearPlaneCenter = forward.mul(near);
 		final Vec3 centerToRightNearPlaneVector = right.mul(halfWNear);
 		final Vec3 centerToTopNearPlaneVector = up.mul(halfHNear);
 		
 		// Near plane
-		final Plane nearPlane = new Plane(nearPlaneCenter, forward);
+		final Plane nearPlane = new Plane(pos.add(nearPlaneCenter), forward);
 		
 		// Far plane
 		final Plane farPlane = new Plane(pos.add(forward.mul(far)), forward.mul(-1));
 		
-		System.out.println(nearPlaneCenter.sub(centerToRightNearPlaneVector).add(right.mul(halfWNear * 2)) + " " + nearPlaneCenter.add(centerToRightNearPlaneVector));
 		// Right plane
 		final Vec3 rightPlaneParrallellVector = nearPlaneCenter.add(centerToRightNearPlaneVector).normalize();
-		System.out.println("R: " + rightPlaneParrallellVector + " " + up + " " + up.cross(rightPlaneParrallellVector));
 		final Plane rightPlane = new Plane(pos, up.cross(rightPlaneParrallellVector));
 			
 		// Left plane
 		final Vec3 leftPlaneParrallellVector = nearPlaneCenter.sub(centerToRightNearPlaneVector).normalize();
-		System.out.println("L: " + leftPlaneParrallellVector + " " + up + " " + leftPlaneParrallellVector.cross(up));
 		final Plane leftPlane = new Plane(pos, leftPlaneParrallellVector.cross(up));
 		
 		// Top plane
@@ -117,22 +114,22 @@ public class Frustrum {
 	
 		/* TODO DELETE */
 		
-		v[0] = nearPlaneCenter.sub(centerToRightNearPlaneVector).sub(centerToTopNearPlaneVector);
-		v[1] = nearPlaneCenter.add(centerToRightNearPlaneVector).sub(centerToTopNearPlaneVector);
-		v[2] = nearPlaneCenter.add(centerToRightNearPlaneVector).add(centerToTopNearPlaneVector);
-		v[3] = nearPlaneCenter.sub(centerToRightNearPlaneVector).add(centerToTopNearPlaneVector);
+		v[0] = pos.add(nearPlaneCenter).sub(centerToRightNearPlaneVector).sub(centerToTopNearPlaneVector);
+		v[1] = pos.add(nearPlaneCenter).add(centerToRightNearPlaneVector).sub(centerToTopNearPlaneVector);
+		v[2] = pos.add(nearPlaneCenter).add(centerToRightNearPlaneVector).add(centerToTopNearPlaneVector);
+		v[3] = pos.add(nearPlaneCenter).sub(centerToRightNearPlaneVector).add(centerToTopNearPlaneVector);
 		
 		float halfHFar = (float) (Math.tan(Math.toRadians(FOV * 0.5f)) * far);
 		float halfWFar = halfHFar * aspect;
 		
-		final Vec3 farPlaneCenter = pos.add(forward.mul(far));
+		final Vec3 farPlaneCenter = forward.mul(far);
 		final Vec3 centerToRightFarPlaneVector = right.mul(halfWFar);
 		final Vec3 centerToTopFarPlaneVector = up.mul(halfHFar);
 		
-		v[4] = farPlaneCenter.sub(centerToRightFarPlaneVector).sub(centerToTopFarPlaneVector);
-		v[5] = farPlaneCenter.add(centerToRightFarPlaneVector).sub(centerToTopFarPlaneVector);
-		v[6] = farPlaneCenter.add(centerToRightFarPlaneVector).add(centerToTopFarPlaneVector);
-		v[7] = farPlaneCenter.sub(centerToRightFarPlaneVector).add(centerToTopFarPlaneVector);
+		v[4] = pos.add(farPlaneCenter).sub(centerToRightFarPlaneVector).sub(centerToTopFarPlaneVector);
+		v[5] = pos.add(farPlaneCenter).add(centerToRightFarPlaneVector).sub(centerToTopFarPlaneVector);
+		v[6] = pos.add(farPlaneCenter).add(centerToRightFarPlaneVector).add(centerToTopFarPlaneVector);
+		v[7] = pos.add(farPlaneCenter).sub(centerToRightFarPlaneVector).add(centerToTopFarPlaneVector);
 		
 		/*             */
 	}
@@ -163,11 +160,10 @@ public class Frustrum {
 		boolean state = true;
 		
 		// For every plane test the signed distance between the point and the plane.
-		for(int i = 0; i < planes.length; i++){
-			System.out.println(i + ": " + planes[i].getNormal() + " | " + planes[i].getDistanceSigned(point));
+		for(int i = 0; i < planes.length; i++)
 			if(planes[i].getDistanceSigned(point) < 0)	// If the signed distance is negative.
 				return false;							// Point outside of the frustrum since
-		}												// all the frustrum's normals point inwards.
+														// all the frustrum's normals point inwards.
 		return state;
 	}
 	

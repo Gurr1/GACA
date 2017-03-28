@@ -50,10 +50,10 @@ public class LODNode implements STD140Formatable {
 		}
 		
 		// If the node is not within the view frustrum, mark as handled.
-		//if(!viewFrustrum.intersects(aaBox)){
-		//	this.lodLevel = lodLevel;	// TODO Fix no render nodes
-		//	return true;
-		//}
+		if(!viewFrustrum.intersects(aaBox)){
+			this.lodLevel = lodLevel;	// TODO Fix no render nodes
+			return true;
+		}
 		
 		// If node is in the last LOD level (most detailed),
 		// set this node as leaf node.
