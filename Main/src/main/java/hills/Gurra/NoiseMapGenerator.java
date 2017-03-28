@@ -1,15 +1,9 @@
 package hills.Gurra;
 
-import javafx.scene.image.Image;
-
 import javax.imageio.ImageIO;
-
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.nio.Buffer;
-
-import javax.imageio.ImageIO;
 
 /**
  * Created by gustav on 2017-03-21.
@@ -21,10 +15,12 @@ public class NoiseMapGenerator {            // This file should be cleaned up fo
     private static final double FEATURE_SIZE = 24;      // >Zooms in on the picture, good for creating an overall world.
     OpenSimplexNoise noise;
     int[][] greenMatrix = new int[WIDTH][HEIGHT];
-    private int[][] matrix2 = new int[WIDTH+1][HEIGHT+1];
 
     public NoiseMapGenerator(long seed) {
        noise = new OpenSimplexNoise(seed);
+    }
+    public void setSeed(long seed){
+        noise.setSeed(seed);
     }
 
     public void create2DNoiseImage(String name, double frequency, double scale){        // this should probably be created in a thread, takes about .25 secs with current values
@@ -63,7 +59,7 @@ public class NoiseMapGenerator {            // This file should be cleaned up fo
         return arr;
     }
 
-    private int[][] createMatrix(double frequency, double scale){
+    public int[][] createMatrix(double frequency, double scale){
         int[][] matrix = new int[WIDTH+1][HEIGHT+1];
         for(int y = 0; y <= HEIGHT; y++) {
             for (int x = 0; x <= WIDTH; x++) {

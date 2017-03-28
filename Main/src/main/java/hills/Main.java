@@ -1,12 +1,8 @@
 package hills;
 
 
-import hills.Gurra.Terrain;
-import hills.Anders.ObjectPlacer;
-import hills.Corre.WaterGeneration;
-import hills.Gurra.NoiseMapGenerator;
-import lombok.Getter;
 import hills.Anton.Init;
+import hills.Gurra.Terrain;
 
 import java.util.Random;
 
@@ -31,6 +27,7 @@ public class Main {
         Random rand = new Random();
         Terrain noise = new Terrain(rand.nextLong());
         noise.createHeightMap();
+        Init i = new Init();
 
     }
 }
