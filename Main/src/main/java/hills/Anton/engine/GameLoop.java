@@ -3,6 +3,11 @@ package hills.Anton.engine;
 import hills.Anton.engine.display.Display;
 import hills.Anton.engine.input.Keyboard;
 import hills.Anton.engine.input.Mouse;
+import hills.Anton.engine.loader.ModelLoader;
+import hills.Anton.engine.loader.TextureLoader;
+import hills.Anton.engine.renderer.Renderer;
+import hills.Anton.engine.renderer.TerrainRenderer;
+import hills.Anton.engine.renderer.shader.ShaderProgram;
 import hills.Anton.engine.system.EngineSystem;
 
 import java.util.ArrayList;
@@ -59,14 +64,14 @@ public final class GameLoop {
 			double delta = cycleTime - lastCycleTime;
 			lastCycleTime = cycleTime;
 			
-			update(delta); // Update
-			render();      // Render
+			update(delta); 					// Update
+			render();      					// Render
 			
-			Keyboard.update(); // Update keyboard input
-			Mouse.update();    // Update mouse input
+			Keyboard.update(); 				// Update keyboard input
+			Mouse.update();    				// Update mouse input
 			
 			if(Display.hasBeenCreated())
-				Display.update();     // Update display
+				Display.update();     		// Update display
 		}
 		
 		cleanUp(); // Cleanup data
@@ -87,10 +92,11 @@ public final class GameLoop {
 	 */
 	public static void render(){
 		for(EngineSystem system: systems)
-			system.render();
+			system.render();				// Update all systems rendering code
 		
-		Display.clear(true, true, false);
-		//Renderer.render(); // Draw all batched models
+		Display.clear(true, true, false);	// Clear the screen
+		TerrainRenderer.render();			// Draw batched terrain nodes
+		Renderer.render(); 					// Draw all batched models
 	}
 
 	/**
@@ -121,9 +127,8 @@ public final class GameLoop {
 		for(EngineSystem system: systems)
 			system.cleanUp();
 		
-		//ShaderProgram.cleanUp();
-		
-		//TextureLoader.cleanUp();
-		//ModelLoader.cleanUp();
+		ShaderProgram.cleanUp();
+		TextureLoader.cleanUp();
+		ModelLoader.cleanUp();
 	}
 }
