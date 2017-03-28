@@ -1,6 +1,7 @@
 package hills;
 
 
+import hills.Anton.Init;
 import hills.Gurra.Terrain;
 import hills.Anders.ObjectPlacer;
 import hills.Corre.WaterGeneration;
@@ -30,12 +31,6 @@ public class Main {
         Terrain noise = new Terrain(rand.nextLong());
         noise.createHeightMap();
         Init i = new Init();
-        i.init();
-        */
 
-
-
-        WaterGeneration waterGeneration = new WaterGeneration();
-        waterGeneration.genRiver();
     }
 }
