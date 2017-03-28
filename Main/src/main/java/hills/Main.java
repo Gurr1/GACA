@@ -1,13 +1,8 @@
 package hills;
 
 
-import hills.Anton.Init;
 import hills.Gurra.Terrain;
-import hills.Anders.ObjectPlacer;
-import hills.Corre.WaterGeneration;
-import hills.Gurra.NoiseMapGenerator;
-import lombok.Getter;
-import hills.Anton.Init;
+
 
 /**
  * Created by gustav on 2017-03-21.

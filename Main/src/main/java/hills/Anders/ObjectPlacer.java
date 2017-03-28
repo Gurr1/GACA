@@ -75,7 +75,7 @@ public class ObjectPlacer {
             return;
         }
         NOISE_MAP = new NoiseMapGenerator(new Random().nextLong());
-        NOISE_MAP.create2DNoiseImage("ObjectDensity", 100, 1);
+        NOISE_MAP.create2DNoiseImage("ObjectDensity");
         OBJECT_MAP = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         copyImage(OBJECT_MAP, HEIGHT_MAP);
         CalculatePlacement();
