@@ -1,9 +1,5 @@
 package hills.Anton.engine.math;
 
-import hills.Anton.engine.math.Mat4;
-import hills.Anton.engine.math.Quaternion;
-import hills.Anton.engine.math.Vec3;
-import hills.Anton.engine.math.Vec4;
 
 //TODO Make mutable?
 public final class Quaternion {

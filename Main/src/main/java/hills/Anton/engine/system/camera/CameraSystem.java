@@ -1,16 +1,17 @@
 package hills.Anton.engine.system.camera;
 
-import org.lwjgl.glfw.GLFW;
-
 import hills.Anton.engine.display.Display;
 import hills.Anton.engine.input.Keyboard;
 import hills.Anton.engine.input.Mouse;
 import hills.Anton.engine.math.Mat4;
 import hills.Anton.engine.math.Quaternion;
 import hills.Anton.engine.math.Vec3;
+import hills.Anton.engine.math.shape.Frustrum;
 import hills.Anton.engine.renderer.shader.ShaderProgram;
-import hills.Anton.engine.system.camera.CameraSystem;
 import hills.Anton.engine.system.EngineSystem;
+import lombok.Getter;
+
+import org.lwjgl.glfw.GLFW;
 
 public class CameraSystem extends EngineSystem {
 
@@ -48,7 +49,7 @@ public class CameraSystem extends EngineSystem {
 	/**
 	 * Camera world position.
 	 */
-	private Vec3 position;
+	@Getter private Vec3 position;
 	
 	/**
 	 * Camera forward direction.
@@ -66,12 +67,37 @@ public class CameraSystem extends EngineSystem {
 	private Vec3 right;
 	
 	/**
+	 * Camera view frustrum.
+	 */
+	@Getter private Frustrum frustrum;
+	
+	/**
+	 * Distance to near plane of view frustrum
+	 */
+	private float near;
+	
+	/**
+	 * Distance to far plane of view frustrum
+	 */
+	private float far;
+	
+	/**
+	 * Aspect ratio of display area
+	 */
+	private float aspect;
+	
+	/**
+	 * Vertical field of view in degrees
+	 */
+	private float FOV;
+	
+	/**
 	 * To update camera or not (No need to update when nothing has changed).
 	 */
 	private boolean toUpdate;
 	
-	private CameraSystem() {
-		super(1.0f, false, 0.0f);
+	private CameraSystem(float scale, boolean isPaused, float startTime) {
+		super(scale, isPaused, startTime);
 		
 		// Initialize camera at 0, 0, 0. Right is +X, Up is +Y, Depth is -Z.
 		this.position = new Vec3(0.0f, 0.0f, 0.0f);
@@ -79,8 +105,9 @@ public class CameraSystem extends EngineSystem {
 		this.up = new Vec3(0.0f, 1.0f, 0.0f);
 		this.right = new Vec3(1.0f, 0.0f, 0.0f);
 		
-		Mat4 c = new Mat4();
-		ShaderProgram.map("VIEW", "CAMERA", c.get140Data());
+		frustrum = new Frustrum(near, far, aspect, FOV, position, forward, up, right, false);
+		
+		ShaderProgram.map("VIEW", "CAMERA", Mat4.identity().get140Data());
 		ShaderProgram.map("VIEW", "CAMPOSWORLD", position.getData());
 		
 		toUpdate = false;
@@ -94,6 +121,11 @@ public class CameraSystem extends EngineSystem {
 		if(!toUpdate)
 			return;
 		
+		// Make sure forward, up and right vectors are normalized.
+		forward = forward.normalize();
+		up = up.normalize();
+		right = forward.cross(up);
+		
 		// Move camera
 		position = position.add(forward.mul(medialSpeed * medial.multiplier * (float) delta));
 		position = position.add(right.mul(lateralSpeed * lateral.multiplier * (float) delta));
@@ -101,7 +133,10 @@ public class CameraSystem extends EngineSystem {
 		lateral = Direction.NONE;
 		
 		// Construct camera matrix according to position, and direction vectors.
-		Mat4 cameraMatrix = Mat4.look(position, forward, up, right, true);
+		Mat4 cameraMatrix = Mat4.look(position, forward, up, right, false);
+		
+		// Update camera view frustrum
+		frustrum = new Frustrum(near, far, aspect, FOV, position, forward, up, right, false);
 		
 		// Map camera matrix to uniform buffer VIEW
 		ShaderProgram.map("VIEW", "CAMERA", cameraMatrix.get140Data());
@@ -230,11 +265,27 @@ public class CameraSystem extends EngineSystem {
 		toUpdate = true;
 	}
 	
-	public void render() {}
-	
-	public Vec3 getPosition(){
-		return position;
+	/**
+	 * Update the perspective matrix used when rendering. The camera system<br>
+	 * will also store the near, far, aspect, FOV, values for computing of the<br>
+	 * view frustrum. Will also trigger camera system to update.
+	 * @param near
+	 * @param far
+	 * @param aspect
+	 * @param FOV
+	 */
+	public void updatePerspective(float near, float far, float aspect, float FOV){
+		this.near = near;
+		this.far = far;
+		this.aspect = aspect;
+		this.FOV = FOV;
+		
+		ShaderProgram.map("VIEW", "PERSPECTIVE", Mat4.perspective(near, far, aspect, FOV).get140Data());
+		
+		toUpdate = true;
 	}
+	
+	public void render() {}
 	
 	public void cleanUp() {
 		System.out.println("Camera system cleaned up!");
@@ -244,11 +295,11 @@ public class CameraSystem extends EngineSystem {
 	 * Creates the singleton instance of CameraSystem.
 	 * @return False if an instance has already been created.
 	 */
-	public static boolean createInstance() {
+	public static boolean createInstance(float scale, boolean isPaused, float startTime) {
 		if(instance != null)
 			return false;
 		
-		instance = new CameraSystem();
+		instance = new CameraSystem(scale, isPaused, startTime);
 		return true;
 	}
 	

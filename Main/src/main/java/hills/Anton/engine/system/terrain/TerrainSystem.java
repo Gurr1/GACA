@@ -1,12 +1,14 @@
 package hills.Anton.engine.system.terrain;
 
-import java.util.List;
-
+import hills.Anton.engine.display.Display;
 import hills.Anton.engine.math.Vec3;
+import hills.Anton.engine.math.shape.Frustrum;
 import hills.Anton.engine.renderer.TerrainRenderer;
 import hills.Anton.engine.system.EngineSystem;
 import hills.Anton.engine.system.camera.CameraSystem;
 import hills.Anton.engine.system.terrain.quadtree.LODNode;
+
+import java.util.List;
 
 public class TerrainSystem extends EngineSystem {
 
@@ -21,15 +23,24 @@ public class TerrainSystem extends EngineSystem {
 	private TerrainSystem(float scale, boolean isPaused, float startTime) {
 		super(scale, isPaused, startTime);
 		
-		topNode = new LODNode(0.0f, 0.0f, 2048.0f, 2048.0f, 10.0f);
+		topNode = new LODNode(0.0f, 0.0f, 2048.0f, 2048.0f, 100.0f);
 		
 		cam = CameraSystem.getInstance();
 	}
 
 	@Override
 	protected void update(double delta) {
-		float ranges[] = {16.0f, 32.0f, 64.0f, 128.0f, 256.0f, 512.0f, 1024.0f, 2048.0f, 4096.0f, 8192.0f};
-		topNode.genLODNodeTree(cam.getPosition(), ranges, 7);
+		//16.0f, 32.0f, 
+		float ranges[] = {64.0f, 128.0f, 256.0f, 512.0f, 1024.0f, 2048.0f, 4096.0f, 8192.0f};
+		
+		Vec3 pos = new Vec3(300.0f, 2.0f, 160.0f);
+		Vec3 forward = new Vec3(1.0f, 0.0f, 1.0f);
+		Vec3 up = new Vec3(0.0f, 1.0f, 0.0f);
+		Vec3 right = forward.cross(up);
+		
+		Frustrum f = new Frustrum(0.1f, 3000.0f, (float) Display.getWidth() / (float) Display.getHeight(), 70.0f, pos, forward, up, right, true);
+		
+		topNode.genLODNodeTree(pos, ranges, 7, f);
 		leafNodes = topNode.getLeafNodes();
 	}
 

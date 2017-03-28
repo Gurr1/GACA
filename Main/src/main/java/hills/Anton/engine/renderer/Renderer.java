@@ -1,5 +1,13 @@
 package hills.Anton.engine.renderer;
 
+import hills.Anton.engine.math.Mat4;
+import hills.Anton.engine.model.Mesh;
+import hills.Anton.engine.model.MeshData;
+import hills.Anton.engine.model.MeshTexture;
+import hills.Anton.engine.model.Model;
+import hills.Anton.engine.renderer.shader.ShaderAttribute;
+import hills.Anton.engine.renderer.shader.ShaderProgram;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,15 +16,6 @@ import java.util.Map;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
-
-import hills.Anton.engine.display.Display;
-import hills.Anton.engine.renderer.shader.ShaderAttribute;
-import hills.Anton.engine.math.Mat4;
-import hills.Anton.engine.model.Mesh;
-import hills.Anton.engine.model.MeshData;
-import hills.Anton.engine.model.MeshTexture;
-import hills.Anton.engine.model.Model;
-import hills.Anton.engine.renderer.shader.ShaderProgram;
 
 public final class Renderer {
 	

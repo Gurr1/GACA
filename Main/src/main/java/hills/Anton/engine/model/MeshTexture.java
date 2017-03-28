@@ -1,10 +1,10 @@
 package hills.Anton.engine.model;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL13;
-
 import hills.Anton.engine.loader.TextureLoader;
 import hills.Anton.engine.renderer.shader.SamplerUniform;
+
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
 
 public class MeshTexture {
 

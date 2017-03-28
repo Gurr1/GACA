@@ -1,8 +1,6 @@
 package hills.Anton.engine.model;
 
 import hills.Anton.engine.math.Mat4;
-import hills.Anton.engine.model.MeshData;
-import hills.Anton.engine.model.MeshTexture;
 
 public class Mesh {
 

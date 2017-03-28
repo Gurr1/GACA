@@ -2,6 +2,10 @@ package hills.Anton.engine.renderer.shader;
 
 import static org.lwjgl.opengl.GL11.GL_FALSE;
 import static org.lwjgl.opengl.GL20.glGetProgramInfoLog;
+import hills.Anton.engine.loader.ShaderLoader;
+import hills.Anton.engine.math.Mat4;
+import hills.Anton.engine.math.Vec3;
+import hills.Anton.engine.util.BufferUtil;
 
 import java.nio.IntBuffer;
 import java.util.HashMap;
@@ -11,15 +15,6 @@ import java.util.Map.Entry;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL31;
 import org.lwjgl.system.MemoryUtil;
-
-import hills.Anton.engine.renderer.shader.ShaderProgram;
-import hills.Anton.engine.math.Mat4;
-import hills.Anton.engine.math.Vec3;
-import hills.Anton.engine.renderer.shader.SamplerUniform;
-import hills.Anton.engine.util.BufferUtil;
-import hills.Anton.engine.renderer.shader.ShaderAttribute;
-import hills.Anton.engine.renderer.shader.UniformBuffer;
-import hills.Anton.engine.loader.ShaderLoader;
 
 public enum ShaderProgram {
 	

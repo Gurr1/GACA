@@ -1,19 +1,17 @@
 package hills.Anton.engine.renderer;
 
-import java.util.List;
-
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
-
 import hills.Anton.engine.loader.TerrainLoader;
-import hills.Anton.engine.math.Mat4;
-import hills.Anton.engine.math.Vec2;
 import hills.Anton.engine.model.Mesh;
 import hills.Anton.engine.model.MeshTexture;
 import hills.Anton.engine.renderer.shader.ShaderAttribute;
 import hills.Anton.engine.renderer.shader.ShaderProgram;
 import hills.Anton.engine.system.terrain.quadtree.LODNode;
+
+import java.util.List;
+
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
 
 public final class TerrainRenderer {
 

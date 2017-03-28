@@ -1,5 +1,13 @@
 package hills.Anton.engine.loader;
 
+import hills.Anton.engine.math.Mat4;
+import hills.Anton.engine.math.Vertex;
+import hills.Anton.engine.model.Mesh;
+import hills.Anton.engine.model.MeshData;
+import hills.Anton.engine.model.MeshTexture;
+import hills.Anton.engine.renderer.shader.ShaderAttribute;
+import hills.Anton.engine.util.BufferUtil;
+
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
@@ -9,14 +17,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
-
-import hills.Anton.engine.model.MeshData;
-import hills.Anton.engine.renderer.shader.ShaderAttribute;
-import hills.Anton.engine.util.BufferUtil;
-import hills.Anton.engine.math.Mat4;
-import hills.Anton.engine.math.Vertex;
-import hills.Anton.engine.model.Mesh;
-import hills.Anton.engine.model.MeshTexture;
 
 public final class ModelLoader {
 
@@ -162,6 +162,19 @@ public final class ModelLoader {
 	 */
 	public static void freeMeshData(int id){
 		loadedMeshData.get(id).free();
+	}
+	
+	/**
+	 * Will unbind VAOs and VBOs associated with the mesh data <br>
+	 * and remove mesh data from loaded mesh data list.
+	 * @param id - Id of mesh data.
+	 */
+	public static void deleteMeshData(int id){
+		freeMeshData(id);
+		
+		for(int i = 0; i < loadedMeshData.size(); i++)
+			if(loadedMeshData.get(i).getId() == id)
+				loadedMeshData.remove(i);
 	}
 	
 	/**

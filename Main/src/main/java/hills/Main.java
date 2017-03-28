@@ -1,9 +1,7 @@
 package hills;
 
 
-import hills.Anders.ObjectPlacer;
 import hills.Anton.Init;
-import hills.Corre.WaterGeneration;
 
 /**
  * Created by gustav on 2017-03-21.

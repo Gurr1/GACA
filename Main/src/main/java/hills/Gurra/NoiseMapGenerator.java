@@ -1,13 +1,8 @@
 package hills.Gurra;
 
-import javafx.scene.image.Image;
-
-import javax.imageio.ImageIO;
-
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.nio.Buffer;
 
 import javax.imageio.ImageIO;
 

@@ -1,6 +1,5 @@
 package hills.Anton.engine.model;
 
-import hills.Anton.engine.model.Mesh;
 
 public class Model {
 

@@ -1,76 +1,145 @@
 package hills.Anton.game;
 
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
+import hills.Anton.engine.display.Display;
 import hills.Anton.engine.loader.ModelLoader;
 import hills.Anton.engine.math.Mat4;
 import hills.Anton.engine.math.Vec2;
 import hills.Anton.engine.math.Vec3;
 import hills.Anton.engine.math.Vertex;
+import hills.Anton.engine.math.shape.AABox;
+import hills.Anton.engine.math.shape.Frustrum;
+import hills.Anton.engine.math.shape.Plane;
 import hills.Anton.engine.model.Mesh;
 import hills.Anton.engine.model.MeshTexture;
 import hills.Anton.engine.model.Model;
 import hills.Anton.engine.renderer.Renderer;
 import hills.Anton.engine.renderer.shader.ShaderProgram;
 import hills.Anton.engine.system.EngineSystem;
+import hills.Anton.engine.system.camera.CameraSystem;
 
 public final class GameSystem extends EngineSystem {
 
 	/** Singleton instance **/
 	private static GameSystem instance = null;
 	
-	Vertex[] v = new Vertex[]{
-			new Vertex(new Vec3(-0.5f, -0.5f, -1.0f), new Vec2(0.0f, 0.0f), new Vec3(0.0f, 0.0f, 1.0f)),
-			new Vertex(new Vec3(0.5f, -0.5f, -1.0f), new Vec2(1.0f, 0.0f), new Vec3(0.0f, 0.0f, 1.0f)),
-			new Vertex(new Vec3(0.0f, 0.5f, -1.0f), new Vec2(0.5f, 1.0f), new Vec3(0.0f, 0.0f, 1.0f))
+	Vertex[] v = {
+			new Vertex(new Vec3(-.5f, -.5f, .5f), new Vec2(0.0f, 0.0f), new Vec3(0.0f, 0.0f, 1.0f)),
+			new Vertex(new Vec3(-.5f, -.5f, .5f), new Vec2(0.0f, 1.0f), new Vec3(0.0f, -1.0f, 0.0f)),
+			new Vertex(new Vec3(-.5f, -.5f, .5f), new Vec2(1.0f, 0.0f), new Vec3(-1.0f, 0.0f, 0.0f)),
+			
+			new Vertex(new Vec3(.5f, -.5f, .5f), new Vec2(1.0f, 0.0f), new Vec3(0.0f, 0.0f, 1.0f)),
+			new Vertex(new Vec3(.5f, -.5f, .5f), new Vec2(1.0f, 1.0f), new Vec3(0.0f, -1.0f, 0.0f)),
+			new Vertex(new Vec3(.5f, -.5f, .5f), new Vec2(0.0f, 0.0f), new Vec3(1.0f, 0.0f, 0.0f)),
+			
+			new Vertex(new Vec3(.5f, .5f, .5f), new Vec2(1.0f, 1.0f), new Vec3(0.0f, 0.0f, 1.0f)),
+			new Vertex(new Vec3(.5f, .5f, .5f), new Vec2(1.0f, 0.0f), new Vec3(0.0f, 1.0f, 0.0f)),
+			new Vertex(new Vec3(.5f, .5f, .5f), new Vec2(0.0f, 1.0f), new Vec3(1.0f, 0.0f, 0.0f)),
+			
+			new Vertex(new Vec3(-.5f, .5f, .5f), new Vec2(0.0f, 1.0f), new Vec3(0.0f, 0.0f, 1.0f)),
+			new Vertex(new Vec3(-.5f, .5f, .5f), new Vec2(0.0f, 0.0f), new Vec3(0.0f, 1.0f, 0.0f)),
+			new Vertex(new Vec3(-.5f, .5f, .5f), new Vec2(1.0f, 1.0f), new Vec3(-1.0f, 0.0f, 0.0f)),
+			
+			new Vertex(new Vec3(-.5f, -.5f, -.5f), new Vec2(1.0f, 0.0f), new Vec3(0.0f, 0.0f, -1.0f)),
+			new Vertex(new Vec3(-.5f, -.5f, -.5f), new Vec2(0.0f, 0.0f), new Vec3(0.0f, -1.0f, 0.0f)),
+			new Vertex(new Vec3(-.5f, -.5f, -.5f), new Vec2(0.0f, 0.0f), new Vec3(-1.0f, 0.0f, 0.0f)),
+			
+			new Vertex(new Vec3(.5f, -.5f, -.5f), new Vec2(0.0f, 0.0f), new Vec3(0.0f, 0.0f, -1.0f)),
+			new Vertex(new Vec3(.5f, -.5f, -.5f), new Vec2(1.0f, 0.0f), new Vec3(0.0f, -1.0f, 0.0f)),
+			new Vertex(new Vec3(.5f, -.5f, -.5f), new Vec2(1.0f, 0.0f), new Vec3(1.0f, 0.0f, 0.0f)),
+			
+			new Vertex(new Vec3(.5f, .5f, -.5f), new Vec2(0.0f, 1.0f), new Vec3(0.0f, 0.0f, -1.0f)),
+			new Vertex(new Vec3(.5f, .5f, -.5f), new Vec2(1.0f, 1.0f), new Vec3(0.0f, 1.0f, 0.0f)),
+			new Vertex(new Vec3(.5f, .5f, -.5f), new Vec2(1.0f, 1.0f), new Vec3(1.0f, 0.0f, 0.0f)),
+			
+			new Vertex(new Vec3(-.5f, .5f, -.5f), new Vec2(1.0f, 1.0f), new Vec3(0.0f, 0.0f, -1.0f)),
+			new Vertex(new Vec3(-.5f, .5f, -.5f), new Vec2(0.0f, 1.0f), new Vec3(0.0f, 1.0f, 0.0f)),
+			new Vertex(new Vec3(-.5f, .5f, -.5f), new Vec2(0.0f, 1.0f), new Vec3(-1.0f, 0.0f, 0.0f)),
 	};
 	
-	int[] ind = new int[]{
-			0, 1, 2
+	int[] ind = {
+			0, 3, 6,
+			0, 6, 9,
+			
+			15, 12, 21,
+			15, 21, 18,
+			
+			14, 2, 11,
+			14, 11, 23,
+			
+			5, 17, 20,
+			5, 20, 8,
+			
+			10, 7, 19,
+			10, 19, 22,
+			
+			13, 16, 4,
+			13, 4, 1
 	};
 	
-	Model model;
+	MeshTexture texture;
+	Model model, cube;
+	Vec3 pos;
 	
 	private GameSystem(float scale, boolean isPaused, float startTime) {
 		super(scale, isPaused, startTime);
-		/*
-		BufferedImage terrainMap = null;
-		try {
-			terrainMap = ImageIO.read(this.getClass().getResource("/height_map_test_1.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+
+		texture = new MeshTexture("test.png");
 		
-		int w = terrainMap.getWidth();
-		int h = terrainMap.getHeight();
+		pos = new Vec3(300.0f, 2.0f, 150.0f);
+		Vec3 forward = new Vec3(1.0f, 0.0f, 1.0f);
+		Vec3 up = new Vec3(0.0f, 1.0f, 0.0f);
+		Vec3 right = forward.cross(up);
 		
-		Vertex[] grid = new Vertex[w * h];
-		int[] gridI = new int[(w - 1) * (h - 1) * 6];
+		Frustrum f = new Frustrum(0.1f, 3000.0f, (float) Display.getWidth() / (float) Display.getHeight(), 70.0f, pos, forward, up, right, true);
 		
-		for(int row = 0; row < h; row++){
-			for(int col = 0; col < w; col++){
-				float gridPointHeight = ((terrainMap.getRGB(row, col) >> 8) & 0xFF) / 255.0f * 100.0f;
-				grid[col + row * h] = new Vertex(new Vec3(col, gridPointHeight, row), new Vec2(col % 2 == 0 ? 0.0f : 1.0f, row % 2 == 0 ? 1.0f : 0.0f), new Vec3(col, gridPointHeight, row));
+		Frustrum f2 = new Frustrum(0.1f, 10.0f, (float) Display.getWidth() / (float) Display.getHeight(), 70.0f, pos, forward, up, right, true);
+		
+		Vec3[] fruVerPos = f2.v; //f.v;
+		
+		Vertex[] fruV = {
+			new Vertex(fruVerPos[0], new Vec2(0.0f, 0.0f), new Vec3(0.0f, 0.0f, 1.0f)),
+			new Vertex(fruVerPos[1], new Vec2(0.0f, 0.0f), new Vec3(0.0f, 0.0f, 1.0f)),
+			new Vertex(fruVerPos[2], new Vec2(0.0f, 0.0f), new Vec3(0.0f, 0.0f, 1.0f)),
+			new Vertex(fruVerPos[3], new Vec2(0.0f, 0.0f), new Vec3(0.0f, 0.0f, 1.0f)),
+			new Vertex(fruVerPos[4], new Vec2(0.0f, 0.0f), new Vec3(0.0f, 0.0f, 1.0f)),
+			new Vertex(fruVerPos[5], new Vec2(0.0f, 0.0f), new Vec3(0.0f, 0.0f, 1.0f)),
+			new Vertex(fruVerPos[6], new Vec2(0.0f, 0.0f), new Vec3(0.0f, 0.0f, 1.0f)),
+			new Vertex(fruVerPos[7], new Vec2(0.0f, 0.0f), new Vec3(0.0f, 0.0f, 1.0f)),
+		};
+		
+		int[] fruI = {
+			// Near
+			0, 1, 2,
+			0, 2, 3,
 			
-				if(row < h - 1 && col < w - 1){
-					int verIndex = (col + row * (h - 1));
-					gridI[verIndex * 6 + 0] = verIndex;
-					gridI[verIndex * 6 + 1] = verIndex + w + 1;
-					gridI[verIndex * 6 + 2] = verIndex + 1;
-					gridI[verIndex * 6 + 3] = verIndex;
-					gridI[verIndex * 6 + 4] = verIndex + w;
-					gridI[verIndex * 6 + 5] = verIndex + w + 1;
-				}
-			}
-		}		
+			// Far
+			4, 5, 6,
+			4, 6, 7,
+			
+			// Left
+			0, 4, 7,
+			0, 7, 3,
+			
+			// Right
+			1, 5, 6,
+			1, 6, 2,
+			
+			// Top
+			3, 2, 6,
+			3, 6, 7,
+			
+			// Bottom
+			0, 1, 5,
+			0, 5, 4
+		};
 		
-		Mesh mesh = ModelLoader.load(grid, gridI, new MeshTexture("test.png"), Mat4.identity());
+		Mesh mesh = ModelLoader.load(fruV, fruI, texture, Mat4.identity());
 		model = new Model(new Mesh[]{mesh});
-		*/
+		
+		Mesh cubeMesh = ModelLoader.load(v, ind, texture, Mat4.identity());
+		cube = new Model(new Mesh[]{cubeMesh});
+		
+		System.out.println(f2.intersects(pos.add(new Vec3(1.0f, 0.0f, 1.0f))));//new AABox(pos.add(new Vec3(3.0f, 0.0f, 10.0f)), new Vec3(3f, 3f, 3f))));
 	}
 
 	@Override
@@ -80,7 +149,19 @@ public final class GameSystem extends EngineSystem {
 
 	@Override
 	public void render() {
-		//Renderer.batch(ShaderProgram.STATIC, model, Mat4.identity());
+		Renderer.batch(ShaderProgram.STATIC, model, Mat4.identity());
+		Renderer.batch(ShaderProgram.STATIC, cube, Mat4.identity().scale(0.01f, 0.01f, 0.01f).translate(pos.add(new Vec3(1.0f, 0.0f, 1.0f))));
+		
+		//Renderer.batch(ShaderProgram.STATIC, cube, Mat4.identity().scale(16.0f * 2.0f, 16.0f * 2.0f, 16.0f * 2.0f).translate(pos));
+		//Renderer.batch(ShaderProgram.STATIC, cube, Mat4.identity().scale(32.0f * 2.0f, 32.0f * 2.0f, 32.0f * 2.0f).translate(pos));
+		//Renderer.batch(ShaderProgram.STATIC, cube, Mat4.identity().scale(64.0f * 2.0f, 64.0f * 2.0f, 64.0f * 2.0f).translate(pos));
+		//Renderer.batch(ShaderProgram.STATIC, cube, Mat4.identity().scale(128.0f * 2.0f, 128.0f * 2.0f, 128.0f * 2.0f).translate(pos));
+		//Renderer.batch(ShaderProgram.STATIC, cube, Mat4.identity().scale(256.0f * 2.0f, 256.0f * 2.0f, 256.0f * 2.0f).translate(pos));
+		//Renderer.batch(ShaderProgram.STATIC, cube, Mat4.identity().scale(512.0f * 2.0f, 512.0f * 2.0f, 512.0f * 2.0f).translate(pos));
+		//Renderer.batch(ShaderProgram.STATIC, cube, Mat4.identity().scale(1024.0f * 2.0f, 1024.0f * 2.0f, 1024.0f * 2.0f).translate(pos));
+		//Renderer.batch(ShaderProgram.STATIC, cube, Mat4.identity().scale(2048.0f * 2.0f, 2048.0f * 2.0f, 2048.0f * 2.0f).translate(pos));
+		//Renderer.batch(ShaderProgram.STATIC, cube, Mat4.identity().scale(4096.0f * 2.0f, 4096.0f * 2.0f, 4096.0f * 2.0f).translate(pos));
+		//Renderer.batch(ShaderProgram.STATIC, cube, Mat4.identity().scale(8192.0f * 2.0f, 8192.0f * 2.0f, 8192.0f * 2.0f).translate(pos));
 	}
 
 	@Override

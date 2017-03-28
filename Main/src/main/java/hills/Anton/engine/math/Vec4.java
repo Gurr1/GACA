@@ -2,9 +2,9 @@ package hills.Anton.engine.math;
 
 import java.nio.ByteBuffer;
 
-import org.lwjgl.system.MemoryUtil;
-
 import lombok.Value;
+
+import org.lwjgl.system.MemoryUtil;
 
 @Value public class Vec4 implements STD140Formatable {
 	

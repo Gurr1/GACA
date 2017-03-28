@@ -1,13 +1,14 @@
 package hills.Anton.engine.system.terrain.quadtree;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import hills.Anton.engine.math.Mat4;
 import hills.Anton.engine.math.STD140Formatable;
 import hills.Anton.engine.math.Vec2;
 import hills.Anton.engine.math.Vec3;
 import hills.Anton.engine.math.Vec4;
+import hills.Anton.engine.math.shape.AABox;
+import hills.Anton.engine.math.shape.Frustrum;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class LODNode implements STD140Formatable {
 	
@@ -21,6 +22,8 @@ public class LODNode implements STD140Formatable {
 	private final float width, depth, height;	// Size		
 	private boolean[] subSectionsToHandle;		// Partial selection info
 	
+	private final AABox aaBox;
+	
 	private LODNode[] childNodes = null;
 	
 	public LODNode(float x, float z, float width, float depth, float height){
@@ -30,20 +33,27 @@ public class LODNode implements STD140Formatable {
 		this.depth = depth;
 		this.height = height;
 		
+		aaBox = new AABox(x, 0.0f, z, width, height, depth);
+		
 		subSectionsToHandle = new boolean[4];
 	}
 	
-	public boolean genLODNodeTree(Vec3 pos, float[] ranges, int lodLevel) {
+	public boolean genLODNodeTree(Vec3 pos, float[] ranges, int lodLevel, Frustrum viewFrustrum) {
 		this.lodLevel = -1; // Assume not a leaf node.
 		
 		// Check if node is within it's LOD range from position.
 		// If not then return false and let parent node handle this subsection.
 		if(!withinLODRange(pos, ranges[lodLevel])){
 			//return false;
-			this.lodLevel = lodLevel;
+			this.lodLevel = lodLevel;	// TODO Fix sub area rendering
+			return true;
 		}
 		
-		// TODO Add frustrum cull check!
+		// If the node is not within the view frustrum, mark as handled.
+		//if(!viewFrustrum.intersects(aaBox)){
+		//	this.lodLevel = lodLevel;	// TODO Fix no render nodes
+		//	return true;
+		//}
 		
 		// If node is in the last LOD level (most detailed),
 		// set this node as leaf node.
@@ -61,7 +71,7 @@ public class LODNode implements STD140Formatable {
 				childNodes = getChildNodes();
 				
 				for(int i = 0; i < childNodes.length; i++)
-					if(!childNodes[i].genLODNodeTree(pos, ranges, lodLevel - 1)){
+					if(!childNodes[i].genLODNodeTree(pos, ranges, lodLevel - 1, viewFrustrum)){
 						// If child node is outside of its LOD range,
 						// let this node handle that subsection.
 						subSectionsToHandle[i] = true; 

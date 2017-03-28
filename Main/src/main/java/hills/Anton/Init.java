@@ -7,8 +7,6 @@ import hills.Anton.engine.system.camera.CameraSystem;
 import hills.Anton.engine.system.debug.DebugSystem;
 import hills.Anton.engine.system.terrain.TerrainSystem;
 import hills.Anton.game.GameSystem;
-import hills.Anton.engine.math.Mat4;
-import hills.Anton.engine.renderer.shader.ShaderProgram;
 
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
@@ -47,49 +45,47 @@ public class Init {
 	}
 	
 	public void init(){
+		Display.setClearColor(0.55f, 0.55f, 1.0f, 1.0f);	// Set clear color
+		Display.enableDepthTesting(0.0f, 1.0f);				// Enable depth testing
+		Display.setClearDepth(1.0f);						// Clear depth buffer to 1.0
+		
+		DebugSystem.createInstance();						// Create DebugSystem instance
+		DebugSystem.getInstance().setFPSDebugMode(true);	// Activate FPS debug mode
+		
+		CameraSystem.createInstance(1.0f, false, 0.0f);																	// Create CameraSystem instance
+		CameraSystem cameraSystem = CameraSystem.getInstance(); 														// Get the CameraSystem instance
+		cameraSystem.updatePerspective(0.1f, 3000.0f, (float) Display.getWidth() / (float) Display.getHeight(), 70.0f);	// Update the perspective matrix
 		initDisplayCallbacks();
 		
-		Display.setClearColor(0.55f, 0.55f, 1.0f, 1.0f);	// Set clear color
-		Display.enableDepthTesting(0.0f, 1.0f);			// Enable depth testing
-		Display.setClearDepth(1.0f);					// Clear depth buffer to 1.0
+		TerrainSystem.createInstance();						// Create TerrainSystem instance
 		
-		// TODO MOVE!
-		// Set perspective matrix according to new width and height
-		Mat4 per = Mat4.perspective(0.1f, 3000.0f, (float) Display.getWidth() / (float) Display.getHeight(), 70.0f);
-		ShaderProgram.map("VIEW", "PERSPECTIVE", per.get140Data());
+		GameSystem.createInstance(1.0f, false, 0.0f);		// Create GameSystem instance
 		
-		DebugSystem.createInstance();					// Create DebugSystem instance
-		DebugSystem.getInstance().setFPSDebugMode(true);// Activate FPS debug mode
+		GameLoop.start();                            		// Start engine game loop
 		
-		CameraSystem.createInstance();					// Create CameraSystem instance
-		
-		TerrainSystem.createInstance();					// Create TerrainSystem instance
-		
-		GameSystem.createInstance(1.0f, false, 0.0f);	// Create GameSystem instance
-		
-		GameLoop.start();                            	// Start engine game loop
-		
-		Display.destroy();                           	// Terminate GLFW window and GLFW when program ends
+		Display.destroy();                           		// Terminate GLFW window and GLFW when program ends
 	}
 	
 	/**
 	 * Initialize GLFW callback methods.
 	 */
 	public void initDisplayCallbacks(){
+		CameraSystem cameraSystem = CameraSystem.getInstance();
+		
 		// Window close callback
 		Display.setWindowCloseCallback(new GLFWWindowCloseCallback(){
 			public void invoke(long window) {
 				GameLoop.stop();
 			}
 		});
+		
 		// Frame buffer resize callback
 		Display.setFramebufferSizeCallback(new GLFWFramebufferSizeCallback(){
 			public void invoke(long window, int width, int height) {
 				GL11.glViewport(0, 0, width, height);
 				
 				// Set perspective matrix according to new width and height
-				Mat4 per = Mat4.perspective(0.1f, 3000.0f, (float) width / (float) height, 70.0f);
-				ShaderProgram.map("VIEW", "PERSPECTIVE", per.get140Data());
+				cameraSystem.updatePerspective(0.1f, 3000.0f, (float) Display.getWidth() / (float) Display.getHeight(), 70.0f);
 			}
 		});
 	}

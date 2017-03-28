@@ -2,11 +2,9 @@ package hills.Anton.engine.math;
 
 import java.nio.ByteBuffer;
 
-import org.lwjgl.system.MemoryUtil;
-
-import hills.Anton.engine.math.Vec3;
-import hills.Anton.engine.math.Mat4;
 import lombok.val;
+
+import org.lwjgl.system.MemoryUtil;
 
 //TODO Make mutable?
 @val public class Mat4 implements STD140Formatable {
