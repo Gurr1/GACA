@@ -9,7 +9,8 @@ public enum SamplerUniform {
 	OCCLUSION("occlusionMap", GL13.GL_TEXTURE2),
 	OPACITY("opacityMap", GL13.GL_TEXTURE3),
 	SPECULAR_GLOSS("specularGlossMap", GL13.GL_TEXTURE4),
-	EMISSIVE("emissiveMap", GL13.GL_TEXTURE5);
+	EMISSIVE("emissiveMap", GL13.GL_TEXTURE5),
+	CUBE_MAP("cubeMap", GL13.GL_TEXTURE6);
 	
 	/**
 	 * Name of sampler uniform.

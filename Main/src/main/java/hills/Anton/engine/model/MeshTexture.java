@@ -120,12 +120,12 @@ public class MeshTexture {
 	 */
 	public void delete(){
 		try {
-			TextureLoader.freeMeshTexture(diffuse);
-			TextureLoader.freeMeshTexture(normal);
-			TextureLoader.freeMeshTexture(occlusion);
-			TextureLoader.freeMeshTexture(opacity);
-			TextureLoader.freeMeshTexture(specularGloss);
-			TextureLoader.freeMeshTexture(emissive);
+			TextureLoader.freeTexture(diffuse);
+			TextureLoader.freeTexture(normal);
+			TextureLoader.freeTexture(occlusion);
+			TextureLoader.freeTexture(opacity);
+			TextureLoader.freeTexture(specularGloss);
+			TextureLoader.freeTexture(emissive);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

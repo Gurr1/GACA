@@ -1,5 +1,7 @@
 package hills.Anton.engine.loader;
 
+import hills.Anton.engine.texturemap.CubeMap;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -28,6 +30,7 @@ public class TextureLoader {
 	
 	public static int WRAP_S = GL12.GL_CLAMP_TO_EDGE,
 					  WRAP_T = GL12.GL_CLAMP_TO_EDGE,
+					  WRAP_R = GL12.GL_CLAMP_TO_EDGE,
 					  MAG = GL11.GL_LINEAR,
 					  MIN = GL11.GL_LINEAR;
 	
@@ -142,15 +145,71 @@ public class TextureLoader {
 	}
 	
 	/**
+	 * Load a cube map from six face images.<br>
+	 * Order of faces bound:<br>
+	 *     - POS-X<br>
+	 *     - NEG-X<br>
+	 *     - POS-Y<br>
+	 *     - NEG-Y<br>
+	 *     - POS-Z<br>
+	 *     - NEG-Z<br>
+	 * Texture parameters for wrapping around s, t and r, as well as parameters for<br>
+	 * resize method (mag and min) will be set according to TextureLoader.WRAP_S, TextureLoader.WRAP_T,<br>
+	 * TextureLoader.WRAP_R, TextureLoader.MAG and TextureLoader.MIN.
+	 * @param paths - Paths to the 6 images used for the cubes faces.
+	 * @param name - Name to save the loaded texture under for later guaranteed freeing.
+	 * @return Cube map handle (id) of the cube map bound.
+	 */
+	public static int loadCubeMapTexture(String[] paths, String name, boolean flip){
+		if(paths.length != CubeMap.FACES)
+			throw new IllegalArgumentException("A cube map has exactly " + CubeMap.FACES + " faces. Passed image paths: " + paths.length);
+		
+		// Bind cube map
+		int handle = GL11.glGenTextures();
+		GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, handle);
+		
+		// Go through and add each image to it's respective face
+		for(int i = 0; i < paths.length; i++){
+			IntBuffer w = MemoryUtil.memAllocInt(1);
+			IntBuffer h = MemoryUtil.memAllocInt(1);
+			ByteBuffer textureByteBuffer = PNGToByteBuffer(paths[i], w, h, flip);
+			
+			// Load image
+			GL11.glTexImage2D(GL13.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL11.GL_RGBA, w.get(), h.get(), 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, textureByteBuffer);
+			
+			// Free allocated buffer
+			MemoryUtil.memFree(textureByteBuffer);
+			
+			// Free allocated memory
+			MemoryUtil.memFree(w);
+			MemoryUtil.memFree(h);
+		}
+		
+		// Set parameters
+		GL11.glTexParameteri(GL13.GL_TEXTURE_CUBE_MAP, GL11.GL_TEXTURE_WRAP_S, WRAP_S);
+		GL11.glTexParameteri(GL13.GL_TEXTURE_CUBE_MAP, GL11.GL_TEXTURE_WRAP_T, WRAP_T);
+		GL11.glTexParameteri(GL13.GL_TEXTURE_CUBE_MAP, GL12.GL_TEXTURE_WRAP_R, WRAP_R);
+		GL11.glTexParameterf(GL13.GL_TEXTURE_CUBE_MAP, GL11.GL_TEXTURE_MAG_FILTER, MAG);
+		GL11.glTexParameteri(GL13.GL_TEXTURE_CUBE_MAP, GL11.GL_TEXTURE_MIN_FILTER, MIN);
+	
+		GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, 0);
+		
+		loadedTextures.put(name, handle);
+		return handle;
+	}
+	
+	/**
 	 * Set texture parameters used when loading.
 	 * @param WRAP_S - GL_TEXTURE_WRAP_S parameter.
 	 * @param WRAP_T - GL_TEXTURE_WRAP_T parameter.
+	 * @param WRAP_R - GL_TEXTURE_WRAP_R parameter.
 	 * @param MAG - GL_TEXTURE_MAG_FILTER parameter.
 	 * @param MIN - GL_TEXTURE_MIN_FILTER parameter
 	 */
-	public static void setTexParameters(int WRAP_S, int WRAP_T, int MAG, int MIN){
+	public static void setTexParameters(int WRAP_S, int WRAP_T, int WRAP_R, int MAG, int MIN){
 		TextureLoader.WRAP_S = WRAP_S;
 		TextureLoader.WRAP_T = WRAP_T;
+		TextureLoader.WRAP_R = WRAP_R;
 		TextureLoader.MAG = MAG;
 		TextureLoader.MIN = MIN;
 	}
@@ -172,7 +231,7 @@ public class TextureLoader {
 	 * Will delete texture.
 	 * @param name - Name of texture file.
 	 */
-	public static void freeMeshTexture(String name) throws Exception {
+	public static void freeTexture(String name) throws Exception {
 		Integer handle = loadedTextures.remove(name);
 		if(handle == null)
 			throw new Exception("Texture not found!");
@@ -184,7 +243,7 @@ public class TextureLoader {
 	 * Will delete texture.
 	 * @param name - Name of texture file.
 	 */
-	public static void freeMeshTexture(int handle) throws Exception {
+	public static void freeTexture(int handle) throws Exception {
 		for(String textureName: loadedTextures.keySet())
 			loadedTextures.remove(textureName, handle);
 		

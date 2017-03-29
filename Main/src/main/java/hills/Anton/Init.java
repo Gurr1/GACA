@@ -6,6 +6,7 @@ import hills.Anton.engine.display.Display;
 import hills.Anton.engine.system.camera.CameraSystem;
 import hills.Anton.engine.system.debug.DebugSystem;
 import hills.Anton.engine.system.terrain.TerrainSystem;
+import hills.Anton.engine.util.RenderUtil;
 import hills.Anton.game.GameSystem;
 
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -48,6 +49,8 @@ public class Init {
 		Display.setClearColor(0.55f, 0.55f, 1.0f, 1.0f);	// Set clear color
 		Display.enableDepthTesting(0.0f, 1.0f);				// Enable depth testing
 		Display.setClearDepth(1.0f);						// Clear depth buffer to 1.0
+		
+		RenderUtil.setDepthFunction(GL11.GL_LEQUAL);		// Set OpenGL depth function.
 		
 		DebugSystem.createInstance();						// Create DebugSystem instance
 		DebugSystem.getInstance().setFPSDebugMode(true);	// Activate FPS debug mode

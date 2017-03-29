@@ -1,0 +1,16 @@
+#version 330
+
+in vec3 pos;
+
+out vec3 skyBoxTextureVector;
+
+layout (std140) uniform VIEW {
+	vec3 CAMPOSWORLD;
+	mat4 CAMERA;
+	mat4 PERSPECTIVE;
+};
+
+void main(){
+	skyBoxTextureVector = pos;
+	gl_Position = (PERSPECTIVE * mat4(mat3(CAMERA)) * vec4(pos, 1.0f)).xyww;
+}

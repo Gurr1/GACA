@@ -7,6 +7,7 @@ import hills.Anton.engine.model.MeshTexture;
 import hills.Anton.engine.model.Model;
 import hills.Anton.engine.renderer.shader.ShaderAttribute;
 import hills.Anton.engine.renderer.shader.ShaderProgram;
+import hills.Anton.engine.texturemap.CubeMap;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;

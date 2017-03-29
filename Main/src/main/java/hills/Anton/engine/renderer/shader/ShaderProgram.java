@@ -20,7 +20,8 @@ import org.lwjgl.system.MemoryUtil;
 public enum ShaderProgram {
 	
 	STATIC("static.ver", "static.fra", null, null),
-	TERRAIN("terrain.ver", "terrain.fra", null, null);
+	TERRAIN("terrain.ver", "terrain.fra", null, null),
+	SKY_BOX("skybox.ver", "skybox.fra", null, null);
 	
 	/**
 	 * Map of all uniform buffer objects.
