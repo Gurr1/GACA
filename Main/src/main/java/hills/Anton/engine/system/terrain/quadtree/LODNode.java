@@ -4,6 +4,7 @@ import hills.Anton.engine.math.STD140Formatable;
 import hills.Anton.engine.math.Vec3;
 import hills.Anton.engine.math.shape.AABox;
 import hills.Anton.engine.math.shape.Frustrum;
+import hills.Anton.engine.system.terrain.TerrainSystem;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ public class LODNode implements STD140Formatable {
 		
 		// Check if node is within it's LOD range from position.
 		// If not then return false and let parent node handle this subsection.
-		if(!withinLODRange(pos, ranges[lodLevel])){
+		if(!withinLODRange(pos, ranges[lodLevel] / TerrainSystem.MORPH_FACTOR)){
 			//return false;
 			this.lodLevel = lodLevel;	// TODO Fix sub area rendering
 			return true;
@@ -59,7 +60,7 @@ public class LODNode implements STD140Formatable {
 			// add node to be drawn as is.
 			// Else check the four children nodes to see
 			// which ones are in a lower LOD range.
-			if(!withinLODRange(pos, ranges[lodLevel - 1]))
+			if(!withinLODRange(pos, ranges[lodLevel - 1] / TerrainSystem.MORPH_FACTOR))
 				this.lodLevel = lodLevel; // Add node as leaf node.
 			else {
 				childNodes = getChildNodes();

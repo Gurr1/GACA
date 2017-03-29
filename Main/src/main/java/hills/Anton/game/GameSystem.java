@@ -8,7 +8,10 @@ import hills.Anton.engine.math.Vertex;
 import hills.Anton.engine.model.Mesh;
 import hills.Anton.engine.model.MeshTexture;
 import hills.Anton.engine.model.Model;
+import hills.Anton.engine.renderer.Renderer;
+import hills.Anton.engine.renderer.shader.ShaderProgram;
 import hills.Anton.engine.system.EngineSystem;
+import hills.Anton.engine.system.camera.CameraSystem;
 
 public final class GameSystem extends EngineSystem {
 
@@ -89,7 +92,7 @@ public final class GameSystem extends EngineSystem {
 
 	@Override
 	public void render() {
-	
+		Renderer.batch(ShaderProgram.STATIC, cube, Mat4.identity().scale(16.0f * 2, 16.0f * 2, 16.0f * 2).translate(CameraSystem.getInstance().getPosition().mul(new Vec3(1.0f, 0.0f, 1.0f))));
 	}
 
 	@Override

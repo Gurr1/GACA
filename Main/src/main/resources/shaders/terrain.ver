@@ -17,7 +17,7 @@ layout (std140) uniform VIEW {
 };
 
 layout (std140) uniform TERRAIN_CONSTANTS {
-	vec2 RANGES_SQUARED[10];
+	vec2 RANGES_SQUARED[5];
 	float SCALES[10];
 	vec2 GRID_SIZE;
 	vec2 TERRAIN_SIZE;
@@ -48,12 +48,11 @@ void main(){
 	vec2 morphedVertex = morphVertex(gridPos, gridPosWorld, morphValue);
 	
 	// Get height correct way?
-	height = texture2D(diffuseMap, gridPosWorld  / TERRAIN_SIZE).g * MAX_HEIGHT;
+	height = texture2D(diffuseMap, morphedVertex  / TERRAIN_SIZE).g * MAX_HEIGHT;
 	
 	vec4 worldPos = vec4(morphedVertex.x, height, morphedVertex.y, 1.0f);
 	
 	gl_Position = PERSPECTIVE * CAMERA * worldPos;
-	height = mod(gridPos, 2).x;
 }
 
 // Morphs vertex from high to low detailed mesh position
@@ -61,6 +60,5 @@ void main(){
 //	- vertex: x, z components of vertex in world space
 //	- morphValue: morph value
 vec2 morphVertex(vec2 gridPos, vec2 vertex, float morphValue){
-	//vec2 maxOffsetFactor = fract(gridPos * 0.5f) * 2.0f;
-	return vertex - (mod(gridPos, 2) * SCALES[LOD_LEVEL] * morphValue);
+	return vertex - mod(gridPos, 2.0f) * SCALES[LOD_LEVEL] * morphValue;
 }
