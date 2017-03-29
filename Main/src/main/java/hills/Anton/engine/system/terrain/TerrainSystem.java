@@ -14,7 +14,6 @@ import java.nio.ByteBuffer;
 import java.util.List;
 
 import org.lwjgl.system.MemoryStack;
-import org.lwjgl.system.MemoryUtil;
 
 public class TerrainSystem extends EngineSystem {
 
@@ -48,14 +47,14 @@ public class TerrainSystem extends EngineSystem {
 	
 	@Override
 	protected void update(double delta) {
-		
+		/*
 		Vec3 pos = new Vec3(300.0f, 2.0f, 160.0f);
 		Vec3 forward = new Vec3(1.0f, 0.0f, 1.0f);
 		Vec3 up = new Vec3(0.0f, 1.0f, 0.0f);
 		Vec3 right = forward.cross(up);
 		
 		Frustrum f = new Frustrum(0.1f, 3000.0f, (float) Display.getWidth() / (float) Display.getHeight(), 70.0f, pos, forward, up, right, true);
-		
+		*/
 		topNode.genLODNodeTree(cam.getPosition(), TerrainSystem.RANGES, 7, cam.getFrustrum());
 		leafNodes = topNode.getLeafNodes();
 	}
