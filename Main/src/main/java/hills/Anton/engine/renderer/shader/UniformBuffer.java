@@ -1,5 +1,6 @@
 package hills.Anton.engine.renderer.shader;
 
+import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -53,9 +54,12 @@ public class UniformBuffer {
 		this.bindPoint = nextBindPoint++;
 		this.size =  size;
 		
+		System.out.println("Bindpoints: " + bindPoint);
 		
 		for(int variable = 0; variable < varNames.length; variable++){
 			variableOffsets.put(varNames[variable], offsets[variable]);
+			
+			System.out.println("    " + varNames[variable] + " " + offsets[variable]);
 			
 			// Check for array variables
 			int nameEnd = -1;
@@ -82,12 +86,27 @@ public class UniformBuffer {
 	 */
 	public void map(byte[] values){
 		if(values.length != size){
-			System.err.println("Values sent to uniform buffer object must be of same size as the buffer! Size of buffer: " + size);
+			System.err.println("Values sent to uniform buffer object must be of same size as the buffer! Size of buffer: " + size + " | Size of in values: " + values.length + " | Bind point: " + bindPoint);
 			return;
 		}
 		
 		GL30.glBindBufferBase(GL31.GL_UNIFORM_BUFFER, bindPoint, handle);
 		GL30.glMapBufferRange(GL31.GL_UNIFORM_BUFFER, 0, values.length, GL30.GL_MAP_WRITE_BIT | GL30.GL_MAP_INVALIDATE_BUFFER_BIT).put(values);
+		GL15.glUnmapBuffer(GL31.GL_UNIFORM_BUFFER);
+	}
+	
+	/**
+	 * Map new values to the entire uniform buffer.
+	 * @param values - Values to map to buffer.
+	 */
+	public void map(ByteBuffer values){
+		if(values.remaining() != size){
+			System.err.println("Values sent to uniform buffer object must be of same size as the buffer! Size of buffer: " + size + " | Size of in values: " + values.remaining() + " | Bind point: " + bindPoint);
+			return;
+		}
+		
+		GL30.glBindBufferBase(GL31.GL_UNIFORM_BUFFER, bindPoint, handle);
+		GL30.glMapBufferRange(GL31.GL_UNIFORM_BUFFER, 0, values.remaining(), GL30.GL_MAP_WRITE_BIT | GL30.GL_MAP_INVALIDATE_BUFFER_BIT).put(values);
 		GL15.glUnmapBuffer(GL31.GL_UNIFORM_BUFFER);
 	}
 	
@@ -98,12 +117,28 @@ public class UniformBuffer {
 	 */
 	public void map(int offset, byte[] values){
 		if(offset + values.length > size){
-			System.err.println("Values sent to uniform buffer object must be of same size as or smaller than the buffer!");
+			System.err.println("Values sent to uniform buffer object must be of same size as or smaller than the buffer!" + bindPoint);
 			return;
 		}
 		
 		GL30.glBindBufferBase(GL31.GL_UNIFORM_BUFFER, bindPoint, handle);
 		GL30.glMapBufferRange(GL31.GL_UNIFORM_BUFFER, offset, values.length, GL30.GL_MAP_WRITE_BIT | GL30.GL_MAP_INVALIDATE_RANGE_BIT).put(values);
+		GL15.glUnmapBuffer(GL31.GL_UNIFORM_BUFFER);
+	}
+	
+	/**
+	 * Map new values to a sub-part of the buffer.
+	 * @param offset - Start point of mapping in bytes.
+	 * @param values - Values to map from start point.
+	 */
+	public void map(int offset, ByteBuffer values){
+		if(offset + values.remaining() > size){
+			System.err.println("Values sent to uniform buffer object must be of same size as or smaller than the buffer!" + bindPoint);
+			return;
+		}
+		
+		GL30.glBindBufferBase(GL31.GL_UNIFORM_BUFFER, bindPoint, handle);
+		GL30.glMapBufferRange(GL31.GL_UNIFORM_BUFFER, offset, values.remaining(), GL30.GL_MAP_WRITE_BIT | GL30.GL_MAP_INVALIDATE_RANGE_BIT).put(values);
 		GL15.glUnmapBuffer(GL31.GL_UNIFORM_BUFFER);
 	}
 	

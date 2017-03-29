@@ -9,9 +9,13 @@ import hills.Anton.engine.math.Vec3;
 import hills.Anton.engine.math.shape.Frustrum;
 import hills.Anton.engine.renderer.shader.ShaderProgram;
 import hills.Anton.engine.system.EngineSystem;
+
+import java.nio.ByteBuffer;
+
 import lombok.Getter;
 
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.system.MemoryStack;
 
 public class CameraSystem extends EngineSystem {
 
@@ -107,8 +111,22 @@ public class CameraSystem extends EngineSystem {
 		
 		frustrum = new Frustrum(near, far, aspect, FOV, position, forward, up, right, false);
 		
-		ShaderProgram.map("VIEW", "CAMERA", Mat4.identity().get140Data());
-		ShaderProgram.map("VIEW", "CAMPOSWORLD", position.getData());
+		try(MemoryStack stack = MemoryStack.stackPush()){
+			Mat4 identityMatrix = Mat4.identity();
+			ByteBuffer dataBuffer = stack.calloc(identityMatrix.get140DataSize());
+			identityMatrix.get140Data(dataBuffer);
+			dataBuffer.flip();
+			
+			ShaderProgram.map("VIEW", "CAMERA", dataBuffer);
+		}
+		
+		try(MemoryStack stack = MemoryStack.stackPush()){
+			ByteBuffer dataBuffer = stack.calloc(position.get140DataSize());
+			position.get140Data(dataBuffer);
+			dataBuffer.flip();
+			
+			ShaderProgram.map("VIEW", "CAMPOSWORLD", dataBuffer);
+		}
 		
 		toUpdate = false;
 	}
@@ -138,11 +156,23 @@ public class CameraSystem extends EngineSystem {
 		// Update camera view frustrum
 		frustrum = new Frustrum(near, far, aspect, FOV, position, forward, up, right, false);
 		
-		// Map camera matrix to uniform buffer VIEW
-		ShaderProgram.map("VIEW", "CAMERA", cameraMatrix.get140Data());
+		try(MemoryStack stack = MemoryStack.stackPush()){
+			ByteBuffer dataBuffer = stack.calloc(cameraMatrix.get140DataSize());
+			cameraMatrix.get140Data(dataBuffer);
+			dataBuffer.flip();
+			
+			// Map camera matrix to uniform buffer VIEW
+			ShaderProgram.map("VIEW", "CAMERA", dataBuffer);
+		}
 		
-		// Map camera position to uniform buffer VIEW
-		ShaderProgram.map("VIEW", "CAMPOSWORLD", position.getData());
+		try(MemoryStack stack = MemoryStack.stackPush()){
+			ByteBuffer dataBuffer = stack.calloc(position.get140DataSize());
+			position.get140Data(dataBuffer);
+			dataBuffer.flip();
+			
+			// Map camera position to uniform buffer VIEW
+			ShaderProgram.map("VIEW", "CAMPOSWORLD", dataBuffer);
+		}
 		
 		// Set toUpdate false
 		toUpdate = false;
@@ -280,7 +310,15 @@ public class CameraSystem extends EngineSystem {
 		this.aspect = aspect;
 		this.FOV = FOV;
 		
-		ShaderProgram.map("VIEW", "PERSPECTIVE", Mat4.perspective(near, far, aspect, FOV).get140Data());
+		try(MemoryStack stack = MemoryStack.stackPush()){
+			Mat4 perspectiveMatrix = Mat4.perspective(near, far, aspect, FOV);
+			
+			ByteBuffer dataBuffer = stack.calloc(perspectiveMatrix.get140DataSize());
+			perspectiveMatrix.get140Data(dataBuffer);
+			dataBuffer.flip();
+			
+			ShaderProgram.map("VIEW", "PERSPECTIVE", dataBuffer);
+		}
 		
 		toUpdate = true;
 	}

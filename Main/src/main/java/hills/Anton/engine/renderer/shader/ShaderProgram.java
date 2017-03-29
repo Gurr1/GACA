@@ -7,6 +7,7 @@ import hills.Anton.engine.math.Mat4;
 import hills.Anton.engine.math.Vec3;
 import hills.Anton.engine.util.BufferUtil;
 
+import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.HashMap;
 import java.util.Map;
@@ -285,12 +286,32 @@ public enum ShaderProgram {
 	}
 	
 	/**
+	 * Map new values to UBO.
+	 * @param uboName - Name of UBO.
+	 * @param values - Values to map to the UBO.
+	 */
+	public static void map(String uboName, ByteBuffer values){
+		ShaderProgram.UBOs.map.get(uboName).map(values);
+	}
+	
+	/**
 	 * Map new values to UBO variable.
 	 * @param uboName - Name of UBO.
 	 * @param varName - Name of variable.
 	 * @param values - Values to map to the UBO.
 	 */
 	public static void map(String uboName, String varName, byte[] values){
+		UniformBuffer ubo = ShaderProgram.UBOs.map.get(uboName);
+		ubo.map(ubo.getOffset(varName), values);
+	}
+	
+	/**
+	 * Map new values to UBO variable.
+	 * @param uboName - Name of UBO.
+	 * @param varName - Name of variable.
+	 * @param values - Values to map to the UBO.
+	 */
+	public static void map(String uboName, String varName, ByteBuffer values){
 		UniformBuffer ubo = ShaderProgram.UBOs.map.get(uboName);
 		ubo.map(ubo.getOffset(varName), values);
 	}

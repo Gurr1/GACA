@@ -8,6 +8,7 @@ import hills.Anton.engine.model.Model;
 import hills.Anton.engine.renderer.shader.ShaderAttribute;
 import hills.Anton.engine.renderer.shader.ShaderProgram;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.Map;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
+import org.lwjgl.system.MemoryStack;
 
 public final class Renderer {
 	
@@ -90,10 +92,16 @@ public final class Renderer {
 					
 					for(Mat4 transformation: meshTextureMap.get(texture)){
 						// Load WORLD matrix to the MODEL uniform buffer.
-						ShaderProgram.map("MODEL", "WORLD", transformation.get140Data());
-						
-						// Render mesh
-						GL11.glDrawElements(GL11.GL_TRIANGLES, meshData.getIndicesAmount(), GL11.GL_UNSIGNED_INT, 0);
+						try(MemoryStack stack = MemoryStack.stackPush()){
+							ByteBuffer dataBuffer = stack.calloc(transformation.get140DataSize());
+							transformation.get140Data(dataBuffer);
+							dataBuffer.flip();
+							
+							ShaderProgram.map("MODEL", "WORLD", dataBuffer);
+							
+							// Render mesh
+							GL11.glDrawElements(GL11.GL_TRIANGLES, meshData.getIndicesAmount(), GL11.GL_UNSIGNED_INT, 0);
+						}
 					}
 				}
 				

@@ -4,8 +4,6 @@ import java.nio.ByteBuffer;
 
 import lombok.Value;
 
-import org.lwjgl.system.MemoryUtil;
-
 @Value public class Vec2 implements STD140Formatable {
 
 	/**
@@ -148,20 +146,13 @@ import org.lwjgl.system.MemoryUtil;
 	}
 
 	@Override
-	public byte[] get140Data(){
-		ByteBuffer bytes = MemoryUtil.memAlloc(Float.BYTES * STD140Formatable.STD140_FLOATS);
-		bytes.putFloat(x);
-		bytes.putFloat(y);
-		bytes.putFloat(0.0f);
-		bytes.putFloat(0.0f);
-		bytes.flip();
-		
-		byte[] data = new byte[Float.BYTES * STD140Formatable.STD140_FLOATS];
-		for(int i = 0; i < data.length; i++)
-			data[i] = bytes.get();
-		
-		MemoryUtil.memFree(bytes);
-		
-		return data;
+	public void get140Data(ByteBuffer buffer) {
+		buffer.putFloat(x);
+		buffer.putFloat(y);
+	}
+
+	@Override
+	public int get140DataSize() {
+		return STD140Formatable.VECTOR_2_ALIGNMENT;
 	}
 }

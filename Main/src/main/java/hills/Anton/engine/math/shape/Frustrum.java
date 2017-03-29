@@ -32,7 +32,9 @@ public class Frustrum {
 		if(planes.length != PLANES)
 			throw new IllegalArgumentException("A frustrum has 6 planes! Array passed has: " + planes.length);
 		
-		this.planes = planes;	// Can set equal to reference since Plane class is immutable
+		this.planes = new Plane[PLANES];
+		for(int i = 0; i < planes.length; i++)
+			this.planes[i] = planes[i];
 	}
 	
 	/**

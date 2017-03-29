@@ -5,18 +5,21 @@ import hills.Anton.engine.model.Mesh;
 import hills.Anton.engine.model.MeshTexture;
 import hills.Anton.engine.renderer.shader.ShaderAttribute;
 import hills.Anton.engine.renderer.shader.ShaderProgram;
+import hills.Anton.engine.system.terrain.TerrainSystem;
 import hills.Anton.engine.system.terrain.quadtree.LODNode;
 
+import java.nio.ByteBuffer;
 import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
+import org.lwjgl.system.MemoryStack;
 
 public final class TerrainRenderer {
 
 	private static final ShaderProgram shaderProgram = ShaderProgram.TERRAIN;
-	private static final Mesh gridMesh = TerrainLoader.loadGridMesh(16, 16);
+	private static final Mesh gridMesh = TerrainLoader.loadGridMesh(TerrainSystem.GRID_WIDTH, TerrainSystem.GRID_DEPTH);
 	private static final MeshTexture texture = new MeshTexture("height_map_test_3.png");
 	
 	private static List<LODNode> nodes;
@@ -50,10 +53,15 @@ public final class TerrainRenderer {
 		texture.bind();
 		
 		for(LODNode node: nodes){
-			ShaderProgram.map("TERRAIN", node.get140Data());
-			
-			// Render grid mesh
-			GL11.glDrawElements(GL11.GL_TRIANGLES, gridMesh.getMeshData().getIndicesAmount(), GL11.GL_UNSIGNED_INT, 0);
+			try(MemoryStack stack = MemoryStack.stackPush()){
+				ByteBuffer dataBuffer = stack.calloc(16);
+				node.get140Data(dataBuffer);
+				dataBuffer.flip();
+				ShaderProgram.map("TERRAIN_NODE", dataBuffer);
+				
+				// Render grid mesh
+				GL11.glDrawElements(GL11.GL_TRIANGLES, gridMesh.getMeshData().getIndicesAmount(), GL11.GL_UNSIGNED_INT, 0);
+			}
 		}
 		
 		// Disable attributes

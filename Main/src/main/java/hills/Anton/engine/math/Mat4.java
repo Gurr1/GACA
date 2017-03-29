@@ -4,8 +4,6 @@ import java.nio.ByteBuffer;
 
 import lombok.val;
 
-import org.lwjgl.system.MemoryUtil;
-
 //TODO Make mutable?
 @val public class Mat4 implements STD140Formatable {
 
@@ -549,22 +547,6 @@ import org.lwjgl.system.MemoryUtil;
 		
 		return new Mat4(lm).mul(Mat4.identity().setTranslation(pos.mul(-1)));
 	}
-
-	@Override
-	public byte[] get140Data() {
-		ByteBuffer bytes = MemoryUtil.memAlloc(Float.BYTES * SIZE); // Already in std140 format!
-		for(Float f: m)
-			bytes.putFloat(f);
-		bytes.flip();
-		
-		byte[] data = new byte[Float.BYTES * SIZE]; // Already in std140 format!
-		for(int i = 0; i < data.length; i++)
-			data[i] = bytes.get();
-		
-		MemoryUtil.memFree(bytes);
-		
-		return data;
-	}
 	
 	public String toString() {
 		String output = "";
@@ -572,6 +554,17 @@ import org.lwjgl.system.MemoryUtil;
 			output += "| " + m[i] + ", " + m[i + 4] + ", " + m[i + 8] + ", " + m[i + 12] + " |\n";
 		
 		return output;
+	}
+
+	@Override
+	public void get140Data(ByteBuffer buffer) {
+		for(float f: m)
+			buffer.putFloat(f);
+	}
+
+	@Override
+	public int get140DataSize() {
+		return STD140Formatable.MATRIX_ALIGNMENT;
 	}
 	
 }

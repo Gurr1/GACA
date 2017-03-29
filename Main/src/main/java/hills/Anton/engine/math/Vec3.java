@@ -4,8 +4,6 @@ import java.nio.ByteBuffer;
 
 import lombok.Value;
 
-import org.lwjgl.system.MemoryUtil;
-
 @Value public class Vec3 implements STD140Formatable {
 
 	/**
@@ -171,41 +169,16 @@ import org.lwjgl.system.MemoryUtil;
 		return false;
 	}
 
-	/**
-	 * @return Byte array of this vectors data. (x, y, z)
-	 */
-	public byte[] getData(){
-		ByteBuffer bytes = MemoryUtil.memAlloc(Float.BYTES * SIZE);
-		bytes.putFloat(x);
-		bytes.putFloat(y);
-		bytes.putFloat(z);
-		bytes.flip();
-		
-		byte[] data = new byte[Float.BYTES * SIZE];
-		for(int i = 0; i < data.length; i++)
-			data[i] = bytes.get();
-		
-		MemoryUtil.memFree(bytes);
-		
-		return data;
-	}
-	
 	@Override
-	public byte[] get140Data(){
-		ByteBuffer bytes = MemoryUtil.memAlloc(Float.BYTES * STD140Formatable.STD140_FLOATS);
-		bytes.putFloat(x);
-		bytes.putFloat(y);
-		bytes.putFloat(z);
-		bytes.putFloat(0.0f);
-		bytes.flip();
-		
-		byte[] data = new byte[Float.BYTES * STD140Formatable.STD140_FLOATS];
-		for(int i = 0; i < data.length; i++)
-			data[i] = bytes.get();
-		
-		MemoryUtil.memFree(bytes);
-		
-		return data;
+	public void get140Data(ByteBuffer buffer) {
+		buffer.putFloat(x);
+		buffer.putFloat(y);
+		buffer.putFloat(z);
+	}
+
+	@Override
+	public int get140DataSize() {
+		return STD140Formatable.VECTOR_3_ALIGNMENT;
 	}
 	
 }
