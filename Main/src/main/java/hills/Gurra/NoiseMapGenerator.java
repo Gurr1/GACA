@@ -9,12 +9,12 @@ import java.io.IOException;
  * Created by gustav on 2017-03-21.
  */
 public class NoiseMapGenerator {            // This file should be cleaned up for readability.
-    private final int WIDTH = 1056;
-    private final int HEIGHT = 1056;
+    private final int WIDTH = 2048;
+    private final int HEIGHT = 2048;
 
     private static final double FEATURE_SIZE = 24;      // >Zooms in on the picture, good for creating an overall world.
     OpenSimplexNoise noise;
-    int[][] greenMatrix = new int[WIDTH][HEIGHT];
+    double[][] greenMatrix = new double[WIDTH][HEIGHT];
 
     public NoiseMapGenerator(long seed) {
        noise = new OpenSimplexNoise(seed);
@@ -25,10 +25,10 @@ public class NoiseMapGenerator {            // This file should be cleaned up fo
 
     public void create2DNoiseImage(String name, double frequency, double scale){        // this should probably be created in a thread, takes about .25 secs with current values
         BufferedImage image = new BufferedImage(WIDTH+1, HEIGHT+1, BufferedImage.TYPE_INT_RGB);
-            int[][] greens = createMatrix(frequency, scale);
+            double[][] greens = createMatrix(frequency, scale);
             for (int y = 0; y <= HEIGHT; y++) {
                 for (int x = 0; x <= WIDTH; x++) {
-                    int[] rgb = {0, greens[x][y], 0};
+                    double[] rgb = {0, greens[x][y], 0};
                     image.getRaster().setPixel(x, y, rgb);
                 }
             }
@@ -58,14 +58,17 @@ public class NoiseMapGenerator {            // This file should be cleaned up fo
         }
         return arr;
     }
-
-    public int[][] createMatrix(double frequency, double scale){
-        int[][] matrix = new int[WIDTH+1][HEIGHT+1];
+    /*
+    Do Not modify. create a copy to do that.
+     */
+    public double[][] createMatrix(double frequency, double scale){
+        double[][] matrix = new double[WIDTH+1][HEIGHT+1];
         for(int y = 0; y <= HEIGHT; y++) {
             for (int x = 0; x <= WIDTH; x++) {
                 double value = noise.eval(x / frequency, y / frequency)*scale;
-                int green = (0x010101 * (int) ((value + 1) * 127.5) >> 8) & 0xFF;
-                matrix[x][y] = green;
+                int rgb = 0x010101 * (int)((value + 1) * 127.5);
+                matrix[x][y] = rgb;
+                //matrix[x][y] = value;
             }
         }
         this.greenMatrix = matrix;
