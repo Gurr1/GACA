@@ -26,7 +26,7 @@ public class Main {
         System.out.println((System.nanoTime()-s)/1000000);*/
 
 
-
+    	/*
         Random rand = new Random();
         Terrain noise = new Terrain(rand.nextLong());
         noise.createHeightMap();

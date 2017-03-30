@@ -20,7 +20,7 @@ public final class TerrainRenderer {
 
 	private static final ShaderProgram shaderProgram = ShaderProgram.TERRAIN;
 	private static final Mesh gridMesh = TerrainLoader.loadGridMesh(TerrainSystem.GRID_WIDTH, TerrainSystem.GRID_DEPTH);
-	private static final TerrainTexture texture = new TerrainTexture("height_map_test_3.png", "height_map_test_3_normal_flat.png");
+	private static final TerrainTexture texture = new TerrainTexture("height_map_test_3.png", "height_map_test_3_normal_smooth.png");
 	
 	private static List<LODNode> nodes;
 	
@@ -35,6 +35,8 @@ public final class TerrainRenderer {
 			System.err.println("No terrain nodes batched!");
 			return;
 		}
+		
+		GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
 		
 		// Activate shader program
 		shaderProgram.enable();

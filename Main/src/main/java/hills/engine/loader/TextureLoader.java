@@ -113,10 +113,10 @@ public class TextureLoader {
 	 * @param path - Path to image file starting from TextureLoader.DIRECTORY.
 	 * @return The handle of the texture.
 	 */
-	public static int loadTexture(String path){
+	public static int loadTexture(String path, boolean flip){
 		IntBuffer w = MemoryUtil.memAllocInt(1);
 		IntBuffer h = MemoryUtil.memAllocInt(1);
-		ByteBuffer textureByteBuffer = PNGToByteBuffer(path, w, h, true);
+		ByteBuffer textureByteBuffer = PNGToByteBuffer(path, w, h, flip);
 		
 		// Load image
 		int handle = GL11.glGenTextures();
@@ -142,6 +142,10 @@ public class TextureLoader {
 		
 		loadedTextures.put(path, handle);
 		return handle;
+	}
+	
+	public static int loadTexture(String path){
+		return loadTexture(path, true);
 	}
 	
 	/**
