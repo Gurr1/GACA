@@ -1,16 +1,21 @@
 package hills.Anders;
 
-import com.sun.istack.internal.Nullable;
 import hills.Gurra.NoiseMapGenerator;
-import lombok.Setter;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
+import javax.imageio.ImageIO;
+
+import lombok.Setter;
+
+import com.sun.istack.internal.Nullable;
 
 /**
  * Created by Anders on 2017-03-21.
@@ -75,7 +80,7 @@ public class ObjectPlacer {
             return;
         }
         NOISE_MAP = new NoiseMapGenerator(new Random().nextLong());
-        NOISE_MAP.create2DNoiseImage("ObjectDensity");
+        //NOISE_MAP.create2DNoiseImage("ObjectDensity");
         OBJECT_MAP = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         copyImage(OBJECT_MAP, HEIGHT_MAP);
         CalculatePlacement();

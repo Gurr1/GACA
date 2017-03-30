@@ -2,11 +2,17 @@
 
 in vec3 pos;
 in vec2 tex;
-in vec3 nor;
+in vec3 nor;		// nor contains (tileX, tileZ, tileIndex)
 in vec4 tangent;
 
+flat out int lodLevel;
+out vec3 norm;
+
 /* Use diffuse map as height map */
-uniform sampler2D diffuseMap;
+uniform sampler2D heightMap;
+
+/* Use Normal map as terrain normal map */
+uniform sampler2D normalMap;
 
 layout (std140) uniform VIEW {
 	vec3 CAMPOSWORLD;
@@ -14,22 +20,56 @@ layout (std140) uniform VIEW {
 	mat4 PERSPECTIVE;
 };
 
-layout (std140) uniform TERRAIN {
-	vec2 TERRAIN_POS;
-	vec3 TERRAIN_SCALE;
-	vec4 TERRAIN_MAPCOORDS;
+layout (std140) uniform TERRAIN_CONSTANTS {
+	vec2 RANGES_SQUARED[5];
+	float SCALES[10];
+	vec2 GRID_SIZE;
+	vec2 TERRAIN_SIZE;
+	float MAX_HEIGHT;
+	int START_RANGE;
 };
 
-out vec2 texCoords;
-out vec3 normals;
-out float height;
+layout (std140) uniform TERRAIN_NODE {
+	int LOD_LEVEL;
+	vec2 TERRAIN_POS;
+};
+
+// Function prototypes //
+vec2 morphVertex(vec2 gridPos, vec2 vertex, float morphValue);
 
 void main(){
-	height = texture2D(diffuseMap, TERRAIN_MAPCOORDS.xy + (TERRAIN_MAPCOORDS.zw - TERRAIN_MAPCOORDS.xy) * tex).g * 50.0f;
-	vec3 newPos = TERRAIN_SCALE * pos + vec3(TERRAIN_POS.x, height, TERRAIN_POS.y);
-	vec4 testPos = PERSPECTIVE * CAMERA * vec4(newPos, 1.0f);
-	gl_Position = testPos;
+	lodLevel = LOD_LEVEL;
+
+	vec2 gridPos = pos.xz;
+	vec2 gridPosWorld = gridPos * SCALES[LOD_LEVEL] + TERRAIN_POS;
 	
-	texCoords = tex;
-	normals = nor;
+	vec2 camToGridWorldPos = gridPosWorld - CAMPOSWORLD.xz;	// Check distance with height component aswell?
+	float distanceToCameraSqr = dot(camToGridWorldPos, camToGridWorldPos);
+	
+	vec2 squaredRanges = RANGES_SQUARED[START_RANGE + LOD_LEVEL];
+	float morphRangeSqr = squaredRanges.x;
+	float rangeSqr = squaredRanges.y;
+	
+	float morphValue = clamp((distanceToCameraSqr - morphRangeSqr) / rangeSqr, 0.0f, 1.0f);
+	vec2 morphedVertex = morphVertex(gridPos, gridPosWorld, morphValue);
+	
+	// Get normals
+	vec2 normalTextureCoordinates = (gridPosWorld - SCALES[LOD_LEVEL] * (gridPos - nor.xy)) / TERRAIN_SIZE;
+	norm = normalize(texture2D(normalMap, normalTextureCoordinates).rgb * 2.0f - 1.0f);
+	
+	// Get height correct way?
+	vec2 mapTextureCoordinates = morphedVertex / TERRAIN_SIZE;
+	float height = texture2D(heightMap, mapTextureCoordinates).g * MAX_HEIGHT;
+	
+	vec4 worldPos = vec4(morphedVertex.x, height, morphedVertex.y, 1.0f);
+	
+	gl_Position = PERSPECTIVE * CAMERA * worldPos;
+}
+
+// Morphs vertex from high to low detailed mesh position
+//	- gridPos: x, z components of vertex in grid.
+//	- vertex: x, z components of vertex in world space
+//	- morphValue: morph value
+vec2 morphVertex(vec2 gridPos, vec2 vertex, float morphValue){
+	return vertex - mod(gridPos, 2.0f) * SCALES[LOD_LEVEL] * morphValue;
 }

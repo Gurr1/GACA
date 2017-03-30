@@ -1,12 +1,12 @@
 package hills.Corre;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import static javafx.scene.input.KeyCode.F;
+import javax.imageio.ImageIO;
 
 /**
  * Created by gustav on 2017-03-21.
