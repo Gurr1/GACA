@@ -2,6 +2,9 @@ package hills;
 
 
 
+import hills.Gurra.Terrain;
+
+
 /**
  * Created by gustav on 2017-03-21.
  */
@@ -16,11 +19,14 @@ public class Main {
         //ObjectPlacer placer = new ObjectPlacer("Main/src/main/resources/GreenShades.png", "ObjectMap");
        // placer.placeObjects();
         //System.out.println((System.nanoTime()-s)/1000000);
+     /*   Long s = System.nanoTime();
+        System.out.println();
+        ObjectPlacer placer = new ObjectPlacer("Main/src/main/resources/GreenShades.png", "ObjectMap");
+        placer.placeObjects();
+        System.out.println((System.nanoTime()-s)/1000000);*/
 
 
 
-        /*
-        NoiseMapGenerator noise = new NoiseMapGenerator();
         Random rand = new Random();
         Terrain noise = new Terrain(rand.nextLong());
         noise.createHeightMap();
@@ -32,5 +38,6 @@ public class Main {
 
         //WaterGeneration waterGeneration = new WaterGeneration();
         //waterGeneration.genRiver();
+
     }
 }
