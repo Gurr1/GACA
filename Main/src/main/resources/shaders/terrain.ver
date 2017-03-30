@@ -2,13 +2,17 @@
 
 in vec3 pos;
 in vec2 tex;
-in vec3 nor;
+in vec3 nor;		// nor contains (tileX, tileZ, tileIndex)
 in vec4 tangent;
 
-out float height;
+flat out int lodLevel;
+out vec3 norm;
 
 /* Use diffuse map as height map */
-uniform sampler2D diffuseMap;
+uniform sampler2D heightMap;
+
+/* Use Normal map as terrain normal map */
+uniform sampler2D normalMap;
 
 layout (std140) uniform VIEW {
 	vec3 CAMPOSWORLD;
@@ -34,6 +38,8 @@ layout (std140) uniform TERRAIN_NODE {
 vec2 morphVertex(vec2 gridPos, vec2 vertex, float morphValue);
 
 void main(){
+	lodLevel = LOD_LEVEL;
+
 	vec2 gridPos = pos.xz;
 	vec2 gridPosWorld = gridPos * SCALES[LOD_LEVEL] + TERRAIN_POS;
 	
@@ -47,8 +53,13 @@ void main(){
 	float morphValue = clamp((distanceToCameraSqr - morphRangeSqr) / rangeSqr, 0.0f, 1.0f);
 	vec2 morphedVertex = morphVertex(gridPos, gridPosWorld, morphValue);
 	
+	// Get normals
+	vec2 normalTextureCoordinates = (gridPosWorld - SCALES[LOD_LEVEL] * (gridPos - nor.xy)) / TERRAIN_SIZE;
+	norm = normalize(texture2D(normalMap, normalTextureCoordinates).rgb * 2.0f - 1.0f);
+	
 	// Get height correct way?
-	height = texture2D(diffuseMap, morphedVertex  / TERRAIN_SIZE).g * MAX_HEIGHT;
+	vec2 mapTextureCoordinates = morphedVertex / TERRAIN_SIZE;
+	float height = texture2D(heightMap, mapTextureCoordinates).g * MAX_HEIGHT;
 	
 	vec4 worldPos = vec4(morphedVertex.x, height, morphedVertex.y, 1.0f);
 	

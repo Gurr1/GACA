@@ -1,7 +1,6 @@
 package hills;
 
 
-import hills.Anton.Init;
 
 /**
  * Created by gustav on 2017-03-21.
