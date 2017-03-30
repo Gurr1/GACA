@@ -1,6 +1,8 @@
 package hills;
 
 
+import hills.Anton.Init;
+import hills.Gurra.NoiseMapGenerator;
 import hills.Gurra.Terrain;
 
 import java.util.Random;
@@ -30,7 +32,11 @@ public class Main {
 
         Random rand = new Random();
         Terrain noise = new Terrain(rand.nextLong());
-        noise.test();
+        noise.finalIsland();
+        NoiseMapGenerator n = new NoiseMapGenerator(rand.nextLong());
+        n.create2DNoiseImage("test", 100, 1);
+        Init i = new Init();
+        i.init();
 
 
 

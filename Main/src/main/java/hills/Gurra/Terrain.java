@@ -1,10 +1,16 @@
 package hills.Gurra;
 
+import javafx.scene.image.Image;
+
 import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageInputStream;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+import java.nio.Buffer;
 import java.util.Random;
+import java.util.WeakHashMap;
 
 /**
  * Created by gustav on 2017-03-22.
@@ -23,45 +29,37 @@ public class Terrain {
     public int[][] createHeightMap() {
         Random rand = new Random();
         long startTime = System.nanoTime();
-        double[][] noise1 = noise.createMatrix(150, 1);
+        double[][] noise1 = noise.createMatrix(500, 1, false);
         noise.setSeed(rand.nextLong());
-        double[][] noise2 = noise.createMatrix(50, 0.8);
+        double[][] noise2 = noise.createMatrix(150, 0.8, false);
         noise.setSeed(rand.nextLong());
-        double[][] noise3 = noise.createMatrix(25, 0.5);
+        double[][] noise3 = noise.createMatrix(70, 0.5, false);
         noise.setSeed(rand.nextLong());
-        double[][] noise4 = noise.createMatrix(3, 0.4);
+        double[][] noise4 = noise.createMatrix(30, 0.4, false);
         noise.setSeed(rand.nextLong());
-        double[][] noise5 = noise.createMatrix(2, 0.4);
+        double[][] noise5 = noise.createMatrix(5, 0.4, false);
         noise.setSeed(rand.nextLong());
         BufferedImage image = new BufferedImage(WIDTH + 1, HEIGHT + 1, BufferedImage.TYPE_INT_RGB);
-        double exp = exponentCalc();
         double maximum = 0;
         double max = 0;
         for (int x = 0; x <= WIDTH; x++) {
             for (int y = 0; y <= HEIGHT; y++) {
-                double green = noise1[x][y];
-                if (green > maximum) {
-                    maximum = green;
-                }
-                green = green / maximum;
-                matrix[x][y] = (int) green;
-                matrix[x][y] += Math.pow(noise2[x][y], 0.8);
-                matrix[x][y] += Math.pow(noise3[x][y], 0.8);
-                matrix[x][y] += Math.pow(noise4[x][y], 0.8);
-                matrix[x][y] += Math.pow(noise5[x][y], 0.8);
-                if (max < matrix[x][y]) {
-                    max = matrix[x][y];
-                }
-            }
-
-        }
-        int[][] matrix2 = new int[WIDTH + 1][HEIGHT + 1];
+                            double green = noise1[x][y] + noise2[x][y]*0.5 + noise3[x][y]*0.25 + noise4[x][y]*0.2;
+                            if (green>maximum){
+                                maximum = green;
+                            }
+                            green = green / maximum;
+                            green = Math.pow(green, 2.87);          // increasing exponent adds valleys
+                            matrix[x][y] = (int)(green*255);
+                        }
+                    }
         for (int x = 0; x <= WIDTH; x++) {
             for (int y = 0; y <= HEIGHT; y++) {
-                matrix2[x][y] = (int) ((matrix[x][y] / max) * 255.0);
-                matrix[x][y] = (int) Math.pow(matrix2[x][y] * matrix[x][y], 0.4);
-                int[] rgb = {0, matrix[x][y], 0};
-                image.getRaster().setPixel(x, y, rgb);
+                int r = ((matrix[x][y]))<<16 & 0xFF0000;
+                int g = ((matrix[x][y]))<<8 & 0xFF00;
+                int b = ((matrix[x][y])) & 0xFF;
+                int rgb = r+g+b;
+                image.setRGB(x,y,rgb);
             }
         }
         System.out.println(System.nanoTime() - startTime);
@@ -89,7 +87,7 @@ public class Terrain {
         double maxAmp = 0;
         double largest = 0;
         for (int i = 0; i < 4; i++) {
-            double[][] matrix = noise.createMatrix(frequency, amplitude);
+            double[][] matrix = noise.createMatrix(frequency, amplitude,false);
             frequency = frequency * 0.5;
             amplitude = amplitude * 0.75;
             maxAmp += amplitude;
@@ -112,18 +110,13 @@ public class Terrain {
                 image.getRaster().setPixel(x, y, rgb);
             }
         }
-        try {
-            ImageIO.write(image, "png", new File("src/main/resources/textures/testnoise.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         return matrix;
     }
 
     public double[][] test() {
-        double[][] matrix = noise.createMatrix(300, 1);
-        double[][] matrix2 = noise.createMatrix(150, 0.5);
-        double[][] matrix3 = noise.createMatrix(75, 0.25);
+        double[][] matrix = noise.createMatrix(300, 1, false);
+        double[][] matrix2 = noise.createMatrix(150, 0.5, false);
+        double[][] matrix3 = noise.createMatrix(75, 0.25, false);
         BufferedImage image = new BufferedImage(WIDTH + 1, HEIGHT + 1, BufferedImage.TYPE_INT_RGB);
         for (int x = 0; x < WIDTH; x++) {
             for (int y = 0; y < HEIGHT; y++) {
@@ -149,7 +142,7 @@ public class Terrain {
         double matrix[][] = new double[WIDTH+1][HEIGHT+1];
         BufferedImage image = new BufferedImage(WIDTH + 1, HEIGHT + 1, BufferedImage.TYPE_INT_RGB);
         double exp = exponentCalc();
-        double[][] noise1 = noise.createMatrix(400, 1);
+        double[][] noise1 = noise.createMatrix(100, 1, true);
         for (int x = 0; x <= WIDTH; x++) {
             for (int y = 0; y <= HEIGHT; y++) {
 
@@ -173,25 +166,59 @@ public class Terrain {
                 green = setMinusToZero(green);
                 boolean isZero = green==0;
                 if(!isZero) {
-                    green = Math.pow(green,1-setMinusToZero(noise1[x][y]));
+                    green = Math.pow(green,setMinusToZero(noise1[x][y])*3);         // last number decides how steep natural slopes should be.
                 }
                 matrix[x][y] = green;
-                int[] rgb = {0,(int)(green*255.0),0};
-                image.getRaster().setPixel(x, y, rgb);
+                int r = ((int)(green*255))<<16 & 0xFF0000;
+                int g = ((int)(green*255))<<8 & 0xFF00;
+                int b = ((int)(green*255)) & 0xFF;
+                int rgb2 = r+b+g;
+                image.setRGB(x,y,rgb2);
             }
         }
         try {
-            ImageIO.write(image, "png", new File("src/main/resources/islandNoise.png"));
+            ImageIO.write(image, "png", new File("src/main/resources/textures/islandNoise.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
         return matrix;
     }
 
+
+    public double[][] finalIsland(){
+        double[][] islandMatrix = createIsland();
+        int[][] noiseMatrix = createHeightMap();
+        BufferedImage image = new BufferedImage(WIDTH + 1, HEIGHT + 1, BufferedImage.TYPE_INT_RGB);
+        double[][] finalMatrix = new double[WIDTH+1][HEIGHT+1];
+        for(int x = 0; x<=WIDTH; x++){
+            for(int y = 0; y<=HEIGHT; y++){
+                finalMatrix[x][y] = islandMatrix[x][y] * noiseMatrix[x][y];
+                finalMatrix[x][y] = setToZero(finalMatrix[x][y]);       // TO REMOVE. only to simulate water
+                int r = ((int)(finalMatrix[x][y]))<<16 & 0xFF0000;
+                int g = ((int)(finalMatrix[x][y]))<<8 & 0xFF00;
+                int b = ((int)(finalMatrix[x][y])) & 0xFF;
+                int rgb = r+b+g;
+                image.setRGB(x,y,rgb);
+            }
+        }
+        try {
+            ImageIO.write(image, "png", new File("src/main/resources/textures/finalNoise.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return finalMatrix;
+    }
     private double setMinusToZero(double green) {
-        if(green<0){
+        if(green<0.0){
             return 0;
         }
         return green;
     }
+    private double setToZero(double green) {
+        if(green<15.0){
+            return 0;
+        }
+        return green;
+    }
+
 }

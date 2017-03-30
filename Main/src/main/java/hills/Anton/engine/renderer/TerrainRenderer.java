@@ -16,7 +16,7 @@ public final class TerrainRenderer {
 
 	private static final ShaderProgram shaderProgram = ShaderProgram.TERRAIN;
 	private static final Mesh gridMesh = TerrainLoader.loadGridMesh(16, 16);
-	private static final MeshTexture texture = new MeshTexture("height_map_test_1.png");
+	private static final MeshTexture texture = new MeshTexture("finalNoise.png");
 	
 	private static List<LODNode> nodes;
 	
