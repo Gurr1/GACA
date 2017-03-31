@@ -58,7 +58,7 @@ public final class TerrainRenderer {
 				node.get140Data(dataBuffer);
 				dataBuffer.flip();
 				ShaderProgram.map("TERRAIN_NODE", dataBuffer);
-				
+
 				// Render grid mesh
 				GL11.glDrawElements(GL11.GL_TRIANGLES, gridMesh.getMeshData().getIndicesAmount(), GL11.GL_UNSIGNED_INT, 0);
 			}
