@@ -1,16 +1,10 @@
 package hills.Gurra;
 
-import javafx.scene.image.Image;
-
 import javax.imageio.ImageIO;
-import javax.imageio.stream.ImageInputStream;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.nio.Buffer;
 import java.util.Random;
-import java.util.WeakHashMap;
 
 /**
  * Created by gustav on 2017-03-22.
@@ -185,7 +179,7 @@ public class Terrain {
     }
 
 
-    public double[][] finalIsland(){
+    public double[][] createfinalIsland(){
         double[][] islandMatrix = createIsland();
         int[][] noiseMatrix = createHeightMap();
         BufferedImage image = new BufferedImage(WIDTH + 1, HEIGHT + 1, BufferedImage.TYPE_INT_RGB);
@@ -193,7 +187,6 @@ public class Terrain {
         for(int x = 0; x<=WIDTH; x++){
             for(int y = 0; y<=HEIGHT; y++){
                 finalMatrix[x][y] = islandMatrix[x][y] * noiseMatrix[x][y];
-                finalMatrix[x][y] = setToZero(finalMatrix[x][y]);       // TO REMOVE. only to simulate water
                 int r = ((int)(finalMatrix[x][y]))<<16 & 0xFF0000;
                 int g = ((int)(finalMatrix[x][y]))<<8 & 0xFF00;
                 int b = ((int)(finalMatrix[x][y])) & 0xFF;
