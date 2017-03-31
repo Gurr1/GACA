@@ -13,7 +13,9 @@ public class Player implements Collideable {
     @Setter @Getter private Vec3 pos;
     @Getter private float pitch = 0;
     @Getter private float yaw = 0;
-    private float radius = 1;
+    @Setter private float radius = 1;
+
+    //<editor-fold desc="Constructors">
 
     public Player(Vec3 pos, float radius) {
         this.pos = pos;
@@ -29,22 +31,15 @@ public class Player implements Collideable {
     public Player(Vec3 pos) {
         this.pos = pos;
     }
+    //</editor-fold>
 
-
+    //<editor-fold desc="Updates">
     public void updatePitch(float pitch) {
         this.pitch = fixDegrees(pitch + this.pitch);
     }
 
     public void updateYaw(float yaw) {
         this.yaw = fixDegrees(yaw + this.yaw);
-    }
-
-    public void setYaw(float yaw) {
-        this.yaw = fixDegrees(yaw);
-    }
-
-    public void setPitch(float pitch) {
-        this.pitch = fixDegrees(pitch);
     }
 
     public void updatePosition(Vec3 pos) {
@@ -55,6 +50,17 @@ public class Player implements Collideable {
         updatePitch(pitch);
         updateYaw(yaw);
     }
+   // </editor-fold>
+
+    //<editor-fold desc = "Setters">
+    public void setYaw(float yaw) {
+        this.yaw = fixDegrees(yaw);
+    }
+
+    public void setPitch(float pitch) {
+        this.pitch = fixDegrees(pitch);
+    }
+    //</editor-fold>
 
     private float fixDegrees(float degree) {
         degree %= 360;
@@ -68,6 +74,4 @@ public class Player implements Collideable {
     public Sphere getBoundingSphere() {
         return new Sphere(pos, radius);
     }
-
-
 }
