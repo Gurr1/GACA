@@ -3,48 +3,65 @@ package hills.engine.system.domainModel;
 import hills.engine.math.Vec3;
 import hills.engine.math.shape.Sphere;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Created by Anders on 2017-03-30.
  */
-public class Player implements Colideable {
+public class Player implements Collideable {
 
-    @Getter private Vec3 pos;
+    @Setter @Getter private Vec3 pos;
     @Getter private float pitch = 0;
     @Getter private float yaw = 0;
     private float radius = 1;
 
-    public Player (Vec3 pos, float radius){
+    public Player(Vec3 pos, float radius) {
         this.pos = pos;
         this.radius = radius;
     }
 
-    public Player (Vec3 pos){
+    public Player(Vec3 pos, float pitch, float yaw) {
+        this.pos = pos;
+        this.yaw = yaw;
+        this.pitch = pitch;
+    }
+
+    public Player(Vec3 pos) {
         this.pos = pos;
     }
 
 
     public void updatePitch(float pitch) {
-        this.pitch += pitch;
-        this.pitch %= 360;
+        this.pitch = fixDegrees(pitch + this.pitch);
     }
 
     public void updateYaw(float yaw) {
-        this.yaw += yaw;
-        this.yaw %= 360;
+        this.yaw = fixDegrees(yaw + this.yaw);
     }
 
     public void setYaw(float yaw) {
-        this.yaw = (yaw % 360);
+        this.yaw = fixDegrees(yaw);
     }
 
     public void setPitch(float pitch) {
-        this.pitch = (pitch % 360);
+        this.pitch = fixDegrees(pitch);
     }
 
-    public void updateDirection(float pitch, float yaw){
+    public void updatePosition(Vec3 pos) {
+        this.pos = this.pos.add(pos);
+    }
+
+    public void updateDirection(float pitch, float yaw) {
         updatePitch(pitch);
         updateYaw(yaw);
+    }
+
+    private float fixDegrees(float degree) {
+        degree %= 360;
+        if (degree <= 0)
+            degree += 360;
+
+        return degree;
     }
 
     @Override

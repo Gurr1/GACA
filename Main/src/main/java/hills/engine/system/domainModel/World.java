@@ -3,7 +3,6 @@ package hills.engine.system.domainModel;
 import hills.engine.math.Vec3;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -23,9 +22,9 @@ public class World {
         return new ArrayList<>();
     }
 
-    private List<Colideable> checkCollision(Colideable collidable, List<Colideable> toCheck) {
-        List<Colideable> isColiding = new ArrayList<>();
-        for (Colideable c : toCheck) {
+    private List<Collideable> checkCollision(Collideable collidable, List<Collideable> toCheck) {
+        List<Collideable> isColiding = new ArrayList<>();
+        for (Collideable c : toCheck) {
             if (collidable.getBoundingSphere().intersects(c.getBoundingSphere()))
                 isColiding.add(c);
         }

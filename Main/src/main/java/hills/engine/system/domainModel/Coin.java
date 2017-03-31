@@ -3,13 +3,14 @@ package hills.engine.system.domainModel;
 import hills.engine.math.Vec3;
 import hills.engine.math.shape.Sphere;
 import hills.engine.model.Model;
+import lombok.Getter;
 
 /**
  * Created by Anders on 2017-03-30.
  */
-public class Coin implements Colideable {
+public class Coin implements Collideable {
 
-    private Vec3 pos;
+    @Getter private final Vec3 pos;
     private float radius = 1;
     private final Model model;
 
