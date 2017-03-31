@@ -6,16 +6,22 @@ import hills.engine.input.Keyboard;
 import hills.engine.input.Mouse;
 import hills.engine.loader.ModelLoader;
 import hills.engine.loader.TextureLoader;
+import hills.engine.math.Vec4;
 import hills.engine.renderer.ModelRenderer;
 import hills.engine.renderer.SkyBoxRenderer;
 import hills.engine.renderer.TerrainRenderer;
 import hills.engine.renderer.shader.ShaderProgram;
 import hills.engine.system.EngineSystem;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+import org.lwjgl.opengl.GL30;
+import org.lwjgl.system.MemoryStack;
 
 public final class GameLoop {
 
@@ -97,6 +103,26 @@ public final class GameLoop {
 			system.render();				// Update all systems rendering code
 		
 		FrameBuffer.clear(true, true, false);	// Clear the screen
+		
+		FrameBuffer frameBuffer = new FrameBuffer();
+		frameBuffer.attachTexture(GL11.GL_TEXTURE_2D, GL11.GL_RGB, 300, 300, GL11.GL_RGB, GL30.GL_COLOR_ATTACHMENT0);
+		frameBuffer.attachRenderBuffer(GL11.GL_TEXTURE_2D, 300, 300, GL30.GL_DEPTH24_STENCIL8);
+		frameBuffer.bind(0, 0, Display.getWidth(), Display.getHeight());
+		
+		GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
+		try(MemoryStack stack = MemoryStack.stackPush()){
+			Vec4 vec = new Vec4(0.0f, -1.0f, 0.0f, 50.0f);
+			ByteBuffer buffer = stack.calloc(vec.get140DataSize());
+			vec.get140Data(buffer);
+			buffer.flip();
+			ShaderProgram.map("CLIP_PLANES", buffer);
+		}
+		
+		TerrainRenderer.render();
+		
+		frameBuffer.unbind();
+		GL11.glDisable(GL30.GL_CLIP_DISTANCE0);
+		
 		TerrainRenderer.render();				// Draw batched terrain nodes
 		ModelRenderer.render(); 				// Draw all batched models
 		SkyBoxRenderer.render();

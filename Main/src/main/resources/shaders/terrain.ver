@@ -32,6 +32,10 @@ layout (std140) uniform TERRAIN_NODE {
 	vec2 TERRAIN_POS;
 };
 
+layout (std140) uniform CLIP_PLANES {
+	vec4 CLIP_PLANE;
+};
+
 // Function prototypes //
 vec2 morphVertex(vec2 gridPos, vec2 vertex, float morphValue);
 
@@ -64,8 +68,7 @@ void main(){
 	
 	vec4 finalPos = vec4(morphedVertex.x, height, morphedVertex.y, 1.0f);
 	
-	vec4 clipPlane = vec4(0.0f, -1.0f, 0.0f, 30.0f);
-	gl_ClipDistance[0] = dot(clipPlane, finalPos);
+	gl_ClipDistance[0] = dot(CLIP_PLANE, finalPos);
 	
 	gl_Position = PERSPECTIVE * CAMERA * finalPos;
 }

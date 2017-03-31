@@ -36,8 +36,6 @@ public final class TerrainRenderer {
 			return;
 		}
 		
-		GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
-		
 		// Activate shader program
 		shaderProgram.enable();
 					
