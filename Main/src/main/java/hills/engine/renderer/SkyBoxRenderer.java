@@ -59,7 +59,7 @@ public final class SkyBoxRenderer {
 	private static final MeshData meshData = ModelLoader.load(SKY_BOX_VERTICES, SKY_BOX_INDICES, null, Mat4.identity()).getMeshData();
 	private static final ShaderProgram SHADER_PROGRAM = ShaderProgram.SKY_BOX;
 	
-	private static String EXTENSION = "_amazing";
+	private static String EXTENSION = "_blue";
 	private static CubeMap SKY_BOX = new CubeMap("sky_box_pos_x" + EXTENSION + ".png", "sky_box_neg_x" + EXTENSION + ".png", "sky_box_pos_y" + EXTENSION + ".png", "sky_box_neg_y" + EXTENSION + ".png", "sky_box_pos_z" + EXTENSION + ".png", "sky_box_neg_z" + EXTENSION + ".png", false);
 	
 	public static void render(){

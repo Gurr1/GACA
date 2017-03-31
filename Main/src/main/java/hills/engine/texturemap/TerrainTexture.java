@@ -4,6 +4,7 @@ import hills.engine.loader.TextureLoader;
 import hills.engine.renderer.shader.SamplerUniform;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL13;
 
 public class TerrainTexture {
@@ -21,8 +22,8 @@ public class TerrainTexture {
 	private final int normal;
 	
 	public TerrainTexture(String height, String normal){
-		this.height = height == null ? -1 : TextureLoader.loadTexture(height);
-		this.normal = normal == null ? -1 : TextureLoader.loadTexture(normal);
+		this.height = height == null ? -1 : TextureLoader.loadTexture(height, false);
+		this.normal = normal == null ? -1 : TextureLoader.loadTexture(normal, false);
 	}
 	
 	public TerrainTexture(String diffuse){
