@@ -1,3 +1,4 @@
+import hills.Anton.engine.math.Vec3;
 import hills.Gurra.Terrain;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +18,7 @@ public class terrainTest {
     @Before
     public void testTerrain(){
         Random random = new Random();
-        t = new Terrain(random.nextLong());
+        t = new Terrain(1);
         assertNotNull(t);
     }
     @Test
