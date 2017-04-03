@@ -6,19 +6,18 @@ import hills.engine.renderer.shader.ShaderProgram;
 import hills.engine.system.EngineSystem;
 import hills.engine.system.camera.CameraSystem;
 import hills.engine.system.terrain.quadtree.LODNode;
+import org.lwjgl.system.MemoryStack;
 
 import java.nio.ByteBuffer;
 import java.util.List;
-
-import org.lwjgl.system.MemoryStack;
 
 public class TerrainSystem extends EngineSystem {
 
 	/** Singleton instance **/
 	private static TerrainSystem instance = null;
 	
-	public static final float MORPH_FACTOR = 0.9f;
-	public static final float[] RANGES = {16.0f, /*32.0f,*/ 64.0f, /*128.0f,*/ 256.0f, /*512.0f,*/ 1024.0f, /*2048.0f,*/ 4096.0f, /*8192.0f,*/ 8000.0f, 8000.0f, 8000.0f};
+	public static final float MORPH_FACTOR = 0.7f;
+	public static final float[] RANGES = new float[10];
 	public static final float[] SCALES = {1.0f, 2.0f, 4.0f, 8.0f, 16.0f, 32.0f, 64.0f, 128.0f, 256.0f, 512.0f};
 	public static final int GRID_WIDTH = 16;
 	public static final int GRID_DEPTH = 16;
@@ -33,6 +32,13 @@ public class TerrainSystem extends EngineSystem {
 	
 	private TerrainSystem(float scale, boolean isPaused, float startTime) {
 		super(scale, isPaused, startTime);
+		
+		// Calculate ranges
+		RANGES[0] = 32.0f;
+		for(int i = 1; i < RANGES.length; i++){
+			RANGES[i] = (float) (RANGES[i - 1] * (Math.sqrt(8) / MORPH_FACTOR));
+			System.out.println(RANGES[i]);
+		}
 		
 		// Load terrain-shader terrain constants
 		loadTerrainConstants();

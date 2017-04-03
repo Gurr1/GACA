@@ -1,6 +1,8 @@
 package hills.Anders;
 
+import com.sun.istack.internal.Nullable;
 import hills.Gurra.NoiseMapGenerator;
+import lombok.Setter;
 
 import java.awt.Color;
 import java.awt.Point;

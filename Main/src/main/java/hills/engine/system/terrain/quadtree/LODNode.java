@@ -38,7 +38,7 @@ public class LODNode implements STD140Formatable {
 		
 		// Check if node is within it's LOD range from position.
 		// If not then return false and let parent node handle this subsection.
-		if(!withinLODRange(pos, ranges[lodLevel] / TerrainSystem.MORPH_FACTOR)){
+		if(!withinLODRange(pos, ranges[lodLevel])){
 			//return false;
 			this.lodLevel = lodLevel;	// TODO Fix sub area rendering
 			return true;
