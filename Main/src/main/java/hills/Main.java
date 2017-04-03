@@ -1,8 +1,10 @@
 package hills;
 
 
+
 import hills.Anton.Init;
 import hills.Anton.engine.math.Vec3;
+
 import hills.Gurra.NoiseMapGenerator;
 import hills.Gurra.Terrain;
 import hills.Gurra.TerrainData;
@@ -41,11 +43,13 @@ public class Main {
         System.out.println((System.nanoTime()-s)/1000000);*/
 
 
-
+    	
         Random rand = new Random();
         Terrain noise = new Terrain(rand.nextLong());
         double[][] terrain = noise.finalIsland();
-        Init i = new Init();
+        noise.createfinalIsland();
+        NoiseMapGenerator n = new NoiseMapGenerator(rand.nextLong());
+        n.create2DNoiseImage("test", 100, 1);        Init i = new Init();
         i.init();
 
 

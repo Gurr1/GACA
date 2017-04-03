@@ -6,6 +6,7 @@
 .idea/libraries/
 .idea
 .settings
+.gitignore
 
 # Package Files #
 *.jar

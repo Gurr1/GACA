@@ -1,28 +1,40 @@
 #version 330
 
-/* Texture coordinate corresponding to this fragment */
+flat in int lodLevel;
 in vec2 texCoords;
-
-in vec3 normals;
 in float height;
+
+/* Use Normal map as terrain normal map */
+uniform sampler2D normalMap;
 
 /* Fragment output color */
 out vec4 COLOR;
 
 void main(){
-	vec3 col = vec3(0.0f, 0.0f, 0.0f);
-	if(height < 0.001f)
-		col = vec3(0.4f, 0.4f, 1.0f);
+	const vec3 lodColors[3] = vec3[](vec3(1.0f, 0.6f, 0.6f), vec3(0.6f, 1.0f, 0.6f), vec3(0.6f, 0.6f, 1.0f));
+
+	vec3 ambient = vec3(0.3f, 0.3f, 0.3f);
+	vec3 diffuse = vec3(0.4f, 1.0f, 0.45f);//lodColors[int(mod(lodLevel, 3))];
+	
+	if(height < 3.00f)
+		discard;//diffuse = vec3(0.4f, 0.4f, 1.0f);
 	else if(height < 5.0f)
-		col = vec3(1.0f, 0.8f, 0.5f);
+		diffuse = vec3(1.0f, 0.8f, 0.5f);
 	else if(height < 30.0f)
-		col = vec3(0.3f, 0.7f, 0.3f);
+		diffuse = vec3(0.3f, 0.7f, 0.3f);
 	else if(height < 70.0f)
-		col = vec3(0.6f, 0.6f, 0.6f);
+		diffuse = vec3(0.6f, 0.6f, 0.6f);
 	else
-		col = vec3(0.9f, 0.9f, 1.0f);
+		diffuse = vec3(0.9f, 0.9f, 1.0f);
 		
+	vec3 lightDir = normalize(vec3(1.0f, 1.0f, -1.0f));
+	vec3 norm = normalize(texture2D(normalMap, texCoords).rgb * 2.0f - 1.0f);
+	
+	float diffuseIntensity = max(dot(lightDir, norm), 0.0f);
+	diffuse = diffuse * diffuseIntensity;
+	
+	const float brightness = 1.0f;
 	
 	// Set fragment output color
-	COLOR = vec4(col, 1.0f);
+	COLOR = vec4((ambient + diffuse) * brightness, 1.0f);
 }

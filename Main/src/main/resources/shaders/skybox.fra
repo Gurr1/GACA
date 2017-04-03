@@ -1,0 +1,12 @@
+#version 330
+
+uniform samplerCube cubeMap;
+
+in vec3 skyBoxTextureVector;
+
+/* Fragment output color */
+out vec4 COLOR;
+
+void main(){
+	COLOR = texture(cubeMap, skyBoxTextureVector);
+}
