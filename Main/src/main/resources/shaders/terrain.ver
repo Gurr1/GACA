@@ -75,7 +75,7 @@ void main(){
 	
 	vec4 finalPos = vec4(morphedVertex.x, height, morphedVertex.y, 1.0f);
 	
-	// Clipping
+		// Clipping
 	float clipPlane1Distance = dot(clipPlane1, finalPos);
 	float clipPlane2Distance = dot(clipPlane2, finalPos);
 	

@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageInputStream;
+import javax.imageio.stream.ImageOutputStream;
 
 public class TerrainNormalMapCreator {
 	
@@ -41,6 +43,7 @@ public class TerrainNormalMapCreator {
 		}
 		
 		try {
+			System.out.println("Wrong");
 			ImageIO.write(output, "png", new File("src/main/resources/textures/" + path.split("\\.")[0] + "_normal_flat.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -50,7 +53,10 @@ public class TerrainNormalMapCreator {
 	public static void createSmoothNormals(String path){
 		BufferedImage img = null;
 		try {
-			img = ImageIO.read(new File("src/main/resources/textures/" + path));
+			ImageInputStream input = ImageIO.createImageInputStream(new File("src/main/resources/textures/" + path));
+			img = ImageIO.read(input);
+			if(img == null)
+				input.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -103,7 +109,12 @@ public class TerrainNormalMapCreator {
 		}
 		
 		try {
-			ImageIO.write(output, "png", new File("src/main/resources/textures/" + path.split("\\.")[0] + "_normal_smooth.png"));
+        	File outputFile = new File("src/main/resources/textures/normal.png");// + path.split("\\.")[0] + "_normal_smooth.png");
+        	ImageOutputStream out = ImageIO.createImageOutputStream(outputFile);
+        	if(out == null)
+        		System.out.println("Can't create normal image output stream!");
+        	ImageIO.write(output, "png", out);
+        	out.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -1,5 +1,6 @@
 package hills;
 
+import hills.Anton.delete.TerrainNormalMapCreator;
 import hills.engine.GameLoop;
 import hills.engine.display.AspectRatios;
 import hills.engine.display.Display;
@@ -46,7 +47,7 @@ public class Init {
 	}
 	
 	public void init(){
-		//TerrainNormalMapCreator.createSmoothNormals("height_map_test_3.png");
+		//TerrainNormalMapCreator.createSmoothNormals("finalNoise.png");
 		
 		FrameBuffer.setClearColor(0.0f, 0.0f, 0.0f, 0.0f);	// Set clear color
 		FrameBuffer.enableDepthTesting(0.0f, 1.0f);				// Enable depth testing
