@@ -49,4 +49,10 @@ public abstract class Creature implements IWoundable,IMovable, ICollidable {
 
     @Override
     public int getMaxHealth(){return maxHealth;}
+
+    @Override
+    public void dealDamage(int amount){
+        healthPoints -= amount;
+    }
+
 }
