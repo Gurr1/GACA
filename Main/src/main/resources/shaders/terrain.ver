@@ -4,13 +4,24 @@ in vec3 pos;
 in vec2 tex;
 in vec3 nor;		// nor contains (tileX, tileZ, tileIndex)
 in vec4 tangent;
+in vec4 clipPlane1;
+in vec4 clipPlane2;
+in vec4 terrainActiveClipModes;
+in vec3 terrainPosAndLOD;
 
 flat out int lodLevel;
 out vec2 texCoords;
+out vec3 norm;
 out float height;
+out vec4 debugClipMode;
+
+out vec4 debugVec;
 
 /* Height map sampler */
 uniform sampler2D heightMap;
+
+/* Use Terrain normal map */
+uniform sampler2D normalMap;
 
 layout (std140) uniform VIEW {
 	vec3 CAMPOSWORLD;
@@ -27,48 +38,58 @@ layout (std140) uniform TERRAIN_CONSTANTS {
 	int START_RANGE;
 };
 
-layout (std140) uniform TERRAIN_NODE {
-	int LOD_LEVEL;
-	vec2 TERRAIN_POS;
-};
-
-layout (std140) uniform CLIP_PLANES {
-	vec4 CLIP_PLANE;
-};
-
 // Function prototypes //
-vec2 morphVertex(vec2 gridPos, vec2 vertex, float morphValue);
+vec2 morphVertex(vec2 gridPos, vec2 vertex, float morphValue, int lodLevel);
 
 void main(){
-	lodLevel = LOD_LEVEL;
+	debugClipMode = terrainActiveClipModes;
+	lodLevel = int(terrainPosAndLOD.z);
 
 	vec2 gridPos = pos.xz;
-	vec2 gridPosWorld = gridPos * SCALES[LOD_LEVEL] + TERRAIN_POS;
+	vec2 gridPosWorld = gridPos * SCALES[lodLevel] + terrainPosAndLOD.xy;
 	
 	// Get height correct way?
-	float heightApprox = texture2D(heightMap, gridPosWorld / TERRAIN_SIZE).g * MAX_HEIGHT;
+	vec3 heightColor = texture2D(heightMap, gridPosWorld / TERRAIN_SIZE).rgb;
+	float heightApprox = MAX_HEIGHT * (heightColor.r * 0xFF0000 + heightColor.g * 0x00FF00 + heightColor.b * 0x0000FF) / (0xFFFFFF);
 	vec3 worldPos = vec3(gridPosWorld.x, heightApprox, gridPosWorld.y);
 	
 	vec3 camToWorldPos = worldPos - CAMPOSWORLD;
-	float distanceToCameraSqr = dot(camToWorldPos, camToWorldPos);
+	float distanceToCameraSqr = length(camToWorldPos);//dot(camToWorldPos, camToWorldPos);
 	
-	vec2 squaredRanges = RANGES_SQUARED[START_RANGE + LOD_LEVEL];
+	vec2 squaredRanges = RANGES_SQUARED[START_RANGE + lodLevel];
 	float morphRangeSqr = squaredRanges.x;
 	float rangeSqr = squaredRanges.y;
 	
-	float morphValue = clamp((distanceToCameraSqr - morphRangeSqr) / rangeSqr, 0.0f, 1.0f);
-	vec2 morphedVertex = morphVertex(gridPos, gridPosWorld, morphValue);
+	//(distanceToCameraSqr - morphRangeSqr) / rangeSqr
+	float morphValue = clamp((distanceToCameraSqr - morphRangeSqr) / (rangeSqr - morphRangeSqr), 0.0f, 1.0f);
+	vec2 morphedVertex = morphVertex(gridPos, gridPosWorld, morphValue, lodLevel);
 	
 	// Get normals
-	texCoords = morphedVertex / TERRAIN_SIZE;
+	texCoords = tex;
 	
-	// Get height correct way?
+	// Get height / normals correct way?
 	vec2 mapTextureCoordinates = morphedVertex / TERRAIN_SIZE;
-	height = texture2D(heightMap, mapTextureCoordinates).g * MAX_HEIGHT;
+	norm = normalize(texture2D(normalMap, mapTextureCoordinates).rgb * 2.0f - 1.0f);
+	heightColor = texture2D(heightMap, mapTextureCoordinates).rgb;
+	height = MAX_HEIGHT * (heightColor.r * 0xFF0000 + heightColor.g * 0x00FF00 + heightColor.b * 0x0000FF) / (0xFFFFFF);
 	
 	vec4 finalPos = vec4(morphedVertex.x, height, morphedVertex.y, 1.0f);
 	
-	gl_ClipDistance[0] = dot(CLIP_PLANE, finalPos);
+	// Clipping
+	float clipPlane1Distance = dot(clipPlane1, finalPos);
+	float clipPlane2Distance = dot(clipPlane2, finalPos);
+	
+	// Single plane clipping (Used to clip two child nodes next to each other)
+	gl_ClipDistance[0] = clipPlane1Distance * terrainActiveClipModes.x;
+	
+	// Clip three child nodes. Needs to be used in combination with clip distance 0
+	gl_ClipDistance[1] = clipPlane2Distance * terrainActiveClipModes.y;
+	
+	// Clip diagonal child nodes
+	gl_ClipDistance[2] = clipPlane1Distance * clipPlane2Distance * terrainActiveClipModes.z;
+	
+	// Clip single child node
+	gl_ClipDistance[3] = max(clipPlane1Distance, clipPlane2Distance) * terrainActiveClipModes.w;
 	
 	gl_Position = PERSPECTIVE * CAMERA * finalPos;
 }
@@ -77,6 +98,6 @@ void main(){
 //	- gridPos: x, z components of vertex in grid.
 //	- vertex: x, z components of vertex in world space
 //	- morphValue: morph value
-vec2 morphVertex(vec2 gridPos, vec2 vertex, float morphValue){
-	return vertex - mod(gridPos, 2.0f) * SCALES[LOD_LEVEL] * morphValue;
+vec2 morphVertex(vec2 gridPos, vec2 vertex, float morphValue, int lodLevel){
+	return vertex - mod(gridPos, 2.0f) * SCALES[lodLevel] * morphValue;
 }

@@ -36,10 +36,6 @@ public class Mesh {
 	public Mat4 getTransformation(){
 		return transformation;
 	}
-	
-	public int getId() {
-		return data.getId();
-	}
 
 	public int getVao() {
 		return data.getVao();

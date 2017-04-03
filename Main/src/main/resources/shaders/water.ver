@@ -1,0 +1,23 @@
+#version 330
+
+in vec3 pos;
+in vec2 tex;
+in vec3 nor;
+
+out vec2 texCoords;
+
+layout (std140) uniform MODEL {
+	mat4 WORLD;
+};
+
+layout (std140) uniform VIEW {
+	vec3 CAMPOSWORLD;
+	mat4 CAMERA;
+	mat4 PERSPECTIVE;
+};
+
+void main(){
+	texCoords = tex;
+
+	gl_Position = PERSPECTIVE * CAMERA * WORLD * vec4(pos, 1.0f);
+}

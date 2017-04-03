@@ -1,0 +1,21 @@
+#version 330
+
+in vec2 texCoords;
+
+/* Fragment output color */
+out vec4 COLOR;
+
+/* Refraction texture sampler */
+uniform sampler2D refractionTexture;
+
+/* Reflection texture sampler */
+uniform sampler2D reflectionTexture;
+
+/* Sky box cube map sampler */
+uniform samplerCube cubeMap;
+
+void main(){
+	vec4 refraction = texture2D(refractionTexture, texCoords);
+	vec4 reflection = texture2D(reflectionTexture, texCoords);
+	COLOR = texture(cubeMap, vec3(texCoords.x, 1.0f, texCoords.y));//mix(refraction, reflection, 0.5f);
+}
