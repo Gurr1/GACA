@@ -6,11 +6,10 @@ import hills.engine.renderer.shader.ShaderProgram;
 import hills.engine.system.EngineSystem;
 import hills.engine.system.camera.CameraSystem;
 import hills.engine.system.terrain.quadtree.LODNode;
+import org.lwjgl.system.MemoryStack;
 
 import java.nio.ByteBuffer;
 import java.util.List;
-
-import org.lwjgl.system.MemoryStack;
 
 public class TerrainSystem extends EngineSystem {
 

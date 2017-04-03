@@ -1,11 +1,7 @@
 package hills.Gurra;
 
-import hills.Anton.engine.math.Vec3;
+import hills.engine.math.Vec3;
 import lombok.Getter;
-
-import java.io.File;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 /**
  * Created by gustav on 2017-03-31.

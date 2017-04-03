@@ -1,4 +1,3 @@
-import hills.Anton.engine.math.Vec3;
 import hills.Gurra.Terrain;
 import org.junit.Before;
 import org.junit.Test;

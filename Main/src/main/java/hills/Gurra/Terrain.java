@@ -1,12 +1,13 @@
 package hills.Gurra;
 
-import hills.Anton.engine.math.Vec3;
-import javafx.scene.image.Image;
+import hills.engine.math.Vec3;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -77,15 +78,17 @@ public class Terrain {
     /*
      * Do Not Modify. works pretty perfectly like it should.
      */
-    public double[][] createIsland(){
+    public double[][] createIsland(){           // Can this be done Threaded?
         double matrix[][] = new double[WIDTH][HEIGHT];
         BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         double exp = exponentCalc();
         double[][] noise1 = noise.createMatrix(100, 1, true);
         for (int x = 0; x < WIDTH; x++) {
             for (int y = 0; y < HEIGHT; y++) {
-                islandAlgorithm1(noise1[x][y], x, y, exp, image, matrix);
-              //  islandAlgorithm2(noise1[x][y], x, y, exp, image, matrix);
+                double rgb = islandAlgorithm1(noise1[x][y], x, y, exp, image, matrix);
+                rgb += islandAlgorithm2(noise1[x][y], x, y, exp, image, matrix);
+                rgb/=2;
+                image.setRGB(x,y,(int)(rgb/2));
             }
         }
         try {
@@ -167,6 +170,7 @@ public class Terrain {
         for(int x = 0; x<WIDTH; x++){
             for(int y = 0; y<HEIGHT; y++){
                 finalMatrix[x][y] = islandMatrix[x][y] * noiseMatrix[x][y];
+                finalMatrix[x][y] = setToZero(finalMatrix[x][y]);
                 int r = ((int)(finalMatrix[x][y]))<<16 & 0xFF0000;
                 int g = ((int)(finalMatrix[x][y]))<<8 & 0xFF00;
                 int b = ((int)(finalMatrix[x][y])) & 0xFF;
@@ -210,7 +214,7 @@ public class Terrain {
         return green;
     }
     private double setToZero(double green) {
-        if(green<50){
+        if(green<30){
             return 0;
         }
         return green;

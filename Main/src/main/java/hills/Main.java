@@ -2,23 +2,8 @@ package hills;
 
 
 
-import hills.Anton.Init;
-import hills.Anton.engine.math.Vec3;
-
-import hills.Gurra.NoiseMapGenerator;
 import hills.Gurra.Terrain;
-import hills.Gurra.TerrainData;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 
@@ -46,10 +31,10 @@ public class Main {
     	
         Random rand = new Random();
         Terrain noise = new Terrain(rand.nextLong());
-        double[][] terrain = noise.finalIsland();
-        noise.createfinalIsland();
-        NoiseMapGenerator n = new NoiseMapGenerator(rand.nextLong());
-        n.create2DNoiseImage("test", 100, 1);        Init i = new Init();
+        long startTime = System.nanoTime();
+        double[][] terrain = noise.createfinalIsland();
+        System.out.println(System.nanoTime()-startTime);
+        Init i = new Init();
         i.init();
 
 

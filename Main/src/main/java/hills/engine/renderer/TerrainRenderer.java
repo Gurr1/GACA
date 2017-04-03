@@ -7,20 +7,19 @@ import hills.engine.renderer.shader.ShaderProgram;
 import hills.engine.system.terrain.TerrainSystem;
 import hills.engine.system.terrain.quadtree.LODNode;
 import hills.engine.texturemap.TerrainTexture;
-
-import java.nio.ByteBuffer;
-import java.util.List;
-
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.system.MemoryStack;
 
+import java.nio.ByteBuffer;
+import java.util.List;
+
 public final class TerrainRenderer {
 
 	private static final ShaderProgram shaderProgram = ShaderProgram.TERRAIN;
 	private static final Mesh gridMesh = TerrainLoader.loadGridMesh(TerrainSystem.GRID_WIDTH, TerrainSystem.GRID_DEPTH);
-	private static final TerrainTexture texture = new TerrainTexture("height_map_test_3.png", "height_map_test_3_normal_smooth.png");
+	private static final TerrainTexture texture = new TerrainTexture("finalNoise.png", "normal.png");
 	
 	private static List<LODNode> nodes;
 	
@@ -36,8 +35,8 @@ public final class TerrainRenderer {
 			return;
 		}
 		
-		GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
-		
+		//GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
+
 		// Activate shader program
 		shaderProgram.enable();
 					
