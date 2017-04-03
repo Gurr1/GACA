@@ -1,5 +1,6 @@
 #version 330
 
+/* Sky box cube map sampler */
 uniform samplerCube cubeMap;
 
 in vec3 skyBoxTextureVector;

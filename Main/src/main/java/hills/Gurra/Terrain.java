@@ -1,8 +1,5 @@
 package hills.Gurra;
 
-import hills.engine.math.Vec3;
-
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -10,10 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import javax.imageio.ImageIO;
+
 /**
  * Created by gustav on 2017-03-22.
  */
 public class Terrain {
+
     NoiseMapGenerator noise;
     private double ELEVATION_MODIFIER = 0.8;
     private int HEIGHT = 2048;
@@ -219,5 +219,4 @@ public class Terrain {
         }
         return green;
     }
-
 }

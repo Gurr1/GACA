@@ -2,160 +2,190 @@ package hills.engine.system.terrain.quadtree;
 
 import hills.engine.math.STD140Formatable;
 import hills.engine.math.Vec3;
+import hills.engine.math.Vec4;
 import hills.engine.math.shape.AABox;
-import hills.engine.math.shape.Frustrum;
+import hills.engine.math.shape.Plane;
+import hills.engine.math.shape.Sphere;
 import hills.engine.system.terrain.TerrainSystem;
 
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.List;
+
+import lombok.Getter;
 
 public class LODNode implements STD140Formatable {
-		
-	private int lodLevel = -1;					// LOD Level
-	private final float x, z;					// Position
-	private final float width, depth, height;	// Size		
-	private boolean[] subSectionsToHandle;		// Partial selection info
-	
-	private final AABox aaBox;
-	
-	private LODNode[] childNodes = null;
-	
-	public LODNode(float x, float z, float width, float depth, float height){
-		this.x = x;
-		this.z = z;
-		this.width = width;
-		this.depth = depth;
-		this.height = height;
-		
-		aaBox = new AABox(x, 0.0f, z, width, height, depth);
-		
-		subSectionsToHandle = new boolean[4];
-	}
-	
-	public boolean genLODNodeTree(Vec3 pos, float[] ranges, int lodLevel, Frustrum viewFrustrum) {
-		this.lodLevel = -1; // Assume not a leaf node.
-		
-		// Check if node is within it's LOD range from position.
-		// If not then return false and let parent node handle this subsection.
-		if(!withinLODRange(pos, ranges[lodLevel])){
-			//return false;
-			this.lodLevel = lodLevel;	// TODO Fix sub area rendering
-			return true;
-		}
-		
-		// If the node is not within the view frustrum, mark as handled.
-		if(!viewFrustrum.intersects(aaBox)){
-			this.lodLevel = lodLevel;	// TODO Fix no render nodes
-			return true;
-		}
-		
-		// If node is in the last LOD level (most detailed),
-		// set this node as leaf node.
-		if(lodLevel == 0)
-			this.lodLevel = 0; // Add node as leaf node
-		else
-			// If node not in lowest LOD range,
-			// but entire node within its own LOD range
-			// add node to be drawn as is.
-			// Else check the four children nodes to see
-			// which ones are in a lower LOD range.
-			if(!withinLODRange(pos, ranges[lodLevel - 1] / TerrainSystem.MORPH_FACTOR))
-				this.lodLevel = lodLevel; // Add node as leaf node.
-			else {
-				childNodes = getChildNodes();
-				
-				for(int i = 0; i < childNodes.length; i++)
-					if(!childNodes[i].genLODNodeTree(pos, ranges, lodLevel - 1, viewFrustrum)){
-						// If child node is outside of its LOD range,
-						// let this node handle that subsection.
-						subSectionsToHandle[i] = true; 
-					}
-			}
-		
-		return true;
-	}
-	
+
 	/**
-	 * GO through this nodes tree and fetch all leaf nodes.
-	 * @return A list of all the leaf nodes.
+	 * Size of an LODNodes instance data in bytes.
 	 */
-	public List<LODNode> getLeafNodes(){
-		if(lodLevel >= 0){
-			List<LODNode> node = new ArrayList<LODNode>();
-			node.add(this);
-			return node;
-		}
-		
-		List<LODNode> nodes = new ArrayList<LODNode>();
-		for(LODNode node: childNodes)
-			nodes.addAll(node.getLeafNodes());
-		
-		return nodes;
+	public static final int INSTANCED_DATA_SIZE = (3 * Vec4.SIZE + Vec3.SIZE) * Float.BYTES;
+
+	@Getter private final AABox aaBox;
+	@Getter private final int lodLevel;
+
+	@Getter private LODNodeClipMode clipMode = LODNodeClipMode.NONE;
+	@Getter private Plane clipPlane1 = new Plane(new Vec3(0.0f, 0.0f, 0.0f), new Vec3(0.0f, 0.0f, 0.0f));
+	@Getter private Plane clipPlane2 = new Plane(new Vec3(0.0f, 0.0f, 0.0f), new Vec3(0.0f, 0.0f, 0.0f));
+
+	public LODNode(float x, float y, float z, float width, float height,
+			float depth, int lodLevel) {
+		aaBox = new AABox(x, y, z, width, height, depth);
+		this.lodLevel = lodLevel;
 	}
-	
-	private boolean withinLODRange(Vec3 pos, float range){
-		float cubeXPlane1 = x;
-		float cubeXPlane2 = x + width;
-		
-		float cubeYPlane1 = 0.0f;
-		float cubeYPlane2 = height;
-		
-		float cubeZPlane1 = z;
-		float cubeZPlane2 = z + depth;
-		
-		float posX = pos.getX();
-		float posY = pos.getY();
-		float posZ = pos.getZ();
-		
-		float rangeSquared = range * range;
-		
-		if(posX < cubeXPlane1)
-			rangeSquared -= (posX - cubeXPlane1) * (posX - cubeXPlane1);
-		else if(posX > cubeXPlane2)
-			rangeSquared -= (posX - cubeXPlane2) * (posX - cubeXPlane2);
-		
-		if(posY < cubeYPlane1)
-			rangeSquared -= (posY - cubeYPlane1) * (posY - cubeYPlane1);
-		else if(posY > cubeYPlane2)
-			rangeSquared -= (posY - cubeYPlane2) * (posY - cubeYPlane2);
-		
-		if(posZ < cubeZPlane1)
-			rangeSquared -= (posZ - cubeZPlane1) * (posZ - cubeZPlane1);
-		else if(posZ > cubeZPlane2)
-			rangeSquared -= (posZ - cubeZPlane2) * (posZ - cubeZPlane2);
-		
-		return rangeSquared > 0;
+
+	protected boolean withinRange(Vec3 pos, float range) {
+		return aaBox.intersects(new Sphere(pos, range));
 	}
-	
+
 	/**
-	 * Create and get this nodes 4 child nodes.
+	 * Creates and returns this nodes 4 child nodes. in order from top right
+	 * corner going CCW.
+	 * 
+	 * @param nodeMinMaxHeight
+	 *            - An array of all the nodes min and max heights for this nodes
+	 *            child nodes LOD level.
 	 * @return This nodes 4 child nodes.
 	 */
-	private LODNode[] getChildNodes(){
+	protected LODNode[] getChildNodes(float[][][] nodeMinMaxHeight) {
 		LODNode[] nodes = new LODNode[4];
-		
-		float width = this.width / 2.0f;
-		float depth = this.depth / 2.0f;
-		
-		nodes[0] = new LODNode(x + width, z + depth, width, depth, height);
-		nodes[1] = new LODNode(x, z + depth, width, depth, height);
-		nodes[2] = new LODNode(x, z, width, depth, height);
-		nodes[3] = new LODNode(x + width, z, width, depth, height);
-		
+
+		Vec3 pos = aaBox.getPos();
+		Vec3 size = aaBox.getSize();
+
+		float x = pos.getX();
+		float z = pos.getZ();
+		float width = size.getX() / 2.0f;
+		float depth = size.getZ() / 2.0f;
+
+		int tileX = (int) x / (int) (TerrainSystem.GRID_WIDTH * TerrainSystem.SCALES[lodLevel]) * 2;
+		int tileZ = (int) z / (int) (TerrainSystem.GRID_DEPTH * TerrainSystem.SCALES[lodLevel]) * 2;
+
+		float[] minMaxHeight = nodeMinMaxHeight[tileX + 1][tileZ + 1];
+		nodes[0] = new LODNode(x + width, minMaxHeight[0], z + depth, width,
+				minMaxHeight[1] - minMaxHeight[0], depth, lodLevel - 1);
+
+		minMaxHeight = nodeMinMaxHeight[tileX][tileZ + 1];
+		nodes[1] = new LODNode(x, minMaxHeight[0], z + depth, width,
+				minMaxHeight[1] - minMaxHeight[0], depth, lodLevel - 1);
+
+		minMaxHeight = nodeMinMaxHeight[tileX][tileZ];
+		nodes[2] = new LODNode(x, minMaxHeight[0], z, width, minMaxHeight[1]
+				- minMaxHeight[0], depth, lodLevel - 1);
+
+		minMaxHeight = nodeMinMaxHeight[tileX + 1][tileZ];
+		nodes[3] = new LODNode(x + width, minMaxHeight[0], z, width,
+				minMaxHeight[1] - minMaxHeight[0], depth, lodLevel - 1);
+
 		return nodes;
 	}
-	
+
+	/**
+	 * Calculates what clip function this node needs to use when rendering.
+	 * 
+	 * @param childsToClip
+	 *            - Boolean array where true means clip. each index<br>
+	 *            represents a child node starting from top right going CCW.
+	 */
+	protected void setClipMode(boolean clipTR, boolean clipTL, boolean clipBL,
+			boolean clipBR) {
+		Vec3 nodeCenter = aaBox.getPos().add(aaBox.getSize().mul(0.5f));
+
+		// Calculated with karnaugh diagram to give 5 different combinations
+		// depending on input
+		boolean a = clipTR;
+		boolean b = clipTL;
+		boolean c = clipBL;
+		boolean d = clipBR;
+		boolean f3 = (!a & b & c & d) | (a & !b & c & d) | (a & b & !c & d)
+				| (a & b & c & !d);
+		boolean f2 = (!a & !b & c & d) | (!a & b & !c & d) | (!a & b & c & !d)
+				| (a & !b & !c & d) | (a & !b & c & !d) | (a & b & !c & !d);
+		boolean f1 = (!a & !c & d) | (!b & c & !d) | (!a & b & !c)
+				| (a & !b & !d);
+
+		if (f3) {
+			clipMode = LODNodeClipMode.TRIPPLE;
+
+			Vec3 nx = !clipTL | !clipBL ? new Vec3(-1.0f, 0.0f, 0.0f)
+					: new Vec3(1.0f, 0.0f, 0.0f);
+			clipPlane1 = new Plane(nodeCenter, nx);
+
+			Vec3 nz = !clipBL | !clipBR ? new Vec3(0.0f, 0.0f, -1.0f)
+					: new Vec3(0.0f, 0.0f, 1.0f);
+			clipPlane2 = new Plane(nodeCenter, nz);
+		} else if (f2 & f1) {
+			clipMode = LODNodeClipMode.DIAGONAL;
+
+			Vec3 nx = !clipTR ? new Vec3(1.0f, 0.0f, 0.0f) : new Vec3(-1.0f,
+					0.0f, 0.0f);
+			clipPlane1 = new Plane(nodeCenter, nx);
+			clipPlane2 = new Plane(nodeCenter, new Vec3(0.0f, 0.0f, 1.0f));
+		} else if (f2 & !f1) {
+			clipMode = LODNodeClipMode.NEIGHBOUR;
+
+			boolean y2 = (!a & !b) | (!c & !d);
+			boolean y1 = !a;
+
+			Vec3 v = new Vec3(-1.0f, 0.0f, 0.0f);
+			if (!y2 & y1)
+				v = new Vec3(1.0f, 0.0f, 0.0f);
+			else if (y2 & !y1)
+				v = new Vec3(0.0f, 0.0f, -1.0f);
+			else if (y2 & y1)
+				v = new Vec3(0.0f, 0.0f, 1.0f);
+
+			clipPlane1 = new Plane(nodeCenter, v);
+			clipPlane2 = new Plane(nodeCenter, new Vec3(0.0f, 0.0f, 0.0f));
+		} else if (!f2 & f1) {
+			clipMode = LODNodeClipMode.SINGLE;
+
+			Vec3 nx = clipTR | clipBR ? new Vec3(-1.0f, 0.0f, 0.0f) : new Vec3(
+					1.0f, 0.0f, 0.0f);
+			clipPlane1 = new Plane(nodeCenter, nx);
+
+			Vec3 nz = clipTR | clipTL ? new Vec3(0.0f, 0.0f, -1.0f) : new Vec3(
+					0.0f, 0.0f, 1.0f);
+			clipPlane2 = new Plane(nodeCenter, nz);
+		} else {
+			clipMode = LODNodeClipMode.NONE;
+		}
+	}
+
+	/**
+	 * Fills the buffer with the data of this LODNode according<br>
+	 * to the attribute layout in the terrain shader.
+	 * 
+	 * @param buffer
+	 *            - the buffer to fill with the data.
+	 */
+	public void getInstanceData(ByteBuffer buffer) {
+		// Fill clipPlane1 attribute
+		clipPlane1.inEquationForm().get140Data(buffer);
+
+		// Fill clipPlane2 attribute
+		clipPlane2.inEquationForm().get140Data(buffer);
+
+		// Fill terrainClipModes attribute
+		buffer.putFloat(clipMode == LODNodeClipMode.NEIGHBOUR || clipMode == LODNodeClipMode.TRIPPLE ? 1.0f : 0.0f);
+		buffer.putFloat(clipMode == LODNodeClipMode.TRIPPLE ? 1.0f : 0.0f);
+		buffer.putFloat(clipMode == LODNodeClipMode.DIAGONAL ? 1.0f : 0.0f);
+		buffer.putFloat(clipMode == LODNodeClipMode.SINGLE ? 1.0f : 0.0f);
+
+		// Fill terrainPosAndLOD attribute
+		buffer.putFloat(aaBox.getPos().getX());
+		buffer.putFloat(aaBox.getPos().getZ());
+		buffer.putFloat(lodLevel);
+	}
+
 	@Override
 	public void get140Data(ByteBuffer buffer) {
 		buffer.putInt(lodLevel);
 		buffer.putInt(0);
-		buffer.putFloat(x);
-		buffer.putFloat(z);
+		buffer.putFloat(aaBox.getPos().getX());
+		buffer.putFloat(aaBox.getPos().getZ());
 	}
-	
+
 	@Override
-	public int get140DataSize(){
-		return 16;				// TODO Create more generic solution?
+	public int get140DataSize() {
+		return 16; // TODO Create more generic solution?
 	}
 }

@@ -10,10 +10,6 @@ public class Frustrum {
 	
 	/*             */
 	
-	public enum COLLISION_STATE {
-		OUTSIDE, INTERSECTS, INSIDE;
-	}
-	
 	public static final int PLANES = 6;
 	
 	private final Plane[] planes;
@@ -75,6 +71,18 @@ public class Frustrum {
 						 new Plane(rightPoint, rightNormal), new Plane(bottomPoint, bottomNormal)});
 	}
 	
+	/**
+	 * Create a new frustrum describing the shape of a view.
+	 * @param near - Distance to near plane.
+	 * @param far - Distance to far plane.
+	 * @param aspect - Aspect ratio of view window.
+	 * @param FOV - Vertical field of view.
+	 * @param pos - Position of frustrum in world coordinates.
+	 * @param forward - Forward direction of frustrum.
+	 * @param up - Up direction of frustrum.
+	 * @param right - Right direction of frustrum.
+	 * @param normalize - To normalize direction vectors or not. Should be true if direction vectors aren't already normalized.
+	 */
 	public Frustrum(float near, float far, float aspect, float FOV, Vec3 pos, Vec3 forward, Vec3 up, Vec3 right, boolean normalize){
 		float halfHNear = (float) (Math.tan(Math.toRadians(FOV * 0.5f)) * near);
 		float halfWNear = halfHNear * aspect;
@@ -139,16 +147,16 @@ public class Frustrum {
 	/**
 	 * Test if point is located inside of the frustrum.
 	 * @param point - The point to test.
-	 * @return COLLISION_STATE.INSIDE if the point is inside the frustrum,<br>
-	 * otherwise COLLISION_STATE.OUTSIDE if the point is outside the frustrum.
+	 * @return CollisionState.INSIDE if the point is inside the frustrum,<br>
+	 * otherwise CollisionState.OUTSIDE if the point is outside the frustrum.
 	 */
-	public COLLISION_STATE testPoint(Vec3 point){
-		COLLISION_STATE state = COLLISION_STATE.INSIDE;
+	public CollisionState testPoint(Vec3 point){
+		CollisionState state = CollisionState.INSIDE;
 		
 		// For every plane test the signed distance between the point and the plane.
 		for(int i = 0; i < PLANES; i++)
 			if(planes[i].getDistanceSigned(point) < 0)	// If the signed distance is negative.
-				return COLLISION_STATE.OUTSIDE;			// Point outside of the frustrum since
+				return CollisionState.OUTSIDE;			// Point outside of the frustrum since
 														// all the frustrum's normals point inwards.
 		return state;
 	}
@@ -172,12 +180,12 @@ public class Frustrum {
 	/**
 	 * Test if sphere is inside, intersecting or outside of the frustrum.
 	 * @param sphere - The sphere to test.
-	 * @return COLLISION_STATE.INSIDE if the sphere is inside the frustrum,<br>
-	 * COLLISION_STATE.INTERSECTS if the sphere is partly inside the frustrum,<br>
-	 * COLLISION_STATE.OUTSIDE if the sphere is outside the frustrum.
+	 * @return CollisionState.INSIDE if the sphere is inside the frustrum,<br>
+	 * CollisionState.INTERSECTS if the sphere is partly inside the frustrum,<br>
+	 * CollisionState.OUTSIDE if the sphere is outside the frustrum.
 	 */
-	public COLLISION_STATE testSphere(Sphere sphere){
-		COLLISION_STATE state = COLLISION_STATE.INSIDE;
+	public CollisionState testSphere(Sphere sphere){
+		CollisionState state = CollisionState.INSIDE;
 		
 		Vec3 pos = sphere.getPos();
 		float radius = sphere.getRadius();
@@ -186,9 +194,9 @@ public class Frustrum {
 			float distance = planes[i].getDistanceSigned(pos);
 			
 			if(distance < -radius)
-				return COLLISION_STATE.OUTSIDE;
+				return CollisionState.OUTSIDE;
 			else if(distance < radius)
-				state = COLLISION_STATE.INTERSECTS;
+				state = CollisionState.INTERSECTS;
 		}
 		
 		return state;
@@ -215,12 +223,12 @@ public class Frustrum {
 	/**
 	 * Test if axis aligned box is inside, intersecting or outside of the frustrum.
 	 * @param aaBox - The axis aligned box to test.
-	 * @return COLLISION_STATE.INSIDE if the axis aligned box is inside the frustrum,<br>
-	 * COLLISION_STATE.INTERSECTS if the axis aligned box is partly inside the frustrum,<br>
-	 * COLLISION_STATE.OUTSIDE if the axis aligned box is outside the frustrum.
+	 * @return CollisionState.INSIDE if the axis aligned box is inside the frustrum,<br>
+	 * CollisionState.INTERSECTS if the axis aligned box is partly inside the frustrum,<br>
+	 * CollisionState.OUTSIDE if the axis aligned box is outside the frustrum.
 	 */
-	public COLLISION_STATE testAABox(AABox aaBox){
-		COLLISION_STATE state = COLLISION_STATE.INSIDE;
+	public CollisionState testAABox(AABox aaBox){
+		CollisionState state = CollisionState.INSIDE;
 		
 		final Vec3 pos = aaBox.getPos();
 		final Vec3 size = aaBox.getSize();
@@ -273,11 +281,11 @@ public class Frustrum {
 			// If positive vertex is outside of frustrum then entire box
 			// is outside of the frustrum
 			if(plane.getDistanceSigned(pVertex) < 0.0f)
-				return COLLISION_STATE.OUTSIDE;
+				return CollisionState.OUTSIDE;
 			// If negative vertex is outside of frustrum but the positive one
 			// is inside then box is intersecting this plane.
 			else if(plane.getDistanceSigned(nVertex) < 0.0f)
-				state = COLLISION_STATE.INTERSECTS;
+				state = CollisionState.INTERSECTS;
 		}
 		
 		return state;

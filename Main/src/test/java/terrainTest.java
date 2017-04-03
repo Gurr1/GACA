@@ -1,18 +1,25 @@
+import static junit.framework.TestCase.assertNotNull;
+import static junit.framework.TestCase.assertTrue;
 import hills.Gurra.Terrain;
-import org.junit.Before;
-import org.junit.Test;
 
 import java.util.Random;
 
-import static junit.framework.TestCase.assertNotNull;
-import static junit.framework.TestCase.assertTrue;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Created by gustav on 2017-03-28.
  */
 public class terrainTest {
 
-    Terrain t;
+	Terrain t;
+
+	@Before
+	public void testTerrain() {
+		Random random = new Random();
+		t = new Terrain(random.nextLong());
+		assertNotNull(t);
+	}
 
     @Before
     public void testTerrain(){

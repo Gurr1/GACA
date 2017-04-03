@@ -4,56 +4,58 @@ import org.lwjgl.opengl.GL13;
 
 public enum SamplerUniform {
 
-	DIFFUSE("diffuseMap", GL13.GL_TEXTURE0),
-	NORMAL("normalMap", GL13.GL_TEXTURE1),
-	OCCLUSION("occlusionMap", GL13.GL_TEXTURE2),
-	OPACITY("opacityMap", GL13.GL_TEXTURE3),
-	SPECULAR_GLOSS("specularGlossMap", GL13.GL_TEXTURE4),
-	EMISSIVE("emissiveMap", GL13.GL_TEXTURE5),
-	TERRAIN_HEIGHT("heightMap", GL13.GL_TEXTURE0),
-	TERRAIN_NORMAL("normalMap", GL13.GL_TEXTURE1),
-	CUBE_MAP("cubeMap", GL13.GL_TEXTURE6);
-	
+	DIFFUSE("diffuseMap", GL13.GL_TEXTURE0), NORMAL("normalMap",
+			GL13.GL_TEXTURE1), OCCLUSION("occlusionMap", GL13.GL_TEXTURE2), OPACITY(
+			"opacityMap", GL13.GL_TEXTURE3), SPECULAR_GLOSS("specularGlossMap",
+			GL13.GL_TEXTURE4), EMISSIVE("emissiveMap", GL13.GL_TEXTURE5), TERRAIN_HEIGHT(
+			"heightMap", GL13.GL_TEXTURE0), TERRAIN_NORMAL("normalMap",
+			GL13.GL_TEXTURE1), TERRAIN_TEST_SAMPLER("testSampler",
+			GL13.GL_TEXTURE2), WATER_REFRACTION("refractionTexture",
+			GL13.GL_TEXTURE0), WATER_REFLECTION("reflectionTexture",
+			GL13.GL_TEXTURE1), CUBE_MAP("cubeMap", GL13.GL_TEXTURE6);
+
 	/**
 	 * Name of sampler uniform.
 	 */
 	private final String name;
-	
+
 	/**
 	 * Texture slot that sampler will be bound to.
 	 */
 	private final int textureSlot;
-	
+
 	/**
 	 * Texture slot number that sampler will be bound to.
 	 */
 	private final int slot;
-	
-	private SamplerUniform(String name, int textureSlot){
+
+	private SamplerUniform(String name, int textureSlot) {
 		this.name = name;
 		this.textureSlot = textureSlot;
 		slot = textureSlotToInt(textureSlot);
 	}
-	
-	public String getName(){
+
+	public String getName() {
 		return name;
 	}
-	
-	public int getTextureSlot(){
+
+	public int getTextureSlot() {
 		return textureSlot;
 	}
-	
-	public int getSlot(){
+
+	public int getSlot() {
 		return slot;
 	}
-	
+
 	/**
 	 * GL_TEXTUREX to shader program location. (A.K.A. X)
-	 * @param textureSlot - GL13.GL_TEXTUREX
+	 * 
+	 * @param textureSlot
+	 *            - GL13.GL_TEXTUREX
 	 * @return X.
 	 */
-	private int textureSlotToInt(int textureSlot){
-		switch(textureSlot){
+	private int textureSlotToInt(int textureSlot) {
+		switch (textureSlot) {
 		case GL13.GL_TEXTURE0:
 			return 0;
 		case GL13.GL_TEXTURE1:
@@ -119,8 +121,9 @@ public enum SamplerUniform {
 		case GL13.GL_TEXTURE31:
 			return 31;
 		}
-		
-		System.err.println("genTextureSlot(int textureSlot) can only take in GL13.TEXTUREX values as argument.");
+
+		System.err
+				.println("genTextureSlot(int textureSlot) can only take in GL13.TEXTUREX values as argument.");
 		System.exit(-1);
 		return 0;
 	}

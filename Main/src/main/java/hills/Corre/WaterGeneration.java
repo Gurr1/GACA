@@ -13,88 +13,83 @@ import javax.imageio.ImageIO;
  */
 public class WaterGeneration {
 
-    BufferedImage bufferedImage;
+	BufferedImage bufferedImage;
 
-    public WaterGeneration() {
-        try {
-            //bufferedImage = ImageIO.read(this.getClass().getResource("/noiseG.png"));
-            bufferedImage = ImageIO.read(new File("Main/src/main/resources/noiseGtest.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        //this.bufferedImage = bufferedImage;   (sköter i main sen)
+	public WaterGeneration() {
+		try {
+			// bufferedImage =
+			// ImageIO.read(this.getClass().getResource("/noiseG.png"));
+			bufferedImage = ImageIO.read(new File(
+					"Main/src/main/resources/noiseGtest.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		// this.bufferedImage = bufferedImage; (sköter i main sen)
 
+	}
 
+	public void genRiver() {
 
-    }
+		for (int i = 0; i < bufferedImage.getHeight(); i++) {
+			for (int j = 0; j < bufferedImage.getWidth(); j++) {
+				Point startPoint = genStartPoints(i, j);
 
-    public void genRiver(){
+				System.out.println(startPoint);
 
-        for(int i = 0 ; i < bufferedImage.getHeight() ; i++){
-            for(int j = 0 ; j < bufferedImage.getWidth() ; j++){
-                Point startPoint = genStartPoints(i, j);
+				if (startPoint != null) {
 
-                System.out.println(startPoint);
+					int x = (int) startPoint.getX();
+					int y = (int) startPoint.getY();
+					/*
+					 * Color Pelel = new Color(90, 0, 0);
+					 * bufferedImage.setRGB(x, y, (Pelel).getRGB());
+					 * System.out.println(bufferedImage.getRGB(x, y));
+					 * System.out.println(Pelel.getRGB());
+					 */
 
-                if(startPoint != null) {
+					bufferedImage.setRGB(x, y,
+							(new Color(90, 89, 150)).getRGB());
 
-                    int x = (int) startPoint.getX();
-                    int y = (int) startPoint.getY();
-                    /*
-                    Color Pelel = new Color(90, 0, 0);
-                    bufferedImage.setRGB(x, y, (Pelel).getRGB());
-                    System.out.println(bufferedImage.getRGB(x, y));
-                    System.out.println(Pelel.getRGB());
-                    */
+					if (!hasReachedSea(startPoint)) {
+						// bufferedImage.setRGB(x, y, (0xff00));
+					}
+				}
 
-                    bufferedImage.setRGB(x, y, (new Color(90, 89, 150)).getRGB());
+			}
+		}
 
+		try {
+			ImageIO.write(bufferedImage, "png", new File(
+					"Main/src/main/resources/startingPoints5.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
+	}
 
+	public Point genStartPoints(int i, int j) {
+		Point point = null;
 
+		Color temp = new Color(bufferedImage.getRGB(i, j));
 
-                    if (!hasReachedSea(startPoint)) {
-                        //bufferedImage.setRGB(x, y, (0xff00));
-                    }
-                }
+		// if(((bufferedImage.getRGB(i, j) >> 8) & 0xFF) >= 0x63)
+		if (temp.getGreen() >= 0x63)
+			return new Point(i, j);
 
-            }
-        }
+		else
+			return point;
+	}
 
+	public void drawRiver(Point point) {
+		Point lowestAmpPoint;
+		// kolla alla runt
+	}
 
-        try {
-            ImageIO.write(bufferedImage, "png", new File("Main/src/main/resources/startingPoints5.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-
-    }
-
-    public Point genStartPoints(int i, int j){
-        Point point = null;
-
-        Color temp = new Color(bufferedImage.getRGB(i, j));
-
-        //if(((bufferedImage.getRGB(i, j) >> 8) & 0xFF) >= 0x63)
-        if(temp.getGreen() >= 0x63)
-        return new Point(i, j);
-
-        else return point;
-    }
-
-    public void drawRiver(Point point){
-        Point lowestAmpPoint;
-        //kolla alla runt
-    }
-
-    public boolean hasReachedSea(Point point){
-        int x = point.x;
-        int y = point.y;
-        //kolla blå (fixa annan blå för hav)
-        return false;
-    }
-
+	public boolean hasReachedSea(Point point) {
+		int x = point.x;
+		int y = point.y;
+		// kolla blå (fixa annan blå för hav)
+		return false;
+	}
 
 }
