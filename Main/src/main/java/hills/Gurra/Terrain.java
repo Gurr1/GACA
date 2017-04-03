@@ -1,5 +1,8 @@
 package hills.Gurra;
 
+import hills.Anton.engine.math.Vec3;
+import javafx.scene.image.Image;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -33,11 +36,11 @@ public class Terrain {
         noise.setSeed(rand.nextLong());
         double[][] noise5 = noise.createMatrix(5, 0.4, false);
         noise.setSeed(rand.nextLong());
-        BufferedImage image = new BufferedImage(WIDTH + 1, HEIGHT + 1, BufferedImage.TYPE_INT_RGB);
+        BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         double maximum = 0;
         double max = 0;
-        for (int x = 0; x <= WIDTH; x++) {
-            for (int y = 0; y <= HEIGHT; y++) {
+        for (int x = 0; x < WIDTH; x++) {
+            for (int y = 0; y < HEIGHT; y++) {
                             double green = noise1[x][y] + noise2[x][y]*0.5 + noise3[x][y]*0.25 + noise4[x][y]*0.2;
                             if (green>maximum){
                                 maximum = green;
@@ -47,8 +50,8 @@ public class Terrain {
                             matrix[x][y] = (int)(green*255);
                         }
                     }
-        for (int x = 0; x <= WIDTH; x++) {
-            for (int y = 0; y <= HEIGHT; y++) {
+        for (int x = 0; x < WIDTH; x++) {
+            for (int y = 0; y < HEIGHT; y++) {
                 int r = ((matrix[x][y]))<<16 & 0xFF0000;
                 int g = ((matrix[x][y]))<<8 & 0xFF00;
                 int b = ((matrix[x][y])) & 0xFF;
@@ -71,103 +74,18 @@ public class Terrain {
         return exp;
     }
 
-    public int[][] createHeightMa() {
-        Random rand = new Random();
-        double frequency = 200;
-        double amplitude = 1;
-        BufferedImage image = new BufferedImage(WIDTH + 1, HEIGHT + 1, BufferedImage.TYPE_INT_RGB);
-        int[][] colorMatrix = new int[WIDTH][HEIGHT];
-        double green = 0;
-        double maxAmp = 0;
-        double largest = 0;
-        for (int i = 0; i < 4; i++) {
-            double[][] matrix = noise.createMatrix(frequency, amplitude,false);
-            frequency = frequency * 0.5;
-            amplitude = amplitude * 0.75;
-            maxAmp += amplitude;
-            noise.setSeed(rand.nextLong());
-            for (int x = 0; x < WIDTH; x++) {
-                for (int y = 0; y < HEIGHT; y++) {
-                    green = matrix[x][y];
-                    colorMatrix[x][y] += (int) green;
-                    if (largest < colorMatrix[x][y]) {
-                        largest = colorMatrix[x][y];
-                    }
-                }
-            }
-        }
-        for (int x = 0; x < WIDTH; x++) {
-            for (int y = 0; y < HEIGHT; y++) {
-                green = (colorMatrix[x][y] / largest) * 255.0;
-                int[] rgb = {0, (int) green, 0};
-                System.out.println(green);
-                image.getRaster().setPixel(x, y, rgb);
-            }
-        }
-        return matrix;
-    }
-
-    public double[][] test() {
-        double[][] matrix = noise.createMatrix(300, 1, false);
-        double[][] matrix2 = noise.createMatrix(150, 0.5, false);
-        double[][] matrix3 = noise.createMatrix(75, 0.25, false);
-        BufferedImage image = new BufferedImage(WIDTH + 1, HEIGHT + 1, BufferedImage.TYPE_INT_RGB);
-        for (int x = 0; x < WIDTH; x++) {
-            for (int y = 0; y < HEIGHT; y++) {
-                    double green = matrix[x][y];       // not correct. does create interesting effect however
-                    green = (int) ((green + matrix2[x][y]) * 0.5);
-                    green = (int) ((green + (matrix3[x][y])) * 0.25);
-                    green = Math.pow(3 * green, 1 / ELEVATION_MODIFIER) - Math.pow(2 * green, 1 / ELEVATION_MODIFIER);
-            }
-            }
-            try {
-                ImageIO.write(image, "png", new File("src/main/resources/textures/testnoise.png"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        return matrix;
-    }
-
     /*
      * Do Not Modify. works pretty perfectly like it should.
      */
     public double[][] createIsland(){
-        double matrix[][] = new double[WIDTH+1][HEIGHT+1];
-        BufferedImage image = new BufferedImage(WIDTH + 1, HEIGHT + 1, BufferedImage.TYPE_INT_RGB);
+        double matrix[][] = new double[WIDTH][HEIGHT];
+        BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         double exp = exponentCalc();
         double[][] noise1 = noise.createMatrix(100, 1, true);
-        for (int x = 0; x <= WIDTH; x++) {
-            for (int y = 0; y <= HEIGHT; y++) {
-
-                double green = 1;
-                int distanceToCenterX;
-                if (WIDTH / 2 - x > 0) {
-                    distanceToCenterX = WIDTH / 2 - x;
-                } else {
-                    distanceToCenterX = x - WIDTH / 2;
-                }
-                int distanceToCenterY;
-                if (HEIGHT / 2 - y > 0) {
-                    distanceToCenterY = HEIGHT / 2 - y;
-                } else {
-                    distanceToCenterY = y - HEIGHT / 2;
-                }
-                double multiplier = (WIDTH * HEIGHT / 4) - ((distanceToCenterX * distanceToCenterY + Math.pow(distanceToCenterX, exp) + Math.pow(distanceToCenterY, exp)) / 4);
-                multiplier = (multiplier / (WIDTH * HEIGHT / 4));
-                //Multiplier is used to create a island like shape.
-                green *= multiplier;
-                green = setMinusToZero(green);
-                boolean isZero = green==0;
-                if(!isZero) {
-                    green = Math.pow(green,setMinusToZero(noise1[x][y])*3);         // last number decides how steep natural slopes should be.
-                }
-                matrix[x][y] = green;
-                int r = ((int)(green*255))<<16 & 0xFF0000;
-                int g = ((int)(green*255))<<8 & 0xFF00;
-                int b = ((int)(green*255)) & 0xFF;
-                int rgb2 = r+b+g;
-                image.setRGB(x,y,rgb2);
+        for (int x = 0; x < WIDTH; x++) {
+            for (int y = 0; y < HEIGHT; y++) {
+                islandAlgorithm1(noise1[x][y], x, y, exp, image, matrix);
+              //  islandAlgorithm2(noise1[x][y], x, y, exp, image, matrix);
             }
         }
         try {
@@ -177,15 +95,77 @@ public class Terrain {
         }
         return matrix;
     }
+    private double islandAlgorithm1(double noise, int x, int y, double exp, BufferedImage image, double[][] matrix){
+        double green = 1;
+        int distanceToCenterX;
+        if (WIDTH / 2 - x > 0) {
+            distanceToCenterX = WIDTH / 2 - x;
+        } else {
+            distanceToCenterX = x - WIDTH / 2;
+        }
+        int distanceToCenterY;
+        if (HEIGHT / 2 - y > 0) {
+            distanceToCenterY = HEIGHT / 2 - y;
+        } else {
+            distanceToCenterY = y - HEIGHT / 2;
+        }
+        double multiplier = (WIDTH * HEIGHT / 4) - ((distanceToCenterX * distanceToCenterY + Math.pow(distanceToCenterX, exp) + Math.pow(distanceToCenterY, exp)) / 4);
+        multiplier = (multiplier / (WIDTH * HEIGHT / 4));
+        //Multiplier is used to create a island like shape.
+        green *= multiplier;
+        green = setMinusToZero(green);
+        boolean isZero = green==0;
+        if(!isZero) {
+            green = Math.pow(green,setMinusToZero(noise)*3);         // last number decides how steep natural slopes should be.
+        }// line above is only thing that needs change
+        matrix[x][y] = green;
+        int r = ((int)(green*255))<<16 & 0xFF0000;
+        int g = ((int)(green*255))<<8 & 0xFF00;
+        int b = ((int)(green*255)) & 0xFF;
+        int rgb = r+b+g;
+        image.setRGB(x,y,rgb);
+        return rgb;
+    }
+    private double islandAlgorithm2(double noise, int x, int y, double exp, BufferedImage image, double[][] matrix){
 
+        double green = 1;
+        int distanceToCenterX;
+        if (WIDTH / 2 - x > 0) {
+            distanceToCenterX = WIDTH / 2 - x;
+        } else {
+            distanceToCenterX = x - WIDTH / 2;
+        }
+        int distanceToCenterY;
+        if (HEIGHT / 2 - y > 0) {
+            distanceToCenterY = HEIGHT / 2 - y;
+        } else {
+            distanceToCenterY = y - HEIGHT / 2;
+        }
+        double multiplier = (WIDTH * HEIGHT / 4) - ((distanceToCenterX * distanceToCenterY + Math.pow(distanceToCenterX, exp) + Math.pow(distanceToCenterY, exp)) / 4);
+        multiplier = (multiplier / (WIDTH * HEIGHT / 4));
+        //Multiplier is used to create a island like shape.
+        green *= multiplier;
+        green = setMinusToZero(green);
+        boolean isZero = green==0;
+        if(!isZero) {
+            green = Math.pow(green,1-setMinusToZero(noise)*1.1);         // last number decides how steep natural slopes should be.
+        }
+        matrix[x][y] = green;
+        int r = ((int)(green*255))<<16 & 0xFF0000;
+        int g = ((int)(green*255))<<8 & 0xFF00;
+        int b = ((int)(green*255)) & 0xFF;
+        int rgb = r+b+g;
+        image.setRGB(x,y,rgb);
+        return rgb;
+    }
 
     public double[][] createfinalIsland(){
         double[][] islandMatrix = createIsland();
         int[][] noiseMatrix = createHeightMap();
-        BufferedImage image = new BufferedImage(WIDTH + 1, HEIGHT + 1, BufferedImage.TYPE_INT_RGB);
-        double[][] finalMatrix = new double[WIDTH+1][HEIGHT+1];
-        for(int x = 0; x<=WIDTH; x++){
-            for(int y = 0; y<=HEIGHT; y++){
+        BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+        double[][] finalMatrix = new double[WIDTH][HEIGHT];
+        for(int x = 0; x<WIDTH; x++){
+            for(int y = 0; y<HEIGHT; y++){
                 finalMatrix[x][y] = islandMatrix[x][y] * noiseMatrix[x][y];
                 int r = ((int)(finalMatrix[x][y]))<<16 & 0xFF0000;
                 int g = ((int)(finalMatrix[x][y]))<<8 & 0xFF00;
@@ -199,7 +179,29 @@ public class Terrain {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        generateNormal(finalMatrix);
         return finalMatrix;
+    }
+    public void generateNormal(double[][] terrain){
+        List<Vec3> normals = new ArrayList<>();
+        BufferedImage image = new BufferedImage(terrain.length, terrain[0].length, BufferedImage.TYPE_INT_RGB);
+        for(int x = 0; x < terrain.length-1; x++){          // Since the last rows are always Black, no Normal-calculations are needed.
+            for(int y = 0; y<terrain[0].length-1; y++){
+                Vec3 v1 = new Vec3(x, y, (float)terrain[x][y]);
+                Vec3 v2 = new Vec3(x+1, y, (float)terrain[x+1][y]);
+                Vec3 v3 = new Vec3(x, y+1, (float)terrain[x][y+1]);
+                TerrainData td = new TerrainData(v1,v2,v3);
+                Vec3 normal = td.getNormal();
+                normals.add(normal);
+                int[]rgb = {(int) (normal.getX()*255), (int) (normal.getY()*255), (int) (normal.getZ()*255)};
+                image.getRaster().setPixel(x,y,rgb);
+            }
+        }
+        try {
+            ImageIO.write(image, "png", new File("src/main/resources/textures/normal.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     private double setMinusToZero(double green) {
         if(green<0.0){
@@ -208,7 +210,7 @@ public class Terrain {
         return green;
     }
     private double setToZero(double green) {
-        if(green<15.0){
+        if(green<50){
             return 0;
         }
         return green;
