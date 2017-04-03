@@ -21,10 +21,8 @@ public class TerrainTexture {
 	private final int normal;
 
 	public TerrainTexture(String height, String normal) {
-		this.height = height == null ? -1 : TextureLoader.loadTexture(height,
-				false);
-		this.normal = normal == null ? -1 : TextureLoader.loadTexture(normal,
-				false);
+		this.height = height == null ? -1 : TextureLoader.loadTexture(height, false);
+		this.normal = normal == null ? -1 : TextureLoader.loadTexture(normal, false);
 	}
 
 	public TerrainTexture(String diffuse) {

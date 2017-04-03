@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageOutputStream;
 
 import hills.engine.math.Vec3;
 
@@ -181,7 +182,13 @@ public class Terrain {
             }
         }
         try {
-            ImageIO.write(image, "png", new File("src/main/resources/textures/finalNoise.png"));
+        	File outputFile = new File("src/main/resources/textures/finalNoise.png");
+        	ImageOutputStream out = ImageIO.createImageOutputStream(outputFile);
+        	if(out == null)
+        		System.out.println("Can't create image output stream!");
+        	ImageIO.write(image, "png", out);
+        	out.close();
+            //ImageIO.write(image, "png", new File("src/main/resources/textures/finalNoise.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -204,7 +211,13 @@ public class Terrain {
             }
         }
         try {
-            ImageIO.write(image, "png", new File("src/main/resources/textures/normal.png"));
+        	File outputFile = new File("src/main/resources/textures/normal.png");
+        	ImageOutputStream out = ImageIO.createImageOutputStream(outputFile);
+        	if(out == null)
+        		System.out.println("Can't create normal image output stream!");
+        	ImageIO.write(image, "png", out);
+        	out.close();
+            //ImageIO.write(image, "png", new File("src/main/resources/textures/normal.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
