@@ -39,6 +39,7 @@ public enum TerrainRenderer {
 	public void batchNodes(List<LODNode> nodes, GridMeshData gridMeshData) {
 		this.nodes = nodes;
 		this.gridMeshData = gridMeshData;
+
 	}
 
 	public void render() {
@@ -92,6 +93,7 @@ public enum TerrainRenderer {
 			
 			// Render grid mesh
 			GL31.glDrawElementsInstanced(GL11.GL_TRIANGLES, gridMeshData.getIndicesAmount(), GL11.GL_UNSIGNED_INT, 0, nodes.size());
+
 		}
 
 		// Disable clip distances

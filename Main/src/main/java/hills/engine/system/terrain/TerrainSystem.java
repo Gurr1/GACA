@@ -17,8 +17,6 @@ import java.nio.ByteBuffer;
 
 import javax.imageio.ImageIO;
 
-import org.lwjgl.system.MemoryStack;
-
 public class TerrainSystem extends EngineSystem {
 
 	public static final String HEIGHT_MAP_DIRECTORY = "/textures/";
