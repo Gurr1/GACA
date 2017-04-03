@@ -17,11 +17,13 @@ import java.nio.ByteBuffer;
 
 import javax.imageio.ImageIO;
 
+import org.lwjgl.system.MemoryStack;
+
 public class TerrainSystem extends EngineSystem {
 
 	public static final String HEIGHT_MAP_DIRECTORY = "/textures/";
-	public static final String HEIGHT_MAP_NAME = "height_map_test_3.png";
-	public static final String HEIGHT_MAP_NORMAL_MAP_NAME = "height_map_test_3_normal_smooth.png";
+	public static final String HEIGHT_MAP_NAME = "finalNoise.png";
+	public static final String HEIGHT_MAP_NORMAL_MAP_NAME = "normal.png";
 
 	public static final float MORPH_FACTOR = 0.8f;
 
@@ -53,7 +55,7 @@ public class TerrainSystem extends EngineSystem {
 		RANGES[0] = FIRST_RANGE;
 		for (int i = 1; i < RANGES.length; i++)
 			RANGES[i] = RANGES[i - 1] * 2.0f;
-
+		
 		// Get height map image
 		try {
 			heightMap = ImageIO.read(new File(TerrainSystem.class.getResource(HEIGHT_MAP_DIRECTORY + HEIGHT_MAP_NAME).getPath()));

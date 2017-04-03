@@ -9,6 +9,8 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
+import hills.engine.math.Vec3;
+
 /**
  * Created by gustav on 2017-03-22.
  */
@@ -23,7 +25,7 @@ public class Terrain {
     public Terrain(long seed) {
         noise = new NoiseMapGenerator(seed);
     }
-
+    
     public int[][] createHeightMap() {
         Random rand = new Random();
         long startTime = System.nanoTime();

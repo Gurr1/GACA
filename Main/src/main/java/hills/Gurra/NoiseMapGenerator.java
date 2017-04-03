@@ -22,6 +22,9 @@ public class NoiseMapGenerator {            // This file should be cleaned up fo
 		noise = new OpenSimplexNoise(seed);
 	}
 
+	public void setSeed(long seed){ 
+    	noise.setSeed(seed); 
+    }
 
     public void create2DNoiseImage(String name, double frequency, double scale){        // this should probably be created in a thread, takes about .25 secs with current values
         BufferedImage image = new BufferedImage(WIDTH+1, HEIGHT+1, BufferedImage.TYPE_INT_RGB);
@@ -46,7 +49,7 @@ public class NoiseMapGenerator {            // This file should be cleaned up fo
     public double getDoubleValue(int x, int y){
         return greenMatrix[x][y] / 255.0;
     }
-
+/*
     private int[] arrayFromMatrix(int[][] matrix){
         int width = matrix.length;
         int height = matrix[0].length;
@@ -61,6 +64,7 @@ public class NoiseMapGenerator {            // This file should be cleaned up fo
         }
         return arr;
     }
+    */
     /*
     Do Not modify. create a copy to do that.
      */
@@ -81,7 +85,6 @@ public class NoiseMapGenerator {            // This file should be cleaned up fo
         this.greenMatrix = matrix;
         return matrix;
     }
-}
 
 	private int[] arrayFromMatrix(int[][] matrix) {
 		int width = matrix.length;
@@ -97,7 +100,7 @@ public class NoiseMapGenerator {            // This file should be cleaned up fo
 		}
 		return arr;
 	}
-
+/*
 	public int[][] createMatrix(double frequency, double scale) {
 		int[][] matrix = new int[WIDTH + 1][HEIGHT + 1];
 		for (int y = 0; y <= HEIGHT; y++) {
@@ -110,4 +113,5 @@ public class NoiseMapGenerator {            // This file should be cleaned up fo
 		this.greenMatrix = matrix;
 		return matrix;
 	}
+	*/
 }
