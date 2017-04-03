@@ -9,6 +9,7 @@ import hills.engine.system.EngineSystem;
 import hills.engine.system.camera.CameraSystem;
 import hills.engine.system.terrain.mesh.GridMeshData;
 import hills.engine.system.terrain.quadtree.LODTree;
+import hills.engine.texturemap.TerrainTexture;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -42,6 +43,7 @@ public class TerrainSystem extends EngineSystem {
 	private int TERRAIN_DEPTH = 0;
 
 	private final GridMeshData gridMeshData;
+	private final TerrainTexture heightMapTexture = new TerrainTexture(TerrainSystem.HEIGHT_MAP_NAME, TerrainSystem.HEIGHT_MAP_NORMAL_MAP_NAME);
 
 	private final LODTree TREE;
 
@@ -94,7 +96,7 @@ public class TerrainSystem extends EngineSystem {
 
 	@Override
 	public void render() {
-		TerrainRenderer.INSTANCE.batchNodes(TREE.getLODNodeTree(), gridMeshData);
+		TerrainRenderer.INSTANCE.batchNodes(TREE.getLODNodeTree(), gridMeshData, heightMapTexture);
 	}
 
 	/**
