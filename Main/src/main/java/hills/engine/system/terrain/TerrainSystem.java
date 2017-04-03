@@ -24,7 +24,7 @@ public class TerrainSystem extends EngineSystem {
 
 	public static final String HEIGHT_MAP_DIRECTORY = "/textures/";
 	public static final String HEIGHT_MAP_NAME = "finalNoise.png";
-	public static final String HEIGHT_MAP_NORMAL_MAP_NAME = "normal.png";
+	public static final String HEIGHT_MAP_NORMAL_MAP_NAME = "height_map_test_3_normal_smooth.png";
 
 	public static final float MORPH_FACTOR = 0.8f;
 
@@ -43,7 +43,7 @@ public class TerrainSystem extends EngineSystem {
 	private int TERRAIN_DEPTH = 0;
 
 	private final GridMeshData gridMeshData;
-	private final TerrainTexture heightMapTexture = new TerrainTexture(TerrainSystem.HEIGHT_MAP_NAME, TerrainSystem.HEIGHT_MAP_NORMAL_MAP_NAME);
+	private final TerrainTexture heightMapTexture;
 
 	private final LODTree TREE;
 
@@ -65,6 +65,8 @@ public class TerrainSystem extends EngineSystem {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		heightMapTexture = new TerrainTexture(TerrainSystem.HEIGHT_MAP_NAME, TerrainSystem.HEIGHT_MAP_NORMAL_MAP_NAME);
 
 		TERRAIN_WIDTH = heightMap.getWidth();
 		TERRAIN_DEPTH = heightMap.getHeight();
