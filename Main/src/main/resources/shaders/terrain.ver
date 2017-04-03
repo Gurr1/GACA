@@ -38,6 +38,10 @@ layout (std140) uniform TERRAIN_CONSTANTS {
 	int START_RANGE;
 };
 
+layout (std140) uniform WATER_CLIP_PLANES {
+	vec4 WATER_CLIP_PLANE;
+};
+
 // Function prototypes //
 vec2 morphVertex(vec2 gridPos, vec2 vertex, float morphValue, int lodLevel);
 
@@ -90,6 +94,9 @@ void main(){
 	
 	// Clip single child node
 	gl_ClipDistance[3] = max(clipPlane1Distance, clipPlane2Distance) * terrainActiveClipModes.w;
+	
+	// Clip water plane
+	gl_ClipDistance[5] = dot(WATER_CLIP_PLANE, finalPos);
 	
 	gl_Position = PERSPECTIVE * CAMERA * finalPos;
 }

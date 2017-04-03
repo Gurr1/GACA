@@ -41,19 +41,13 @@ public enum WaterRenderer {
 				WaterPlane.WATER_PLANE_INDICES, null, Mat4.identity())
 				.getMeshData();
 
-		refractionFrameBuffer = new FrameBuffer(REFRACTION_FB_WIDTH,
-				REFRACTION_FB_HEIGHT);
-		refractionFrameBuffer.attachTexture(GL11.GL_TEXTURE_2D, GL11.GL_RGBA,
-				GL11.GL_RGBA, GL30.GL_COLOR_ATTACHMENT0);
-		refractionFrameBuffer.attachRenderBuffer(GL11.GL_TEXTURE_2D,
-				GL30.GL_DEPTH24_STENCIL8);
+		refractionFrameBuffer = new FrameBuffer(REFRACTION_FB_WIDTH, REFRACTION_FB_HEIGHT);
+		refractionFrameBuffer.attachTexture(GL11.GL_TEXTURE_2D, GL11.GL_RGBA, GL11.GL_RGBA, GL30.GL_COLOR_ATTACHMENT0);
+		refractionFrameBuffer.attachRenderBuffer(GL11.GL_TEXTURE_2D, GL30.GL_DEPTH24_STENCIL8);
 
-		reflectionFrameBuffer = new FrameBuffer(REFLECTION_FB_WIDTH,
-				REFLECTION_FB_HEIGHT);
-		reflectionFrameBuffer.attachTexture(GL11.GL_TEXTURE_2D, GL11.GL_RGBA,
-				GL11.GL_RGBA, GL30.GL_COLOR_ATTACHMENT0);
-		reflectionFrameBuffer.attachRenderBuffer(GL11.GL_TEXTURE_2D,
-				GL30.GL_DEPTH24_STENCIL8);
+		reflectionFrameBuffer = new FrameBuffer(REFLECTION_FB_WIDTH, REFLECTION_FB_HEIGHT);
+		reflectionFrameBuffer.attachTexture(GL11.GL_TEXTURE_2D, GL11.GL_RGBA, GL11.GL_RGBA, GL30.GL_COLOR_ATTACHMENT0);
+		reflectionFrameBuffer.attachRenderBuffer(GL11.GL_TEXTURE_2D, GL30.GL_DEPTH24_STENCIL8);
 	}
 
 	public void batch(WaterPlane waterPlane) {
@@ -64,7 +58,7 @@ public enum WaterRenderer {
 		for (WaterPlane waterPlane : waterPlanes) {
 			// Enable vertex clipping for create refraction and reflection
 			// texture creation
-			GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
+			GL11.glEnable(GL30.GL_CLIP_DISTANCE5);
 
 			/* FIRST DRAW PASS: Refraction texture */
 			refractionFrameBuffer.bind(0, 0);
@@ -74,12 +68,11 @@ public enum WaterRenderer {
 
 			// Make sure everything over the water surface gets clipped
 			try (MemoryStack stack = MemoryStack.stackPush()) {
-				Vec4 vec = waterPlane.getPlane().inEquationForm()
-						.mul(new Vec4(1.0f, -1.0f, 1.0f, 1.0f));
+				Vec4 vec = waterPlane.getPlane().inEquationForm().mul(new Vec4(1.0f, -1.0f, 1.0f, 1.0f));
 				ByteBuffer buffer = stack.calloc(vec.get140DataSize());
 				vec.get140Data(buffer);
 				buffer.flip();
-				ShaderProgram.map("CLIP_PLANES", "CLIP_PLANE", buffer);
+				ShaderProgram.map("WATER_CLIP_PLANES", "WATER_CLIP_PLANE", buffer);
 			}
 
 			// Render world
@@ -112,28 +105,22 @@ public enum WaterRenderer {
 			reflectionFrameBuffer.unbind();
 
 			// Disable vertex clipping so that everything can now be rendered
-			GL11.glDisable(GL30.GL_CLIP_DISTANCE0);
+			GL11.glDisable(GL30.GL_CLIP_DISTANCE5);
 
 			/* FINAL DRAW PASS: Water */
 
 			// Activate shader program
 			shaderProgram.enable();
 
-			SkyBoxRenderer.INSTANCE.getSkyBoxCubeMap().bind(); // Unable to call
-																// after
-																// bindVertexArray
-																// call ?!
+			SkyBoxRenderer.INSTANCE.getSkyBoxCubeMap().bind(); // Unable to call after bindVertexArray call ?!
 
 			// Bind mesh VAO
 			GL30.glBindVertexArray(meshData.getVao());
 
 			// Enable attributes
-			GL20.glEnableVertexAttribArray(ShaderAttribute.POSITION
-					.getLocation()); // Position attribute
-			GL20.glEnableVertexAttribArray(ShaderAttribute.TEXTURECOORD
-					.getLocation()); // Texture coordinate attribute
-			GL20.glEnableVertexAttribArray(ShaderAttribute.NORMAL.getLocation()); // Normal
-																					// attribute
+			GL20.glEnableVertexAttribArray(ShaderAttribute.POSITION.getLocation()); // Position attribute
+			GL20.glEnableVertexAttribArray(ShaderAttribute.TEXTURECOORD.getLocation()); // Texture coordinate attribute
+			GL20.glEnableVertexAttribArray(ShaderAttribute.NORMAL.getLocation()); // Normal attribute
 
 			// Bind refraction, reflection and sky box texture
 			new TextureMap2D(
