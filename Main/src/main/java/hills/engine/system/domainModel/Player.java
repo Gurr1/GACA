@@ -14,7 +14,7 @@ public class Player implements Collideable {
     @Getter private float pitch = 0;
     @Getter private float yaw = 0;
     @Setter private float radius = 1;
-
+    @Getter private static Player player;
     //<editor-fold desc="Constructors">
 
     public Player(Vec3 pos, float radius) {
@@ -30,6 +30,7 @@ public class Player implements Collideable {
 
     public Player(Vec3 pos) {
         this.pos = pos;
+        player = this;
     }
     //</editor-fold>
 
@@ -74,4 +75,5 @@ public class Player implements Collideable {
     public Sphere getBoundingSphere() {
         return new Sphere(pos, radius);
     }
+
 }

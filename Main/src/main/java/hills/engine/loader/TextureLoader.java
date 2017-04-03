@@ -1,7 +1,15 @@
 package hills.engine.loader;
 
+import de.matthiasmann.twl.utils.PNGDecoder;
+import de.matthiasmann.twl.utils.PNGDecoder.Format;
 import hills.engine.texturemap.CubeMap;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL30;
+import org.lwjgl.system.MemoryUtil;
 
+import javax.imageio.ImageIO;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,15 +17,6 @@ import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-import org.lwjgl.opengl.GL13;
-import org.lwjgl.opengl.GL30;
-import org.lwjgl.system.MemoryUtil;
-
-import de.matthiasmann.twl.utils.PNGDecoder;
-import de.matthiasmann.twl.utils.PNGDecoder.Format;
 
 public class TextureLoader {
 
@@ -117,7 +116,6 @@ public class TextureLoader {
 		IntBuffer w = MemoryUtil.memAllocInt(1);
 		IntBuffer h = MemoryUtil.memAllocInt(1);
 		ByteBuffer textureByteBuffer = PNGToByteBuffer(path, w, h, flip);
-		
 		// Load image
 		int handle = GL11.glGenTextures();
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);

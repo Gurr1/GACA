@@ -2,9 +2,6 @@ package hills;
 
 
 
-import hills.Gurra.Terrain;
-
-
 /**
  * Created by gustav on 2017-03-21.
  */
@@ -26,10 +23,6 @@ public class Main {
         System.out.println((System.nanoTime()-s)/1000000);*/
 
 
-
-        Random rand = new Random();
-        Terrain noise = new Terrain(rand.nextLong());
-        noise.createHeightMap();
 
          Init i = new Init();
         i.init();

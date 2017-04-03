@@ -1,4 +1,5 @@
 import hills.Gurra.Terrain;
+import hills.Gurra.TerrainData;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -63,18 +64,18 @@ public class terrainTest {
     }
     @Test
     public void testCreateFinalMap(){
-        double[][] terrain = t.createfinalIsland();
+        TerrainData[][] terrain = t.createfinalIsland();
         double smallest = 255;
         double largest = 0;
         for(int x = 0; x<terrain.length; x++){
             for (int y = 0; y < terrain[0].length; y++){
-                assertTrue(terrain[x][y]<=255);
-                assertTrue(terrain[x][y]>=0);
-                if(terrain[x][y] < smallest){
-                    smallest = terrain[x][y];
+                assertTrue(terrain[x][y].getPosition().getZ()<=255);
+                assertTrue(terrain[x][y].getPosition().getZ()>=0);
+                if(terrain[x][y].getPosition().getZ() < smallest){
+                    smallest = terrain[x][y].getPosition().getZ();
                 }
-                if(largest < terrain[x][y]){
-                    largest = terrain[x][y];
+                if(largest < terrain[x][y].getPosition().getZ()){
+                    largest = terrain[x][y].getPosition().getZ();
                 }
             }
         }

@@ -162,11 +162,12 @@ public class Terrain {
         return rgb;
     }
 
-    public double[][] createfinalIsland(){
+    public TerrainData[][] createfinalIsland(){
         double[][] islandMatrix = createIsland();
         int[][] noiseMatrix = createHeightMap();
         BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         double[][] finalMatrix = new double[WIDTH][HEIGHT];
+        TerrainData[][] datas = new TerrainData[WIDTH][HEIGHT];
         for(int x = 0; x<WIDTH; x++){
             for(int y = 0; y<HEIGHT; y++){
                 finalMatrix[x][y] = islandMatrix[x][y] * noiseMatrix[x][y];
@@ -183,19 +184,20 @@ public class Terrain {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        generateNormal(finalMatrix);
-        return finalMatrix;
+        return generateTerrain(finalMatrix);
     }
-    public void generateNormal(double[][] terrain){
+    public TerrainData[][] generateTerrain(double[][] terrain){
         List<Vec3> normals = new ArrayList<>();
+        TerrainData[][] datas = new TerrainData[terrain.length][terrain[0].length];
         BufferedImage image = new BufferedImage(terrain.length, terrain[0].length, BufferedImage.TYPE_INT_RGB);
         for(int x = 0; x < terrain.length-1; x++){          // Since the last rows are always Black, no Normal-calculations are needed.
             for(int y = 0; y<terrain[0].length-1; y++){
-                Vec3 v1 = new Vec3(x, y, (float)terrain[x][y]);
-                Vec3 v2 = new Vec3(x+1, y, (float)terrain[x+1][y]);
-                Vec3 v3 = new Vec3(x, y+1, (float)terrain[x][y+1]);
+                Vec3 v1 = new Vec3(x, (float)terrain[x][y], y);
+                Vec3 v2 = new Vec3(x+1, (float)terrain[x+1][y],y);
+                Vec3 v3 = new Vec3(x, (float)terrain[x][y+1],y+1);
                 TerrainData td = new TerrainData(v1,v2,v3);
                 Vec3 normal = td.getNormal();
+                datas[x][y] = td;
                 normals.add(normal);
                 int[]rgb = {(int) (normal.getX()*255), (int) (normal.getY()*255), (int) (normal.getZ()*255)};
                 image.getRaster().setPixel(x,y,rgb);
@@ -206,6 +208,7 @@ public class Terrain {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return datas;
     }
     private double setMinusToZero(double green) {
         if(green<0.0){

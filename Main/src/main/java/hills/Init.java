@@ -1,19 +1,21 @@
 package hills;
 
-import hills.Anton.delete.TerrainNormalMapCreator;
+import hills.Gurra.Terrain;
 import hills.engine.GameLoop;
 import hills.engine.display.AspectRatios;
 import hills.engine.display.Display;
 import hills.engine.display.FrameBuffer;
 import hills.engine.system.camera.CameraSystem;
 import hills.engine.system.debug.DebugSystem;
+import hills.engine.system.domainModel.World;
 import hills.engine.system.game.GameSystem;
 import hills.engine.system.terrain.TerrainSystem;
-
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
 import org.lwjgl.glfw.GLFWWindowCloseCallback;
 import org.lwjgl.opengl.GL11;
+
+import java.util.Random;
 
 /**
  * Created by gustav on 2017-03-21.
@@ -48,7 +50,12 @@ public class Init {
 	
 	public void init(){
 		//TerrainNormalMapCreator.createSmoothNormals("height_map_test_3.png");
-		
+		Random rand = new Random();
+		Terrain noise = new Terrain(rand.nextLong());
+		World w = new World(noise.createfinalIsland());
+
+		//TerrainNormalMapCreator.createFlatNormals("height_map_test_3.png");
+
 		FrameBuffer.setClearColor(0.55f, 0.55f, 1.0f, 1.0f);	// Set clear color
 		FrameBuffer.enableDepthTesting(0.0f, 1.0f);				// Enable depth testing
 		FrameBuffer.setClearDepth(1.0f);						// Clear depth buffer to 1.0

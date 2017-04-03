@@ -9,13 +9,12 @@ import hills.engine.math.Vec3;
 import hills.engine.math.shape.Frustrum;
 import hills.engine.renderer.shader.ShaderProgram;
 import hills.engine.system.EngineSystem;
-
-import java.nio.ByteBuffer;
-
+import hills.engine.system.domainModel.World;
 import lombok.Getter;
-
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.system.MemoryStack;
+
+import java.nio.ByteBuffer;
 
 public class CameraSystem extends EngineSystem {
 
@@ -99,16 +98,16 @@ public class CameraSystem extends EngineSystem {
 	 * To update camera or not (No need to update when nothing has changed).
 	 */
 	private boolean toUpdate;
-	
+	private World w;
 	private CameraSystem(float scale, boolean isPaused, float startTime) {
 		super(scale, isPaused, startTime);
 		
 		// Initialize camera at 0, 0, 0. Right is +X, Up is +Y, Depth is -Z.
-		this.position = new Vec3(0.0f, 0.0f, 0.0f);
+		this.position = new Vec3(100, 100, 0);
 		this.forward = new Vec3(0.0f, 0.0f, -1.0f);
 		this.up = new Vec3(0.0f, 1.0f, 0.0f);
 		this.right = new Vec3(1.0f, 0.0f, 0.0f);
-		
+		w = World.getInstance();
 		frustrum = new Frustrum(near, far, aspect, FOV, position, forward, up, right, false);
 		
 		try(MemoryStack stack = MemoryStack.stackPush()){
@@ -147,6 +146,7 @@ public class CameraSystem extends EngineSystem {
 		// Move camera
 		position = position.add(forward.mul(medialSpeed * medial.multiplier * (float) delta));
 		position = position.add(right.mul(lateralSpeed * lateral.multiplier * (float) delta));
+		w.setPlayerPosition(position);
 		medial = Direction.NONE;
 		lateral = Direction.NONE;
 		
