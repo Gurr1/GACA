@@ -27,11 +27,11 @@ public static void main(String [] args){
 
 
     	
-//        Random rand = new Random();
-//        Terrain noise = new Terrain(rand.nextLong());
-//        long startTime = System.nanoTime();
-//        double[][] terrain = noise.createfinalIsland();
-//        System.out.println(System.nanoTime()-startTime);
+        Random rand = new Random();
+        Terrain noise = new Terrain(rand.nextLong());
+        long startTime = System.nanoTime();
+        double[][] terrain = noise.createfinalIsland();
+        System.out.println(System.nanoTime()-startTime);
         Init i = new Init();
         i.init();
 
