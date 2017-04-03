@@ -24,9 +24,7 @@ public enum TerrainRenderer {
 
 	private final ShaderProgram shaderProgram = ShaderProgram.TERRAIN;
 	private GridMeshData gridMeshData; // TerrainLoader.loadGridMesh(TerrainSystem.GRID_WIDTH, TerrainSystem.GRID_DEPTH);
-	private final TerrainTexture texture = new TerrainTexture(
-			TerrainSystem.HEIGHT_MAP_NAME,
-			TerrainSystem.HEIGHT_MAP_NORMAL_MAP_NAME);
+	private TerrainTexture texture;
 
 	private final TextureMap2D testTexture = new TextureMap2D("grass.png",
 			SamplerUniform.TERRAIN_TEST_SAMPLER.getTextureSlot(), false);
@@ -36,10 +34,10 @@ public enum TerrainRenderer {
 	private TerrainRenderer() {
 	} // Private constructor no instance
 
-	public void batchNodes(List<LODNode> nodes, GridMeshData gridMeshData) {
+	public void batchNodes(List<LODNode> nodes, GridMeshData gridMeshData, TerrainTexture texture) {
 		this.nodes = nodes;
 		this.gridMeshData = gridMeshData;
-
+		this.texture = texture;
 	}
 
 	public void render() {
