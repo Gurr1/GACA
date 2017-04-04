@@ -1,7 +1,15 @@
 package hills.engine.loader;
 
+import de.matthiasmann.twl.utils.PNGDecoder;
+import de.matthiasmann.twl.utils.PNGDecoder.Format;
 import hills.engine.texturemap.CubeMap;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL30;
+import org.lwjgl.system.MemoryUtil;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,18 +18,9 @@ import java.nio.IntBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-import org.lwjgl.opengl.GL13;
-import org.lwjgl.opengl.GL30;
-import org.lwjgl.system.MemoryUtil;
-
-import de.matthiasmann.twl.utils.PNGDecoder;
-import de.matthiasmann.twl.utils.PNGDecoder.Format;
-
 public class TextureLoader {
 
-	public static final String DIRECTORY = "/textures/";
+	public static final String DIRECTORY = "src/main/resources/textures/";
 
 	/**
 	 * Mapping of handle loaded from what file.
@@ -54,23 +53,18 @@ public class TextureLoader {
 	 * @return ByteBuffer containing image data in RGBA format. OBS! Will return
 	 *         null if conversion fails.
 	 */
-	public static ByteBuffer PNGToByteBuffer(String path, IntBuffer width,
-			IntBuffer height, boolean flip) {
-		try (InputStream in = TextureLoader.class.getResourceAsStream(DIRECTORY
-				+ path)) {
+	public static ByteBuffer PNGToByteBuffer(String path, IntBuffer width, IntBuffer height, boolean flip) {
+		try (InputStream in = new FileInputStream((DIRECTORY + path))) {
 			PNGDecoder decoder = new PNGDecoder(in);
 			int imageWidth = decoder.getWidth();
 			int imageHeight = decoder.getHeight();
 
 			// Check if image size is power of 2
-			if ((imageWidth & (imageWidth - 1)) != 0
-					|| (imageHeight & (imageHeight - 1)) != 0)
-				System.err.println("Warning! Image (" + path
-						+ ") size not power of 2!");
+			if ((imageWidth & (imageWidth - 1)) != 0 || (imageHeight & (imageHeight - 1)) != 0)
+				System.err.println("Warning! Image (" + path + ") size not power of 2!");
 
 			// Add image data to buffer
-			ByteBuffer buffer = MemoryUtil.memAlloc(4 * imageWidth
-					* imageHeight);
+			ByteBuffer buffer = MemoryUtil.memAlloc(4 * imageWidth * imageHeight);
 			decoder.decode(buffer, imageWidth * 4, Format.RGBA);
 			buffer.flip();
 
@@ -151,9 +145,7 @@ public class TextureLoader {
 		int handle = GL11.glGenTextures();
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, handle);
-		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, w.get(),
-				h.get(), 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE,
-				textureByteBuffer);
+		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, w.get(), h.get(), 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, textureByteBuffer);
 
 		// Free allocated buffer
 		MemoryUtil.memFree(textureByteBuffer);
@@ -161,10 +153,8 @@ public class TextureLoader {
 		// Set parameters
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, WRAP_S);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, WRAP_T);
-		GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER,
-				MAG);
-		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER,
-				MIN);
+		GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, MAG);
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, MIN);
 
 		// Generate mipmaps
 		GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);
@@ -306,7 +296,7 @@ public class TextureLoader {
 	/**
 	 * Will delete texture.
 	 * 
-	 * @param name
+	 * @param handle
 	 *            - Name of texture file.
 	 */
 	public static void freeTexture(int handle) throws Exception {

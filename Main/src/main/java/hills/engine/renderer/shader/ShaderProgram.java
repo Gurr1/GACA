@@ -40,15 +40,12 @@ public enum ShaderProgram {
 	 */
 	private final int handle;
 
-	private ShaderProgram(String vertexPath, String fragmentPath,
-			String geometryPath, String tessellationPath) {
+	private ShaderProgram(String vertexPath, String fragmentPath, String geometryPath, String tessellationPath) {
 		if (vertexPath == null || fragmentPath == null)
-			throw new IllegalArgumentException(
-					"A shader program must have a vertex and fragment shader!");
+			throw new IllegalArgumentException("A shader program must have a vertex and fragment shader!");
 
 		int vertexShader = ShaderLoader.load(vertexPath, GL20.GL_VERTEX_SHADER);
-		int fragmentShader = ShaderLoader.load(fragmentPath,
-				GL20.GL_FRAGMENT_SHADER);
+		int fragmentShader = ShaderLoader.load(fragmentPath, GL20.GL_FRAGMENT_SHADER);
 		int geometryShader = 0;
 		int tessellationShader = 0;
 

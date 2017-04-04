@@ -1,23 +1,16 @@
 package hills.Anders;
 
-import com.sun.istack.internal.Nullable;
 import hills.Gurra.NoiseMapGenerator;
 import lombok.Setter;
 
-import java.awt.Color;
-import java.awt.Point;
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import javax.imageio.ImageIO;
-
-import lombok.Setter;
-
-import com.sun.istack.internal.Nullable;
 
 /**
  * Created by Anders on 2017-03-21.
@@ -162,7 +155,7 @@ public class ObjectPlacer {
     }
 
 
-    private double setToInterval(double fitToInterval, @Nullable Double max, @Nullable Double min) {
+    private double setToInterval(double fitToInterval, Double max, Double min) {
         //sets a double to fit in the specified interval, if max or min is null they will be ignored
         if (min != null && fitToInterval < min) {
             return min;

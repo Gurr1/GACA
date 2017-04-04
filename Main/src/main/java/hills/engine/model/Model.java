@@ -12,9 +12,9 @@ public class Model {
 	}
 	
 	public boolean contains(Mesh mesh){
-	//	for(Mesh m: meshes)
-		//	if(mesh.getId() == m.getId())
-		//		return true;
+		for(Mesh m: meshes)
+			if(mesh.getId() == m.getId())
+				return true;
 		
 		return false;
 	}

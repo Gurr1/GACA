@@ -19,7 +19,7 @@ import java.nio.ByteBuffer;
 
 public class TerrainSystem extends EngineSystem {
 
-	public static final String HEIGHT_MAP_DIRECTORY = "/textures/";
+	public static final String HEIGHT_MAP_DIRECTORY = "src/main/resources/textures/";
 	public static final String HEIGHT_MAP_NAME = "finalNoise.png";
 	public static final String HEIGHT_MAP_NORMAL_MAP_NAME = "normal.png";
 
@@ -57,8 +57,9 @@ public class TerrainSystem extends EngineSystem {
 		
 		// Get height map image
 		try {
-			heightMap = ImageIO.read(new File(TerrainSystem.class.getResource(HEIGHT_MAP_DIRECTORY + HEIGHT_MAP_NAME).getPath()));
-			heightNormalMap = ImageIO.read(new File(TerrainSystem.class.getResource(HEIGHT_MAP_DIRECTORY + HEIGHT_MAP_NORMAL_MAP_NAME).getPath()));
+			heightMap = ImageIO.read(new File(HEIGHT_MAP_DIRECTORY + HEIGHT_MAP_NAME));
+
+			heightNormalMap = ImageIO.read(new File(HEIGHT_MAP_DIRECTORY + HEIGHT_MAP_NORMAL_MAP_NAME));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

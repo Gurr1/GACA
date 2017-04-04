@@ -26,8 +26,7 @@ public enum TerrainRenderer {
 	private GridMeshData gridMeshData; // TerrainLoader.loadGridMesh(TerrainSystem.GRID_WIDTH, TerrainSystem.GRID_DEPTH);
 	private TerrainTexture texture;
 
-	private final TextureMap2D testTexture = new TextureMap2D("grass.png",
-			SamplerUniform.TERRAIN_TEST_SAMPLER.getTextureSlot(), false);
+	private final TextureMap2D testTexture = new TextureMap2D("grass.png", SamplerUniform.TERRAIN_TEST_SAMPLER.getTextureSlot(), false);
 
 	private List<LODNode> nodes;
 

@@ -9,6 +9,7 @@ import hills.engine.loader.TextureLoader;
 import hills.engine.renderer.ModelRenderer;
 import hills.engine.renderer.SkyBoxRenderer;
 import hills.engine.renderer.TerrainRenderer;
+import hills.engine.renderer.WaterRenderer;
 import hills.engine.renderer.shader.ShaderProgram;
 import hills.engine.system.EngineSystem;
 
@@ -103,7 +104,7 @@ public final class GameLoop {
 
 		FrameBuffer.clear(true, true, false); // Clear the screen
 
-		// WaterRenderer.INSTANCE.render(); // Draw water planes
+		WaterRenderer.INSTANCE.render(); // Draw water planes
 		TerrainRenderer.INSTANCE.render(); // Draw batched terrain nodes
 		ModelRenderer.render(); // Draw all batched models
 		SkyBoxRenderer.INSTANCE.render(); // Draw the Sky box

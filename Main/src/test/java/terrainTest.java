@@ -21,7 +21,6 @@ public class terrainTest {
 		assertNotNull(t);
 	}
 
-
     @Test
     public void testCreateHeightMap(){
         int[][] terrain = t.createHeightMap();
