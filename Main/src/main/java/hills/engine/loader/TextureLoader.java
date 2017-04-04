@@ -54,7 +54,6 @@ public class TextureLoader {
 	 *         null if conversion fails.
 	 */
 	public static ByteBuffer PNGToByteBuffer(String path, IntBuffer width, IntBuffer height, boolean flip) {
-		System.out.println(DIRECTORY + path);
 		try (InputStream in = new FileInputStream((DIRECTORY + path))) {
 			PNGDecoder decoder = new PNGDecoder(in);
 			int imageWidth = decoder.getWidth();
