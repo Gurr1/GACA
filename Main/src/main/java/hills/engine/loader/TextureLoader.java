@@ -1,7 +1,15 @@
 package hills.engine.loader;
 
+import de.matthiasmann.twl.utils.PNGDecoder;
+import de.matthiasmann.twl.utils.PNGDecoder.Format;
 import hills.engine.texturemap.CubeMap;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL30;
+import org.lwjgl.system.MemoryUtil;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,18 +18,9 @@ import java.nio.IntBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-import org.lwjgl.opengl.GL13;
-import org.lwjgl.opengl.GL30;
-import org.lwjgl.system.MemoryUtil;
-
-import de.matthiasmann.twl.utils.PNGDecoder;
-import de.matthiasmann.twl.utils.PNGDecoder.Format;
-
 public class TextureLoader {
 
-	public static final String DIRECTORY = "/textures/";
+	public static final String DIRECTORY = "src/main/resources/textures/";
 
 	/**
 	 * Mapping of handle loaded from what file.
@@ -55,7 +54,8 @@ public class TextureLoader {
 	 *         null if conversion fails.
 	 */
 	public static ByteBuffer PNGToByteBuffer(String path, IntBuffer width, IntBuffer height, boolean flip) {
-		try (InputStream in = TextureLoader.class.getResourceAsStream(DIRECTORY + path)) {
+		System.out.println(DIRECTORY + path);
+		try (InputStream in = new FileInputStream((DIRECTORY + path))) {
 			PNGDecoder decoder = new PNGDecoder(in);
 			int imageWidth = decoder.getWidth();
 			int imageHeight = decoder.getHeight();
@@ -297,7 +297,7 @@ public class TextureLoader {
 	/**
 	 * Will delete texture.
 	 * 
-	 * @param name
+	 * @param handle
 	 *            - Name of texture file.
 	 */
 	public static void freeTexture(int handle) throws Exception {
