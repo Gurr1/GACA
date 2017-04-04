@@ -1,9 +1,7 @@
 package hills.engine.system.terrain;
 
 import hills.engine.loader.TerrainLoader;
-import hills.engine.loader.TextureLoader;
 import hills.engine.math.STD140Formatable;
-import hills.engine.math.Vec3;
 import hills.engine.renderer.TerrainRenderer;
 import hills.engine.renderer.shader.ShaderProgram;
 import hills.engine.system.EngineSystem;
@@ -11,23 +9,19 @@ import hills.engine.system.camera.CameraSystem;
 import hills.engine.system.terrain.mesh.GridMeshData;
 import hills.engine.system.terrain.quadtree.LODTree;
 import hills.engine.texturemap.TerrainTexture;
+import org.lwjgl.system.MemoryStack;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.ByteBuffer;
-
-import javax.imageio.ImageIO;
-import javax.imageio.stream.ImageInputStream;
-
-import org.lwjgl.system.MemoryStack;
 
 public class TerrainSystem extends EngineSystem {
 
-	public static final String HEIGHT_MAP_DIRECTORY = "/textures/";
-	public static final String HEIGHT_MAP_NAME = "height_map_test_3.png";
-	public static final String HEIGHT_MAP_NORMAL_MAP_NAME = "height_map_test_3_normal_smooth.png";
+	public static final String HEIGHT_MAP_DIRECTORY = "src/main/resources/textures/";
+	public static final String HEIGHT_MAP_NAME = "finalNoise.png";
+	public static final String HEIGHT_MAP_NORMAL_MAP_NAME = "normal.png";
 
 	public static final float MORPH_FACTOR = 0.8f;
 
@@ -63,15 +57,9 @@ public class TerrainSystem extends EngineSystem {
 		
 		// Get height map image
 		try {
-			InputStream heightMapImageInput = TerrainSystem.class.getResourceAsStream(HEIGHT_MAP_DIRECTORY + HEIGHT_MAP_NAME);//ImageIO.createImageInputStream(new File(TerrainSystem.class.getResource(HEIGHT_MAP_DIRECTORY + HEIGHT_MAP_NAME).getFile()));
-			heightMap = ImageIO.read(heightMapImageInput);
-			if(heightMap == null)
-				heightMapImageInput.close();
-			
-			InputStream heightNormalMapImageInput = TerrainSystem.class.getResourceAsStream(HEIGHT_MAP_DIRECTORY + HEIGHT_MAP_NORMAL_MAP_NAME);//ImageIO.createImageInputStream(new File(TerrainSystem.class.getResource(HEIGHT_MAP_DIRECTORY + HEIGHT_MAP_NORMAL_MAP_NAME).getFile()));
-			heightNormalMap = ImageIO.read(heightNormalMapImageInput);
-			if(heightNormalMap == null)
-				heightNormalMapImageInput.close();
+			heightMap = ImageIO.read(new File(HEIGHT_MAP_DIRECTORY + HEIGHT_MAP_NAME));
+
+			heightNormalMap = ImageIO.read(new File(HEIGHT_MAP_DIRECTORY + HEIGHT_MAP_NORMAL_MAP_NAME));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

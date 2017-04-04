@@ -1,11 +1,11 @@
-import static junit.framework.TestCase.assertNotNull;
-import static junit.framework.TestCase.assertTrue;
 import hills.Gurra.Terrain;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.Random;
 
-import org.junit.Before;
-import org.junit.Test;
+import static junit.framework.TestCase.assertNotNull;
+import static junit.framework.TestCase.assertTrue;
 
 /**
  * Created by gustav on 2017-03-28.
@@ -21,12 +21,6 @@ public class terrainTest {
 		assertNotNull(t);
 	}
 
-    @Before
-    public void testTerrain(){
-        Random random = new Random();
-        t = new Terrain(1);
-        assertNotNull(t);
-    }
     @Test
     public void testCreateHeightMap(){
         int[][] terrain = t.createHeightMap();
