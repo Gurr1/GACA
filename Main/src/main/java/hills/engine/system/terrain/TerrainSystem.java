@@ -4,7 +4,7 @@ import hills.engine.math.STD140Formatable;
 import hills.engine.renderer.TerrainRenderer;
 import hills.engine.renderer.shader.ShaderProgram;
 import hills.engine.system.EngineSystem;
-import hills.engine.system.camera.CameraSystem;
+import hills.Gurra.View.CameraSystem;
 import hills.engine.system.terrain.quadtree.LODNode;
 import org.lwjgl.system.MemoryStack;
 

@@ -1,8 +1,8 @@
 package hills.engine.system.debug;
 
+import hills.Gurra.Controllers.PlayerControllerKeyboard;
 import hills.engine.display.Display;
 import hills.engine.display.FrameBuffer;
-import hills.engine.input.Keyboard;
 import hills.engine.system.EngineSystem;
 
 import org.lwjgl.glfw.GLFW;
@@ -46,10 +46,10 @@ public final class DebugSystem extends EngineSystem {
 	}
 	
 	protected void update(double delta) {
-		if(Keyboard.isPressed(GLFW.GLFW_KEY_F1))
+		if(PlayerControllerKeyboard.isPressed(GLFW.GLFW_KEY_F1))
 			setWireframeMode(!wireframeMode);
 		
-		if(Keyboard.isPressed(GLFW.GLFW_KEY_F2))
+		if(PlayerControllerKeyboard.isPressed(GLFW.GLFW_KEY_F2))
 			setCullingMode(!cullingMode);
 		
 		if(fpsDebugMode)

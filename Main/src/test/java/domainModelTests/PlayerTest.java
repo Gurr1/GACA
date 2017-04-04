@@ -50,12 +50,12 @@ public class PlayerTest {
 
     @Test
     public void testPosition(){
-        Vec3 pos = player.getPos();
+        Vec3 pos = player.get3DPos();
         Vec3 diff = new Vec3(1,1,1);
         player.updatePosition(diff);
-        Assert.assertEquals(diff,player.getPos());
-        player.setPos(pos);
-        Assert.assertEquals(pos,player.getPos());
+        Assert.assertEquals(diff,player.get3DPos());
+        player.setPosition(pos);
+        Assert.assertEquals(pos,player.get3DPos());
     }
 
 }

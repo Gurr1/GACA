@@ -199,7 +199,7 @@ public class Terrain {
                 Vec3 normal = td.getNormal();
                 datas[x][y] = td;
                 normals.add(normal);
-                int[]rgb = {(int) (normal.getX()*255), (int) (normal.getY()*255), (int) (normal.getZ()*255)};
+                int[]rgb = {(int) (normal.getX()*255), (int) (normal.getZ()*255), (int) (normal.getY()*255)};
                 image.getRaster().setPixel(x,y,rgb);
             }
         }

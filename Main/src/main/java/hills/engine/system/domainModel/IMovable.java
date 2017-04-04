@@ -12,7 +12,7 @@ public interface IMovable {
      * adds the variable diff to the current position
      * @param diff the change from the current position
      */
-    void updatePosition(Vec3 diff);
+    void updatePosition();
 
     /**
      * sets the objects position to that of the parameter

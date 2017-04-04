@@ -1,9 +1,9 @@
 package hills.engine;
 
+import hills.Gurra.Controllers.PlayerControllerMouse;
 import hills.engine.display.Display;
 import hills.engine.display.FrameBuffer;
-import hills.engine.input.Keyboard;
-import hills.engine.input.Mouse;
+import hills.Gurra.Controllers.PlayerControllerKeyboard;
 import hills.engine.loader.ModelLoader;
 import hills.engine.loader.TextureLoader;
 import hills.engine.renderer.ModelRenderer;
@@ -15,6 +15,7 @@ import hills.engine.system.EngineSystem;
 import java.util.ArrayList;
 import java.util.List;
 
+import hills.engine.system.domainModel.World;
 import org.lwjgl.glfw.GLFW;
 
 public final class GameLoop {
@@ -29,7 +30,7 @@ public final class GameLoop {
 	 * OBS! Should not be modified! Is filled automatically when a new EngineSystem is created.
 	 */
 	private static List<EngineSystem> systems = new ArrayList<EngineSystem>();
-	
+	private static World world;
 	private GameLoop(){} // Private constructor = no instances
 	
 	/**
@@ -38,7 +39,7 @@ public final class GameLoop {
 	public static void start() {
 		if(isRunning)
 			return;
-		
+		world = World.getInstance();
 		isRunning = true;
 		run(); // Run engine
 	}
@@ -69,11 +70,13 @@ public final class GameLoop {
 			update(delta); 					// Update
 			render();      					// Render
 			
-			Keyboard.update(); 				// Update keyboard input
-			Mouse.update();    				// Update mouse input
+			PlayerControllerKeyboard.update(); 				// Update keyboard input
+			PlayerControllerMouse.update();    				// Update mouse input
+			world.updateWorld();
 			
 			if(Display.hasBeenCreated())
 				Display.update();     		// Update display
+
 		}
 		
 		cleanUp(); // Cleanup data

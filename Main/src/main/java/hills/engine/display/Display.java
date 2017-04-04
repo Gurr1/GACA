@@ -34,8 +34,9 @@ import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
 import static org.lwjgl.glfw.GLFW.glfwSwapInterval;
 import static org.lwjgl.glfw.GLFW.glfwTerminate;
 import static org.lwjgl.system.MemoryUtil.NULL;
-import hills.engine.input.Keyboard;
-import hills.engine.input.Mouse;
+
+import hills.Gurra.Controllers.PlayerControllerMouse;
+import hills.Gurra.Controllers.PlayerControllerKeyboard;
 
 import java.nio.IntBuffer;
 
@@ -100,7 +101,7 @@ public final class Display {
 	// State variables
 	private static boolean created = false;       // If window has been successfully created
 	private static boolean vsync = false;         // VSync default off
-	private static boolean mouseCaptured = false; // Mouse captured default false
+	private static boolean mouseCaptured = false; // PlayerControllerMouse captured default false
 	private static String title;                  // Title of window
 	
 	private Display(){} // Private constructor = no instances
@@ -119,7 +120,7 @@ public final class Display {
 	}
 	
 	/**
-	 * Creates new GLFW window and sets up input handling with Keyboard and Mouse classes <br>
+	 * Creates new GLFW window and sets up input handling with PlayerControllerKeyboard and PlayerControllerMouse classes <br>
 	 * OBS! Error callback should be set before calling this method<br>
 	 * OBS! This method should only be called once unless GLFW is terminated.
 	 * using setErrorCallback(GLFWErrorCallback callback).
@@ -173,25 +174,25 @@ public final class Display {
 		// Setup input callback's
 		setKeyCallback(new GLFWKeyCallback(){
 			public void invoke(long window, int key, int scancode, int action, int mods) {
-				Keyboard.keyEvent(key, scancode, action, mods);
+				PlayerControllerKeyboard.keyEvent(key, scancode, action, mods);
 			}
 		});
 		
 		setMouseButtonCallback(new GLFWMouseButtonCallback(){
 			public void invoke(long window, int button, int action, int mods) {
-				Mouse.buttonEvent(button, action, mods);
+				PlayerControllerMouse.buttonEvent(button, action, mods);
 			}
 		});
 		
 		setCursorPosCallback(new GLFWCursorPosCallback(){
 			public void invoke(long window, double xpos, double ypos) {
-				Mouse.positionEvent(xpos, ypos);
+				PlayerControllerMouse.positionEvent(xpos, ypos);
 			}
 		});
 		
 		setScrollCallback(new GLFWScrollCallback(){
 			public void invoke(long window, double xoffset, double yoffset) {
-				Mouse.scrollEvent(xoffset, yoffset);
+				PlayerControllerMouse.scrollEvent(xoffset, yoffset);
 			}
 		});
 		

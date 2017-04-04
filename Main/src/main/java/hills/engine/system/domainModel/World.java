@@ -9,17 +9,16 @@ import java.util.List;
 /**
  * Created by Deltagare on 2017-03-30.
  */
-public class World {
+public class World implements OnMoveListener{
     private static World world;
     public static World getInstance() {
-        return world;
+            return world;
     }
 
-    public void setPlayerPosition(Vec3 position) {
-        float z = storedVectors[(int) position.getX()][(int) position.getZ()].getPosition().getY();
-        position = new Vec3(position.getX(), position.getZ(), z);
-        player.setPos(position);
-        System.out.println(position);
+    private void setPlayerPosition(Vec3 position) {
+        Vec3 terrain = getHeight((int)position.getX(),(int)position.getZ());
+        player.updatePosition(position);
+        System.out.println(terrain);
     }
 
     enum Axis{
@@ -30,16 +29,20 @@ public class World {
     private final int HEIGHT = 2048;
     private final int WIDTH = 2048;
     List<Coin> coins;
-    Vec3 pos;
     TerrainData[][] storedVectors = new TerrainData[WIDTH][HEIGHT];
 
+
     public World(TerrainData[][] heights) {
-        world = this;
-        player = new Player(new Vec3(100, 100, 0)); // TODO: replace z with get height from heightmap
+        player = new Player(new Vec3(0, 0, 0)); // TODO: replace z with get height from heightmap
         coins = getCoins(10);
         storedVectors = heights;
+        world = this;
+        player.addPositionObserver(this);
     }
 
+    public void updateWorld(){
+        player.update();
+    }
     private List<Coin> getCoins(int nrOfCoins) { // TODO: add feature
         return new ArrayList<>();
     }
@@ -52,7 +55,22 @@ public class World {
         }
         return isColiding;
     }
+
     public Vec3 getHeight(int x, int y){
         return storedVectors[x][y].getPosition();
+    }
+
+
+    @Override
+    public void moving() {
+        double x = player.get3DPos().getX();
+        double z = player.get3DPos().getZ();
+        Vec3 newPos = getGroundPosition(x, z);
+        System.out.println(newPos);
+        player.setPosition(newPos);
+    }
+
+    private Vec3 getGroundPosition(double x, double z) {
+        return storedVectors[(int) x][(int) z].getPosition();
     }
 }

@@ -1,15 +1,24 @@
 package hills.engine.system.domainModel;
 
+import hills.Gurra.Controllers.PlayerControllerKeyboard;
+import hills.Gurra.Models.CameraModel;
+import hills.Gurra.Models.Direction;
+import hills.Gurra.View.CameraSystem;
+import hills.engine.display.Display;
 import hills.engine.math.Vec2;
 import hills.engine.math.Vec3;
 import hills.engine.math.shape.Sphere;
 import lombok.Getter;
 import lombok.Setter;
+import org.lwjgl.glfw.GLFW;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Anders on 2017-03-30.
  */
-public class Player implements ICollidable, IMovable {
+public class Player implements ICollidable, IMovable {          // Should take input from the controllers. Camera should then be sent that information and act upon it.
 
     /**
      * {@inheritDoc}
@@ -19,18 +28,26 @@ public class Player implements ICollidable, IMovable {
     @Getter private float pitch = 0;
     @Getter private float yaw = 0;
     @Setter private float radius = 1;
+    @Getter private Vec3 Velocity;
+    private int coinCollectedAmount;
+    private int bugsCollectedAmount;
+    private CameraModel camera;
+    private List<OnMoveListener> moveListeners = new ArrayList<>();
+    private List<Direction> directions = new ArrayList<>();
 
     //<editor-fold desc="Constructors">
 
     public Player(Vec3 pos, float radius) {
         this.pos = pos;
         this.radius = radius;
+        camera = CameraModel.getInstance();
     }
 
     public Player(Vec3 pos, float pitch, float yaw) {
         this.pos = pos;
         this.yaw = yaw;
         this.pitch = pitch;
+        camera = CameraModel.getInstance();
     }
 
     public Player(Vec3 pos) {
@@ -56,9 +73,10 @@ public class Player implements ICollidable, IMovable {
         this.yaw = fixDegrees(diffYaw + this.yaw);
     }
 
+
     @Override
-    public void updatePosition(Vec3 pos) {
-        this.pos = this.pos.add(pos);
+    public void updatePosition() {
+        notifyListeners();
     }
 
     /**
@@ -79,10 +97,13 @@ public class Player implements ICollidable, IMovable {
 
     public void setPitch(float pitch) {
         this.pitch = fixDegrees(pitch);
+
     }
 
     @Override
-    public void setPosition(Vec3 pos) {this.pos = pos;}
+    public void setPosition(Vec3 pos) {
+        this.pos = pos;
+    }
     //</editor-fold>
 
     private float fixDegrees(float degree) {
@@ -108,4 +129,31 @@ public class Player implements ICollidable, IMovable {
     public Vec3 get3DPos() {
         return pos;
     }
+    public void addPositionObserver(OnMoveListener newListener){
+        moveListeners.add(newListener);
+    }
+    private void notifyListeners(){
+        for(OnMoveListener listener : moveListeners){
+            listener.moving();
+        }
+    }
+    public void update(){       // This should maybe be reversed, so Keyboard sends a prompt that a key has been pressed.
+        directions = PlayerControllerKeyboard.getDirectionsSinceLastCycle();
+        for(Direction direction : directions){
+            switch (direction){
+                case LEFT:
+                    return;
+                case NONE:
+                    return;
+                case RIGHT:
+                    return;
+                case FORWARD:
+                    return;
+                case BACKWARD:
+                    return;
+            }
+            // Act on each of the directions.
+        }
+    }
+
 }

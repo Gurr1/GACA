@@ -1,11 +1,12 @@
 package hills;
 
+import hills.Gurra.Models.CameraModel;
 import hills.Gurra.Terrain;
 import hills.engine.GameLoop;
 import hills.engine.display.AspectRatios;
 import hills.engine.display.Display;
 import hills.engine.display.FrameBuffer;
-import hills.engine.system.camera.CameraSystem;
+import hills.Gurra.View.CameraSystem;
 import hills.engine.system.debug.DebugSystem;
 import hills.engine.system.domainModel.World;
 import hills.engine.system.game.GameSystem;
@@ -40,13 +41,6 @@ public class Init {
 	// Absolute first thing that gets done. (Hacky?)
 	// Initialize GLFW, OpenGL and create a new window.
 	// This allows OpenGL calls when initializing static final variables such as shader programs.
-	static {
-		System.setProperty("org.lwjgl.util.Debug", "true");
-		System.setProperty("org.lwjgl.util.DebugAllocator", "true");
-		
-		Display.setErrorCallback(GLFWErrorCallback.createPrint(System.err));
-		Display.create(WIDTH, HEIGHT, TITLE);
-	}
 	
 	public void init(){
 		//TerrainNormalMapCreator.createSmoothNormals("height_map_test_3.png");
@@ -55,6 +49,12 @@ public class Init {
 		World w = new World(noise.createfinalIsland());
 
 		//TerrainNormalMapCreator.createFlatNormals("height_map_test_3.png");
+
+		System.setProperty("org.lwjgl.util.Debug", "true");
+		System.setProperty("org.lwjgl.util.DebugAllocator", "true");
+
+		Display.setErrorCallback(GLFWErrorCallback.createPrint(System.err));
+		Display.create(WIDTH, HEIGHT, TITLE);
 
 		FrameBuffer.setClearColor(0.55f, 0.55f, 1.0f, 1.0f);	// Set clear color
 		FrameBuffer.enableDepthTesting(0.0f, 1.0f);				// Enable depth testing
@@ -65,8 +65,8 @@ public class Init {
 		DebugSystem.createInstance();						// Create DebugSystem instance
 		DebugSystem.getInstance().setFPSDebugMode(true);	// Activate FPS debug mode
 		
-		CameraSystem.createInstance(1.0f, false, 0.0f);																	// Create CameraSystem instance
-		CameraSystem cameraSystem = CameraSystem.getInstance(); 														// Get the CameraSystem instance
+		CameraModel.createInstance(1.0f, false, 0.0f);																	// Create CameraSystem instance
+		CameraModel cameraSystem = CameraModel.getInstance(); 														// Get the CameraSystem instance
 		cameraSystem.updatePerspective(0.1f, 3000.0f, (float) Display.getWidth() / (float) Display.getHeight(), 70.0f);	// Update the perspective matrix
 		initDisplayCallbacks();
 		
@@ -83,7 +83,7 @@ public class Init {
 	 * Initialize GLFW callback methods.
 	 */
 	public void initDisplayCallbacks(){
-		CameraSystem cameraSystem = CameraSystem.getInstance();
+		CameraModel cameraSystem = CameraModel.getInstance();
 		
 		// Window close callback
 		Display.setWindowCloseCallback(new GLFWWindowCloseCallback(){
