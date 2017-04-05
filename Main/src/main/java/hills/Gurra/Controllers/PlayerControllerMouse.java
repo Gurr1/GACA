@@ -3,6 +3,9 @@ package hills.Gurra.Controllers;
 import hills.engine.display.Display;
 import org.lwjgl.glfw.GLFW;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public final class PlayerControllerMouse {
 
 	/**
@@ -45,6 +48,8 @@ public final class PlayerControllerMouse {
 	 */
 	private static float scrollVelocity;
 
+	private static List<MouseListener> mouseListeners = new ArrayList<>();
+
 	private PlayerControllerMouse(){} // Private constructor no instances
 
 	/**
@@ -64,7 +69,6 @@ public final class PlayerControllerMouse {
 			released[button] = true;
 			break;
 		}
-		input();
 	}
 
 	/**
@@ -79,17 +83,22 @@ public final class PlayerControllerMouse {
 
 		xPosition = (float) xpos;
 		yPosition = (float) ypos;
+		input(xVelocity, yVelocity);
 	}
-	private static void input(){
-			if(Display.isMouseCaptured()) {
-		float yaw = -PlayerControllerMouse.getXVelocity() * 0.3f;
-		float pitch = -PlayerControllerMouse.getYVelocity() * 0.3f;
-
-	//	if (yaw != 0.0f)
-	//		rotate(yaw, 0.0f, 1.0f, 0.0f); // ROTATE AROUND WORLD UP-AXIS
-
-	//	if (pitch != 0.0f)
+	private static void input(float xVelocity, float yVelocity) {
+		if (Display.isMouseCaptured()) {
+			float yaw = xVelocity * 0.0001f;
+			float pitch = yVelocity * 0.001f;
+			if (!(yaw == 0.0f && pitch == 0.0f)) {
+				for(MouseListener listener : mouseListeners){
+					listener.mouseMoved(pitch, yaw);
+				}
+			}
 		}
+	}
+
+	public static void addListener(MouseListener listener){
+		mouseListeners.add(listener);
 	}
 
 	/**

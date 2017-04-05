@@ -7,6 +7,7 @@ import hills.engine.math.Vec3;
 import hills.engine.math.shape.Frustrum;
 import hills.engine.renderer.shader.ShaderProgram;
 import hills.engine.system.EngineSystem;
+import hills.engine.system.domainModel.World;
 import lombok.Getter;
 import lombok.Setter;
 import org.lwjgl.system.MemoryStack;
@@ -83,13 +84,6 @@ public class CameraModel extends EngineSystem{
     private static CameraModel camera;
     private CameraSystem cameraSystem;
 
-
-     @Setter private Commands direction;
-     private float medialSpeed;
-     private float lateralSpeed;
-    private Commands medial;
-    private Commands lateral;
-
     /**
      * Creates the singleton instance of CameraSystem.
      * @return False if an instance has already been created.
@@ -157,6 +151,9 @@ public class CameraModel extends EngineSystem{
         cameraSystem.update(position, forward, up, right);
         frustrum = new Frustrum(near, far, aspect, FOV, position, forward, up, right, false);
         toUpdate = false;
+        System.out.println(forward);
+        System.out.println(right);
+        System.out.println(up);
     }
 
     public void updatePerspective(float near, float far, float aspect, float FOV) {
@@ -212,4 +209,9 @@ public class CameraModel extends EngineSystem{
 
     }
 
+    public void setParams(Vec3 position, float pitch, float yaw) {
+        setPosition(position);
+        setRotate(pitch, 0.0f, 1.0f, 0.0f);
+        setYaw(yaw);
+    }
 }

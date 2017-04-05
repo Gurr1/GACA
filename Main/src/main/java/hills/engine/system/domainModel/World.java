@@ -1,5 +1,6 @@
 package hills.engine.system.domainModel;
 
+import hills.Gurra.Models.CameraModel;
 import hills.Gurra.TerrainData;
 import hills.engine.math.Vec3;
 
@@ -33,6 +34,7 @@ public class World implements OnMoveListener{
     List<Coin> coins;
     TerrainData[][] storedVectors = new TerrainData[WIDTH][HEIGHT];
     double delta;
+    CameraModel cameraModel;
 
 
     private World(TerrainData[][] heights) {
@@ -41,10 +43,15 @@ public class World implements OnMoveListener{
         storedVectors = heights;
         world = this;
         player.addPositionObserver(this);
+        cameraModel = CameraModel.getInstance();
     }
 
     public void updateWorld(double delta){
         this.delta = delta;
+        if(player.isToUpdate()) {
+            cameraModel.setParams(player.get3DPos(), player.getPitch(), player.getYaw());
+        }
+        player.setToUpdate(false);
     }
     private List<Coin> getCoins(int nrOfCoins) { // TODO: add feature
         return new ArrayList<>();
@@ -70,13 +77,14 @@ public class World implements OnMoveListener{
                 * (float) delta)));
         player.setPosition(player.get3DPos().add(player.getVelocity().mul(speedMultiplier
                 * (float) delta)));
-        double x = player.get3DPos().getX();
-        double z = player.get3DPos().getZ();
-        Vec3 newPos = getGroundPosition(x, z);
-        player.setPosition(newPos);
+        System.out.println(player.get3DPos());
+        float x = player.get3DPos().getX();
+        float z = player.get3DPos().getZ();
+        float newY = getGroundPosition(x, z);
+        player.setPosition(new Vec3(x,newY, z));
     }
 
-    private Vec3 getGroundPosition(double x, double z) {
-        return storedVectors[(int) x][(int) z].getPosition();
+    private float getGroundPosition(double x, double z) {
+        return storedVectors[(int) x][(int) z].getPosition().getY();
     }
 }

@@ -1,7 +1,9 @@
 package hills.engine.system.domainModel;
 
 import hills.Gurra.Controllers.KeyboardListener;
+import hills.Gurra.Controllers.MouseListener;
 import hills.Gurra.Controllers.PlayerControllerKeyboard;
+import hills.Gurra.Controllers.PlayerControllerMouse;
 import hills.Gurra.Models.CameraModel;
 import hills.Gurra.Models.Commands;
 import hills.engine.math.Vec2;
@@ -16,7 +18,7 @@ import java.util.List;
 /**
  * Created by Anders on 2017-03-30.
  */
-public class Player implements ICollidable, IMovable, KeyboardListener{
+public class Player implements ICollidable, IMovable, KeyboardListener, MouseListener {
     /**
      * {@inheritDoc}
      */
@@ -28,11 +30,10 @@ public class Player implements ICollidable, IMovable, KeyboardListener{
     @Getter private Vec3 velocity;
     private int coinCollectedAmount;
     private int bugsCollectedAmount;
-    private CameraModel camera;
     private List<OnMoveListener> moveListeners = new ArrayList<>();
     private List<Commands> directions = new ArrayList<>();
-
     private Vec3 forward;
+    @Getter @Setter private boolean toUpdate;
 
     /**
      * Camera up direction.
@@ -49,18 +50,17 @@ public class Player implements ICollidable, IMovable, KeyboardListener{
     public Player(Vec3 pos, float radius) {
         this.pos = pos;
         this.radius = radius;
-        camera = CameraModel.getInstance();
     }
 
     public Player(Vec3 pos, float pitch, float yaw) {
         this.pos = pos;
         this.yaw = yaw;
         this.pitch = pitch;
-        camera = CameraModel.getInstance();
     }
 
     public Player(Vec3 pos) {
         PlayerControllerKeyboard.addListener(this);
+        PlayerControllerMouse.addListener(this);
         this.pos = pos;
     }
     //</editor-fold>
@@ -73,7 +73,6 @@ public class Player implements ICollidable, IMovable, KeyboardListener{
      */
     public void updatePitch(float diffPitch) {
         this.pitch = fixDegrees(diffPitch + this.pitch);
-        camera.setPitch(this.pitch);
     }
 
     /**
@@ -82,14 +81,12 @@ public class Player implements ICollidable, IMovable, KeyboardListener{
      */
     public void updateYaw(float diffYaw) {
         this.yaw = fixDegrees(diffYaw + this.yaw);
-        camera.setYaw(this.yaw);
     }
 
 
     @Override
     public void updatePosition() {
         notifyListeners();
-        camera.setPosition(pos);
     }
 
     /**
@@ -181,7 +178,11 @@ public class Player implements ICollidable, IMovable, KeyboardListener{
         }
 
     @Override
-    public void mouseMoved() {
-
+    public void mouseMoved(float dPitch, float dYaw) {
+        updatePitch(dPitch);
+        updateYaw(dYaw);
+        System.out.println(dPitch);
+        System.out.println(dYaw);
+        toUpdate = true;
     }
 }

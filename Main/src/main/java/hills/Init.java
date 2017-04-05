@@ -44,11 +44,10 @@ public class Init {
 	
 	public void init(){
 		//TerrainNormalMapCreator.createSmoothNormals("height_map_test_3.png");
-		Random rand = new Random();
-		Terrain noise = new Terrain(rand.nextLong());
-		World w = World.createInstance(noise.createfinalIsland());
 
 		//TerrainNormalMapCreator.createFlatNormals("height_map_test_3.png");
+		Random rand = new Random();
+		Terrain noise = new Terrain(rand.nextLong());
 
 		System.setProperty("org.lwjgl.util.Debug", "true");
 		System.setProperty("org.lwjgl.util.DebugAllocator", "true");
@@ -64,10 +63,10 @@ public class Init {
 		
 		DebugSystem.createInstance();						// Create DebugSystem instance
 		DebugSystem.getInstance().setFPSDebugMode(true);	// Activate FPS debug mode
-		
-		CameraModel.createInstance(1.0f, false, 0.0f);																	// Create CameraSystem instance
-		CameraModel cameraSystem = CameraModel.getInstance(); 														// Get the CameraSystem instance
-		cameraSystem.updatePerspective(0.1f, 3000.0f, (float) Display.getWidth() / (float) Display.getHeight(), 70.0f);	// Update the perspective matrix
+		CameraModel.createInstance(1.0f, false, 0.0f);
+		World w = World.createInstance(noise.createfinalIsland());//
+		CameraModel cameraModel = CameraModel.getInstance(); 														// Get the CameraSystem instance
+		cameraModel.updatePerspective(0.1f, 3000.0f, (float) Display.getWidth() / (float) Display.getHeight(), 70.0f);	// Update the perspective matrix
 		initDisplayCallbacks();
 		
 		TerrainSystem.createInstance();						// Create TerrainSystem instance
