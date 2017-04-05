@@ -151,9 +151,6 @@ public class CameraModel extends EngineSystem{
         cameraSystem.update(position, forward, up, right);
         frustrum = new Frustrum(near, far, aspect, FOV, position, forward, up, right, false);
         toUpdate = false;
-        System.out.println(forward);
-        System.out.println(right);
-        System.out.println(up);
     }
 
     public void updatePerspective(float near, float far, float aspect, float FOV) {
@@ -165,9 +162,22 @@ public class CameraModel extends EngineSystem{
         toUpdate = true;
     }
 
+    /**
+     * Rotate camera along cameras right axis.
+     * @param angle - Degrees to rotate.
+
+     * Rotate camera along axis x, y, z.
+     * @param angle - degrees to rotate.
+     * @param x - X component of axis to rotate around.
+     * @param y - Y component of axis to rotate around.
+     * @param z - Z component of axis to rotate around.
+     */
     public void setRotate(float angle, float x, float y, float z){
         setRotate(angle, new Vec3(x, y, z));
     }
+
+
+
 
     private void setRotate(float angle, Vec3 axis){
         Quaternion rotQuat = new Quaternion(axis, angle);
@@ -175,7 +185,6 @@ public class CameraModel extends EngineSystem{
         forward = rotQuat.mul(forward).normalize();
         up = rotQuat.mul(up).normalize();
         right = forward.cross(up);
-
         toUpdate = true;
     }
 
@@ -211,7 +220,10 @@ public class CameraModel extends EngineSystem{
 
     public void setParams(Vec3 position, float pitch, float yaw) {
         setPosition(position);
-        setRotate(pitch, 0.0f, 1.0f, 0.0f);
-        setYaw(yaw);
+        System.out.println("pitch " + pitch);
+        System.out.println("position " + position);
+        setPitch(pitch);
+     //   setYaw(yaw);
+
     }
 }

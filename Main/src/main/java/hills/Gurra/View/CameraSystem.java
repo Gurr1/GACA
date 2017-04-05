@@ -49,24 +49,6 @@ public class CameraSystem {
 
 
 	}
-	
-	/**
-	 * Rotate camera along cameras right axis.
-	 * @param degrees - Degrees to rotate.
-
-	 * Rotate camera along axis x, y, z.
-	 * @param angle - degrees to rotate.
-	 * @param x - X component of axis to rotate around.
-	 * @param y - Y component of axis to rotate around.
-	 * @param z - Z component of axis to rotate around.
-	 */
-
-	
-	/**
-	 * Set direction for camera to move in.
-	 * @param dir - Commands to move in.
-	 * If set to NONE camera will stop.
-	 */
 
 	
 	/**

@@ -4,6 +4,7 @@ import hills.Gurra.Models.Commands;
 import hills.engine.display.Display;
 import org.lwjgl.glfw.GLFW;
 
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 public final class PlayerControllerKeyboard{
@@ -117,6 +118,17 @@ public final class PlayerControllerKeyboard{
 			for(int i = 0; i<listenerList.size(); i++){
 				listenerList.get(i).InstructionSent(Commands.MOVERIGHT);
 			}
+		if (PlayerControllerKeyboard.isDown(GLFW.GLFW_KEY_LEFT_SHIFT)){
+				for(KeyboardListener listener : listenerList){
+					listener.InstructionSent(Commands.SHIFTMOD);
+				}
+		}
+		if (PlayerControllerKeyboard.isDown(GLFW.GLFW_KEY_LEFT_CONTROL)){
+			for(KeyboardListener listener : listenerList){
+				listener.InstructionSent(Commands.CONROLMOD);
+			}
+		}
+
 
 	/*	if (PlayerControllerKeyboard.isPressed(GLFW.GLFW_KEY_LEFT_SHIFT)) {
 			medialSpeed *= 2.0f;

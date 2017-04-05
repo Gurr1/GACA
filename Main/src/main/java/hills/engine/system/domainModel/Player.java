@@ -31,8 +31,7 @@ public class Player implements ICollidable, IMovable, KeyboardListener, MouseLis
     private int coinCollectedAmount;
     private int bugsCollectedAmount;
     private List<OnMoveListener> moveListeners = new ArrayList<>();
-    private List<Commands> directions = new ArrayList<>();
-    private Vec3 forward;
+    private float speed = 1;
     @Getter @Setter private boolean toUpdate;
 
     /**
@@ -113,6 +112,7 @@ public class Player implements ICollidable, IMovable, KeyboardListener, MouseLis
     @Override
     public void setPosition(Vec3 pos) {
         this.pos = pos;
+
     }
     //</editor-fold>
 
@@ -148,22 +148,25 @@ public class Player implements ICollidable, IMovable, KeyboardListener, MouseLis
         }
     }
     public void update(Commands direction){       // This should maybe be reversed, so Keyboard sends a prompt that a key has been pressed.
-       // directions = PlayerControllerKeyboard.getDirectionsSinceLastCycle();
-     //   for(Commands direction : directions){
             switch (direction){
                 case MOVEFORWARD:
-                    velocity = new Vec3(0,0,-1);
+                    velocity = new Vec3(0,0,-1*speed);
                     break;
                 case MOVEBACKWARD:
-                    velocity = new Vec3(0,0,1);
+                    velocity = new Vec3(0,0,1*speed);
                     break;
                 case MOVELEFT:
-                    velocity = new Vec3(-1,0,0);
+                    velocity = new Vec3(-1*speed,0,0);
                     break;
                 case MOVERIGHT:
-                    velocity = new Vec3(1,0,0);
+                    velocity = new Vec3(1*speed,0,0);
                     break;
-
+                case SHIFTMOD:
+                    speed *= 2;
+                    break;
+                case CONROLMOD:
+                    speed*=0.5;
+                    break;
             }
             for(int i = 0; i<moveListeners.size(); i++) {
                 moveListeners.get(i).moving();
@@ -175,14 +178,13 @@ public class Player implements ICollidable, IMovable, KeyboardListener, MouseLis
     @Override
     public void InstructionSent(Commands command) {
         update(command);
+        toUpdate = true;
         }
 
     @Override
-    public void mouseMoved(float dPitch, float dYaw) {
-        updatePitch(dPitch);
-        updateYaw(dYaw);
-        System.out.println(dPitch);
-        System.out.println(dYaw);
+    public void mouseMoved(float xVelocity, float yVelocity) {
+        updatePitch(yVelocity);
+        updateYaw(xVelocity);
         toUpdate = true;
     }
 }

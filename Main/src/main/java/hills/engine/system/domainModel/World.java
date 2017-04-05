@@ -38,7 +38,7 @@ public class World implements OnMoveListener{
 
 
     private World(TerrainData[][] heights) {
-        player = new Player(new Vec3(0, 0, 0)); // TODO: replace z with get height from heightmap
+        player = new Player(new Vec3(100, 0, 100)); // TODO: replace z with get height from heightmap
         coins = getCoins(10);
         storedVectors = heights;
         world = this;
@@ -53,6 +53,7 @@ public class World implements OnMoveListener{
         }
         player.setToUpdate(false);
     }
+
     private List<Coin> getCoins(int nrOfCoins) { // TODO: add feature
         return new ArrayList<>();
     }
@@ -77,7 +78,6 @@ public class World implements OnMoveListener{
                 * (float) delta)));
         player.setPosition(player.get3DPos().add(player.getVelocity().mul(speedMultiplier
                 * (float) delta)));
-        System.out.println(player.get3DPos());
         float x = player.get3DPos().getX();
         float z = player.get3DPos().getZ();
         float newY = getGroundPosition(x, z);
