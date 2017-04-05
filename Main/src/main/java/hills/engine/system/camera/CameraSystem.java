@@ -9,6 +9,7 @@ import hills.engine.math.Vec3;
 import hills.engine.math.shape.Frustrum;
 import hills.engine.renderer.shader.ShaderProgram;
 import hills.engine.system.EngineSystem;
+import hills.engine.system.terrain.TerrainSystem;
 
 import java.nio.ByteBuffer;
 
@@ -150,10 +151,17 @@ public class CameraSystem extends EngineSystem {
 		right = forward.cross(up);
 
 		// Move camera
-		position = position.add(forward.mul(medialSpeed * medial.multiplier
-				* (float) delta));
-		position = position.add(right.mul(lateralSpeed * lateral.multiplier
-				* (float) delta));
+		position = position.add(forward.mul(medialSpeed * medial.multiplier * (float) delta));
+		position = position.add(right.mul(lateralSpeed * lateral.multiplier * (float) delta));
+		
+		/// TESTING ///
+		
+		TerrainSystem tSys = TerrainSystem.getInstance();
+		float groundHeight = tSys.getHeight(position);
+		if(groundHeight > position.getY())
+			position = new Vec3(position.getX(), groundHeight, position.getZ());
+		///////////////
+		
 		medial = Direction.NONE;
 		lateral = Direction.NONE;
 

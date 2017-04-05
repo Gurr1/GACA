@@ -4,6 +4,7 @@ import hills.engine.loader.TextureLoader;
 import hills.engine.renderer.shader.SamplerUniform;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL13;
 
 public class TerrainTexture {

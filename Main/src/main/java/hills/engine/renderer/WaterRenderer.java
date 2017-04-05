@@ -123,14 +123,8 @@ public enum WaterRenderer {
 			GL20.glEnableVertexAttribArray(ShaderAttribute.NORMAL.getLocation()); // Normal attribute
 
 			// Bind refraction, reflection and sky box texture
-			new TextureMap2D(
-					refractionFrameBuffer
-							.getTextureAttachment(GL30.GL_COLOR_ATTACHMENT0),
-					SamplerUniform.WATER_REFRACTION.getTextureSlot()).bind();
-			new TextureMap2D(
-					reflectionFrameBuffer
-							.getTextureAttachment(GL30.GL_COLOR_ATTACHMENT0),
-					SamplerUniform.WATER_REFLECTION.getTextureSlot()).bind();
+			new TextureMap2D(refractionFrameBuffer.getTextureAttachment(GL30.GL_COLOR_ATTACHMENT0), SamplerUniform.WATER_REFRACTION.getTextureSlot()).bind();
+			new TextureMap2D(reflectionFrameBuffer.getTextureAttachment(GL30.GL_COLOR_ATTACHMENT0), SamplerUniform.WATER_REFLECTION.getTextureSlot()).bind();
 
 			// Upload water plane model matrix
 			try (MemoryStack stack = MemoryStack.stackPush()) {
@@ -141,8 +135,7 @@ public enum WaterRenderer {
 			}
 
 			// Render water plane
-			GL11.glDrawElements(GL11.GL_TRIANGLES, meshData.getIndicesAmount(),
-					GL11.GL_UNSIGNED_INT, 0);
+			GL11.glDrawElements(GL11.GL_TRIANGLES, meshData.getIndicesAmount(), GL11.GL_UNSIGNED_INT, 0);
 
 			// Disable attributes
 			GL20.glDisableVertexAttribArray(ShaderAttribute.POSITION
