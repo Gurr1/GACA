@@ -7,4 +7,5 @@ import hills.Gurra.Models.Commands;
  */
 public interface KeyboardListener {
     void InstructionSent(Commands command);
+    void mouseMoved();
 }

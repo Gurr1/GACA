@@ -52,7 +52,7 @@ public class PlayerTest {
     public void testPosition(){
         Vec3 pos = player.get3DPos();
         Vec3 diff = new Vec3(1,1,1);
-        player.updatePosition(diff);
+        player.updatePosition();
         Assert.assertEquals(diff,player.get3DPos());
         player.setPosition(pos);
         Assert.assertEquals(pos,player.get3DPos());

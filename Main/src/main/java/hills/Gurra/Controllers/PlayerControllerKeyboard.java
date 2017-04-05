@@ -39,7 +39,7 @@ public final class PlayerControllerKeyboard{
 	public static void keyEvent(int key, int scancode, int action, int mods){ // Handle key events
 		if(key < 0)
 			return;
-			
+		System.out.println(key);
 		switch(action){
 		case GLFW.GLFW_PRESS:
 			down[key] = true;

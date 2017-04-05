@@ -64,6 +64,7 @@ public final class PlayerControllerMouse {
 			released[button] = true;
 			break;
 		}
+		input();
 	}
 
 	/**
@@ -72,16 +73,15 @@ public final class PlayerControllerMouse {
 	 * @param ypos - Vertical position of cursor.
 	 */
 	public static void positionEvent(double xpos, double ypos){
+
 		xVelocity = (float) xpos - xPosition;
 		yVelocity = (float) ypos - yPosition;
 
 		xPosition = (float) xpos;
 		yPosition = (float) ypos;
 	}
-	private void input(){
-			if(Display.isMouseCaptured())
-
-	{
+	private static void input(){
+			if(Display.isMouseCaptured()) {
 		float yaw = -PlayerControllerMouse.getXVelocity() * 0.3f;
 		float pitch = -PlayerControllerMouse.getYVelocity() * 0.3f;
 

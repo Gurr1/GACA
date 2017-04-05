@@ -116,7 +116,6 @@ public class Player implements ICollidable, IMovable, KeyboardListener{
     @Override
     public void setPosition(Vec3 pos) {
         this.pos = pos;
-        System.out.println(pos);
     }
     //</editor-fold>
 
@@ -157,15 +156,16 @@ public class Player implements ICollidable, IMovable, KeyboardListener{
             switch (direction){
                 case MOVEFORWARD:
                     velocity = new Vec3(0,0,-1);
+                    break;
                 case MOVEBACKWARD:
                     velocity = new Vec3(0,0,1);
-                    return;
+                    break;
                 case MOVELEFT:
                     velocity = new Vec3(-1,0,0);
-                    return;
+                    break;
                 case MOVERIGHT:
                     velocity = new Vec3(1,0,0);
-                    return;
+                    break;
 
             }
             for(int i = 0; i<moveListeners.size(); i++) {
@@ -179,4 +179,9 @@ public class Player implements ICollidable, IMovable, KeyboardListener{
     public void InstructionSent(Commands command) {
         update(command);
         }
+
+    @Override
+    public void mouseMoved() {
+
+    }
 }

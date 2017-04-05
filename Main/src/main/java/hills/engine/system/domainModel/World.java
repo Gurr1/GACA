@@ -11,6 +11,8 @@ import java.util.List;
  */
 public class World implements OnMoveListener{
     private static World world;
+    private float speedMultiplier = 1000;
+
     public static World getInstance() {
             return world;
     }
@@ -64,11 +66,13 @@ public class World implements OnMoveListener{
 
     @Override
     public void moving() {
-        player.setPosition(player.get3DPos().add(player.getVelocity().div((float) delta)));
+        player.setPosition(player.get3DPos().add(player.getVelocity().mul(speedMultiplier
+                * (float) delta)));
+        player.setPosition(player.get3DPos().add(player.getVelocity().mul(speedMultiplier
+                * (float) delta)));
         double x = player.get3DPos().getX();
         double z = player.get3DPos().getZ();
         Vec3 newPos = getGroundPosition(x, z);
-        System.out.println(newPos);
         player.setPosition(newPos);
     }
 
