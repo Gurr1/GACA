@@ -15,11 +15,11 @@ public class World implements OnMoveListener{
             return world;
     }
 
-    private void setPlayerPosition(Vec3 position) {
-        Vec3 terrain = getHeight((int)position.getX(),(int)position.getZ());
-        player.updatePosition(position);
-        System.out.println(terrain);
+    public static World createInstance(TerrainData[][] terrainDatas) {
+        world = new World(terrainDatas);
+        return world;
     }
+
 
     enum Axis{
         x, y
@@ -30,9 +30,10 @@ public class World implements OnMoveListener{
     private final int WIDTH = 2048;
     List<Coin> coins;
     TerrainData[][] storedVectors = new TerrainData[WIDTH][HEIGHT];
+    double delta;
 
 
-    public World(TerrainData[][] heights) {
+    private World(TerrainData[][] heights) {
         player = new Player(new Vec3(0, 0, 0)); // TODO: replace z with get height from heightmap
         coins = getCoins(10);
         storedVectors = heights;
@@ -40,8 +41,8 @@ public class World implements OnMoveListener{
         player.addPositionObserver(this);
     }
 
-    public void updateWorld(){
-        player.update();
+    public void updateWorld(double delta){
+        this.delta = delta;
     }
     private List<Coin> getCoins(int nrOfCoins) { // TODO: add feature
         return new ArrayList<>();
@@ -63,6 +64,7 @@ public class World implements OnMoveListener{
 
     @Override
     public void moving() {
+        player.setPosition(player.get3DPos().add(player.getVelocity().div((float) delta)));
         double x = player.get3DPos().getX();
         double z = player.get3DPos().getZ();
         Vec3 newPos = getGroundPosition(x, z);

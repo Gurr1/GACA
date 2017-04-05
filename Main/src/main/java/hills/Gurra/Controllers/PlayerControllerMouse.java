@@ -85,10 +85,10 @@ public final class PlayerControllerMouse {
 		float yaw = -PlayerControllerMouse.getXVelocity() * 0.3f;
 		float pitch = -PlayerControllerMouse.getYVelocity() * 0.3f;
 
-		if (yaw != 0.0f)
-			rotate(yaw, 0.0f, 1.0f, 0.0f); // ROTATE AROUND WORLD UP-AXIS
+	//	if (yaw != 0.0f)
+	//		rotate(yaw, 0.0f, 1.0f, 0.0f); // ROTATE AROUND WORLD UP-AXIS
 
-		if (pitch != 0.0f)
+	//	if (pitch != 0.0f)
 		}
 	}
 

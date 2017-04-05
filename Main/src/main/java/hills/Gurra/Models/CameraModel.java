@@ -1,16 +1,14 @@
 package hills.Gurra.Models;
 
-import hills.Gurra.Controllers.PlayerControllerKeyboard;
 import hills.Gurra.View.CameraSystem;
-import hills.engine.display.Display;
 import hills.engine.math.Mat4;
+import hills.engine.math.Quaternion;
 import hills.engine.math.Vec3;
 import hills.engine.math.shape.Frustrum;
 import hills.engine.renderer.shader.ShaderProgram;
 import hills.engine.system.EngineSystem;
 import lombok.Getter;
 import lombok.Setter;
-import org.lwjgl.glfw.GLFW;
 import org.lwjgl.system.MemoryStack;
 
 import java.nio.ByteBuffer;
@@ -35,7 +33,7 @@ public class CameraModel extends EngineSystem{
      * Camera world position.
      */
     @Getter
-    private Vec3 position;
+    @Setter private Vec3 position;
 
     /**
      * Camera forward direction.
@@ -86,11 +84,11 @@ public class CameraModel extends EngineSystem{
     private CameraSystem cameraSystem;
 
 
-     @Setter private Direction direction;
+     @Setter private Commands direction;
      private float medialSpeed;
      private float lateralSpeed;
-    private Direction medial;
-    private Direction lateral;
+    private Commands medial;
+    private Commands lateral;
 
     /**
      * Creates the singleton instance of CameraSystem.
@@ -118,7 +116,7 @@ public class CameraModel extends EngineSystem{
 
     private CameraModel(float scale, boolean isPaused, float startTime) {
         super(scale, isPaused, startTime);
-
+        cameraSystem = new CameraSystem();
         // Initialize camera at 0, 0, 0. Right is +X, Up is +Y, Depth is -Z.
         this.position = new Vec3(100, 100, 0);
         this.forward = new Vec3(0.0f, 0.0f, -1.0f);
@@ -148,9 +146,6 @@ public class CameraModel extends EngineSystem{
 
     @Override
     protected void update(double delta) {
-        // Check input
-        input();
-
         // If nothing has changed don't update!
         if(!toUpdate)
             return;
@@ -159,32 +154,11 @@ public class CameraModel extends EngineSystem{
         forward = forward.normalize();
         up = up.normalize();
         right = forward.cross(up);
-        cameraSystem.update();
-
+        cameraSystem.update(position, forward, up, right);
+        frustrum = new Frustrum(near, far, aspect, FOV, position, forward, up, right, false);
+        toUpdate = false;
     }
 
-    public void setDirection(Direction dir){
-        switch(dir){
-            case FORWARD:
-                medial = Direction.FORWARD;
-                break;
-            case BACKWARD:
-                medial = Direction.BACKWARD;
-                break;
-            case LEFT:
-                lateral = Direction.LEFT;
-                break;
-            case RIGHT:
-                lateral = Direction.RIGHT;
-                break;
-            case NONE:
-                medial = Direction.NONE;
-                lateral = Direction.NONE;
-                break;
-        }
-
-        toUpdate = true;
-    }
     public void updatePerspective(float near, float far, float aspect, float FOV) {
         this.near = near;
         this.far = far;
@@ -192,6 +166,40 @@ public class CameraModel extends EngineSystem{
         this.FOV = FOV;
         cameraSystem.updatePerspective(near, far, aspect, FOV);
         toUpdate = true;
+    }
+
+    public void setRotate(float angle, float x, float y, float z){
+        setRotate(angle, new Vec3(x, y, z));
+    }
+
+    private void setRotate(float angle, Vec3 axis){
+        Quaternion rotQuat = new Quaternion(axis, angle);
+
+        forward = rotQuat.mul(forward).normalize();
+        up = rotQuat.mul(up).normalize();
+        right = forward.cross(up);
+
+        toUpdate = true;
+    }
+
+    public void setPitch(float degrees){
+        setRotate(degrees, right);
+    }
+
+    /**
+     * Rotate camera along cameras up axis.
+     * @param degrees - Degrees to rotate.
+     */
+    public void setYaw(float degrees){
+        setRotate(degrees, up);
+    }
+
+    /**
+     * Rotate camera along cameras forward axis.
+     * @param degrees - Degrees to rotate.
+     */
+    public void setRoll(float degrees){
+        setRotate(degrees, forward);
     }
 
     @Override

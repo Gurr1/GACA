@@ -11,13 +11,13 @@ public class Model {
 			this.meshes[i] = meshes[i];
 	}
 	
-	public boolean contains(Mesh mesh){
+/*	public boolean contains(Mesh mesh){
 		for(Mesh m: meshes)
 			if(mesh.getId() == m.getId())
 				return true;
 		
 		return false;
-	}
+	}*/
 	
 	/**
 	 * @return Cloned array of all meshes in model.

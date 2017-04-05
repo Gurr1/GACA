@@ -1,10 +1,10 @@
 package hills.engine.system.terrain;
 
+import hills.Gurra.Models.CameraModel;
 import hills.engine.math.STD140Formatable;
 import hills.engine.renderer.TerrainRenderer;
 import hills.engine.renderer.shader.ShaderProgram;
 import hills.engine.system.EngineSystem;
-import hills.Gurra.View.CameraSystem;
 import hills.engine.system.terrain.quadtree.LODNode;
 import org.lwjgl.system.MemoryStack;
 
@@ -28,7 +28,7 @@ public class TerrainSystem extends EngineSystem {
 	private final LODNode topNode;
 	private List<LODNode> leafNodes;
 	
-	private CameraSystem cam;
+	private CameraModel cam;
 	
 	private TerrainSystem(float scale, boolean isPaused, float startTime) {
 		super(scale, isPaused, startTime);
@@ -45,7 +45,7 @@ public class TerrainSystem extends EngineSystem {
 		
 		topNode = new LODNode(0.0f, 0.0f, TerrainSystem.TERRAIN_WIDTH, TerrainSystem.TERRAIN_DEPTH, 100.0f);
 		
-		cam = CameraSystem.getInstance();
+		cam = CameraModel.getInstance();
 	}
 	
 	@Override

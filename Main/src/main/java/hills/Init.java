@@ -46,7 +46,7 @@ public class Init {
 		//TerrainNormalMapCreator.createSmoothNormals("height_map_test_3.png");
 		Random rand = new Random();
 		Terrain noise = new Terrain(rand.nextLong());
-		World w = new World(noise.createfinalIsland());
+		World w = World.createInstance(noise.createfinalIsland());
 
 		//TerrainNormalMapCreator.createFlatNormals("height_map_test_3.png");
 

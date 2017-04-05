@@ -9,6 +9,7 @@ import hills.engine.model.Mesh;
 import hills.engine.model.MeshTexture;
 import hills.engine.model.Model;
 import hills.engine.system.EngineSystem;
+import hills.engine.system.domainModel.World;
 
 public final class GameSystem extends EngineSystem {
 
@@ -72,10 +73,11 @@ public final class GameSystem extends EngineSystem {
 	MeshTexture texture;
 	Model model, cube;
 	Vec3 pos;
-	
+	World world;
+
 	private GameSystem(float scale, boolean isPaused, float startTime) {
 		super(scale, isPaused, startTime);
-
+		world = World.getInstance();
 		texture = new MeshTexture("test.png");
 		
 		Mesh cubeMesh = ModelLoader.load(v, ind, texture, Mat4.identity());
@@ -84,7 +86,7 @@ public final class GameSystem extends EngineSystem {
 
 	@Override
 	protected void update(double delta) {
-		
+		world.updateWorld(delta);
 	}
 
 	@Override

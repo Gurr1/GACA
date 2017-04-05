@@ -1,16 +1,14 @@
 package hills.engine.system.domainModel;
 
+import hills.Gurra.Controllers.KeyboardListener;
 import hills.Gurra.Controllers.PlayerControllerKeyboard;
 import hills.Gurra.Models.CameraModel;
-import hills.Gurra.Models.Direction;
-import hills.Gurra.View.CameraSystem;
-import hills.engine.display.Display;
+import hills.Gurra.Models.Commands;
 import hills.engine.math.Vec2;
 import hills.engine.math.Vec3;
 import hills.engine.math.shape.Sphere;
 import lombok.Getter;
 import lombok.Setter;
-import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +16,7 @@ import java.util.List;
 /**
  * Created by Anders on 2017-03-30.
  */
-public class Player implements ICollidable, IMovable {          // Should take input from the controllers. Camera should then be sent that information and act upon it.
-
+public class Player implements ICollidable, IMovable, KeyboardListener{
     /**
      * {@inheritDoc}
      */
@@ -28,12 +25,24 @@ public class Player implements ICollidable, IMovable {          // Should take i
     @Getter private float pitch = 0;
     @Getter private float yaw = 0;
     @Setter private float radius = 1;
-    @Getter private Vec3 Velocity;
+    @Getter private Vec3 velocity;
     private int coinCollectedAmount;
     private int bugsCollectedAmount;
     private CameraModel camera;
     private List<OnMoveListener> moveListeners = new ArrayList<>();
-    private List<Direction> directions = new ArrayList<>();
+    private List<Commands> directions = new ArrayList<>();
+
+    private Vec3 forward;
+
+    /**
+     * Camera up direction.
+     */
+    private Vec3 up;
+
+    /**
+     * Camera right direction.
+     */
+    private Vec3 right;
 
     //<editor-fold desc="Constructors">
 
@@ -51,6 +60,7 @@ public class Player implements ICollidable, IMovable {          // Should take i
     }
 
     public Player(Vec3 pos) {
+        PlayerControllerKeyboard.addListener(this);
         this.pos = pos;
     }
     //</editor-fold>
@@ -63,6 +73,7 @@ public class Player implements ICollidable, IMovable {          // Should take i
      */
     public void updatePitch(float diffPitch) {
         this.pitch = fixDegrees(diffPitch + this.pitch);
+        camera.setPitch(this.pitch);
     }
 
     /**
@@ -71,12 +82,14 @@ public class Player implements ICollidable, IMovable {          // Should take i
      */
     public void updateYaw(float diffYaw) {
         this.yaw = fixDegrees(diffYaw + this.yaw);
+        camera.setYaw(this.yaw);
     }
 
 
     @Override
     public void updatePosition() {
         notifyListeners();
+        camera.setPosition(pos);
     }
 
     /**
@@ -103,6 +116,7 @@ public class Player implements ICollidable, IMovable {          // Should take i
     @Override
     public void setPosition(Vec3 pos) {
         this.pos = pos;
+        System.out.println(pos);
     }
     //</editor-fold>
 
@@ -137,23 +151,32 @@ public class Player implements ICollidable, IMovable {          // Should take i
             listener.moving();
         }
     }
-    public void update(){       // This should maybe be reversed, so Keyboard sends a prompt that a key has been pressed.
-        directions = PlayerControllerKeyboard.getDirectionsSinceLastCycle();
-        for(Direction direction : directions){
+    public void update(Commands direction){       // This should maybe be reversed, so Keyboard sends a prompt that a key has been pressed.
+       // directions = PlayerControllerKeyboard.getDirectionsSinceLastCycle();
+     //   for(Commands direction : directions){
             switch (direction){
-                case LEFT:
+                case MOVEFORWARD:
+                    velocity = new Vec3(0,0,-1);
+                case MOVEBACKWARD:
+                    velocity = new Vec3(0,0,1);
                     return;
-                case NONE:
+                case MOVELEFT:
+                    velocity = new Vec3(-1,0,0);
                     return;
-                case RIGHT:
+                case MOVERIGHT:
+                    velocity = new Vec3(1,0,0);
                     return;
-                case FORWARD:
-                    return;
-                case BACKWARD:
-                    return;
+
+            }
+            for(int i = 0; i<moveListeners.size(); i++) {
+                moveListeners.get(i).moving();
             }
             // Act on each of the directions.
         }
-    }
+  //  }
 
+    @Override
+    public void InstructionSent(Commands command) {
+        update(command);
+        }
 }

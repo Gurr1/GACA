@@ -1,9 +1,9 @@
 package hills.engine;
 
+import hills.Gurra.Controllers.PlayerControllerKeyboard;
 import hills.Gurra.Controllers.PlayerControllerMouse;
 import hills.engine.display.Display;
 import hills.engine.display.FrameBuffer;
-import hills.Gurra.Controllers.PlayerControllerKeyboard;
 import hills.engine.loader.ModelLoader;
 import hills.engine.loader.TextureLoader;
 import hills.engine.renderer.ModelRenderer;
@@ -11,12 +11,11 @@ import hills.engine.renderer.SkyBoxRenderer;
 import hills.engine.renderer.TerrainRenderer;
 import hills.engine.renderer.shader.ShaderProgram;
 import hills.engine.system.EngineSystem;
+import hills.engine.system.domainModel.World;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import hills.engine.system.domainModel.World;
-import org.lwjgl.glfw.GLFW;
 
 public final class GameLoop {
 
@@ -72,7 +71,6 @@ public final class GameLoop {
 			
 			PlayerControllerKeyboard.update(); 				// Update keyboard input
 			PlayerControllerMouse.update();    				// Update mouse input
-			world.updateWorld();
 			
 			if(Display.hasBeenCreated())
 				Display.update();     		// Update display

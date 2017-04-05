@@ -26,4 +26,9 @@ public class Sheep extends Creature{
     public Sphere getBoundingSphere() {
         return new Sphere(pos, radius);
     }
+
+    @Override
+    public void updatePosition() {
+
+    }
 }

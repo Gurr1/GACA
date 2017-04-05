@@ -24,7 +24,6 @@ public abstract class Creature implements IWoundable,IMovable, ICollidable {
     @Override
     public abstract Sphere getBoundingSphere();
 
-    @Override
     public void updatePosition(Vec3 diff) {
         this.pos = this.pos.add(diff);
     }

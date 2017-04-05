@@ -16,7 +16,9 @@ package hills.Gurra;
         */
 
 /**
- * This file is a slighly modified version of
+ * This file is a slighly modified version of Kurt Spencer's Open Simplex Noise.
+ * Open Simplex Noise is unlicensed. see: https://gist.github.com/KdotJPG/b1270127455a94ac5d19.
+ *
  */
 public class OpenSimplexNoise {
         private static final double STRETCH_CONSTANT_2D = -0.211324865405187;    //(1/Math.sqrt(2+1)-1)/2;

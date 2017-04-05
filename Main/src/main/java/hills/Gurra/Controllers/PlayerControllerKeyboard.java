@@ -1,16 +1,12 @@
 package hills.Gurra.Controllers;
 
-import hills.Gurra.Models.Direction;
-import hills.Gurra.View.CameraSystem;
+import hills.Gurra.Models.Commands;
 import hills.engine.display.Display;
-import lombok.Getter;
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.system.CallbackI;
 
 import java.util.ArrayList;
 import java.util.List;
-
-public final class PlayerControllerKeyboard {
+public final class PlayerControllerKeyboard{
 
 
 
@@ -22,13 +18,14 @@ public final class PlayerControllerKeyboard {
 	/**
 	 * Which keys have been pressed this cycle.
 	 */
+	private static List<KeyboardListener> listenerList = new ArrayList<>();
 	private static boolean[] pressed = new boolean[GLFW.GLFW_KEY_LAST];
 	
 	/**
 	 * Which keys have been released this cycle.
 	 */
 	private static boolean[] released = new boolean[GLFW.GLFW_KEY_LAST];
-	private static List<Direction> directions = new ArrayList<>();
+	private static List<Commands> directions = new ArrayList<>();
 
 	private PlayerControllerKeyboard(){} // Private constructor no instances
 	
@@ -53,6 +50,7 @@ public final class PlayerControllerKeyboard {
 			released[key] = true;
 			break;
 		}
+		input();
 	}
 	
 	/**
@@ -76,8 +74,8 @@ public final class PlayerControllerKeyboard {
 	}
 
 
-	public static List<Direction> getDirectionsSinceLastCycle(){
-		List<Direction> cycleDirections = new ArrayList<>(directions);
+	public static List<Commands> getDirectionsSinceLastCycle(){
+		List<Commands> cycleDirections = new ArrayList<>(directions);
 		directions.clear();
 		return cycleDirections;
 	}
@@ -99,20 +97,28 @@ public final class PlayerControllerKeyboard {
 		return released[key];
 	}
 
-	public void input() {
+	public static void input() {
 		if (PlayerControllerKeyboard.isDown(GLFW.GLFW_KEY_W))
-			directions.add(Direction.FORWARD);
+			for(int i = 0; i<listenerList.size(); i++){
+			listenerList.get(i).InstructionSent(Commands.MOVEFORWARD);
+			}
 
 		if (PlayerControllerKeyboard.isDown(GLFW.GLFW_KEY_S))
-			directions.add(Direction.BACKWARD);
+			for(int i = 0; i<listenerList.size(); i++){
+				listenerList.get(i).InstructionSent(Commands.MOVEBACKWARD);
+			}
 
 		if (PlayerControllerKeyboard.isDown(GLFW.GLFW_KEY_A))
-			directions.add(Direction.LEFT);
+			for(int i = 0; i<listenerList.size(); i++){
+				listenerList.get(i).InstructionSent(Commands.MOVELEFT);
+			}
 
 		if (PlayerControllerKeyboard.isDown(GLFW.GLFW_KEY_D))
-			directions.add(Direction.RIGHT);
+			for(int i = 0; i<listenerList.size(); i++){
+				listenerList.get(i).InstructionSent(Commands.MOVERIGHT);
+			}
 
-	/*Ä	if (PlayerControllerKeyboard.isPressed(GLFW.GLFW_KEY_LEFT_SHIFT)) {
+	/*	if (PlayerControllerKeyboard.isPressed(GLFW.GLFW_KEY_LEFT_SHIFT)) {
 			medialSpeed *= 2.0f;
 			lateralSpeed *= 2.0f;
 		}
@@ -127,8 +133,12 @@ public final class PlayerControllerKeyboard {
 				Display.captureMouse(false);
 			else
 				Display.captureMouse(true);
+
 	}
 
+	public static void addListener(KeyboardListener listener){
+		listenerList.add(listener);
+	}
 
 
 
