@@ -167,7 +167,6 @@ public class Terrain {
         int[][] noiseMatrix = createHeightMap();
         BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         double[][] finalMatrix = new double[WIDTH][HEIGHT];
-        TerrainData[][] datas = new TerrainData[WIDTH][HEIGHT];
         for(int x = 0; x<WIDTH; x++){
             for(int y = 0; y<HEIGHT; y++){
                 finalMatrix[x][y] = islandMatrix[x][y] * noiseMatrix[x][y];

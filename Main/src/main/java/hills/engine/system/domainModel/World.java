@@ -82,6 +82,7 @@ public class World implements OnMoveListener{
         float z = player.get3DPos().getZ();
         float newY = getGroundPosition(x, z);
         player.setPosition(new Vec3(x,newY, z));
+        System.out.println(player.get3DPos());
         checkCollectibles();
     }
 
