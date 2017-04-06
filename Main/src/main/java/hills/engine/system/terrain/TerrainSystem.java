@@ -2,6 +2,8 @@ package hills.engine.system.terrain;
 
 import hills.engine.loader.TerrainLoader;
 import hills.engine.math.STD140Formatable;
+import hills.engine.math.Vec2;
+import hills.engine.math.Vec3;
 import hills.engine.renderer.TerrainRenderer;
 import hills.engine.renderer.shader.ShaderProgram;
 import hills.engine.system.EngineSystem;
@@ -9,9 +11,11 @@ import hills.engine.system.camera.CameraSystem;
 import hills.engine.system.terrain.mesh.GridMeshData;
 import hills.engine.system.terrain.quadtree.LODTree;
 import hills.engine.texturemap.TerrainTexture;
+
 import org.lwjgl.system.MemoryStack;
 
 import javax.imageio.ImageIO;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -45,6 +49,8 @@ public class TerrainSystem extends EngineSystem {
 	private final LODTree TREE;
 
 	private BufferedImage heightMap, heightNormalMap;
+	private float[][] heightValues;
+	
 	private CameraSystem cam;
 
 	private TerrainSystem(float scale, boolean isPaused, float startTime) {
@@ -58,17 +64,18 @@ public class TerrainSystem extends EngineSystem {
 		// Get height map image
 		try {
 			heightMap = ImageIO.read(new File(HEIGHT_MAP_DIRECTORY + HEIGHT_MAP_NAME));
-
 			heightNormalMap = ImageIO.read(new File(HEIGHT_MAP_DIRECTORY + HEIGHT_MAP_NORMAL_MAP_NAME));
+			
+			TERRAIN_WIDTH = heightMap.getWidth();
+			TERRAIN_DEPTH = heightMap.getHeight();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 		heightMapTexture = new TerrainTexture(TerrainSystem.HEIGHT_MAP_NAME, TerrainSystem.HEIGHT_MAP_NORMAL_MAP_NAME);
-
-		TERRAIN_WIDTH = heightMap.getWidth();
-		TERRAIN_DEPTH = heightMap.getHeight();
-
+		
+		loadHeightValues(heightMap);
+		
 		// Load grid mesh
 		gridMeshData = TerrainLoader.loadGridMesh(GRID_WIDTH, GRID_DEPTH, TERRAIN_WIDTH, TERRAIN_DEPTH);
 
@@ -99,6 +106,64 @@ public class TerrainSystem extends EngineSystem {
 		TerrainRenderer.INSTANCE.batchNodes(TREE.getLODNodeTree(), gridMeshData, heightMapTexture);
 	}
 
+	private void loadHeightValues(BufferedImage heightMap){
+		heightValues = new float[TERRAIN_WIDTH][TERRAIN_DEPTH];
+		
+		float heightStep = MAX_HEIGHT / 0xFFFFFF;
+		
+		for(int z = 0; z < TERRAIN_DEPTH; z++)
+			for(int x = 0; x < TERRAIN_WIDTH; x++)
+				heightValues[x][z] = (heightMap.getRGB(x, z) & 0xFFFFFF) * heightStep;
+	}
+	
+	/**
+	 *  Will return the height of the terrain at the x, z coordinate.<br>
+	 *  OBS! If out of bounds will return 0.0f.
+	 * @param x - The x coordinate to check height from terrain.
+	 * @param z - The z coordinate to check height from terrain.
+	 * @return The height of the terrain at the x, z coordinate.
+	 */
+	public float getHeight(float x, float z){
+		// Handle edge cases
+		if(x < 0.0f || x > TERRAIN_WIDTH - 1 || z < 0.0f || z > TERRAIN_DEPTH - 1)
+			return 0.0f;
+		
+			
+		int intX = (int) x;
+		int intZ = (int) z;
+		
+		boolean xGreater = x - intX > z - intZ;
+		
+		float heightA = heightValues[intX][intZ],
+			  heightB = xGreater ? heightValues[intX + 1][intZ] : heightValues[intX][intZ + 1],
+			  heightC = heightValues[intX + 1][intZ + 1];
+		
+		// Calculate barycentric coordinates of terrain triangle at x, 0.0, z.
+		Vec2 A = new Vec2(intX, intZ);
+		Vec2 v0 = (xGreater ? new Vec2(intX + 1, intZ) : new Vec2(intX, intZ + 1)).sub(A),
+			 v1 = new Vec2(intX + 1, intZ + 1).sub(A),
+			 v2 = new Vec2(x, z).sub(A);
+		
+	    float d00 = v0.getLengthSqr();
+	    float d01 = v0.dot(v1);
+	    float d11 = v1.getLengthSqr();
+	    float d20 = v2.dot(v0);
+	    float d21 = v2.dot(v1);
+	    
+	    float denom = d00 * d11 - d01 * d01;
+	    
+	    // Barycentric coordinates
+	    float a = (d11 * d20 - d01 * d21) / denom;
+	    float b = (d00 * d21 - d01 * d20) / denom;
+	    float c = 1.0f - a - b;
+	    
+		return heightA * a + heightB * b + heightC * c;
+	}
+	
+	public float getHeight(Vec3 pos){
+		return getHeight(pos.getX(), pos.getZ());
+	}
+	
 	/**
 	 * Load terrain-shader terrain constants.
 	 */
