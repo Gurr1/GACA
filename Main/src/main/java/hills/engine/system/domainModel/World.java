@@ -35,7 +35,7 @@ public class World implements OnMoveListener{
     TerrainData[][] storedVectors = new TerrainData[WIDTH][HEIGHT];
     double delta;
     CameraModel cameraModel;
-
+    List<ICollectible> collectibles = new ArrayList<>();
 
     private World(TerrainData[][] heights) {
         player = new Player(new Vec3(100, 0, 100)); // TODO: replace z with get height from heightmap
@@ -82,7 +82,16 @@ public class World implements OnMoveListener{
         float z = player.get3DPos().getZ();
         float newY = getGroundPosition(x, z);
         player.setPosition(new Vec3(x,newY, z));
-        System.out.println(player.get3DPos());
+        checkCollectibles();
+    }
+
+    private void checkCollectibles() {
+        for(int i = 0; i<collectibles.size(); i++){
+            if(player.getBoundingSphere().intersects(collectibles.get(i).getBoundingSphere())){
+                player.collected(collectibles.get(i));
+                collectibles.remove(i);
+            }
+        }
     }
 
     private float getGroundPosition(double x, double z) {

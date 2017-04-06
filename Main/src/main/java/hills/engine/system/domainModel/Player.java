@@ -28,8 +28,8 @@ public class Player implements ICollidable, IMovable, KeyboardListener, MouseLis
     @Getter private float yaw = 0;
     @Setter private float radius = 1;
     @Getter private Vec3 velocity;
-    private int coinCollectedAmount;
-    private int bugsCollectedAmount;
+    private List<Coin> coinsCollected = new ArrayList<>();
+    private int bugsCollected;
     private List<OnMoveListener> moveListeners = new ArrayList<>();
     private float speed = 1;
     @Getter @Setter private boolean toUpdate;
@@ -135,19 +135,6 @@ public class Player implements ICollidable, IMovable, KeyboardListener, MouseLis
 
         return degree;
     }
-
-    public float yawSinceLastCycle(){
-        float ly = lastYaw;
-        lastYaw = yaw;
-        return yaw - ly;
-    }
-
-    public float pitchSinceLastCycle(){
-        float lp = lastPitch;
-        lastPitch = pitch;
-        return pitch - lp;
-    }
-
     @Override
     public Sphere getBoundingSphere() {
         return new Sphere(pos, radius);
@@ -218,5 +205,11 @@ public class Player implements ICollidable, IMovable, KeyboardListener, MouseLis
         forward = rotQuat.mul(forward).normalize();
         up = rotQuat.mul(up).normalize();
         right = forward.cross(up);
+    }
+
+    public void collected(ICollectible collectible) {
+        if(collectible.getClass() == Coin.class){
+            coinsCollected.add((Coin) collectible);
+        }
     }
 }
