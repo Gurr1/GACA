@@ -49,7 +49,7 @@ public class World implements OnMoveListener{
     public void updateWorld(double delta){
         this.delta = delta;
         if(player.isToUpdate()) {
-            cameraModel.setParams(player.get3DPos(), player.getPitch(), player.getYaw());
+            cameraModel.setParams(player.get3DPos(), player.getForward(), player.getRight(), player.getUp());
         }
         player.setToUpdate(false);
     }
@@ -82,6 +82,7 @@ public class World implements OnMoveListener{
         float z = player.get3DPos().getZ();
         float newY = getGroundPosition(x, z);
         player.setPosition(new Vec3(x,newY, z));
+        System.out.println(player.get3DPos());
     }
 
     private float getGroundPosition(double x, double z) {

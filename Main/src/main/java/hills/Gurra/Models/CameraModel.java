@@ -7,7 +7,6 @@ import hills.engine.math.Vec3;
 import hills.engine.math.shape.Frustrum;
 import hills.engine.renderer.shader.ShaderProgram;
 import hills.engine.system.EngineSystem;
-import hills.engine.system.domainModel.World;
 import lombok.Getter;
 import lombok.Setter;
 import org.lwjgl.system.MemoryStack;
@@ -143,7 +142,6 @@ public class CameraModel extends EngineSystem{
         // If nothing has changed don't update!
         if(!toUpdate)
             return;
-
         // Make sure forward, up and right vectors are normalized.
         forward = forward.normalize();
         up = up.normalize();
@@ -177,8 +175,6 @@ public class CameraModel extends EngineSystem{
     }
 
 
-
-
     private void setRotate(float angle, Vec3 axis){
         Quaternion rotQuat = new Quaternion(axis, angle);
 
@@ -197,7 +193,7 @@ public class CameraModel extends EngineSystem{
      * @param degrees - Degrees to rotate.
      */
     public void setYaw(float degrees){
-        setRotate(degrees, up);
+        setRotate(degrees, new Vec3(0,1,0));
     }
 
     /**
@@ -218,12 +214,11 @@ public class CameraModel extends EngineSystem{
 
     }
 
-    public void setParams(Vec3 position, float pitch, float yaw) {
-        setPosition(position);
-        System.out.println("pitch " + pitch);
-        System.out.println("position " + position);
-        setPitch(pitch);
-     //   setYaw(yaw);
-
+    public void setParams(Vec3 position, Vec3 forward, Vec3 right, Vec3 up) {
+        this.position = position;
+        this.forward = forward;
+        this.right = right;
+        this.up = up;
+        toUpdate = true;
     }
 }

@@ -4,7 +4,6 @@ import hills.Gurra.Models.Commands;
 import hills.engine.display.Display;
 import org.lwjgl.glfw.GLFW;
 
-import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 public final class PlayerControllerKeyboard{
@@ -101,31 +100,31 @@ public final class PlayerControllerKeyboard{
 	public static void input() {
 		if (PlayerControllerKeyboard.isDown(GLFW.GLFW_KEY_W))
 			for(int i = 0; i<listenerList.size(); i++){
-			listenerList.get(i).InstructionSent(Commands.MOVEFORWARD);
+			listenerList.get(i).instructionSent(Commands.MOVEFORWARD);
 			}
 
 		if (PlayerControllerKeyboard.isDown(GLFW.GLFW_KEY_S))
 			for(int i = 0; i<listenerList.size(); i++){
-				listenerList.get(i).InstructionSent(Commands.MOVEBACKWARD);
+				listenerList.get(i).instructionSent(Commands.MOVEBACKWARD);
 			}
 
 		if (PlayerControllerKeyboard.isDown(GLFW.GLFW_KEY_A))
 			for(int i = 0; i<listenerList.size(); i++){
-				listenerList.get(i).InstructionSent(Commands.MOVELEFT);
+				listenerList.get(i).instructionSent(Commands.MOVELEFT);
 			}
 
 		if (PlayerControllerKeyboard.isDown(GLFW.GLFW_KEY_D))
 			for(int i = 0; i<listenerList.size(); i++){
-				listenerList.get(i).InstructionSent(Commands.MOVERIGHT);
+				listenerList.get(i).instructionSent(Commands.MOVERIGHT);
 			}
 		if (PlayerControllerKeyboard.isDown(GLFW.GLFW_KEY_LEFT_SHIFT)){
 				for(KeyboardListener listener : listenerList){
-					listener.InstructionSent(Commands.SHIFTMOD);
+					listener.instructionSent(Commands.SHIFTMOD);
 				}
 		}
 		if (PlayerControllerKeyboard.isDown(GLFW.GLFW_KEY_LEFT_CONTROL)){
 			for(KeyboardListener listener : listenerList){
-				listener.InstructionSent(Commands.CONROLMOD);
+				listener.instructionSent(Commands.CONROLMOD);
 			}
 		}
 
