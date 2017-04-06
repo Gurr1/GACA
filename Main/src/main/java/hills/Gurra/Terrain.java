@@ -190,12 +190,14 @@ public class Terrain {
         List<Vec3> normals = new ArrayList<>();
         TerrainData[][] datas = new TerrainData[terrain.length][terrain[0].length];
         BufferedImage image = new BufferedImage(terrain.length, terrain[0].length, BufferedImage.TYPE_INT_RGB);
-        for(int x = 0; x < terrain.length-1; x++){          // Since the last rows are always Black, no Normal-calculations are needed.
-            for(int y = 0; y<terrain[0].length-1; y++){
-                Vec3 v1 = new Vec3(x, (float)terrain[x][y], y);
+        for(int x = 1; x < terrain.length-1; x++){          // Since the last rows are always Black, no Normal-calculations are needed.
+            for(int y = 1; y<terrain[0].length-1; y++){
+                Vec3 pos = new Vec3(x, (float) terrain[x][y], y);
+                Vec3 v1 = new Vec3(x-1, (float)terrain[x-1][y], y+1);
                 Vec3 v2 = new Vec3(x+1, (float)terrain[x+1][y],y);
-                Vec3 v3 = new Vec3(x, (float)terrain[x][y+1],y+1);
-                TerrainData td = new TerrainData(v1,v2,v3);
+                Vec3 v3 = new Vec3(x, (float)terrain[x][y-1],y-1);
+                Vec3 v4 = new Vec3(x, (float)terrain[x][y+1], y+1);
+                TerrainData td = new TerrainData(pos,v1,v2,v3,v4);
                 Vec3 normal = td.getNormal();
                 datas[x][y] = td;
                 normals.add(normal);

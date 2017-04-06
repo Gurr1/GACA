@@ -1,11 +1,16 @@
 package hills.Gurra.Models;
 
 import hills.Gurra.View.CameraSystem;
+import hills.engine.math.Mat4;
 import hills.engine.math.Vec3;
 import hills.engine.math.shape.Frustrum;
+import hills.engine.renderer.shader.ShaderProgram;
 import hills.engine.system.EngineSystem;
 import lombok.Getter;
 import lombok.Setter;
+import org.lwjgl.system.MemoryStack;
+
+import java.nio.ByteBuffer;
 
 /**
  * Created by gustav on 2017-04-04.
@@ -104,7 +109,29 @@ public class CameraModel extends EngineSystem{
     private CameraModel(float scale, boolean isPaused, float startTime) {
         super(scale, isPaused, startTime);
         cameraSystem = new CameraSystem();
+        this.position = new Vec3(100, 0.0f, 100);
+        this.forward = new Vec3(0.0f, 0.0f, -1.0f);
+        this.up = new Vec3(0.0f, 1.0f, 0.0f);
+        this.right = new Vec3(1.0f, 0.0f, 0.0f);
         frustrum = new Frustrum(near, far, aspect, FOV, position, forward, up, right, false);
+
+        try(MemoryStack stack = MemoryStack.stackPush()){
+            Mat4 identityMatrix = Mat4.identity();
+            ByteBuffer dataBuffer = stack.calloc(identityMatrix.get140DataSize());
+            identityMatrix.get140Data(dataBuffer);
+            dataBuffer.flip();
+
+            ShaderProgram.map("VIEW", "CAMERA", dataBuffer);
+        }
+
+        try(MemoryStack stack = MemoryStack.stackPush()){
+            ByteBuffer dataBuffer = stack.calloc(position.get140DataSize());
+            position.get140Data(dataBuffer);
+            dataBuffer.flip();
+
+            ShaderProgram.map("VIEW", "CAMPOSWORLD", dataBuffer);
+        }
+
         toUpdate = false;
     }
 
@@ -130,6 +157,7 @@ public class CameraModel extends EngineSystem{
         cameraSystem.updatePerspective(near, far, aspect, FOV);
         toUpdate = true;
     }
+
     @Override
     public void render() {
 
