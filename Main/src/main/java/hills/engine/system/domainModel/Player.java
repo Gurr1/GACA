@@ -29,7 +29,9 @@ public class Player implements ICollidable, IMovable, KeyboardListener, MouseLis
     @Setter private float radius = 1;
     @Getter private Vec3 velocity;
     private List<Coin> coinsCollected = new ArrayList<>();
-    private int bugsCollected;
+    private List/*<>*/ bugsCollected = new ArrayList();
+    private double playerHealth;
+
     private List<OnMoveListener> moveListeners = new ArrayList<>();
     private float speed = 1;
     @Getter @Setter private boolean toUpdate;
@@ -94,7 +96,11 @@ public class Player implements ICollidable, IMovable, KeyboardListener, MouseLis
         updateVectors(up, diffYaw);
     }
 
-
+    public void checkPlayerHealth(){
+        if(playerHealth<=0){
+            System.out.println("you died");
+        }
+    }
     @Override
     public void updatePosition() {
         notifyListeners();
@@ -194,8 +200,8 @@ public class Player implements ICollidable, IMovable, KeyboardListener, MouseLis
 
     @Override
     public void mouseMoved(float xVelocity, float yVelocity) {
-        updatePitch(yVelocity*0.3f);
-        updateYaw(xVelocity*0.3f);
+        updatePitch(yVelocity*-0.3f);
+        updateYaw(xVelocity*-0.3f);
         toUpdate = true;
     }
 
