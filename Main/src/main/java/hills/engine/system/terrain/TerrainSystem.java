@@ -1,28 +1,23 @@
 package hills.engine.system.terrain;
 
-import hills.engine.loader.TerrainLoader;
 import hills.Gurra.Models.CameraModel;
+import hills.engine.loader.TerrainLoader;
 import hills.engine.math.STD140Formatable;
 import hills.engine.math.Vec2;
 import hills.engine.math.Vec3;
 import hills.engine.renderer.TerrainRenderer;
 import hills.engine.renderer.shader.ShaderProgram;
 import hills.engine.system.EngineSystem;
-import hills.engine.system.camera.CameraSystem;
 import hills.engine.system.terrain.mesh.GridMeshData;
 import hills.engine.system.terrain.quadtree.LODTree;
 import hills.engine.texturemap.TerrainTexture;
-
-import hills.engine.system.terrain.quadtree.LODNode;
 import org.lwjgl.system.MemoryStack;
 
 import javax.imageio.ImageIO;
-
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.util.List;
 
 public class TerrainSystem extends EngineSystem {
 
@@ -84,15 +79,11 @@ public class TerrainSystem extends EngineSystem {
 
 		// Load terrain-shader terrain constants
 		loadTerrainConstants();
-		
-		topNode = new LODNode(0.0f, 0.0f, TerrainSystem.TERRAIN_WIDTH, TerrainSystem.TERRAIN_DEPTH, 100.0f);
-		
+
 		cam = CameraModel.getInstance();
 
 		// Initiate terrain tree with a height map for it to analyze
 		TREE = new LODTree(heightMap);
-
-		cam = CameraSystem.getInstance();
 	}
 	
 	@Override

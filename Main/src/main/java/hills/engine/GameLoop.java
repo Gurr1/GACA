@@ -4,8 +4,6 @@ import hills.Gurra.Controllers.PlayerControllerKeyboard;
 import hills.Gurra.Controllers.PlayerControllerMouse;
 import hills.engine.display.Display;
 import hills.engine.display.FrameBuffer;
-import hills.engine.input.Keyboard;
-import hills.engine.input.Mouse;
 import hills.engine.loader.ModelLoader;
 import hills.engine.loader.TextureLoader;
 import hills.engine.renderer.ModelRenderer;
@@ -19,8 +17,6 @@ import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.lwjgl.glfw.GLFW;
 
 public final class GameLoop {
 

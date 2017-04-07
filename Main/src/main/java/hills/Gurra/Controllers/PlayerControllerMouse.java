@@ -1,5 +1,6 @@
-package hills.engine.input;
+package hills.Gurra.Controllers;
 
+import hills.engine.display.Display;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
