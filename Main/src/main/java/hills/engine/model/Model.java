@@ -10,7 +10,7 @@ public class Model {
 		for(int i = 0; i < meshes.length; i++)
 			this.meshes[i] = meshes[i];
 	}
-	
+
 	/**
 	 * @return Cloned array of all meshes in model.
 	 */

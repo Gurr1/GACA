@@ -18,6 +18,15 @@ import java.nio.IntBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL30;
+import org.lwjgl.system.MemoryUtil;
+
+import de.matthiasmann.twl.utils.PNGDecoder;
+import de.matthiasmann.twl.utils.PNGDecoder.Format;
+
 public class TextureLoader {
 
 	public static final String DIRECTORY = "src/main/resources/textures/";
@@ -26,7 +35,7 @@ public class TextureLoader {
 	 * Mapping of handle loaded from what file.
 	 */
 	private static Map<String, Integer> loadedTextures = new HashMap<String, Integer>();
-
+	
 	public static int WRAP_S = GL12.GL_CLAMP_TO_EDGE,
 			WRAP_T = GL12.GL_CLAMP_TO_EDGE, WRAP_R = GL12.GL_CLAMP_TO_EDGE,
 			MAG = GL11.GL_LINEAR, MIN = GL11.GL_LINEAR;
@@ -58,18 +67,18 @@ public class TextureLoader {
 			PNGDecoder decoder = new PNGDecoder(in);
 			int imageWidth = decoder.getWidth();
 			int imageHeight = decoder.getHeight();
-
+			
 			// Check if image size is power of 2
-			if ((imageWidth & (imageWidth - 1)) != 0 || (imageHeight & (imageHeight - 1)) != 0)
+			if((imageWidth & (imageWidth - 1)) != 0 || (imageHeight & (imageHeight - 1)) != 0)
 				System.err.println("Warning! Image (" + path + ") size not power of 2!");
-
+			
 			// Add image data to buffer
 			ByteBuffer buffer = MemoryUtil.memAlloc(4 * imageWidth * imageHeight);
 			decoder.decode(buffer, imageWidth * 4, Format.RGBA);
 			buffer.flip();
-
+			
 			// Set width & height equal to image width & height in pixels
-			if (width != null && height != null) {
+			if(width != null && height != null){
 				width.put(0, imageWidth);
 				height.put(0, imageHeight);
 			}
@@ -94,25 +103,25 @@ public class TextureLoader {
 							buffer.get(col + row * imageWidth * 4));
 				}
 			flippedBuffer.rewind();
-
+			
 			// Free original buffer
 			MemoryUtil.memFree(buffer);
-
+			
 			return flippedBuffer;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
+		
 		// If PNG to ByteBuffer conversion fails print error and return null
 		System.err.println("Failed to convert \"" + path + "\" to ByteBuffer!");
 		return null;
 	}
-
+	
 	/**
 	 * Converts .png file found in TextureLoader.DIRECTORY + path to ByteBuffer.
-	 * 
+	 *
 	 * @param path
 	 *            - Path to .png file in TextureLoader.DIRECTORY.
 	 * @param flip
@@ -121,56 +130,53 @@ public class TextureLoader {
 	 * @return ByteBuffer containing image data in RGBA format. OBS! Will return
 	 *         null if conversion fails.
 	 */
-	public static ByteBuffer PNGToByteBuffer(String path, boolean flip) {
+	public static ByteBuffer PNGToByteBuffer(String path, boolean flip){
 		return PNGToByteBuffer(path, null, null, flip);
 	}
-
+	
 	/**
 	 * Loads a texture from the path specified.<br>
 	 * Texture parameters for wrapping around s and t, as well as parameters for<br>
-	 * resize method (mag and min) will be set according to
-	 * TextureLoader.WRAP_S, TextureLoader.WRAP_T,<br>
+	 * resize method (mag and min) will be set according to TextureLoader.WRAP_S, TextureLoader.WRAP_T,<br>
 	 * TextureLoader.MAG and TextureLoader.MIN.
-	 * 
-	 * @param path
-	 *            - Path to image file starting from TextureLoader.DIRECTORY.
+	 * @param path - Path to image file starting from TextureLoader.DIRECTORY.
 	 * @return The handle of the texture.
 	 */
-	public static int loadTexture(String path, boolean flip) {
+	public static int loadTexture(String path, boolean flip){
 		IntBuffer w = MemoryUtil.memAllocInt(1);
 		IntBuffer h = MemoryUtil.memAllocInt(1);
 		ByteBuffer textureByteBuffer = PNGToByteBuffer(path, w, h, flip);
-
+		
 		// Load image
 		int handle = GL11.glGenTextures();
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, handle);
 		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, w.get(), h.get(), 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, textureByteBuffer);
-
+		
 		// Free allocated buffer
 		MemoryUtil.memFree(textureByteBuffer);
-
+		
 		// Set parameters
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, WRAP_S);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, WRAP_T);
 		GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, MAG);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, MIN);
-
+		
 		// Generate mipmaps
 		GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);
-
+		
 		// Free allocated memory
 		MemoryUtil.memFree(w);
 		MemoryUtil.memFree(h);
-
+		
 		loadedTextures.put(path, handle);
 		return handle;
 	}
-
-	public static int loadTexture(String path) {
+	
+	public static int loadTexture(String path){
 		return loadTexture(path, true);
 	}
-
+	
 	/**
 	 * Load a cube map from six face images.<br>
 	 * Order of faces bound:<br>
@@ -185,7 +191,7 @@ public class TextureLoader {
 	 * resize method (mag and min) will be set according to
 	 * TextureLoader.WRAP_S, TextureLoader.WRAP_T,<br>
 	 * TextureLoader.WRAP_R, TextureLoader.MAG and TextureLoader.MIN.
-	 * 
+	 *
 	 * @param paths
 	 *            - Paths to the 6 images used for the cubes faces.
 	 * @param name
@@ -193,23 +199,20 @@ public class TextureLoader {
 	 *            freeing.
 	 * @return Cube map handle (id) of the cube map bound.
 	 */
-	public static int loadCubeMapTexture(String[] paths, String name,
-			boolean flip) {
-		if (paths.length != CubeMap.FACES)
-			throw new IllegalArgumentException("A cube map has exactly "
-					+ CubeMap.FACES + " faces. Passed image paths: "
-					+ paths.length);
-
+	public static int loadCubeMapTexture(String[] paths, String name, boolean flip){
+		if(paths.length != CubeMap.FACES)
+			throw new IllegalArgumentException("A cube map has exactly " + CubeMap.FACES + " faces. Passed image paths: " + paths.length);
+		
 		// Bind cube map
 		int handle = GL11.glGenTextures();
 		GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, handle);
-
+		
 		// Go through and add each image to it's respective face
-		for (int i = 0; i < paths.length; i++) {
+		for(int i = 0; i < paths.length; i++){
 			IntBuffer w = MemoryUtil.memAllocInt(1);
 			IntBuffer h = MemoryUtil.memAllocInt(1);
 			ByteBuffer textureByteBuffer = PNGToByteBuffer(paths[i], w, h, flip);
-
+			
 			// Load image
 			GL11.glTexImage2D(GL13.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0,
 					GL11.GL_RGBA, w.get(), h.get(), 0, GL11.GL_RGBA,
@@ -217,12 +220,12 @@ public class TextureLoader {
 
 			// Free allocated buffer
 			MemoryUtil.memFree(textureByteBuffer);
-
+			
 			// Free allocated memory
 			MemoryUtil.memFree(w);
 			MemoryUtil.memFree(h);
 		}
-
+		
 		// Set parameters
 		GL11.glTexParameteri(GL13.GL_TEXTURE_CUBE_MAP, GL11.GL_TEXTURE_WRAP_S,
 				WRAP_S);
@@ -236,14 +239,14 @@ public class TextureLoader {
 				GL11.GL_TEXTURE_MIN_FILTER, MIN);
 
 		GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, 0);
-
+		
 		loadedTextures.put(name, handle);
 		return handle;
 	}
-
+	
 	/**
 	 * Set texture parameters used when loading.
-	 * 
+	 *
 	 * @param WRAP_S
 	 *            - GL_TEXTURE_WRAP_S parameter.
 	 * @param WRAP_T
@@ -263,7 +266,7 @@ public class TextureLoader {
 		TextureLoader.MAG = MAG;
 		TextureLoader.MIN = MIN;
 	}
-
+	
 	/**
 	 * @param name
 	 *            - Name of texture (path used when loading).
@@ -273,39 +276,35 @@ public class TextureLoader {
 	 */
 	public static int getTexture(String name) throws IllegalArgumentException {
 		Integer handle = loadedTextures.get(name);
-		if (handle == null)
+		if(handle == null)
 			throw new IllegalArgumentException("Texture not found!");
-
+		
 		return handle;
 	}
-
+	
 	/**
 	 * Will delete texture.
-	 * 
-	 * @param name
-	 *            - Name of texture file.
+	 * @param name - Name of texture file.
 	 */
 	public static void freeTexture(String name) throws Exception {
 		Integer handle = loadedTextures.remove(name);
-		if (handle == null)
+		if(handle == null)
 			throw new Exception("Texture not found!");
-
+		
 		GL11.glDeleteTextures(handle);
 	}
-
+	
 	/**
 	 * Will delete texture.
-	 * 
-	 * @param handle
-	 *            - Name of texture file.
+	 * @param name - Name of texture file.
 	 */
 	public static void freeTexture(int handle) throws Exception {
-		for (String textureName : loadedTextures.keySet())
+		for(String textureName: loadedTextures.keySet())
 			loadedTextures.remove(textureName, handle);
-
+		
 		GL11.glDeleteTextures(handle);
 	}
-
+	
 	/**
 	 * Remove all textures loaded.
 	 */
@@ -313,7 +312,7 @@ public class TextureLoader {
 		for (String textureName : loadedTextures.keySet())
 			GL11.glDeleteTextures(loadedTextures.get(textureName));
 		loadedTextures.clear();
-
+		
 		System.out.println("TextureLoader cleaned up!");
 	}
 }

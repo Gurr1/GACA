@@ -1,6 +1,7 @@
 package hills.engine.system.terrain;
 
 import hills.engine.loader.TerrainLoader;
+import hills.Gurra.Models.CameraModel;
 import hills.engine.math.STD140Formatable;
 import hills.engine.math.Vec2;
 import hills.engine.math.Vec3;
@@ -12,6 +13,7 @@ import hills.engine.system.terrain.mesh.GridMeshData;
 import hills.engine.system.terrain.quadtree.LODTree;
 import hills.engine.texturemap.TerrainTexture;
 
+import hills.engine.system.terrain.quadtree.LODNode;
 import org.lwjgl.system.MemoryStack;
 
 import javax.imageio.ImageIO;
@@ -20,6 +22,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.List;
 
 public class TerrainSystem extends EngineSystem {
 
@@ -51,21 +54,21 @@ public class TerrainSystem extends EngineSystem {
 	private BufferedImage heightMap, heightNormalMap;
 	private float[][] heightValues;
 	
-	private CameraSystem cam;
-
+	private CameraModel cam;
+	
 	private TerrainSystem(float scale, boolean isPaused, float startTime) {
 		super(scale, isPaused, startTime);
-
+		
 		// Calculate ranges
 		RANGES[0] = FIRST_RANGE;
 		for (int i = 1; i < RANGES.length; i++)
 			RANGES[i] = RANGES[i - 1] * 2.0f;
-		
+
 		// Get height map image
 		try {
 			heightMap = ImageIO.read(new File(HEIGHT_MAP_DIRECTORY + HEIGHT_MAP_NAME));
 			heightNormalMap = ImageIO.read(new File(HEIGHT_MAP_DIRECTORY + HEIGHT_MAP_NORMAL_MAP_NAME));
-			
+
 			TERRAIN_WIDTH = heightMap.getWidth();
 			TERRAIN_DEPTH = heightMap.getHeight();
 		} catch (IOException e) {
@@ -73,21 +76,25 @@ public class TerrainSystem extends EngineSystem {
 		}
 		
 		heightMapTexture = new TerrainTexture(TerrainSystem.HEIGHT_MAP_NAME, TerrainSystem.HEIGHT_MAP_NORMAL_MAP_NAME);
-		
+
 		loadHeightValues(heightMap);
-		
+
 		// Load grid mesh
 		gridMeshData = TerrainLoader.loadGridMesh(GRID_WIDTH, GRID_DEPTH, TERRAIN_WIDTH, TERRAIN_DEPTH);
 
 		// Load terrain-shader terrain constants
 		loadTerrainConstants();
+		
+		topNode = new LODNode(0.0f, 0.0f, TerrainSystem.TERRAIN_WIDTH, TerrainSystem.TERRAIN_DEPTH, 100.0f);
+		
+		cam = CameraModel.getInstance();
 
 		// Initiate terrain tree with a height map for it to analyze
 		TREE = new LODTree(heightMap);
 
 		cam = CameraSystem.getInstance();
 	}
-
+	
 	@Override
 	protected void update(double delta) {
 		// Vec3 pos = new Vec3(300.0f, 2.0f, 160.0f);
@@ -108,14 +115,14 @@ public class TerrainSystem extends EngineSystem {
 
 	private void loadHeightValues(BufferedImage heightMap){
 		heightValues = new float[TERRAIN_WIDTH][TERRAIN_DEPTH];
-		
+
 		float heightStep = MAX_HEIGHT / 0xFFFFFF;
-		
+
 		for(int z = 0; z < TERRAIN_DEPTH; z++)
 			for(int x = 0; x < TERRAIN_WIDTH; x++)
 				heightValues[x][z] = (heightMap.getRGB(x, z) & 0xFFFFFF) * heightStep;
 	}
-	
+
 	/**
 	 *  Will return the height of the terrain at the x, z coordinate.<br>
 	 *  OBS! If out of bounds will return 0.0f.
@@ -127,39 +134,39 @@ public class TerrainSystem extends EngineSystem {
 		// Handle edge cases
 		if(x < 0.0f || x > TERRAIN_WIDTH - 1 || z < 0.0f || z > TERRAIN_DEPTH - 1)
 			return 0.0f;
-		
-			
+
+
 		int intX = (int) x;
 		int intZ = (int) z;
-		
+
 		boolean xGreater = x - intX > z - intZ;
-		
+
 		float heightA = heightValues[intX][intZ],
 			  heightB = xGreater ? heightValues[intX + 1][intZ] : heightValues[intX][intZ + 1],
 			  heightC = heightValues[intX + 1][intZ + 1];
-		
+
 		// Calculate barycentric coordinates of terrain triangle at x, 0.0, z.
 		Vec2 A = new Vec2(intX, intZ);
 		Vec2 v0 = (xGreater ? new Vec2(intX + 1, intZ) : new Vec2(intX, intZ + 1)).sub(A),
 			 v1 = new Vec2(intX + 1, intZ + 1).sub(A),
 			 v2 = new Vec2(x, z).sub(A);
-		
+
 	    float d00 = v0.getLengthSqr();
 	    float d01 = v0.dot(v1);
 	    float d11 = v1.getLengthSqr();
 	    float d20 = v2.dot(v0);
 	    float d21 = v2.dot(v1);
-	    
+
 	    float denom = d00 * d11 - d01 * d01;
-	    
+
 	    // Barycentric coordinates
 	    float a = (d11 * d20 - d01 * d21) / denom;
 	    float b = (d00 * d21 - d01 * d20) / denom;
 	    float c = 1.0f - a - b;
-	    
+
 		return heightA * a + heightB * b + heightC * c;
 	}
-	
+
 	public float getHeight(Vec3 pos){
 		return getHeight(pos.getX(), pos.getZ());
 	}
@@ -167,7 +174,7 @@ public class TerrainSystem extends EngineSystem {
 	/**
 	 * Load terrain-shader terrain constants.
 	 */
-	private void loadTerrainConstants() {
+	private void loadTerrainConstants(){
 		loadRangesSquaredConstant();
 		loadScalesConstant();
 		loadGridSizeConstant();
@@ -196,7 +203,7 @@ public class TerrainSystem extends EngineSystem {
 					dataBuffer);
 		}
 	}
-
+	
 	/**
 	 * Load scales constant array
 	 */
@@ -212,11 +219,11 @@ public class TerrainSystem extends EngineSystem {
 				dataBuffer.putFloat(0.0f);
 			}
 			dataBuffer.flip();
-
+			
 			ShaderProgram.map("TERRAIN_CONSTANTS", "SCALES[0]", dataBuffer);
 		}
 	}
-
+	
 	/**
 	 * Load grid size constant
 	 */
@@ -227,11 +234,11 @@ public class TerrainSystem extends EngineSystem {
 			dataBuffer.putFloat(TerrainSystem.GRID_WIDTH);
 			dataBuffer.putFloat(TerrainSystem.GRID_DEPTH);
 			dataBuffer.flip();
-
+			
 			ShaderProgram.map("TERRAIN_CONSTANTS", "GRID_SIZE", dataBuffer);
 		}
 	}
-
+	
 	/**
 	 * Load terrain size constant
 	 */
@@ -242,11 +249,11 @@ public class TerrainSystem extends EngineSystem {
 			dataBuffer.putFloat(TERRAIN_WIDTH);
 			dataBuffer.putFloat(TERRAIN_DEPTH);
 			dataBuffer.flip();
-
+			
 			ShaderProgram.map("TERRAIN_CONSTANTS", "TERRAIN_SIZE", dataBuffer);
 		}
 	}
-
+	
 	/**
 	 * Load max height constant
 	 */
@@ -256,11 +263,11 @@ public class TerrainSystem extends EngineSystem {
 					.calloc(STD140Formatable.SCALAR_ALIGNMENT);
 			dataBuffer.putFloat(TerrainSystem.MAX_HEIGHT);
 			dataBuffer.flip();
-
+			
 			ShaderProgram.map("TERRAIN_CONSTANTS", "MAX_HEIGHT", dataBuffer);
 		}
 	}
-
+	
 	/**
 	 * Load start range constant
 	 */
@@ -270,7 +277,7 @@ public class TerrainSystem extends EngineSystem {
 					.calloc(STD140Formatable.SCALAR_ALIGNMENT);
 			dataBuffer.putInt(startRange);
 			dataBuffer.flip();
-
+			
 			ShaderProgram.map("TERRAIN_CONSTANTS", "START_RANGE", dataBuffer);
 		}
 	}
@@ -279,30 +286,28 @@ public class TerrainSystem extends EngineSystem {
 	public void cleanUp() {
 		System.out.println("Terrain system cleaned up!");
 	}
-
+	
 	/**
 	 * Creates the singleton instance of TerrainSystem.
-	 * 
 	 * @return False if an instance has already been created.
 	 */
 	public static boolean createInstance() {
-		if (instance != null)
+		if(instance != null)
 			return false;
-
+		
 		instance = new TerrainSystem(1.0f, false, 0.0f);
 		return true;
 	}
-
+	
 	/**
 	 * 
 	 * @return The singleton instance of TerrainSystem.
-	 * @throws NullPointerException
-	 *             If singleton instance has not been created.
+	 * @throws NullPointerException If singleton instance has not been created.
 	 */
 	public static TerrainSystem getInstance() throws NullPointerException {
-		if (instance == null)
+		if(instance == null)
 			throw new NullPointerException("Singleton instance not created!");
-
+		
 		return instance;
 	}
 
