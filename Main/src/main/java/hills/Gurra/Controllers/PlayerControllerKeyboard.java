@@ -39,20 +39,44 @@ public final class PlayerControllerKeyboard{
 	public static void keyEvent(int key, int scancode, int action, int mods){ // Handle key events
 		if(key < 0)
 			return;
-		System.out.println(key);
-		switch(action){
-		case GLFW.GLFW_PRESS:
-			down[key] = true;
-			pressed[key] = true;
-			break;
-		case GLFW.GLFW_RELEASE:
-			down[key] = false;
-			released[key] = true;
-			break;
+		if (action == GLFW.GLFW_PRESS){
+			input(key);
 		}
-		input();
+		checkInGame(key);
 	}
-	
+
+	private static void checkInGame(int key) {
+		if (key == GLFW.GLFW_KEY_W)
+			for(int i = 0; i<listenerList.size(); i++){
+				listenerList.get(i).instructionSent(Commands.MOVEFORWARD);
+			}
+
+		if (key == GLFW.GLFW_KEY_S)
+			for(int i = 0; i<listenerList.size(); i++){
+				listenerList.get(i).instructionSent(Commands.MOVEBACKWARD);
+			}
+
+		if (key == GLFW.GLFW_KEY_A)
+			for(int i = 0; i<listenerList.size(); i++){
+				listenerList.get(i).instructionSent(Commands.MOVELEFT);
+			}
+
+		if (key == GLFW.GLFW_KEY_D)
+			for(int i = 0; i<listenerList.size(); i++){
+				listenerList.get(i).instructionSent(Commands.MOVERIGHT);
+			}
+		if (key == GLFW.GLFW_KEY_LEFT_SHIFT){
+			for(KeyboardListener listener : listenerList){
+				listener.instructionSent(Commands.SHIFTMOD);
+			}
+		}
+		if (key == GLFW.GLFW_KEY_LEFT_CONTROL){
+			for(KeyboardListener listener : listenerList){
+				listener.instructionSent(Commands.CONROLMOD);
+			}
+		}
+	}
+
 	/**
 	 * Called from game loop!<br>
 	 * Updates key states.
@@ -97,54 +121,19 @@ public final class PlayerControllerKeyboard{
 		return released[key];
 	}
 
-	public static void input() {
-		if (PlayerControllerKeyboard.isDown(GLFW.GLFW_KEY_W))
-			for(int i = 0; i<listenerList.size(); i++){
-			listenerList.get(i).instructionSent(Commands.MOVEFORWARD);
-			}
+	public static void input(int key) {
 
-		if (PlayerControllerKeyboard.isDown(GLFW.GLFW_KEY_S))
-			for(int i = 0; i<listenerList.size(); i++){
-				listenerList.get(i).instructionSent(Commands.MOVEBACKWARD);
-			}
-
-		if (PlayerControllerKeyboard.isDown(GLFW.GLFW_KEY_A))
-			for(int i = 0; i<listenerList.size(); i++){
-				listenerList.get(i).instructionSent(Commands.MOVELEFT);
-			}
-
-		if (PlayerControllerKeyboard.isDown(GLFW.GLFW_KEY_D))
-			for(int i = 0; i<listenerList.size(); i++){
-				listenerList.get(i).instructionSent(Commands.MOVERIGHT);
-			}
-		if (PlayerControllerKeyboard.isDown(GLFW.GLFW_KEY_LEFT_SHIFT)){
-				for(KeyboardListener listener : listenerList){
-					listener.instructionSent(Commands.SHIFTMOD);
-				}
-		}
-		if (PlayerControllerKeyboard.isDown(GLFW.GLFW_KEY_LEFT_CONTROL)){
-			for(KeyboardListener listener : listenerList){
-				listener.instructionSent(Commands.CONROLMOD);
-			}
-		}
-
-
-	/*	if (PlayerControllerKeyboard.isPressed(GLFW.GLFW_KEY_LEFT_SHIFT)) {
-			medialSpeed *= 2.0f;
-			lateralSpeed *= 2.0f;
-		}
-
-		if (PlayerControllerKeyboard.isPressed(GLFW.GLFW_KEY_LEFT_CONTROL)) {
-			medialSpeed *= 0.5f;
-			lateralSpeed *= 0.5f;
-		}*/
-
-		if (PlayerControllerKeyboard.isPressed(GLFW.GLFW_KEY_SPACE))
+		if (key  == GLFW.GLFW_KEY_SPACE)
 			if (Display.isMouseCaptured())
 				Display.captureMouse(false);
 			else
 				Display.captureMouse(true);
-
+		if(key == GLFW.GLFW_KEY_F1){
+			pressed[key] = true;
+		}
+		if(key == GLFW.GLFW_KEY_F2){
+			pressed[key] = true;
+		}
 	}
 
 	public static void addListener(KeyboardListener listener){

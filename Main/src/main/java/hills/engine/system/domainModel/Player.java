@@ -9,9 +9,13 @@ import hills.engine.math.Quaternion;
 import hills.engine.math.Vec2;
 import hills.engine.math.Vec3;
 import hills.engine.math.shape.Sphere;
+import javafx.print.PageLayout;
 import lombok.Getter;
 import lombok.Setter;
+import org.lwjgl.system.CallbackI;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +23,7 @@ import java.util.List;
  * Created by Anders on 2017-03-30.
  */
 public class Player implements ICollidable, IMovable, KeyboardListener, MouseListener {
+    private final Vec3 globalUp;
     /**
      * {@inheritDoc}
      */
@@ -49,27 +54,19 @@ public class Player implements ICollidable, IMovable, KeyboardListener, MouseLis
 
     @Getter private Vec3 forward;
     private float lastPitch = 0;
+    @Getter private float playerHeight = 3;
+    private Vec3 forwardXZ;
 
     //<editor-fold desc="Constructors">
-
-    public Player(Vec3 pos, float radius) {
-        this.pos = pos;
-        this.radius = radius;
-    }
-
-    public Player(Vec3 pos, float pitch, float yaw) {
-        this.pos = pos;
-        this.yaw = yaw;
-        this.pitch = pitch;
-    }
 
     public Player(Vec3 pos) {
         PlayerControllerKeyboard.addListener(this);
         PlayerControllerMouse.addListener(this);
         this.pos = pos;
-        this.forward = new Vec3(0.0f, 0.0f, -1.0f);
-        this.up = new Vec3(0.0f, 1.0f, 0.0f);
-        this.right = new Vec3(1.0f, 0.0f, 0.0f);
+        forward = new Vec3(0.0f, 0.0f, -1.0f);
+        up = new Vec3(0.0f, 1.0f, 0.0f);
+        globalUp = up;
+        right = new Vec3(1.0f, 0.0f, 0.0f);
         forward = forward.normalize();
         up = up.normalize();
         right = forward.cross(up);
@@ -83,8 +80,11 @@ public class Player implements ICollidable, IMovable, KeyboardListener, MouseLis
      * @param diffPitch the amount that should be added to the pitch
      */
     public void updatePitch(float diffPitch) {
-        this.pitch = fixDegrees(diffPitch + this.pitch);
-        updateVectors(right, diffPitch);
+        float pitch = fixDegrees(diffPitch + this.pitch);
+        if(!(pitch>90 && pitch<270)){
+            this.pitch = pitch;
+            updateVectors(right, diffPitch);
+        }
     }
 
     /**
@@ -93,7 +93,7 @@ public class Player implements ICollidable, IMovable, KeyboardListener, MouseLis
      */
     public void updateYaw(float diffYaw) {
         this.yaw = fixDegrees(diffYaw + this.yaw);
-        updateVectors(up, diffYaw);
+        updateVectors(globalUp, diffYaw);
     }
 
     public void checkPlayerHealth(){
@@ -124,6 +124,13 @@ public class Player implements ICollidable, IMovable, KeyboardListener, MouseLis
     }
 
     public void setPitch(float pitch) {
+        System.out.println(pitch);
+        if(pitch>180){
+            return;
+        }
+        if(pitch<0){
+            return;
+        }
         this.pitch = fixDegrees(pitch);
     }
 
@@ -167,10 +174,10 @@ public class Player implements ICollidable, IMovable, KeyboardListener, MouseLis
     public void update(Commands direction){       // This should maybe be reversed, so Keyboard sends a prompt that a key has been pressed.
             switch (direction){
                 case MOVEFORWARD:
-                    velocity = forward.mul(speed);
+                    velocity = forwardXZ.mul(speed);
                     break;
                 case MOVEBACKWARD:
-                    velocity = forward.mul(-1*speed);
+                    velocity = forwardXZ.mul(-1*speed);
                     break;
                 case MOVELEFT:
                     velocity = right.mul(-1*speed);
@@ -207,10 +214,12 @@ public class Player implements ICollidable, IMovable, KeyboardListener, MouseLis
 
     public void updateVectors(Vec3 axis, float angle) {
         Quaternion rotQuat = new Quaternion(axis, angle);
-
+        System.out.println(rotQuat.toString());
         forward = rotQuat.mul(forward).normalize();
         up = rotQuat.mul(up).normalize();
         right = forward.cross(up);
+        forwardXZ = new Vec3(forward.getX(), 0, forward.getZ()).normalize();        // to fix speed vector
+        System.out.println(right);
     }
 
     public void collected(ICollectible collectible) {

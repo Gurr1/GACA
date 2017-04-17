@@ -1,11 +1,15 @@
 package hills.engine.system.domainModel;
 
 import hills.Gurra.Models.CameraModel;
+import hills.Gurra.Terrain;
 import hills.Gurra.TerrainData;
+import hills.engine.math.Vec2;
 import hills.engine.math.Vec3;
+import hills.engine.system.terrain.TerrainSystem;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by Deltagare on 2017-03-30.
@@ -13,7 +17,7 @@ import java.util.List;
 public class World implements OnMoveListener{
     private static World world;
     private float speedMultiplier = 1000;
-
+    private double waterHeight = 30;
     public static World getInstance() {
             return world;
     }
@@ -28,22 +32,38 @@ public class World implements OnMoveListener{
         x, y
     }
 
-    Player player;
+    private Player player;
     private final int HEIGHT = 2048;
     private final int WIDTH = 2048;
-    List<Coin> coins;
-    TerrainData[][] storedVectors = new TerrainData[WIDTH][HEIGHT];
+    private List<Coin> coins;
+    private TerrainData[][] storedVectors = new TerrainData[WIDTH][HEIGHT];
     double delta;
-    CameraModel cameraModel;
-    List<ICollectible> collectibles = new ArrayList<>();
+    private CameraModel cameraModel;
+    private List<ICollectible> collectibles = new ArrayList<>();
+    Random rand = new Random();
 
     private World(TerrainData[][] heights) {
-        player = new Player(new Vec3(100, 0, 100)); // TODO: replace z with get height from heightmap
-        coins = getCoins(10);
+        player = new Player(new Vec3(100, 0, 100));
         storedVectors = heights;
+        Vec3 spawnPosition = createSpawn();
+        player.setPosition(spawnPosition);
+        coins = getCoins(10);
         world = this;
         player.addPositionObserver(this);
         cameraModel = CameraModel.getInstance();
+    }
+
+    private Vec3 createSpawn() {
+        float x = 0;
+        float z = 0;
+        float y = 0;
+        do{
+        x = rand.nextInt(HEIGHT);
+        z = rand.nextInt(WIDTH);
+        y = getHeight(x,z);
+
+        }while(y<waterHeight);
+        return new Vec3(x,y,z);
     }
 
     public void updateWorld(double delta){
@@ -67,24 +87,58 @@ public class World implements OnMoveListener{
         return isColiding;
     }
 
-    public Vec3 getHeight(int x, int y){
-        return storedVectors[x][y].getPosition();
-    }
-
-
     @Override
     public void moving() {
         player.setPosition(player.get3DPos().add(player.getVelocity().mul(speedMultiplier
                 * (float) delta)));
         player.setPosition(player.get3DPos().add(player.getVelocity().mul(speedMultiplier
                 * (float) delta)));
-        float x = player.get3DPos().getX();
-        float z = player.get3DPos().getZ();
-        float newY = getGroundPosition(x, z);
-        player.setPosition(new Vec3(x,newY, z));
-        System.out.println(player.get3DPos());
+        double heightStep = 100d / 255;
+        Vec3 position = player.get3DPos();
+        Vec3 revisedPosition = new Vec3(position.getX(), (float) (getHeight(player.get3DPos())*heightStep), position.getZ());
+        player.setPosition(revisedPosition);
         checkCollectibles();
     }
+
+    public float getHeight(float x, float z){
+        // Handle edge cases
+        if(x < 1.0f || x > storedVectors.length - 1 || z < 1.0f || z > storedVectors[0].length - 1)
+            return 0.0f;
+        int intX = (int) x;
+        int intZ = (int) z;
+
+        boolean xGreater = x - intX > z - intZ;
+        float heightA = storedVectors[intX][intZ].getPosition().getY(),
+                heightB = xGreater ? storedVectors[intX + 1][intZ].getPosition().getY() : storedVectors[intX][intZ + 1].getPosition().getY(),
+                heightC = storedVectors[intX + 1][intZ + 1].getPosition().getY();
+
+        // Calculate barycentric coordinates of terrain triangle at x, 0.0, z.
+        Vec2 A = new Vec2(intX, intZ);
+        Vec2 v0 = (xGreater ? new Vec2(intX + 1, intZ) : new Vec2(intX, intZ + 1)).sub(A),
+                v1 = new Vec2(1, 1),
+                v2 = new Vec2(x, z).sub(A);
+
+        float d00 = v0.getLengthSqr();
+        float d01 = v0.dot(v1);
+        float d11 = v1.getLengthSqr();
+        float d20 = v2.dot(v0);
+        float d21 = v2.dot(v1);
+
+        float denom = d00 * d11 - d01 * d01;
+
+        // Barycentric coordinates
+        float a = (d11 * d20 - d01 * d21) / denom;
+        float b = (d00 * d21 - d01 * d20) / denom;
+        float c = 1.0f - a - b;
+
+        return heightA * a + heightB * b + heightC * c + player.getPlayerHeight();
+    }
+
+    public float getHeight(Vec3 pos){
+        return getHeight(pos.getX(), pos.getZ());
+    }
+
+
 
     private void checkCollectibles() {
         for(int i = 0; i<collectibles.size(); i++){
