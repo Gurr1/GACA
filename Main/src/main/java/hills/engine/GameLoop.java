@@ -72,7 +72,6 @@ public final class GameLoop {
 			update(delta); 					// Update
 			render();      					// Render
 			
-			PlayerControllerKeyboard.update(); 				// Update keyboard input
 			PlayerControllerMouse.update();    				// Update mouse input
 
 			if(Display.hasBeenCreated())

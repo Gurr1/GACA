@@ -3,6 +3,7 @@ package hills.Gurra.Controllers;
 import hills.Gurra.Models.Commands;
 import hills.engine.display.Display;
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.opengl.GL;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,6 @@ public final class PlayerControllerKeyboard{
 	/**
 	 * Which keys have been released this cycle.
 	 */
-	private static boolean[] released = new boolean[GLFW.GLFW_KEY_LAST];
 	private static List<Commands> directions = new ArrayList<>();
 
 	private PlayerControllerKeyboard(){} // Private constructor no instances
@@ -41,13 +41,22 @@ public final class PlayerControllerKeyboard{
 		if(key < 0)
 			return;
 		if (action == GLFW.GLFW_PRESS){
+			pressed[key] = true;
 			input(key);
+		}
+		else if(action == GLFW.GLFW_RELEASE){
+			pressed[key] = false;
 		}
 		checkInGame(key, mods);
 	}
 
+	/**
+	 * interprets actions that have in-game consequences.
+	 * @param key	the Key that's pressed
+	 * @param mods	if an Modifier key is pressed.
+	 */
 	private static void checkInGame(int key, int mods) {
-		if (key == GLFW.GLFW_KEY_W){
+		if (isPressed(GLFW.GLFW_KEY_W)){
 				for (int i = 0; i < listenerList.size(); i++) {
 					if(mods == GLFW.GLFW_MOD_SHIFT){
 						listenerList.get(i).instructionSent(Commands.SHIFTDOWN);
@@ -58,7 +67,7 @@ public final class PlayerControllerKeyboard{
 					listenerList.get(i).instructionSent(Commands.MOVEFORWARD);
 				}
 			}
-		if (key == GLFW.GLFW_KEY_S)
+		if (isPressed(GLFW.GLFW_KEY_S))
 			for(int i = 0; i<listenerList.size(); i++){
 				listenerList.get(i).instructionSent(Commands.MOVEBACKWARD);
 			}
@@ -75,32 +84,6 @@ public final class PlayerControllerKeyboard{
 		}
 
 	/**
-	 * Called from game loop!<br>
-	 * Updates key states.
-	 */
-	public static void update(){ // Must be called just before display is updated
-		for(int i = 0; i < GLFW.GLFW_KEY_LAST; i++){
-			pressed[i] = false;
-			released[i] = false;
-		}
-	}
-	
-	/**
-	 * Checks if key is down or not.
-	 * @param key - Key to check.
-	 * @return True if key is down.
-	 */
-	public static boolean isDown(int key){ // Returns true if key is down
-		return down[key];
-	}
-
-
-	public static List<Commands> getDirectionsSinceLastCycle(){
-		List<Commands> cycleDirections = new ArrayList<>(directions);
-		directions.clear();
-		return cycleDirections;
-	}
-	/**
 	 * Checks if key was pressed this cycle.
 	 * @param key - Key to check.
 	 * @return True if key was pressed this cycle.
@@ -108,16 +91,6 @@ public final class PlayerControllerKeyboard{
 	public static boolean isPressed(int key){ // Returns true if key was pressed this update cycle
 		return pressed[key];
 	}
-	
-	/**
-	 * Checks if key was released this cycle.
-	 * @param key - Key to check.
-	 * @return True if key was released this cycle.
-	 */
-	public static boolean isReleased(int key){ // Returns true if key was released this update cycle
-		return released[key];
-	}
-
 	public static void input(int key) {
 
 		if (key  == GLFW.GLFW_KEY_SPACE)
