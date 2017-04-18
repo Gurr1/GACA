@@ -37,20 +37,27 @@ public final class PlayerControllerKeyboard{
 	 * @param mods - What modifier keys were held down.
 	 */
 	public static void keyEvent(int key, int scancode, int action, int mods){ // Handle key events
+		System.out.println(key);
 		if(key < 0)
 			return;
 		if (action == GLFW.GLFW_PRESS){
 			input(key);
 		}
-		checkInGame(key);
+		checkInGame(key, mods);
 	}
 
-	private static void checkInGame(int key) {
-		if (key == GLFW.GLFW_KEY_W)
-			for(int i = 0; i<listenerList.size(); i++){
-				listenerList.get(i).instructionSent(Commands.MOVEFORWARD);
+	private static void checkInGame(int key, int mods) {
+		if (key == GLFW.GLFW_KEY_W){
+				for (int i = 0; i < listenerList.size(); i++) {
+					if(mods == GLFW.GLFW_MOD_SHIFT){
+						listenerList.get(i).instructionSent(Commands.SHIFTDOWN);
+					}
+					else{
+						listenerList.get(i).instructionSent(Commands.SHIFTUP);
+					}
+					listenerList.get(i).instructionSent(Commands.MOVEFORWARD);
+				}
 			}
-
 		if (key == GLFW.GLFW_KEY_S)
 			for(int i = 0; i<listenerList.size(); i++){
 				listenerList.get(i).instructionSent(Commands.MOVEBACKWARD);
@@ -65,17 +72,7 @@ public final class PlayerControllerKeyboard{
 			for(int i = 0; i<listenerList.size(); i++){
 				listenerList.get(i).instructionSent(Commands.MOVERIGHT);
 			}
-		if (key == GLFW.GLFW_KEY_LEFT_SHIFT){
-			for(KeyboardListener listener : listenerList){
-				listener.instructionSent(Commands.SHIFTMOD);
-			}
 		}
-		if (key == GLFW.GLFW_KEY_LEFT_CONTROL){
-			for(KeyboardListener listener : listenerList){
-				listener.instructionSent(Commands.CONROLMOD);
-			}
-		}
-	}
 
 	/**
 	 * Called from game loop!<br>

@@ -89,6 +89,7 @@ public class World implements OnMoveListener{
 
     @Override
     public void moving() {
+        System.out.println(player.getVelocity());
         player.setPosition(player.get3DPos().add(player.getVelocity().mul(speedMultiplier
                 * (float) delta)));
         player.setPosition(player.get3DPos().add(player.getVelocity().mul(speedMultiplier

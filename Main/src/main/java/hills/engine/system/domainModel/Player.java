@@ -23,7 +23,6 @@ import java.util.List;
  * Created by Anders on 2017-03-30.
  */
 public class Player implements ICollidable, IMovable, KeyboardListener, MouseListener {
-    private final Vec3 globalUp;
     /**
      * {@inheritDoc}
      */
@@ -39,14 +38,14 @@ public class Player implements ICollidable, IMovable, KeyboardListener, MouseLis
 
     private List<OnMoveListener> moveListeners = new ArrayList<>();
     private float speed = 1;
-    @Getter @Setter private boolean toUpdate;
-    private float lastYaw = 0;
+    private float runModifier = 1;
+    @Getter @Setter private boolean toUpdate = true;
 
     /**
      * Camera up direction.
      */
     @Getter private Vec3 up;
-
+    private final Vec3 globalUp;
     /**
      * Camera right direction.
      */
@@ -185,12 +184,12 @@ public class Player implements ICollidable, IMovable, KeyboardListener, MouseLis
                 case MOVERIGHT:
                     velocity = right.mul(speed);
                     break;
-                case SHIFTMOD:
-                    speed *= 2;
-                    break;
-                case CONROLMOD:
-                    speed*=0.5;
-                    break;
+                case SHIFTDOWN:
+                    speed = runModifier;
+                    return;
+                case SHIFTUP:
+                    speed = 1;
+                    return;
             }
             for(int i = 0; i<moveListeners.size(); i++) {
                 moveListeners.get(i).moving();
@@ -214,12 +213,10 @@ public class Player implements ICollidable, IMovable, KeyboardListener, MouseLis
 
     public void updateVectors(Vec3 axis, float angle) {
         Quaternion rotQuat = new Quaternion(axis, angle);
-        System.out.println(rotQuat.toString());
         forward = rotQuat.mul(forward).normalize();
         up = rotQuat.mul(up).normalize();
         right = forward.cross(up);
         forwardXZ = new Vec3(forward.getX(), 0, forward.getZ()).normalize();        // to fix speed vector
-        System.out.println(right);
     }
 
     public void collected(ICollectible collectible) {
