@@ -26,6 +26,7 @@ public final class PlayerControllerKeyboard{
 	 * Which keys have been released this cycle.
 	 */
 	private static List<Commands> directions = new ArrayList<>();
+	private static int nPressed = 0;
 
 	private PlayerControllerKeyboard(){} // Private constructor no instances
 	
@@ -42,46 +43,59 @@ public final class PlayerControllerKeyboard{
 			return;
 		if (action == GLFW.GLFW_PRESS){
 			pressed[key] = true;
+			nPressed++;
 			input(key);
 		}
 		else if(action == GLFW.GLFW_RELEASE){
+			nPressed--;
 			pressed[key] = false;
 		}
-		checkInGame(key, mods);
 	}
 
+	public static void update(){
+		checkInGame();
+	}
 	/**
 	 * interprets actions that have in-game consequences.
-	 * @param key	the Key that's pressed
-	 * @param mods	if an Modifier key is pressed.
 	 */
-	private static void checkInGame(int key, int mods) {
-		if (isPressed(GLFW.GLFW_KEY_W)){
+	private static void checkInGame() {
+		if (nPressed > 0) {
+			if (isPressed(GLFW.GLFW_KEY_W)) {
 				for (int i = 0; i < listenerList.size(); i++) {
-					if(mods == GLFW.GLFW_MOD_SHIFT){
-						listenerList.get(i).instructionSent(Commands.SHIFTDOWN);
-					}
-					else{
-						listenerList.get(i).instructionSent(Commands.SHIFTUP);
-					}
 					listenerList.get(i).instructionSent(Commands.MOVEFORWARD);
 				}
 			}
-		if (isPressed(GLFW.GLFW_KEY_S))
-			for(int i = 0; i<listenerList.size(); i++){
-				listenerList.get(i).instructionSent(Commands.MOVEBACKWARD);
-			}
+			if (isPressed(GLFW.GLFW_KEY_S))
+				for (int i = 0; i < listenerList.size(); i++) {
+					listenerList.get(i).instructionSent(Commands.MOVEBACKWARD);
+				}
 
-		if (key == GLFW.GLFW_KEY_A)
-			for(int i = 0; i<listenerList.size(); i++){
-				listenerList.get(i).instructionSent(Commands.MOVELEFT);
-			}
+			if (isPressed(GLFW.GLFW_KEY_A))
+				for (int i = 0; i < listenerList.size(); i++) {
+					listenerList.get(i).instructionSent(Commands.MOVELEFT);
+				}
 
-		if (key == GLFW.GLFW_KEY_D)
-			for(int i = 0; i<listenerList.size(); i++){
-				listenerList.get(i).instructionSent(Commands.MOVERIGHT);
+			if (isPressed(GLFW.GLFW_KEY_D))
+				for (int i = 0; i < listenerList.size(); i++) {
+					listenerList.get(i).instructionSent(Commands.MOVERIGHT);
+				}
+			if (isPressed(GLFW.GLFW_KEY_F3)) {
+				for (KeyboardListener listener : listenerList) {
+					listener.instructionSent(Commands.SUPERSPEED);
+				}
+			}
+			if (isPressed(GLFW.GLFW_KEY_LEFT_SHIFT)) {
+				for (KeyboardListener listener : listenerList) {
+					System.out.println("fast");
+					listener.instructionSent(Commands.SHIFTDOWN);
+				}
+			} else {
+				for (KeyboardListener listener : listenerList) {
+					listener.instructionSent(Commands.SHIFTUP);
+				}
 			}
 		}
+	}
 
 	/**
 	 * Checks if key was pressed this cycle.
@@ -91,6 +105,7 @@ public final class PlayerControllerKeyboard{
 	public static boolean isPressed(int key){ // Returns true if key was pressed this update cycle
 		return pressed[key];
 	}
+
 	public static void input(int key) {
 
 		if (key  == GLFW.GLFW_KEY_SPACE)

@@ -14,9 +14,8 @@ import java.util.Random;
 /**
  * Created by Deltagare on 2017-03-30.
  */
-public class World implements OnMoveListener{
+public class World implements OnMoveListener, OnCreatureMoveListener{
     private static World world;
-    private float speedMultiplier = 1000;
     private double waterHeight = 30;
     public static World getInstance() {
             return world;
@@ -27,19 +26,17 @@ public class World implements OnMoveListener{
         return world;
     }
 
-
-    enum Axis{
-        x, y
-    }
-
     private Player player;
     private final int HEIGHT = 2048;
     private final int WIDTH = 2048;
     private List<Coin> coins;
+    private int frame = 0;
     private TerrainData[][] storedVectors = new TerrainData[WIDTH][HEIGHT];
     double delta;
     private CameraModel cameraModel;
     private List<ICollectible> collectibles = new ArrayList<>();
+    private List<Creature> creatureList = new ArrayList<>();
+    private int creatureCount = 1;
     Random rand = new Random();
 
     private World(TerrainData[][] heights) {
@@ -49,14 +46,18 @@ public class World implements OnMoveListener{
         player.setPosition(spawnPosition);
         coins = getCoins(10);
         world = this;
+        for(int i = 0; i < creatureCount; i++){
+            creatureList.add(new Sheep(null, createSpawn()));
+            creatureList.get(i).addListener(this);
+        }
         player.addPositionObserver(this);
         cameraModel = CameraModel.getInstance();
     }
 
     private Vec3 createSpawn() {
-        float x = 0;
-        float z = 0;
-        float y = 0;
+        float x;
+        float z;
+        float y;
         do{
         x = rand.nextInt(HEIGHT);
         z = rand.nextInt(WIDTH);
@@ -67,11 +68,17 @@ public class World implements OnMoveListener{
     }
 
     public void updateWorld(double delta){
+        frame++;
         this.delta = delta;
         if(player.isToUpdate()) {
             cameraModel.setParams(player.get3DPos(), player.getForward(), player.getRight(), player.getUp());
         }
         player.setToUpdate(false);
+        if(frame%100 == 0)
+        for (Creature creature : creatureList){
+            creature.moveRandomly();
+
+        }
     }
 
     private List<Coin> getCoins(int nrOfCoins) { // TODO: add feature
@@ -87,20 +94,27 @@ public class World implements OnMoveListener{
         return isColiding;
     }
 
+    /**
+     * Corrects the position so "up" position corresponds to the world floor.
+     * @param movable The object that's moving
+     */
     @Override
-    public void moving() {
-        System.out.println(player.getVelocity());
-        player.setPosition(player.get3DPos().add(player.getVelocity().mul(speedMultiplier
-                * (float) delta)));
-        player.setPosition(player.get3DPos().add(player.getVelocity().mul(speedMultiplier
-                * (float) delta)));
+    public void moving(IMovable movable) {
+        movable.setPosition(movable.get3DPos().add(player.getVelocity().mul((float) delta)));
         double heightStep = 100d / 255;
-        Vec3 position = player.get3DPos();
-        Vec3 revisedPosition = new Vec3(position.getX(), (float) (getHeight(player.get3DPos())*heightStep), position.getZ());
-        player.setPosition(revisedPosition);
+        Vec3 position = movable.get3DPos();
+        Vec3 revisedPosition = new Vec3(position.getX(), (float) (getHeight(movable.get3DPos())*heightStep), position.getZ());
+        movable.setPosition(revisedPosition);
         checkCollectibles();
     }
 
+    /**
+     *  Will return the height of the terrain at the x, z coordinate.<br>
+     *  OBS! If out of bounds will return 0.0f.
+     * @param x - The x coordinate to check height from terrain.
+     * @param z - The z coordinate to check height from terrain.
+     * @return The height of the terrain at the x, z coordinate.
+     */
     public float getHeight(float x, float z){
         // Handle edge cases
         if(x < 1.0f || x > storedVectors.length - 1 || z < 1.0f || z > storedVectors[0].length - 1)
@@ -140,7 +154,7 @@ public class World implements OnMoveListener{
     }
 
 
-
+// Checks if the player is in the general same position as an collectible.
     private void checkCollectibles() {
         for(int i = 0; i<collectibles.size(); i++){
             if(player.getBoundingSphere().intersects(collectibles.get(i).getBoundingSphere())){
@@ -150,7 +164,8 @@ public class World implements OnMoveListener{
         }
     }
 
-    private float getGroundPosition(double x, double z) {
-        return storedVectors[(int) x][(int) z].getPosition().getY();
+    @Override
+    public float getCreaturePosition(Creature creature) {
+        return getHeight(creature.get3DPos());
     }
 }

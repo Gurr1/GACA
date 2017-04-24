@@ -13,7 +13,7 @@ public class LODTree {
 	private final int MAP_WIDTH, MAP_DEPTH;
 	private float[][][][] nodeMinMaxHeights;
 
-	private List<LODNode> tree = new ArrayList<LODNode>();
+	private List<LODNode> tree = new ArrayList<>();
 
 	public LODTree(BufferedImage heightMapImage) {
 		MAP_WIDTH = heightMapImage.getWidth();

@@ -1,6 +1,7 @@
 package hills.engine.system.terrain;
 
 import hills.Gurra.Models.CameraModel;
+import hills.Gurra.TerrainData;
 import hills.engine.loader.TerrainLoader;
 import hills.engine.math.STD140Formatable;
 import hills.engine.math.Vec2;
@@ -51,7 +52,7 @@ public class TerrainSystem extends EngineSystem {
 	
 	private CameraModel cam;
 	
-	private TerrainSystem(float scale, boolean isPaused, float startTime) {
+	private TerrainSystem(float scale, boolean isPaused, float startTime, TerrainData[][] td) {		// td was included to minimize loadtimes and to create more accurate hightdata.
 		super(scale, isPaused, startTime);
 		
 		// Calculate ranges
@@ -282,11 +283,11 @@ public class TerrainSystem extends EngineSystem {
 	 * Creates the singleton instance of TerrainSystem.
 	 * @return False if an instance has already been created.
 	 */
-	public static boolean createInstance() {
+	public static boolean createInstance(TerrainData[][] td) {
 		if(instance != null)
 			return false;
 		
-		instance = new TerrainSystem(1.0f, false, 0.0f);
+		instance = new TerrainSystem(1.0f, false, 0.0f, td);
 		return true;
 	}
 	

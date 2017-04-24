@@ -10,7 +10,6 @@ public interface IMovable {
 
     /**
      * adds the variable diff to the current position
-     * @param diff the change from the current position
      */
     void updatePosition();
 
@@ -32,5 +31,7 @@ public interface IMovable {
      * @return the vector with the x,y,z coordinates
      */
     Vec3 get3DPos();
+
+    Vec3 getVelocity();
 
 }

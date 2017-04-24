@@ -38,7 +38,7 @@ public class Player implements ICollidable, IMovable, KeyboardListener, MouseLis
 
     private List<OnMoveListener> moveListeners = new ArrayList<>();
     private float speed = 1;
-    private float runModifier = 1;
+    private float runModifier = 2;
     @Getter @Setter private boolean toUpdate = true;
 
     /**
@@ -69,6 +69,9 @@ public class Player implements ICollidable, IMovable, KeyboardListener, MouseLis
         forward = forward.normalize();
         up = up.normalize();
         right = forward.cross(up);
+        updateYaw(0);
+        updatePitch(0);
+
     }
     //</editor-fold>
 
@@ -167,42 +170,42 @@ public class Player implements ICollidable, IMovable, KeyboardListener, MouseLis
     }
     private void notifyListeners(){
         for(OnMoveListener listener : moveListeners){
-            listener.moving();
+            listener.moving(this);
         }
     }
-    public void update(Commands direction){       // This should maybe be reversed, so Keyboard sends a prompt that a key has been pressed.
-            switch (direction){
-                case MOVEFORWARD:
-                    velocity = forwardXZ.mul(speed);
-                    break;
-                case MOVEBACKWARD:
-                    velocity = forwardXZ.mul(-1*speed);
-                    break;
-                case MOVELEFT:
-                    velocity = right.mul(-1*speed);
-                    break;
-                case MOVERIGHT:
-                    velocity = right.mul(speed);
-                    break;
-                case SHIFTDOWN:
-                    speed = runModifier;
-                    return;
-                case SHIFTUP:
-                    speed = 1;
-                    return;
-            }
-            for(int i = 0; i<moveListeners.size(); i++) {
-                moveListeners.get(i).moving();
-            }
-            // Act on each of the directions.
-        }
-  //  }
 
     @Override
-    public void instructionSent(Commands command) {
-        update(command);
+    public void instructionSent(Commands direction) {
         toUpdate = true;
+        switch (direction){
+            case MOVEFORWARD:
+                velocity = forwardXZ.mul(speed);
+                break;
+            case MOVEBACKWARD:
+                velocity = forwardXZ.mul(-1*speed);
+                break;
+            case MOVELEFT:
+                velocity = right.mul(-1*speed);
+                break;
+            case MOVERIGHT:
+                velocity = right.mul(speed);
+                break;
+            case SUPERSPEED:
+                speed = 1000000;
+                break;
+            case SHIFTDOWN:
+                speed = runModifier;
+                return;
+            case SHIFTUP:
+                speed = 1;
+                return;
         }
+        System.out.println(velocity);
+        for(int i = 0; i<moveListeners.size(); i++) {
+            moveListeners.get(i).moving(this);
+        }
+        // Act on each of the directions.
+    }
 
     @Override
     public void mouseMoved(float xVelocity, float yVelocity) {
@@ -216,7 +219,7 @@ public class Player implements ICollidable, IMovable, KeyboardListener, MouseLis
         forward = rotQuat.mul(forward).normalize();
         up = rotQuat.mul(up).normalize();
         right = forward.cross(up);
-        forwardXZ = new Vec3(forward.getX(), 0, forward.getZ()).normalize();        // to fix speed vector
+        forwardXZ = new Vec3(forward.getX(), 0, forward.getZ()).normalize();        // to fix velocity vector so speed always is the same, no matter elevation of focus.
     }
 
     public void collected(ICollectible collectible) {

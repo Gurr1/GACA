@@ -2,6 +2,7 @@ package hills;
 
 import hills.Gurra.Models.CameraModel;
 import hills.Gurra.Terrain;
+import hills.Gurra.TerrainData;
 import hills.engine.GameLoop;
 import hills.engine.display.AspectRatios;
 import hills.engine.display.Display;
@@ -65,12 +66,13 @@ public class Init {
 		DebugSystem.createInstance();						// Create DebugSystem instance
 		DebugSystem.getInstance().setFPSDebugMode(true);	// Activate FPS debug mode
 		CameraModel.createInstance(1.0f, false, 0.0f);
-		World w = World.createInstance(noise.createfinalIsland());//
+		TerrainData[][] td = noise.createfinalIsland();
+		World w = World.createInstance(td);//
 		CameraModel cameraModel = CameraModel.getInstance(); 														// Get the CameraSystem instance
 		cameraModel.updatePerspective(0.1f, 3000.0f, (float) Display.getWidth() / (float) Display.getHeight(), 70.0f);	// Update the perspective matrix
 		initDisplayCallbacks();
 		
-		TerrainSystem.createInstance();						// Create TerrainSystem instance
+		TerrainSystem.createInstance(td);						// Create TerrainSystem instance
 		
 		GameSystem.createInstance(1.0f, false, 0.0f);		// Create GameSystem instance
 		
