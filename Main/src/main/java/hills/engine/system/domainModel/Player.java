@@ -9,13 +9,9 @@ import hills.engine.math.Quaternion;
 import hills.engine.math.Vec2;
 import hills.engine.math.Vec3;
 import hills.engine.math.shape.Sphere;
-import javafx.print.PageLayout;
 import lombok.Getter;
 import lombok.Setter;
-import org.lwjgl.system.CallbackI;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,7 +48,6 @@ public class Player implements ICollidable, IMovable, KeyboardListener, MouseLis
     @Getter private Vec3 right;
 
     @Getter private Vec3 forward;
-    private float lastPitch = 0;
     @Getter private float playerHeight = 3;
     private Vec3 forwardXZ;
 

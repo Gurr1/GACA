@@ -1,11 +1,9 @@
 package hills.engine.system.domainModel;
 
 import hills.Gurra.Models.CameraModel;
-import hills.Gurra.Terrain;
 import hills.Gurra.TerrainData;
 import hills.engine.math.Vec2;
 import hills.engine.math.Vec3;
-import hills.engine.system.terrain.TerrainSystem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -164,8 +162,7 @@ public class World implements OnMoveListener, OnCreatureMoveListener{
         }
     }
 
-    @Override
-    public float getCreaturePosition(Creature creature) {
-        return getHeight(creature.get3DPos());
+    private float getGroundPosition(double x, double z) {
+        return storedVectors[(int) x][(int) z].getPosition().getY();
     }
 }
