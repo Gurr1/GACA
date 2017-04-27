@@ -1,4 +1,4 @@
-package hills.engine.system.terrain;
+package hills.engine.system.domainModel;
 
 import hills.Gurra.Models.CameraModel;
 import hills.Gurra.TerrainData;

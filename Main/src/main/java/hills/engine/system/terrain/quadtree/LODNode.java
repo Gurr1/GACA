@@ -6,11 +6,10 @@ import hills.engine.math.Vec4;
 import hills.engine.math.shape.AABox;
 import hills.engine.math.shape.Plane;
 import hills.engine.math.shape.Sphere;
-import hills.engine.system.terrain.TerrainSystem;
+import hills.engine.system.domainModel.TerrainSystem;
+import lombok.Getter;
 
 import java.nio.ByteBuffer;
-
-import lombok.Getter;
 
 public class LODNode implements STD140Formatable {
 
@@ -81,7 +80,7 @@ public class LODNode implements STD140Formatable {
 	/**
 	 * Calculates what clip function this node needs to use when rendering.
 	 * 
-	 * @param childsToClip
+	 * @param clipTR
 	 *            - Boolean array where true means clip. each index<br>
 	 *            represents a child node starting from top right going CCW.
 	 */

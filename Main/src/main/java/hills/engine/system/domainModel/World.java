@@ -162,7 +162,8 @@ public class World implements OnMoveListener, OnCreatureMoveListener{
         }
     }
 
-    private float getGroundPosition(double x, double z) {
-        return storedVectors[(int) x][(int) z].getPosition().getY();
+    @Override
+    public float getCreaturePosition(Creature creature) {
+        return getHeight(creature.get3DPos().getX(), creature.get3DPos().getZ());
     }
 }

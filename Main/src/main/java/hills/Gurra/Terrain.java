@@ -1,16 +1,12 @@
 package hills.Gurra;
 
+import hills.engine.math.Vec3;
+
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
-
-import javax.imageio.ImageIO;
-import javax.imageio.stream.ImageOutputStream;
-
-import hills.engine.math.Vec3;
 
 /**
  * Created by gustav on 2017-03-22.
@@ -19,15 +15,17 @@ public class Terrain {
 
     NoiseMapGenerator noise;
     private double ELEVATION_MODIFIER = 0.8;
-    private int HEIGHT = 2048;
-    private int WIDTH = 2048;
+    public static int  HEIGHT = 2048;
+    public static  int WIDTH = 2048;
+    public static String HEIGHT_MAP_PATH = "src/main/resources/textures/finalNoise.png";
+    public static String NORMAL_MAP_PATH = "src/main/resources/textures/normal.png";
     int[][] matrix = new int[WIDTH + 1][HEIGHT + 1];
 
     public Terrain(long seed) {
         noise = new NoiseMapGenerator(seed);
     }
     
-    public int[][] createHeightMap() {
+    private int[][] createHeightMap() {
         Random rand = new Random();
         long startTime = System.nanoTime();
         double[][] noise1 = noise.createMatrix(500, 1, false);
@@ -37,8 +35,6 @@ public class Terrain {
         double[][] noise3 = noise.createMatrix(70, 0.5, false);
         noise.setSeed(rand.nextLong());
         double[][] noise4 = noise.createMatrix(30, 0.4, false);
-        noise.setSeed(rand.nextLong());
-        double[][] noise5 = noise.createMatrix(5, 0.4, false);
         noise.setSeed(rand.nextLong());
         BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         double maximum = 0;
@@ -63,12 +59,6 @@ public class Terrain {
                 image.setRGB(x,y,rgb);
             }
         }
-        System.out.println(System.nanoTime() - startTime);
-        try {
-            ImageIO.write(image, "png", new File("src/main/resources/textures/testnoise.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         return matrix;
     }
 
@@ -81,7 +71,7 @@ public class Terrain {
     /*
      * Do Not Modify. works pretty perfectly like it should.
      */
-    public double[][] createIsland(){           // Can this be done Threaded?
+    private double[][] createIsland(){           // Can this be done Threaded?
         double matrix[][] = new double[WIDTH][HEIGHT];
         BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         double exp = exponentCalc();
@@ -93,11 +83,6 @@ public class Terrain {
                 rgb/=2;
                 image.setRGB(x,y,(int)(rgb/2));
             }
-        }
-        try {
-            ImageIO.write(image, "png", new File("src/main/resources/textures/islandNoise.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
         }
         return matrix;
     }
@@ -182,20 +167,13 @@ public class Terrain {
             }
         }
         try {
-        	File outputFile = new File("src/main/resources/textures/finalNoise.png");
-        	ImageOutputStream out = ImageIO.createImageOutputStream(outputFile);
-        	if(out == null)
-        		System.out.println("Can't create image output stream!");
-        	ImageIO.write(image, "png", out);
-        	out.close();
-            //ImageIO.write(image, "png", new File("src/main/resources/textures/finalNoise.png"));
+            ImageIO.write(image, "png", new File(HEIGHT_MAP_PATH));
         } catch (IOException e) {
             e.printStackTrace();
         }
         return generateTerrain(finalMatrix);
     }
     public TerrainData[][] generateTerrain(double[][] terrain){
-        List<Vec3> normals = new ArrayList<>();
         TerrainData[][] datas = new TerrainData[terrain.length][terrain[0].length];
         BufferedImage image = new BufferedImage(terrain.length, terrain[0].length, BufferedImage.TYPE_INT_RGB);
         for(int x = 1; x < terrain.length-1; x++){          // Since the last rows are always Black, no Normal-calculations are needed.
@@ -208,19 +186,12 @@ public class Terrain {
                 TerrainData td = new TerrainData(pos,v1,v2,v3,v4);
                 Vec3 normal = td.getNormal();
                 datas[x][y] = td;
-                normals.add(normal);
                 int[]rgb = {(int) (normal.getX()*255), (int) (normal.getZ()*255), (int) (normal.getY()*255)};
                 image.getRaster().setPixel(x,y,rgb);
             }
         }
         try {
-        	File outputFile = new File("src/main/resources/textures/normal.png");
-        	ImageOutputStream out = ImageIO.createImageOutputStream(outputFile);
-        	if(out == null)
-        		System.out.println("Can't create normal image output stream!");
-        	ImageIO.write(image, "png", out);
-        	out.close();
-            //ImageIO.write(image, "png", new File("src/main/resources/textures/normal.png"));
+            ImageIO.write(image, "png", new File(NORMAL_MAP_PATH));
         } catch (IOException e) {
             e.printStackTrace();
         }

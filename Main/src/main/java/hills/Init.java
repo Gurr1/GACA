@@ -7,11 +7,10 @@ import hills.engine.GameLoop;
 import hills.engine.display.AspectRatios;
 import hills.engine.display.Display;
 import hills.engine.display.FrameBuffer;
-import hills.Gurra.View.CameraSystem;
 import hills.engine.system.debug.DebugSystem;
 import hills.engine.system.domainModel.World;
 import hills.engine.system.game.GameSystem;
-import hills.engine.system.terrain.TerrainSystem;
+import hills.engine.system.domainModel.TerrainSystem;
 
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
