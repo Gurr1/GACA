@@ -1,11 +1,12 @@
 package hills.engine.renderer.shader;
 
-import static org.lwjgl.opengl.GL11.GL_FALSE;
-import static org.lwjgl.opengl.GL20.glGetProgramInfoLog;
 import hills.engine.loader.ShaderLoader;
-import hills.engine.math.Mat4;
-import hills.engine.math.Vec3;
 import hills.engine.util.BufferUtil;
+import hills.util.Math.Mat4;
+import hills.util.Math.Vec3;
+import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL31;
+import org.lwjgl.system.MemoryUtil;
 
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
@@ -13,9 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL31;
-import org.lwjgl.system.MemoryUtil;
+import static org.lwjgl.opengl.GL11.GL_FALSE;
+import static org.lwjgl.opengl.GL20.glGetProgramInfoLog;
 
 public enum ShaderProgram {
 
@@ -278,7 +278,7 @@ public enum ShaderProgram {
 	 * 
 	 * @param location
 	 *            - Location of uniform to load to.
-	 * @param value
+	 * @param vector
 	 *            - Value to load uniform with.
 	 */
 	public void loadVector(int location, Vec3 vector) {
@@ -302,7 +302,7 @@ public enum ShaderProgram {
 	 * 
 	 * @param location
 	 *            - Location of uniform to load to.
-	 * @param value
+	 * @param matrix
 	 *            - Value to load uniform with.
 	 */
 	public void loadMatrix(int location, Mat4 matrix) {

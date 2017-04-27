@@ -1,8 +1,8 @@
 package hills.engine.system.terrain.quadtree;
 
-import hills.engine.math.Vec3;
-import hills.engine.math.shape.Frustrum;
-import hills.engine.system.domainModel.TerrainSystem;
+import hills.util.Math.Vec3;
+import hills.util.Math.shape.Frustrum;
+import hills.model.TerrainSystem;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;

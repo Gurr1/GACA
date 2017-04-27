@@ -1,5 +1,5 @@
-import hills.Gurra.Terrain;
-import hills.Gurra.TerrainData;
+import hills.services.generation.Terrain;
+import hills.services.generation.TerrainData;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,40 +23,19 @@ public class terrainTest {
 	}
 
     @Test
-    public void testCreateHeightMap(){
-        int[][] terrain = t.createHeightMap();
-        int smallest = 100;
-        int largest = 100;
-        for(int x = 0; x<terrain.length; x++){
-            for (int y = 0; y < terrain[0].length; y++){
-                assertTrue(terrain[x][y]<=255);
-                assertTrue(terrain[x][y]>=0);
-                if(smallest>terrain[x][y]){
-                    smallest = terrain[x][y];
-                }
-                if(largest<terrain[x][y]){
-                    largest = terrain[x][y];
-                }
-            }
-        }
-        assertTrue(largest>250);
-        assertTrue(smallest<110);
-    }
-
-    @Test
     public void testCreateIsland(){
-        double[][] terrain = t.createIsland();
+        TerrainData[][] terrain = t.createfinalIsland();
         double smallest = 1;
         double largest = 0;
         for(int x = 0; x<terrain.length; x++){
             for (int y = 0; y < terrain[0].length; y++){
-                assertTrue(terrain[x][y]<=1);
-                assertTrue(terrain[x][y]>=0);
-                if(smallest>terrain[x][y]){
-                    smallest = terrain[x][y];
+                assertTrue(terrain[x][y].getPosition().getY()<=1);
+                assertTrue(terrain[x][y].getPosition().getY()>=0);
+                if(smallest>terrain[x][y].getPosition().getY()){
+                    smallest = terrain[x][y].getPosition().getY();
                 }
-                if(largest<terrain[x][y]){
-                    largest = terrain[x][y];
+                if(largest<terrain[x][y].getPosition().getY()){
+                    largest = terrain[x][y].getPosition().getY();
                 }
             }
         }

@@ -1,10 +1,10 @@
 package hills.engine.loader;
 
-import hills.engine.math.Mat4;
-import hills.engine.math.Vec2;
-import hills.engine.math.Vec3;
-import hills.engine.math.Vec4;
-import hills.engine.math.Vertex;
+import hills.util.Math.Mat4;
+import hills.util.Math.Vec2;
+import hills.util.Math.Vec3;
+import hills.util.Math.Vec4;
+import hills.util.Math.Vertex;
 import hills.engine.model.Mesh;
 import hills.engine.renderer.shader.ShaderAttribute;
 import hills.engine.system.terrain.mesh.GridMeshData;

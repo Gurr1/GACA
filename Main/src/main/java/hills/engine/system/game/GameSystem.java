@@ -1,15 +1,12 @@
 package hills.engine.system.game;
 
-import hills.engine.loader.ModelLoader;
-import hills.engine.math.Mat4;
-import hills.engine.math.Vec2;
-import hills.engine.math.Vec3;
-import hills.engine.math.Vertex;
-import hills.engine.model.Mesh;
+import hills.model.World;
+import hills.util.Math.Vec2;
+import hills.util.Math.Vec3;
+import hills.util.Math.Vertex;
 import hills.engine.model.MeshTexture;
 import hills.engine.model.Model;
 import hills.engine.system.EngineSystem;
-import hills.engine.system.domainModel.World;
 
 public final class GameSystem extends EngineSystem {
 
@@ -78,10 +75,10 @@ public final class GameSystem extends EngineSystem {
 	private GameSystem(float scale, boolean isPaused, float startTime) {
 		super(scale, isPaused, startTime);
 		world = World.getInstance();
-		texture = new MeshTexture("test.png");
+		//texture = new MeshTexture("test.png");
 		
-		Mesh cubeMesh = ModelLoader.load(v, ind, texture, Mat4.identity());
-		cube = new Model(new Mesh[]{cubeMesh});
+		//Mesh cubeMesh = ModelLoader.load(v, ind, texture, Mat4.identity());
+		//cube = new model(new Mesh[]{cubeMesh});
 	}
 
 	@Override

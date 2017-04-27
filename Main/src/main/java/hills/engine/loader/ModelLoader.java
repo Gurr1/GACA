@@ -1,23 +1,18 @@
 package hills.engine.loader;
 
-import hills.engine.math.Mat4;
-import hills.engine.math.Vertex;
+import hills.util.Math.Mat4;
+import hills.util.Math.Vertex;
 import hills.engine.model.Mesh;
 import hills.engine.model.MeshData;
 import hills.engine.model.MeshTexture;
 import hills.engine.renderer.shader.ShaderAttribute;
 import hills.engine.util.BufferUtil;
+import org.lwjgl.opengl.*;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL15;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
-import org.lwjgl.opengl.GL33;
 
 public final class ModelLoader {
 

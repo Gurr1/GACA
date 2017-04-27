@@ -2,8 +2,8 @@ package hills.engine.renderer;
 
 import hills.engine.display.FrameBuffer;
 import hills.engine.loader.ModelLoader;
-import hills.engine.math.Mat4;
-import hills.engine.math.Vec4;
+import hills.util.Math.Mat4;
+import hills.util.Math.Vec4;
 import hills.engine.model.MeshData;
 import hills.engine.renderer.shader.SamplerUniform;
 import hills.engine.renderer.shader.ShaderAttribute;

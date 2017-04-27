@@ -1,7 +1,7 @@
 package domainModelTests;
 
-import hills.engine.math.Vec3;
-import hills.engine.system.domainModel.Player;
+import hills.util.Math.Vec3;
+import hills.model.Player;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

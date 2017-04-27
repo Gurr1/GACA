@@ -1,12 +1,12 @@
 package hills.engine.system.terrain.quadtree;
 
-import hills.engine.math.STD140Formatable;
-import hills.engine.math.Vec3;
-import hills.engine.math.Vec4;
-import hills.engine.math.shape.AABox;
-import hills.engine.math.shape.Plane;
-import hills.engine.math.shape.Sphere;
-import hills.engine.system.domainModel.TerrainSystem;
+import hills.util.Math.STD140Formatable;
+import hills.util.Math.Vec3;
+import hills.util.Math.Vec4;
+import hills.util.Math.shape.AABox;
+import hills.util.Math.shape.Plane;
+import hills.util.Math.shape.Sphere;
+import hills.model.TerrainSystem;
 import lombok.Getter;
 
 import java.nio.ByteBuffer;

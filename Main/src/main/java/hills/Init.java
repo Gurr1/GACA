@@ -1,16 +1,16 @@
 package hills;
 
-import hills.Gurra.Models.CameraModel;
-import hills.Gurra.Terrain;
-import hills.Gurra.TerrainData;
+import hills.model.CameraModel;
+import hills.services.generation.Terrain;
+import hills.services.generation.TerrainData;
 import hills.engine.GameLoop;
 import hills.engine.display.AspectRatios;
 import hills.engine.display.Display;
 import hills.engine.display.FrameBuffer;
 import hills.engine.system.debug.DebugSystem;
-import hills.engine.system.domainModel.World;
+import hills.model.World;
 import hills.engine.system.game.GameSystem;
-import hills.engine.system.domainModel.TerrainSystem;
+import hills.model.TerrainSystem;
 
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWFramebufferSizeCallback;

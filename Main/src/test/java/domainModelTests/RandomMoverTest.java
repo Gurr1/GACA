@@ -1,7 +1,6 @@
 package domainModelTests;
 
-import hills.Gurra.RandomWalker;
-import hills.engine.system.domainModel.Sheep;
+import hills.services.generation.RandomWalker;
 import junit.framework.TestCase;
 import org.junit.Test;
 

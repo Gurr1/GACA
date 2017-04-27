@@ -18,15 +18,6 @@ import java.nio.IntBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-import org.lwjgl.opengl.GL13;
-import org.lwjgl.opengl.GL30;
-import org.lwjgl.system.MemoryUtil;
-
-import de.matthiasmann.twl.utils.PNGDecoder;
-import de.matthiasmann.twl.utils.PNGDecoder.Format;
-
 public class TextureLoader {
 
 	public static final String DIRECTORY = "src/main/resources/textures/";
@@ -293,10 +284,10 @@ public class TextureLoader {
 		
 		GL11.glDeleteTextures(handle);
 	}
-	
+
 	/**
 	 * Will delete texture.
-	 * @param name - Name of texture file.
+	 * @param handle - Name of texture file.
 	 */
 	public static void freeTexture(int handle) throws Exception {
 		for(String textureName: loadedTextures.keySet())

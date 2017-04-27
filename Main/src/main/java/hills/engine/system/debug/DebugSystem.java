@@ -1,6 +1,6 @@
 package hills.engine.system.debug;
 
-import hills.Gurra.Controllers.PlayerControllerKeyboard;
+import hills.controller.PlayerControllerKeyboard;
 import hills.engine.display.Display;
 import hills.engine.display.FrameBuffer;
 import hills.engine.system.EngineSystem;

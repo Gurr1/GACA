@@ -1,6 +1,6 @@
 package hills.engine.renderer;
 
-import hills.engine.math.Mat4;
+import hills.util.Math.Mat4;
 import hills.engine.model.Mesh;
 import hills.engine.model.MeshData;
 import hills.engine.model.MeshTexture;
@@ -31,7 +31,7 @@ public final class ModelRenderer {
 	/**
 	 * Add model to render batch. All batched models will be rendered automatically and then removed from batch.
 	 * @param program - Shader program to use.
-	 * @param model - Model to render.
+	 * @param model - model to render.
 	 * @param transformation - Transformation matrix to use when rendering.
 	 */
 	public static void batch(ShaderProgram program, Model model, Mat4 transformation){

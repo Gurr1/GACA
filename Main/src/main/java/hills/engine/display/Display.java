@@ -1,7 +1,7 @@
 package hills.engine.display;
 
-import hills.Gurra.Controllers.PlayerControllerKeyboard;
-import hills.Gurra.Controllers.PlayerControllerMouse;
+import hills.controller.PlayerControllerKeyboard;
+import hills.controller.PlayerControllerMouse;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.glfw.*;

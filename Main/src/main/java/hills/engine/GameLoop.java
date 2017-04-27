@@ -1,7 +1,7 @@
 package hills.engine;
 
-import hills.Gurra.Controllers.PlayerControllerKeyboard;
-import hills.Gurra.Controllers.PlayerControllerMouse;
+import hills.controller.PlayerControllerKeyboard;
+import hills.controller.PlayerControllerMouse;
 import hills.engine.display.Display;
 import hills.engine.display.FrameBuffer;
 import hills.engine.loader.ModelLoader;
@@ -12,7 +12,7 @@ import hills.engine.renderer.TerrainRenderer;
 import hills.engine.renderer.WaterRenderer;
 import hills.engine.renderer.shader.ShaderProgram;
 import hills.engine.system.EngineSystem;
-import hills.engine.system.domainModel.World;
+import hills.model.World;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;

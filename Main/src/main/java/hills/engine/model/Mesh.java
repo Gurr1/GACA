@@ -1,6 +1,6 @@
 package hills.engine.model;
 
-import hills.engine.math.Mat4;
+import hills.util.Math.Mat4;
 
 public class Mesh {
 
