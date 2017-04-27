@@ -1,16 +1,15 @@
 package hills.Anton.delete;
 
 import hills.engine.math.Vec3;
-import hills.engine.system.terrain.TerrainSystem;
-
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import hills.engine.system.domainModel.TerrainSystem;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.ImageOutputStream;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class TerrainNormalMapCreator {
 	

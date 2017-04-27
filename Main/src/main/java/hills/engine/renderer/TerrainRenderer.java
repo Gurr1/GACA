@@ -3,7 +3,6 @@ package hills.engine.renderer;
 import hills.engine.renderer.shader.SamplerUniform;
 import hills.engine.renderer.shader.ShaderAttribute;
 import hills.engine.renderer.shader.ShaderProgram;
-import hills.engine.system.terrain.TerrainSystem;
 import hills.engine.system.terrain.mesh.GridMeshData;
 import hills.engine.system.terrain.quadtree.LODNode;
 import hills.engine.texturemap.TerrainTexture;
