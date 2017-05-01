@@ -35,11 +35,11 @@ public class OpenSimplexNoise {
 			-4, 4, -11, 11, 4, -4, 4, 11, -4, 4, 4, -11, -11, -4, -4, -4, -11,
 			-4, -4, -4, -11, 11, -4, -4, 4, -11, -4, 4, -4, -11 };
 
-	public OpenSimplexNoise() {
+	protected OpenSimplexNoise() {
 		this(DEFAULT_SEED);
 	}
 
-	public OpenSimplexNoise(long seed) {
+	OpenSimplexNoise(long seed) {
 		this.perm = new short[256];
 		this.permGradIndex3D = new short[256];
 		setSeed(seed);
@@ -47,7 +47,7 @@ public class OpenSimplexNoise {
 	}
 
 	// 2D OpenSimplex Noise.
-	public double eval(double x, double y) {
+	double eval(double x, double y) {
 
 		// Place input coordinates onto grid.
 		double stretchOffset = (x + y) * STRETCH_CONSTANT_2D;
@@ -178,7 +178,7 @@ public class OpenSimplexNoise {
 		return x < (double) xi ? xi - 1 : xi;
 	}
 
-	public void setSeed(long seed) {
+	void setSeed(long seed) {
 		short[] source = new short[256];
 		for (short i = 0; i < 256; source[i] = i++) {
 			;

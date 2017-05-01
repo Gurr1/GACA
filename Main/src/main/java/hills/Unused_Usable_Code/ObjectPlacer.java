@@ -1,6 +1,6 @@
 package hills.Unused_Usable_Code;
 
-import hills.services.generation.NormalDistribution;
+import hills.util.Math.NormalDistribution;
 import hills.services.generation.NoiseMapGenerator;
 import lombok.Setter;
 
@@ -150,7 +150,7 @@ public class ObjectPlacer {
     private double GetProbability(Color c, int x, int y) { // Calculates the probability for an object to be placed on the point x,y
         double prob = c.getGreen() / 255.0;
         prob = NormalDistribution.solve(prob, OPTIMAL_HEIGHT, 0.01, 0, 0.5);
-        prob *= NormalDistribution.solve(NOISE_MAP.getDoubleValue(x / 4, y / 4), 1, 0.02, 0, 0.5);
+       // prob *= NormalDistribution.solve(NOISE_MAP.getDoubleValue(x / 4, y / 4), 1, 0.02, 0, 0.5);
         prob *= DENSITY;
         return prob;
     }

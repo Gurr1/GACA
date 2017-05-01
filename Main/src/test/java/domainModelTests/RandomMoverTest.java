@@ -1,19 +1,25 @@
 package domainModelTests;
 
+import hills.services.generation.Generator;
+import hills.services.generation.IGeneration;
 import hills.services.generation.RandomWalker;
 import junit.framework.TestCase;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
  * Created by gustav on 2017-04-24.
  */
 public class RandomMoverTest {
-
+    IGeneration generation;
+    @Before
+    public void init(){
+        generation = new Generator();
+    }
     @Test
     public void testSpan(){
-        RandomWalker randomWalker = new RandomWalker();
         for(int i = 0; i<1000000; i++){
-            double result = randomWalker.generate(i);
+            double result = generation.generateDirection(i);
             TestCase.assertTrue(result>=-1 && result <=1);
         }
     }
@@ -21,7 +27,7 @@ public class RandomMoverTest {
     public void testProximity(){
         RandomWalker randomWalker = new RandomWalker();
         for(int i = 0 ; i<10000; i++){
-            TestCase.assertEquals(randomWalker.generate(i), randomWalker.generate(i), 0.02);
+            TestCase.assertEquals(generation.generateDirection(i), generation.generateDirection(i), 0.02);
         }
     }
 
@@ -31,8 +37,8 @@ public class RandomMoverTest {
         boolean wasBigger = false;
         boolean wasSmaller = false;
         for(int i = 0 ; i<10000; i++){
-            double result = randomWalker.generate(i);
-            double lastResult = randomWalker.generate(i-1);
+            double result = generation.generateDirection(i);
+            double lastResult = generation.generateDirection(i-1);
             if(isBigger(result, lastResult)){
                 wasBigger = true;
             }

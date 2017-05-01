@@ -1,5 +1,7 @@
 package hills.model;
 
+import hills.services.generation.Generator;
+import hills.services.generation.IGeneration;
 import hills.services.generation.RandomWalker;
 import hills.util.Math.Vec3;
 import hills.util.Math.shape.Sphere;
@@ -17,6 +19,7 @@ public class Sheep extends Creature{
     float radius;
     RandomWalker randomWalker;
     Random rand = new Random();
+    IGeneration generation = new Generator();
     private float move = 0;
 
 
@@ -54,7 +57,7 @@ public class Sheep extends Creature{
         pos = new Vec3(x, y, z);
     }
     private double decideDirection(){
-        double randomNum = randomWalker.generate(move+=50);
+        double randomNum = generation.generateDirection(move+=50);
         return randomNum*2*Math.PI;
     }
 

@@ -1,6 +1,8 @@
 package hills;
 
-import hills.model.CameraModel;
+import hills.services.generation.Generator;
+import hills.services.generation.IGeneration;
+import hills.view.CameraModel;
 import hills.services.generation.Terrain;
 import hills.services.generation.TerrainData;
 import hills.engine.GameLoop;
@@ -48,7 +50,7 @@ public class Init {
 
 		//TerrainNormalMapCreator.createFlatNormals("height_map_test_3.png");
 		Random rand = new Random();
-		Terrain noise = new Terrain(rand.nextLong());
+
 
 		System.setProperty("org.lwjgl.util.Debug", "true");
 		System.setProperty("org.lwjgl.util.DebugAllocator", "true");
@@ -65,13 +67,13 @@ public class Init {
 		DebugSystem.createInstance();						// Create DebugSystem instance
 		DebugSystem.getInstance().setFPSDebugMode(true);	// Activate FPS debug mode
 		CameraModel.createInstance(1.0f, false, 0.0f);
-		TerrainData[][] td = noise.createfinalIsland();
-		World w = World.createInstance(td);//
+		IGeneration generation = new Generator();
+		generation.generateWorldImage();
 		CameraModel cameraModel = CameraModel.getInstance(); 														// Get the CameraSystem instance
 		cameraModel.updatePerspective(0.1f, 3000.0f, (float) Display.getWidth() / (float) Display.getHeight(), 70.0f);	// Update the perspective matrix
 		initDisplayCallbacks();
 		
-		TerrainSystem.createInstance(td);						// Create TerrainSystem instance
+		TerrainSystem.createInstance();						// Create TerrainSystem instance
 		
 		GameSystem.createInstance(1.0f, false, 0.0f);		// Create GameSystem instance
 		

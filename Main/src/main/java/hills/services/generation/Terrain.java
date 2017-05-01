@@ -1,5 +1,6 @@
 package hills.services.generation;
 
+import hills.model.TerrainSystem;
 import hills.util.Math.Vec3;
 
 import javax.imageio.ImageIO;
@@ -14,20 +15,18 @@ import java.util.Random;
 public class Terrain {
 
     NoiseMapGenerator noise;
-    private double ELEVATION_MODIFIER = 0.8;
-    public static int  HEIGHT = 2048;
-    public static  int WIDTH = 2048;
-    public static String HEIGHT_MAP_PATH = "src/main/resources/textures/finalNoise.png";
-    public static String NORMAL_MAP_PATH = "src/main/resources/textures/normal.png";
-    int[][] matrix = new int[WIDTH + 1][HEIGHT + 1];
+    private static int  HEIGHT = TerrainSystem.TERRAIN_HEIGHT;
+    private static int WIDTH = TerrainSystem.TERRAIN_WIDTH;
+    private static String HEIGHT_MAP_PATH = "src/main/resources/textures/finalNoise.png";
+    private static String NORMAL_MAP_PATH = "src/main/resources/textures/normal.png";
+    private int[][] matrix = new int[WIDTH + 1][HEIGHT + 1];
 
-    public Terrain(long seed) {
+    protected Terrain(long seed) {
         noise = new NoiseMapGenerator(seed);
     }
     
     private int[][] createHeightMap() {
         Random rand = new Random();
-        long startTime = System.nanoTime();
         double[][] noise1 = noise.createMatrix(500, 1, false);
         noise.setSeed(rand.nextLong());
         double[][] noise2 = noise.createMatrix(150, 0.8, false);
@@ -38,7 +37,6 @@ public class Terrain {
         noise.setSeed(rand.nextLong());
         BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         double maximum = 0;
-        double max = 0;
         for (int x = 0; x < WIDTH; x++) {
             for (int y = 0; y < HEIGHT; y++) {
                             double green = noise1[x][y] + noise2[x][y]*0.5 + noise3[x][y]*0.25 + noise4[x][y]*0.2;
@@ -150,7 +148,7 @@ public class Terrain {
         return rgb;
     }
 
-    public TerrainData[][] createfinalIsland(){
+    protected TerrainData[][] createfinalIsland(){
         double[][] islandMatrix = createIsland();
         int[][] noiseMatrix = createHeightMap();
         BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
@@ -173,7 +171,7 @@ public class Terrain {
         }
         return generateTerrain(finalMatrix);
     }
-    public TerrainData[][] generateTerrain(double[][] terrain){
+    private TerrainData[][] generateTerrain(double[][] terrain){
         TerrainData[][] datas = new TerrainData[terrain.length][terrain[0].length];
         BufferedImage image = new BufferedImage(terrain.length, terrain[0].length, BufferedImage.TYPE_INT_RGB);
         for(int x = 1; x < terrain.length-1; x++){          // Since the last rows are always Black, no Normal-calculations are needed.

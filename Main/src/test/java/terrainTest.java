@@ -1,3 +1,5 @@
+import hills.services.generation.Generator;
+import hills.services.generation.IGeneration;
 import hills.services.generation.Terrain;
 import hills.services.generation.TerrainData;
 import org.junit.Before;
@@ -13,18 +15,18 @@ import static junit.framework.TestCase.assertTrue;
  */
 public class terrainTest {
 
-	Terrain t;
+	IGeneration generator;
 
 	@Before
 	public void testTerrain() {
 		Random random = new Random();
-		t = new Terrain(random.nextLong());
-		assertNotNull(t);
+        generator = new Generator();
+		assertNotNull(generator);
 	}
 
     @Test
     public void testCreateIsland(){
-        TerrainData[][] terrain = t.createfinalIsland();
+        TerrainData[][] terrain = generator.generateWorldDataAndImage();
         double smallest = 1;
         double largest = 0;
         for(int x = 0; x<terrain.length; x++){
@@ -44,7 +46,7 @@ public class terrainTest {
     }
     @Test
     public void testCreateFinalMap(){
-        TerrainData[][] terrain = t.createfinalIsland();
+        TerrainData[][] terrain = generator.generateWorldDataAndImage();
         double smallest = 255;
         double largest = 0;
         for(int x = 0; x<terrain.length; x++){

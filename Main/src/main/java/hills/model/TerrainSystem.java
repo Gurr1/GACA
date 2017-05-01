@@ -11,6 +11,7 @@ import hills.engine.system.EngineSystem;
 import hills.engine.system.terrain.mesh.GridMeshData;
 import hills.engine.system.terrain.quadtree.LODTree;
 import hills.engine.texturemap.TerrainTexture;
+import hills.view.CameraModel;
 import org.lwjgl.system.MemoryStack;
 
 import javax.imageio.ImageIO;
@@ -38,8 +39,8 @@ public class TerrainSystem extends EngineSystem {
 
 	public static final float MAX_HEIGHT = 100.0f;
 
-	private int TERRAIN_WIDTH = 0;
-	private int TERRAIN_DEPTH = 0;
+	public static int TERRAIN_WIDTH = 2056;
+	public static int TERRAIN_HEIGHT = 2056;
 
 	private final GridMeshData gridMeshData;
 	private final TerrainTexture heightMapTexture;
@@ -51,7 +52,7 @@ public class TerrainSystem extends EngineSystem {
 	
 	private CameraModel cam;
 	
-	private TerrainSystem(float scale, boolean isPaused, float startTime, TerrainData[][] td) {		// td was included to minimize loadtimes and to create more accurate hightdata.
+	private TerrainSystem(float scale, boolean isPaused, float startTime) {		// td was included to minimize loadtimes and to create more accurate hightdata.
 		super(scale, isPaused, startTime);
 		
 		// Calculate ranges
@@ -65,7 +66,7 @@ public class TerrainSystem extends EngineSystem {
 			heightNormalMap = ImageIO.read(new File(HEIGHT_MAP_DIRECTORY + HEIGHT_MAP_NORMAL_MAP_NAME));
 
 			TERRAIN_WIDTH = heightMap.getWidth();
-			TERRAIN_DEPTH = heightMap.getHeight();
+			TERRAIN_HEIGHT = heightMap.getHeight();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -75,7 +76,7 @@ public class TerrainSystem extends EngineSystem {
 		loadHeightValues(heightMap);
 
 		// Load grid mesh
-		gridMeshData = TerrainLoader.loadGridMesh(GRID_WIDTH, GRID_DEPTH, TERRAIN_WIDTH, TERRAIN_DEPTH);
+		gridMeshData = TerrainLoader.loadGridMesh(GRID_WIDTH, GRID_DEPTH, TERRAIN_WIDTH, TERRAIN_HEIGHT);
 
 		// Load terrain-shader terrain constants
 		loadTerrainConstants();
@@ -105,11 +106,11 @@ public class TerrainSystem extends EngineSystem {
 	}
 
 	private void loadHeightValues(BufferedImage heightMap){
-		heightValues = new float[TERRAIN_WIDTH][TERRAIN_DEPTH];
+		heightValues = new float[TERRAIN_WIDTH][TERRAIN_HEIGHT];
 
 		float heightStep = MAX_HEIGHT / 0xFFFFFF;
 
-		for(int z = 0; z < TERRAIN_DEPTH; z++)
+		for(int z = 0; z < TERRAIN_HEIGHT; z++)
 			for(int x = 0; x < TERRAIN_WIDTH; x++)
 				heightValues[x][z] = (heightMap.getRGB(x, z) & 0xFFFFFF) * heightStep;
 	}
@@ -123,7 +124,7 @@ public class TerrainSystem extends EngineSystem {
 	 */
 	public float getHeight(float x, float z){
 		// Handle edge cases
-		if(x < 0.0f || x > TERRAIN_WIDTH - 1 || z < 0.0f || z > TERRAIN_DEPTH - 1)
+		if(x < 0.0f || x > TERRAIN_WIDTH - 1 || z < 0.0f || z > TERRAIN_HEIGHT - 1)
 			return 0.0f;
 
 
@@ -238,7 +239,7 @@ public class TerrainSystem extends EngineSystem {
 			ByteBuffer dataBuffer = stack
 					.calloc(STD140Formatable.VECTOR_2_ALIGNMENT);
 			dataBuffer.putFloat(TERRAIN_WIDTH);
-			dataBuffer.putFloat(TERRAIN_DEPTH);
+			dataBuffer.putFloat(TERRAIN_HEIGHT);
 			dataBuffer.flip();
 			
 			ShaderProgram.map("TERRAIN_CONSTANTS", "TERRAIN_SIZE", dataBuffer);
@@ -282,11 +283,11 @@ public class TerrainSystem extends EngineSystem {
 	 * Creates the singleton instance of TerrainSystem.
 	 * @return False if an instance has already been created.
 	 */
-	public static boolean createInstance(TerrainData[][] td) {
+	public static boolean createInstance() {
 		if(instance != null)
 			return false;
 		
-		instance = new TerrainSystem(1.0f, false, 0.0f, td);
+		instance = new TerrainSystem(1.0f, false, 0.0f);
 		return true;
 	}
 	

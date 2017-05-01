@@ -35,7 +35,7 @@ public class RandomWalker {
                     138,236,205,93,222,114,67,29,24,72,243,141,128,195,78,66,215,61,156,180
             };
 
-    public float generate(float x)
+    float generate(float x)
     {
         x = x/1000;
         int flooredX = FastFloor(x);

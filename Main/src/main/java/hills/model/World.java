@@ -3,6 +3,7 @@ package hills.model;
 import hills.services.generation.TerrainData;
 import hills.util.Math.Vec2;
 import hills.util.Math.Vec3;
+import hills.view.CameraModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +25,8 @@ public class World implements OnMoveListener, OnCreatureMoveListener{
     }
 
     private Player player;
-    private final int HEIGHT = 2048;
-    private final int WIDTH = 2048;
+    private final int HEIGHT = TerrainSystem.TERRAIN_HEIGHT;
+    private final int WIDTH = TerrainSystem.TERRAIN_WIDTH;
     private List<Coin> coins;
     private int frame = 0;
     private TerrainData[][] storedVectors = new TerrainData[WIDTH][HEIGHT];
@@ -63,7 +64,9 @@ public class World implements OnMoveListener, OnCreatureMoveListener{
         }while(y<waterHeight);
         return new Vec3(x,y,z);
     }
-
+    public int getNNPCs(){
+        return creatureCount;
+    }
     public void updateWorld(double delta){
         frame++;
         this.delta = delta;
