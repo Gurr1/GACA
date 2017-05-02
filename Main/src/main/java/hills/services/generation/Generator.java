@@ -20,10 +20,6 @@ public class Generator implements IGeneration{
         terrain.createfinalIsland();
     }
 
-    @Override
-    public TerrainData[][] generateWorldDataAndImage() {
-        return terrain.createfinalIsland();
-    }
 
     @Override
     public double generateDirection(float x) {

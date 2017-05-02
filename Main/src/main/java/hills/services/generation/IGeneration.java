@@ -13,7 +13,5 @@ public interface IGeneration {
      * generates both an PNG file of the map, but also an array of TerrainData with data on Heigt
      * @return a 2D array with data on each point of terrain.
      */
-    TerrainData[][] generateWorldDataAndImage();
-
     double generateDirection(float x);
 }

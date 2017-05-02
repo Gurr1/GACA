@@ -13,7 +13,11 @@ import static junit.framework.TestCase.assertTrue;
 /**
  * Created by gustav on 2017-03-28.
  */
-public class terrainTest {
+
+/*
+Once the File getter is implemented in services, use that to fetch file.
+ */
+/*public class terrainTest {
 
 	IGeneration generator;
 
@@ -64,4 +68,4 @@ public class terrainTest {
         assertTrue(largest>0.95);
         assertTrue(smallest<0.05);
     }
-}
+}*/
