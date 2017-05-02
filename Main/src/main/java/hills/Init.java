@@ -1,18 +1,18 @@
 package hills;
 
+import hills.services.debug.DebugService;
 import hills.services.generation.Generator;
 import hills.services.generation.IGeneration;
+import hills.util.display.AspectRatios;
+import hills.util.display.Display;
+import hills.util.display.FrameBuffer;
 import hills.view.CameraModel;
 import hills.services.generation.Terrain;
 import hills.services.generation.TerrainData;
-import hills.engine.GameLoop;
-import hills.engine.display.AspectRatios;
-import hills.engine.display.Display;
-import hills.engine.display.FrameBuffer;
-import hills.engine.system.debug.DebugSystem;
+import hills.services.terrain.TerrainService;
+import hills.controller.GameLoop;
+import hills.controller.manager.GameManager;
 import hills.model.World;
-import hills.engine.system.game.GameSystem;
-import hills.model.TerrainSystem;
 
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
@@ -64,8 +64,8 @@ public class Init {
 		
 		FrameBuffer.setDepthFunction(GL11.GL_LEQUAL);		// Set OpenGL depth function.
 		
-		DebugSystem.createInstance();						// Create DebugSystem instance
-		DebugSystem.getInstance().setFPSDebugMode(true);	// Activate FPS debug mode
+		DebugService.createInstance();						// Create DebugSystem instance
+		DebugService.getInstance().setFPSDebugMode(true);	// Activate FPS debug mode
 		CameraModel.createInstance(1.0f, false, 0.0f);
 		IGeneration generation = new Generator();
 		generation.generateWorldImage();
@@ -73,9 +73,9 @@ public class Init {
 		cameraModel.updatePerspective(0.1f, 3000.0f, (float) Display.getWidth() / (float) Display.getHeight(), 70.0f);	// Update the perspective matrix
 		initDisplayCallbacks();
 		
-		TerrainSystem.createInstance();						// Create TerrainSystem instance
+		TerrainService.createInstance();						// Create TerrainSystem instance
 		
-		GameSystem.createInstance(1.0f, false, 0.0f);		// Create GameSystem instance
+		GameManager.createInstance(1.0f, false, 0.0f);		// Create GameSystem instance
 		
 		GameLoop.start();                            		// Start engine game loop
 		

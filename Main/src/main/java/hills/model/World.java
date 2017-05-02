@@ -1,8 +1,9 @@
 package hills.model;
 
 import hills.services.generation.TerrainData;
-import hills.util.Math.Vec2;
-import hills.util.Math.Vec3;
+import hills.services.terrain.TerrainService;
+import hills.util.math.Vec2;
+import hills.util.math.Vec3;
 import hills.view.CameraModel;
 
 import java.util.ArrayList;
@@ -25,8 +26,8 @@ public class World implements OnMoveListener, OnCreatureMoveListener{
     }
 
     private Player player;
-    private final int HEIGHT = TerrainSystem.TERRAIN_HEIGHT;
-    private final int WIDTH = TerrainSystem.TERRAIN_WIDTH;
+    private final int HEIGHT = TerrainService.TERRAIN_HEIGHT;
+    private final int WIDTH = TerrainService.TERRAIN_WIDTH;
     private List<Coin> coins;
     private int frame = 0;
     private TerrainData[][] storedVectors = new TerrainData[WIDTH][HEIGHT];

@@ -1,6 +1,7 @@
 package hills.engine.system;
 
-import hills.engine.GameLoop;
+import hills.controller.GameLoop;
+import hills.util.time.Clock;
 
 public abstract class EngineSystem {
 	

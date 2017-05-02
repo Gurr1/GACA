@@ -1,6 +1,6 @@
 package hills.model;
 
-import hills.util.Math.Vec3;
+import hills.util.math.Vec3;
 
 /**
  * Created by gustav on 2017-04-05.

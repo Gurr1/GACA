@@ -1,6 +1,7 @@
 package hills.controller;
 
-import hills.engine.display.Display;
+import hills.util.display.Display;
+
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;

@@ -1,10 +1,11 @@
 package hills.Unused_Usable_Code;
 
-import hills.util.Math.NormalDistribution;
+import hills.util.math.NormalDistribution;
 import hills.services.generation.NoiseMapGenerator;
 import lombok.Setter;
 
 import javax.imageio.ImageIO;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;

@@ -1,8 +1,9 @@
 package hills.view;
 
-import hills.util.Math.Mat4;
-import hills.util.Math.Vec3;
-import hills.engine.renderer.shader.ShaderProgram;
+import hills.util.math.Mat4;
+import hills.util.math.Vec3;
+import hills.util.shader.ShaderProgram;
+
 import org.lwjgl.system.MemoryStack;
 
 import java.nio.ByteBuffer;

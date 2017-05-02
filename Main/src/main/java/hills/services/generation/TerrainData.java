@@ -1,6 +1,6 @@
 package hills.services.generation;
 
-import hills.util.Math.Vec3;
+import hills.util.math.Vec3;
 import lombok.Getter;
 
 /**

@@ -1,9 +1,9 @@
 package hills.model;
 
-import hills.util.Math.Vec2;
-import hills.util.Math.Vec3;
-import hills.util.Math.shape.Sphere;
-import hills.engine.model.Model;
+import hills.util.math.Vec2;
+import hills.util.math.Vec3;
+import hills.util.math.shape.Sphere;
+import hills.util.model.Model;
 import lombok.Getter;
 import lombok.Setter;
 

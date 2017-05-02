@@ -3,9 +3,9 @@ package hills.model;
 import hills.services.generation.Generator;
 import hills.services.generation.IGeneration;
 import hills.services.generation.RandomWalker;
-import hills.util.Math.Vec3;
-import hills.util.Math.shape.Sphere;
-import hills.engine.model.Model;
+import hills.util.math.Vec3;
+import hills.util.math.shape.Sphere;
+import hills.util.model.Model;
 
 import java.util.Random;
 

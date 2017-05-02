@@ -1,6 +1,6 @@
 package hills.services.generation;
 
-import hills.model.TerrainSystem;
+import hills.services.terrain.TerrainService;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -13,8 +13,8 @@ import javax.imageio.ImageIO;
  */
 
 public class NoiseMapGenerator {            // This file should be cleaned up for readability.
-    private final int WIDTH = TerrainSystem.TERRAIN_WIDTH;
-    private final int HEIGHT = TerrainSystem.TERRAIN_HEIGHT;
+    private final int WIDTH = TerrainService.TERRAIN_WIDTH;
+    private final int HEIGHT = TerrainService.TERRAIN_HEIGHT;
 
     OpenSimplexNoise noise;
     double[][] greenMatrix = new double[WIDTH][HEIGHT];

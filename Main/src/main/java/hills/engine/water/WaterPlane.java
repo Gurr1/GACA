@@ -1,11 +1,11 @@
 package hills.engine.water;
 
-import hills.util.Math.Mat4;
-import hills.util.Math.STD140Formatable;
-import hills.util.Math.Vec2;
-import hills.util.Math.Vec3;
-import hills.util.Math.Vertex;
-import hills.util.Math.shape.Plane;
+import hills.util.math.Mat4;
+import hills.util.math.STD140Formatable;
+import hills.util.math.Vec2;
+import hills.util.math.Vec3;
+import hills.util.math.Vertex;
+import hills.util.math.shape.Plane;
 
 import java.nio.ByteBuffer;
 

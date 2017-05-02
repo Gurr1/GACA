@@ -1,9 +1,10 @@
 package hills.services.generation;
 
-import hills.model.TerrainSystem;
-import hills.util.Math.Vec3;
+import hills.services.terrain.TerrainService;
+import hills.util.math.Vec3;
 
 import javax.imageio.ImageIO;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -15,8 +16,8 @@ import java.util.Random;
 public class Terrain {
 
     NoiseMapGenerator noise;
-    private static int  HEIGHT = TerrainSystem.TERRAIN_HEIGHT;
-    private static int WIDTH = TerrainSystem.TERRAIN_WIDTH;
+    private static int  HEIGHT = TerrainService.TERRAIN_HEIGHT;
+    private static int WIDTH = TerrainService.TERRAIN_WIDTH;
     private static String HEIGHT_MAP_PATH = "src/main/resources/textures/finalNoise.png";
     private static String NORMAL_MAP_PATH = "src/main/resources/textures/normal.png";
     private int[][] matrix = new int[WIDTH + 1][HEIGHT + 1];

@@ -4,10 +4,10 @@ import hills.controller.KeyboardListener;
 import hills.controller.MouseListener;
 import hills.controller.PlayerControllerKeyboard;
 import hills.controller.PlayerControllerMouse;
-import hills.util.Math.Quaternion;
-import hills.util.Math.Vec2;
-import hills.util.Math.Vec3;
-import hills.util.Math.shape.Sphere;
+import hills.util.math.Quaternion;
+import hills.util.math.Vec2;
+import hills.util.math.Vec3;
+import hills.util.math.shape.Sphere;
 import lombok.Getter;
 import lombok.Setter;
 
