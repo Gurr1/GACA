@@ -1,6 +1,7 @@
 package hills.services.generation;
 
 import hills.services.terrain.TerrainService;
+import hills.services.terrain.TerrainServiceConstants;
 import hills.util.math.Vec3;
 
 import javax.imageio.ImageIO;
@@ -16,10 +17,12 @@ import java.util.Random;
 public class Terrain {
 
     NoiseMapGenerator noise;
-    private static int  HEIGHT = TerrainService.TERRAIN_HEIGHT;
-    private static int WIDTH = TerrainService.TERRAIN_WIDTH;
-    private static String HEIGHT_MAP_PATH = "src/main/resources/textures/finalNoise.png";
-    private static String NORMAL_MAP_PATH = "src/main/resources/textures/normal.png";
+    private static int  HEIGHT = TerrainServiceConstants.TERRAIN_HEIGHT;
+    private static int WIDTH = TerrainServiceConstants.TERRAIN_WIDTH;
+    private static String HEIGHT_MAP_PATH = TerrainServiceConstants.HEIGHT_MAP_DIRECTORY
+            + TerrainServiceConstants.HEIGHT_MAP_NAME;
+    private static String NORMAL_MAP_PATH = TerrainServiceConstants.HEIGHT_MAP_DIRECTORY
+            + TerrainServiceConstants.HEIGHT_MAP_NORMAL_MAP_NAME;
     private int[][] matrix = new int[WIDTH + 1][HEIGHT + 1];
 
     protected Terrain(long seed) {
@@ -36,7 +39,6 @@ public class Terrain {
         noise.setSeed(rand.nextLong());
         double[][] noise4 = noise.createMatrix(30, 0.4, false);
         noise.setSeed(rand.nextLong());
-        BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         double maximum = 0;
         for (int x = 0; x < WIDTH; x++) {
             for (int y = 0; y < HEIGHT; y++) {
@@ -100,7 +102,7 @@ public class Terrain {
         return green;
     }
 
-    protected void createfinalIsland(){
+    void createfinalIsland(){
         double[][] islandMatrix = createIsland();
         int[][] noiseMatrix = createHeightMap();
         BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);

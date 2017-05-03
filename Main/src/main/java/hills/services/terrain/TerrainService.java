@@ -22,9 +22,12 @@ import java.nio.ByteBuffer;
 // TODO Split
 public class TerrainService extends EngineSystem {
 
-	public static final String HEIGHT_MAP_DIRECTORY = "src/main/resources/textures/";
-	public static final String HEIGHT_MAP_NAME = "finalNoise.png";
-	public static final String HEIGHT_MAP_NORMAL_MAP_NAME = "normal.png";
+	private static final String HEIGHT_MAP_DIRECTORY =
+			TerrainServiceConstants.HEIGHT_MAP_DIRECTORY;
+	private static final String HEIGHT_MAP_NAME =
+			TerrainServiceConstants.HEIGHT_MAP_NAME;
+	private static final String HEIGHT_MAP_NORMAL_MAP_NAME =
+			TerrainServiceConstants.HEIGHT_MAP_NORMAL_MAP_NAME;
 
 	public static final float MORPH_FACTOR = 0.8f;
 
@@ -38,8 +41,8 @@ public class TerrainService extends EngineSystem {
 
 	public static final float MAX_HEIGHT = 100.0f;
 
-	public static final int TERRAIN_WIDTH = 2056;
-	public static final int TERRAIN_HEIGHT = 2056;
+	private static final int TERRAIN_WIDTH = TerrainServiceConstants.TERRAIN_WIDTH;
+	private static final int TERRAIN_HEIGHT = TerrainServiceConstants.TERRAIN_HEIGHT;
 
 	private final GridMeshData gridMeshData;
 	private final TerrainTexture heightMapTexture;

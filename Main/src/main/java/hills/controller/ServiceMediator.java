@@ -8,10 +8,7 @@ import hills.services.terrain.TerrainService;
  * Created by gustav on 2017-04-29.
  */
 public enum ServiceMediator {
-    ;
-public enum instance {
-    INSTANCE
-}
+    INSTANCE();
     private TerrainService terrainService;
     private IMapFactory generator = new MapFactory();
     public double getHeight(int x, int z){

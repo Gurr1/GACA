@@ -1,5 +1,6 @@
 package hills;
 
+import hills.controller.ServiceMediator;
 import hills.services.debug.DebugService;
 import hills.services.generation.MapFactory;
 import hills.services.generation.IMapFactory;
@@ -64,18 +65,14 @@ public class Init {
 //		DebugService.createInstance();						// Create DebugSystem instance
 //		DebugService.getInstance().setFPSDebugMode(true);	// Activate FPS debug mode
 		CameraModel.createInstance(1.0f, false, 0.0f);
-		IMapFactory generation = new MapFactory();
-		generation.generateWorldImage();
-		CameraModel cameraModel = CameraModel.getInstance(); 														// Get the CameraSystem instance
+		ServiceMediator.INSTANCE.generateMap();
+				CameraModel cameraModel = CameraModel.getInstance();// Get the CameraSystem instance
 		cameraModel.updatePerspective(0.1f, 3000.0f, (float) Display.getWidth() / (float) Display.getHeight(), 70.0f);	// Update the perspective matrix
 		initDisplayCallbacks();
 		
 		TerrainService.createInstance();						// Create TerrainSystem instance
-		
 		GameManager.createInstance(1.0f, false, 0.0f);		// Create GameSystem instance
-		
 		GameLoop.start();                            		// Start engine game loop
-		
 		Display.destroy();                           		// Terminate GLFW window and GLFW when program ends
 	}
 	

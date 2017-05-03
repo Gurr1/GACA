@@ -1,6 +1,7 @@
 package hills.model;
 
 import hills.services.terrain.TerrainService;
+import hills.services.terrain.TerrainServiceConstants;
 import hills.util.math.Vec3;
 import hills.view.CameraModel;
 
@@ -24,8 +25,8 @@ public class World implements OnMoveListener, OnCreatureMoveListener{
     }
 
     private Player player;
-    private final int HEIGHT = TerrainService.TERRAIN_HEIGHT;
-    private final int WIDTH = TerrainService.TERRAIN_WIDTH;
+    private final int HEIGHT = TerrainServiceConstants.TERRAIN_HEIGHT;
+    private final int WIDTH = TerrainServiceConstants.TERRAIN_WIDTH;
     private List<Coin> coins;
     private int frame = 0;
     double delta;
