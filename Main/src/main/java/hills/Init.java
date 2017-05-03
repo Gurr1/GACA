@@ -1,15 +1,17 @@
 package hills;
 
-import hills.controller.GameLoop;
-import hills.controller.manager.GameManager;
-import hills.model.World;
-import hills.services.generation.Generator;
-import hills.services.generation.IGeneration;
-import hills.services.terrain.TerrainService;
+import hills.controller.ServiceMediator;
+import hills.services.debug.DebugService;
+import hills.services.generation.MapFactory;
+import hills.services.generation.IMapFactory;
 import hills.util.display.AspectRatios;
 import hills.util.display.Display;
 import hills.util.display.FrameBuffer;
 import hills.view.CameraModel;
+import hills.services.terrain.TerrainService;
+import hills.controller.GameLoop;
+import hills.controller.manager.GameManager;
+
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
 import org.lwjgl.glfw.GLFWWindowCloseCallback;
@@ -63,19 +65,14 @@ public class Init {
 //		DebugService.createInstance();						// Create DebugSystem instance
 //		DebugService.getInstance().setFPSDebugMode(true);	// Activate FPS debug mode
 		CameraModel.createInstance(1.0f, false, 0.0f);
-		IGeneration generation = new Generator();
-		generation.generateWorldImage();
-		World.createInstance();
-		CameraModel cameraModel = CameraModel.getInstance(); 														// Get the CameraSystem instance
+		ServiceMediator.INSTANCE.generateMap();
+				CameraModel cameraModel = CameraModel.getInstance();// Get the CameraSystem instance
 		cameraModel.updatePerspective(0.1f, 3000.0f, (float) Display.getWidth() / (float) Display.getHeight(), 70.0f);	// Update the perspective matrix
 		initDisplayCallbacks();
 		
 		TerrainService.createInstance();						// Create TerrainSystem instance
-		
 		GameManager.createInstance(1.0f, false, 0.0f);		// Create GameSystem instance
-		
 		GameLoop.start();                            		// Start engine game loop
-		
 		Display.destroy();                           		// Terminate GLFW window and GLFW when program ends
 	}
 	

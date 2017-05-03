@@ -1,26 +1,21 @@
-import hills.services.generation.Generator;
-import hills.services.generation.IGeneration;
-import hills.services.generation.Terrain;
-import hills.services.generation.TerrainData;
-import org.junit.Before;
-import org.junit.Test;
-
-import java.util.Random;
-
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
 
 /**
  * Created by gustav on 2017-03-28.
  */
-public class terrainTest {
 
-	IGeneration generator;
+/*
+Once the File getter is implemented in services, use that to fetch file.
+ */
+/*public class terrainTest {
+
+	IMapFactory generator;
 
 	@Before
 	public void testTerrain() {
 		Random random = new Random();
-        generator = new Generator();
+        generator = new MapFactory();
 		assertNotNull(generator);
 	}
 
@@ -64,4 +59,4 @@ public class terrainTest {
         assertTrue(largest>0.95);
         assertTrue(smallest<0.05);
     }
-}
+}*/

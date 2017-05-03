@@ -1,14 +1,15 @@
 package hills.services.generation;
 
 import hills.services.terrain.TerrainService;
+import hills.services.terrain.TerrainServiceConstants;
 
 /**
  * Created by gustav on 2017-03-21.
  */
 
 public class NoiseMapGenerator {
-    private final int WIDTH = TerrainService.TERRAIN_WIDTH;
-    private final int HEIGHT = TerrainService.TERRAIN_HEIGHT;
+    private final int WIDTH = TerrainServiceConstants.TERRAIN_WIDTH;
+    private final int HEIGHT = TerrainServiceConstants.TERRAIN_HEIGHT;
 
     OpenSimplexNoise noise;
     double[][] greenMatrix = new double[WIDTH][HEIGHT];

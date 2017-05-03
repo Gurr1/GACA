@@ -3,6 +3,8 @@ package hills.view;
 import hills.model.IMovable;
 import hills.model.World;
 
+import java.util.List;
+
 /**
  * Created by gustav on 2017-04-29.
  */
