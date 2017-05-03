@@ -2,17 +2,11 @@ package hills.services.generation;
 
 import hills.services.terrain.TerrainService;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
 /**
  * Created by gustav on 2017-03-21.
  */
 
-public class NoiseMapGenerator {            // This file should be cleaned up for readability.
+public class NoiseMapGenerator {
     private final int WIDTH = TerrainService.TERRAIN_WIDTH;
     private final int HEIGHT = TerrainService.TERRAIN_HEIGHT;
 
@@ -27,9 +21,6 @@ public class NoiseMapGenerator {            // This file should be cleaned up fo
     	noise.setSeed(seed); 
     }
 
-    /*
-    Do Not modify. create a copy to do that.
-     */
     double[][] createMatrix(double frequency, double scale, boolean zeroToOne){
         double[][] matrix = new double[WIDTH+1][HEIGHT+1];
         for(int y = 0; y <= HEIGHT; y++) {

@@ -9,17 +9,17 @@ import java.util.List;
  * Created by gustav on 2017-04-29.
  */
 public class ModelDataHandler {
-    private static World w;
-    private static CameraModel cameraModel;
-    ModelDataHandler(World w){
-        this.w = w;
+    private World w;
+    private CameraModel cameraModel;
+    private static ModelDataHandler instance;
+    private ModelDataHandler(){
+        this.w = World.createInstance();
         cameraModel = CameraModel.getInstance();
     }
-    protected static IMovable getCharacter(int index){
+    private IMovable getCharacter(int index){
         return null;
     }
-    protected static void update(double delta){
-        updateModel(delta);
+    public void update(double delta){
         int nChars = w.getNNPCs();
         for(int i = 0; i<nChars; i++){
             // get NPC pos, direction, etc and display that
@@ -27,13 +27,20 @@ public class ModelDataHandler {
         updateCamera();
     }
 
-    private static void updateCamera() {
+    private void updateCamera() {
       //  w.getPlayerPosition();
        // w.getPlayerHeading();
        // cameraModel.setParams();
     }
 
-    protected static void updateModel(double delta){
+    protected void updateModel(double delta){
         w.updateWorld(delta);
+    }
+
+    public static ModelDataHandler getInstance(){
+        if(instance == null){
+            instance = new ModelDataHandler();
+        }
+        return instance;
     }
 }
