@@ -1,7 +1,7 @@
 package domainModelTests;
 
-import hills.services.generation.Generator;
-import hills.services.generation.IGeneration;
+import hills.services.generation.IMapFactory;
+import hills.services.generation.MapFactory;
 import hills.services.generation.RandomWalker;
 import junit.framework.TestCase;
 import org.junit.Before;
@@ -11,10 +11,10 @@ import org.junit.Test;
  * Created by gustav on 2017-04-24.
  */
 public class RandomMoverTest {
-    IGeneration generation;
+    IMapFactory generation;
     @Before
     public void init(){
-        generation = new Generator();
+        generation = new MapFactory();
     }
     @Test
     public void testSpan(){

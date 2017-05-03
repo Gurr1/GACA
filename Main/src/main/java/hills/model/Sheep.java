@@ -1,7 +1,7 @@
 package hills.model;
 
-import hills.services.generation.Generator;
-import hills.services.generation.IGeneration;
+import hills.services.generation.MapFactory;
+import hills.services.generation.IMapFactory;
 import hills.services.generation.RandomWalker;
 import hills.util.math.Vec3;
 import hills.util.math.shape.Sphere;
@@ -19,7 +19,7 @@ public class Sheep extends Creature{
     float radius;
     RandomWalker randomWalker;
     Random rand = new Random();
-    IGeneration generation = new Generator();
+    IMapFactory generation = new MapFactory();
     private float move = 0;
 
 

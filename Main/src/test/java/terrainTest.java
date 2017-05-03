@@ -1,12 +1,3 @@
-import hills.services.generation.Generator;
-import hills.services.generation.IGeneration;
-import hills.services.generation.Terrain;
-import hills.services.generation.TerrainData;
-import org.junit.Before;
-import org.junit.Test;
-
-import java.util.Random;
-
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
 
@@ -19,12 +10,12 @@ Once the File getter is implemented in services, use that to fetch file.
  */
 /*public class terrainTest {
 
-	IGeneration generator;
+	IMapFactory generator;
 
 	@Before
 	public void testTerrain() {
 		Random random = new Random();
-        generator = new Generator();
+        generator = new MapFactory();
 		assertNotNull(generator);
 	}
 

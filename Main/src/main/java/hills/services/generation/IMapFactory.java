@@ -3,7 +3,7 @@ package hills.services.generation;
 /**
  * Created by gustav on 2017-04-27.
  */
-public interface IGeneration {
+public interface IMapFactory {
     /**
      * generates two PNG files, one with Height data, and one with data about Normals.
      */

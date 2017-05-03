@@ -5,12 +5,12 @@ import java.util.Random;
 /**
  * Created by gustav on 2017-04-27.
  */
-public class Generator implements IGeneration{
+public class MapFactory implements IMapFactory {
 
     RandomWalker walker;
     Random r;
     Terrain terrain;
-    public Generator(){
+    public MapFactory(){
         r = new Random();
         terrain = new Terrain(r.nextLong());
         walker = new RandomWalker();
