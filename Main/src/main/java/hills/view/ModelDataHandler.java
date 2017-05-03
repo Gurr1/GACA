@@ -3,23 +3,21 @@ package hills.view;
 import hills.model.IMovable;
 import hills.model.World;
 
-import java.util.List;
-
 /**
  * Created by gustav on 2017-04-29.
  */
 public class ModelDataHandler {
-    World w;
-    CameraModel cameraModel;
-    ModelDataHandler(World w){
-        this.w = w;
+    private World w;
+    private CameraModel cameraModel;
+    private static ModelDataHandler instance;
+    private ModelDataHandler(){
+        this.w = World.createInstance();
         cameraModel = CameraModel.getInstance();
     }
-    protected IMovable getCharacter(int index){
+    private IMovable getCharacter(int index){
         return null;
     }
-    protected void update(double delta){
-        updateModel(delta);
+    public void update(double delta){
         int nChars = w.getNNPCs();
         for(int i = 0; i<nChars; i++){
             // get NPC pos, direction, etc and display that
@@ -35,5 +33,12 @@ public class ModelDataHandler {
 
     protected void updateModel(double delta){
         w.updateWorld(delta);
+    }
+
+    public static ModelDataHandler getInstance(){
+        if(instance == null){
+            instance = new ModelDataHandler();
+        }
+        return instance;
     }
 }

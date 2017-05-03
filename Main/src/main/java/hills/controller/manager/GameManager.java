@@ -1,12 +1,13 @@
 package hills.controller.manager;
 
+import hills.engine.system.EngineSystem;
 import hills.model.World;
 import hills.util.math.Vec2;
 import hills.util.math.Vec3;
 import hills.util.math.Vertex;
 import hills.util.model.MeshTexture;
 import hills.util.model.Model;
-import hills.engine.system.EngineSystem;
+import hills.view.ModelDataHandler;
 
 public final class GameManager extends EngineSystem {
 
@@ -71,10 +72,12 @@ public final class GameManager extends EngineSystem {
 	Model model, cube;
 	Vec3 pos;
 	World world;
+	ModelDataHandler modelDataHandler;
 
 	private GameManager(float scale, boolean isPaused, float startTime) {
 		super(scale, isPaused, startTime);
 		world = World.getInstance();
+		modelDataHandler = ModelDataHandler.getInstance();
 		//texture = new MeshTexture("test.png");
 		
 		//Mesh cubeMesh = ModelLoader.load(v, ind, texture, Mat4.identity());
@@ -84,6 +87,7 @@ public final class GameManager extends EngineSystem {
 	@Override
 	protected void update(double delta) {
 		world.updateWorld(delta);
+		modelDataHandler.update(delta);
 	}
 
 	@Override

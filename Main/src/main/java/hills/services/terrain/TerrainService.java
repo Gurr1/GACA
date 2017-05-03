@@ -1,6 +1,6 @@
 package hills.services.terrain;
 
-import hills.services.generation.TerrainData;
+import hills.engine.system.EngineSystem;
 import hills.services.terrain.mesh.GridMeshData;
 import hills.services.terrain.tree.LODTree;
 import hills.util.loader.TerrainLoader;
@@ -9,14 +9,11 @@ import hills.util.math.Vec2;
 import hills.util.math.Vec3;
 import hills.util.shader.ShaderProgram;
 import hills.util.texturemap.TerrainTexture;
-import hills.engine.system.EngineSystem;
 import hills.view.CameraModel;
 import hills.view.renderer.TerrainRenderer;
-
 import org.lwjgl.system.MemoryStack;
 
 import javax.imageio.ImageIO;
-
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -41,8 +38,8 @@ public class TerrainService extends EngineSystem {
 
 	public static final float MAX_HEIGHT = 100.0f;
 
-	public static int TERRAIN_WIDTH = 2056;
-	public static int TERRAIN_HEIGHT = 2056;
+	public static final int TERRAIN_WIDTH = 2056;
+	public static final int TERRAIN_HEIGHT = 2056;
 
 	private final GridMeshData gridMeshData;
 	private final TerrainTexture heightMapTexture;
@@ -66,9 +63,6 @@ public class TerrainService extends EngineSystem {
 		try {
 			heightMap = ImageIO.read(new File(HEIGHT_MAP_DIRECTORY + HEIGHT_MAP_NAME));
 			heightNormalMap = ImageIO.read(new File(HEIGHT_MAP_DIRECTORY + HEIGHT_MAP_NORMAL_MAP_NAME));
-
-			TERRAIN_WIDTH = heightMap.getWidth();
-			TERRAIN_HEIGHT = heightMap.getHeight();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

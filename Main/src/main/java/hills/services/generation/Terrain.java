@@ -18,8 +18,11 @@ public class Terrain {
     NoiseMapGenerator noise;
     private static int  HEIGHT = TerrainService.TERRAIN_HEIGHT;
     private static int WIDTH = TerrainService.TERRAIN_WIDTH;
-    private static String HEIGHT_MAP_PATH = "src/main/resources/textures/finalNoise.png";
-    private static String NORMAL_MAP_PATH = "src/main/resources/textures/normal.png";
+    private static String HEIGHT_MAP_PATH =
+            TerrainService.HEIGHT_MAP_DIRECTORY + TerrainService.HEIGHT_MAP_NAME;
+
+    private static String NORMAL_MAP_PATH =
+            TerrainService.HEIGHT_MAP_DIRECTORY + TerrainService.HEIGHT_MAP_NORMAL_MAP_NAME;
     private int[][] matrix = new int[WIDTH + 1][HEIGHT + 1];
 
     protected Terrain(long seed) {
@@ -28,7 +31,7 @@ public class Terrain {
     
     private int[][] createHeightMap() {
         Random rand = new Random();
-        double[][] noise1 = noise.createMatrix(500, 1, false);
+        double[][] noise1 = noise.createMatrix(500, 1, false);      // Thread this.
         noise.setSeed(rand.nextLong());
         double[][] noise2 = noise.createMatrix(150, 0.8, false);
         noise.setSeed(rand.nextLong());

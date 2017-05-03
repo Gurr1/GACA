@@ -10,7 +10,6 @@ import java.nio.ByteBuffer;
 
 public class CameraSystem {
 
-
 	public void update(Vec3 position, Vec3 forward, Vec3 up, Vec3 right) {
 
 		

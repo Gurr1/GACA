@@ -65,7 +65,7 @@ public abstract class EngineSystem {
 	
 	/**
 	 * Pauses or starts clock.
-	 * @param pause - If clock should be paused or not.
+	 * @param isPaused - If clock should be paused or not.
 	 */
 	public final void pauseSystemClock(boolean isPaused){
 		systemClock.pause(isPaused);
