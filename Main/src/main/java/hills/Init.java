@@ -70,7 +70,7 @@ public class Init {
 		cameraModel.updatePerspective(0.1f, 3000.0f, (float) Display.getWidth() / (float) Display.getHeight(), 70.0f);	// Update the perspective matrix
 		initDisplayCallbacks();
 		
-		TerrainService.createInstance();						// Create TerrainSystem instance
+		//TerrainService.createInstance();						// Create TerrainSystem instance
 		GameManager.createInstance(1.0f, false, 0.0f);		// Create GameSystem instance
 		GameLoop.start();                            		// Start engine game loop
 		Display.destroy();                           		// Terminate GLFW window and GLFW when program ends

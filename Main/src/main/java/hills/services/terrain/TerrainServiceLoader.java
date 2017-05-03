@@ -103,12 +103,7 @@ public enum TerrainServiceLoader {
 	 */
 	private void loadTerrainSizeConstant() {
 		try (MemoryStack stack = MemoryStack.stackPush()) {
-<<<<<<< HEAD
 			ByteBuffer dataBuffer = stack.calloc(STD140Formatable.VECTOR_2_ALIGNMENT);
-=======
-			ByteBuffer dataBuffer = stack
-					.calloc(STD140Formatable.VECTOR_2_ALIGNMENT);
->>>>>>> branch 'RefactorBranch' of https://github.com/Gurr1/GACA.git
 			dataBuffer.putFloat(TerrainServiceConstants.TERRAIN_WIDTH);
 			dataBuffer.putFloat(TerrainServiceConstants.TERRAIN_HEIGHT);
 			dataBuffer.flip();

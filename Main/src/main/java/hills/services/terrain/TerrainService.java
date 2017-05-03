@@ -17,38 +17,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-// TODO Split
-<<<<<<< HEAD
 public enum TerrainService implements Service {
 	INSTANCE;
 	
 	private final LODTree tree;
-=======
-public class TerrainService extends EngineSystem {
-
-	private static final String HEIGHT_MAP_DIRECTORY =
-			TerrainServiceConstants.HEIGHT_MAP_DIRECTORY;
-	private static final String HEIGHT_MAP_NAME =
-			TerrainServiceConstants.HEIGHT_MAP_NAME;
-	private static final String HEIGHT_MAP_NORMAL_MAP_NAME =
-			TerrainServiceConstants.HEIGHT_MAP_NORMAL_MAP_NAME;
-
-	public static final float MORPH_FACTOR = 0.8f;
-
-	public static final float[] RANGES = new float[10];
-	public static final float FIRST_RANGE = 128.0f;
-
-	public static final float[] SCALES = { 1.0f, 2.0f, 4.0f, 8.0f, 16.0f, 32.0f, 64.0f, 128.0f, 256.0f, 512.0f };
-
-	public static final int GRID_WIDTH = 16;
-	public static final int GRID_DEPTH = 16;
-
-	public static final float MAX_HEIGHT = 100.0f;
-
-	private static final int TERRAIN_WIDTH = TerrainServiceConstants.TERRAIN_WIDTH;
-	private static final int TERRAIN_HEIGHT = TerrainServiceConstants.TERRAIN_HEIGHT;
-
->>>>>>> branch 'RefactorBranch' of https://github.com/Gurr1/GACA.git
 	private final GridMeshData gridMeshData;
 	private final TerrainTexture heightMapTexture;
 
