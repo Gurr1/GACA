@@ -18,11 +18,8 @@ public class Terrain {
     NoiseMapGenerator noise;
     private static int  HEIGHT = TerrainService.TERRAIN_HEIGHT;
     private static int WIDTH = TerrainService.TERRAIN_WIDTH;
-    private static String HEIGHT_MAP_PATH =
-            TerrainService.HEIGHT_MAP_DIRECTORY + TerrainService.HEIGHT_MAP_NAME;
-
-    private static String NORMAL_MAP_PATH =
-            TerrainService.HEIGHT_MAP_DIRECTORY + TerrainService.HEIGHT_MAP_NORMAL_MAP_NAME;
+    private static String HEIGHT_MAP_PATH = "src/main/resources/textures/finalNoise.png";
+    private static String NORMAL_MAP_PATH = "src/main/resources/textures/normal.png";
     private int[][] matrix = new int[WIDTH + 1][HEIGHT + 1];
 
     protected Terrain(long seed) {
@@ -31,7 +28,7 @@ public class Terrain {
     
     private int[][] createHeightMap() {
         Random rand = new Random();
-        double[][] noise1 = noise.createMatrix(500, 1, false);      // Thread this.
+        double[][] noise1 = noise.createMatrix(500, 1, false);
         noise.setSeed(rand.nextLong());
         double[][] noise2 = noise.createMatrix(150, 0.8, false);
         noise.setSeed(rand.nextLong());
@@ -66,42 +63,17 @@ public class Terrain {
      */
     private double[][] createIsland(){           // Can this be done Threaded?
         double matrix[][] = new double[WIDTH][HEIGHT];
+        BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         double exp = exponentCalc();
         double[][] noise1 = noise.createMatrix(100, 1, true);
         for (int x = 0; x < WIDTH; x++) {
             for (int y = 0; y < HEIGHT; y++) {
-                matrix[x][y] = islandAlgorithm1(noise1[x][y], x, y, exp);
-                matrix[x][y] += islandAlgorithm2(noise1[x][y], x, y, exp);
+                matrix[x][y] += islandAlgorithm2(noise1[x][y], x, y, exp, image, matrix);
             }
         }
         return matrix;
     }
-    private double islandAlgorithm1(double noise, int x, int y, double exp){
-        double green = 1;
-        int distanceToCenterX;
-        if (WIDTH / 2 - x > 0) {
-            distanceToCenterX = WIDTH / 2 - x;
-        } else {
-            distanceToCenterX = x - WIDTH / 2;
-        }
-        int distanceToCenterY;
-        if (HEIGHT / 2 - y > 0) {
-            distanceToCenterY = HEIGHT / 2 - y;
-        } else {
-            distanceToCenterY = y - HEIGHT / 2;
-        }
-        double multiplier = (WIDTH * HEIGHT / 4) - ((distanceToCenterX * distanceToCenterY + Math.pow(distanceToCenterX, exp) + Math.pow(distanceToCenterY, exp)) / 4);
-        multiplier = (multiplier / (WIDTH * HEIGHT / 4));
-        //Multiplier is used to create a island like shape.
-        green *= multiplier;
-        green = setMinusToZero(green);
-        boolean isZero = green==0;
-        if(!isZero) {
-            green = Math.pow(green,setMinusToZero(noise)*3);         // last number decides how steep natural slopes should be.
-        }// line above is only thing that needs change
-        return green;
-    }
-    private double islandAlgorithm2(double noise, int x, int y, double exp){
+    private double islandAlgorithm2(double noise, int x, int y, double exp, BufferedImage image, double[][] matrix){
 
         double green = 1;
         int distanceToCenterX;
@@ -158,12 +130,13 @@ public class Terrain {
                 if(terrain[x][y]==0 && terrain[x+1][y] == 0     // Speeds up calculations by ignoring all black space.
                         && terrain[x][y+1] == 0 && terrain[x][y+1] == 0){
                     image.setRGB(x,y,0);
+                    continue;
                 }
                 Vec3 v1 = new Vec3(x-1, (float)terrain[x-1][y], y+1);
                 Vec3 v2 = new Vec3(x+1, (float)terrain[x+1][y],y);
                 Vec3 v3 = new Vec3(x, (float)terrain[x][y-1],y-1);
                 Vec3 v4 = new Vec3(x, (float)terrain[x][y+1], y+1);
-                int[]rgb = generateNormal(v1, v2, v3, v4);
+                int[]rgb = generateNormal(v1,v2,v3,v4);
                 image.getRaster().setPixel(x,y,rgb);
             }
         }
@@ -173,13 +146,12 @@ public class Terrain {
             e.printStackTrace();
         }
     }
-
     private int[] generateNormal(Vec3 v1, Vec3 v2, Vec3 v3, Vec3 v4) {
         Vec3 rel1 = v1.sub(v2);
         Vec3 rel2 = v3.sub(v4);
         Vec3 normal =  rel1.cross(rel2).normalize();
-        return new int[] {(int)normal.getX() * 255,
-                (int)normal.getZ() * 255, (int)normal.getY() * 255};
+        return new int[] {(int)(normal.getX() * 255),
+                (int)(normal.getZ() * 255), (int)(normal.getY() * 255)};
     }
 
     private double setMinusToZero(double green) {

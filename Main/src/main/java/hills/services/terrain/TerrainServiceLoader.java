@@ -100,8 +100,8 @@ public class TerrainServiceLoader {
 		try (MemoryStack stack = MemoryStack.stackPush()) {
 			ByteBuffer dataBuffer = stack
 					.calloc(STD140Formatable.VECTOR_2_ALIGNMENT);
-			dataBuffer.putFloat(TERRAIN_WIDTH);
-			dataBuffer.putFloat(TERRAIN_HEIGHT);
+			dataBuffer.putFloat(TerrainService.TERRAIN_WIDTH);
+			dataBuffer.putFloat(TerrainService.TERRAIN_HEIGHT);
 			dataBuffer.flip();
 			
 			ShaderProgram.map("TERRAIN_CONSTANTS", "TERRAIN_SIZE", dataBuffer);
