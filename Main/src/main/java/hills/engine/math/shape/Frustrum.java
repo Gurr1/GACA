@@ -94,7 +94,6 @@ public class Frustrum {
 		}
 		
 		// Useful vectors
-		System.out.println(near + " " + forward);
 		final Vec3 nearPlaneCenter = forward.mul(near);
 		final Vec3 centerToRightNearPlaneVector = right.mul(halfWNear);
 		final Vec3 centerToTopNearPlaneVector = up.mul(halfHNear);

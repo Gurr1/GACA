@@ -34,45 +34,39 @@ public class Player implements ICollidable, IMovable, KeyboardListener, MouseLis
 
     private List<OnMoveListener> moveListeners = new ArrayList<>();
     private float speed = 1;
-    @Getter @Setter private boolean toUpdate;
-    private float lastYaw = 0;
+    private float runModifier = 2;
+    @Getter @Setter private boolean toUpdate = true;
 
     /**
      * Camera up direction.
      */
     @Getter private Vec3 up;
-
+    private final Vec3 globalUp;
     /**
      * Camera right direction.
      */
     @Getter private Vec3 right;
 
     @Getter private Vec3 forward;
-    private float lastPitch = 0;
+    @Getter private float playerHeight = 3;
+    private Vec3 forwardXZ;
 
     //<editor-fold desc="Constructors">
-
-    public Player(Vec3 pos, float radius) {
-        this.pos = pos;
-        this.radius = radius;
-    }
-
-    public Player(Vec3 pos, float pitch, float yaw) {
-        this.pos = pos;
-        this.yaw = yaw;
-        this.pitch = pitch;
-    }
 
     public Player(Vec3 pos) {
         PlayerControllerKeyboard.addListener(this);
         PlayerControllerMouse.addListener(this);
         this.pos = pos;
-        this.forward = new Vec3(0.0f, 0.0f, -1.0f);
-        this.up = new Vec3(0.0f, 1.0f, 0.0f);
-        this.right = new Vec3(1.0f, 0.0f, 0.0f);
+        forward = new Vec3(0.0f, 0.0f, -1.0f);
+        up = new Vec3(0.0f, 1.0f, 0.0f);
+        globalUp = up;
+        right = new Vec3(1.0f, 0.0f, 0.0f);
         forward = forward.normalize();
         up = up.normalize();
         right = forward.cross(up);
+        updateYaw(0);
+        updatePitch(0);
+
     }
     //</editor-fold>
 
@@ -83,8 +77,11 @@ public class Player implements ICollidable, IMovable, KeyboardListener, MouseLis
      * @param diffPitch the amount that should be added to the pitch
      */
     public void updatePitch(float diffPitch) {
-        this.pitch = fixDegrees(diffPitch + this.pitch);
-        updateVectors(right, diffPitch);
+        float pitch = fixDegrees(diffPitch + this.pitch);
+        if(!(pitch>90 && pitch<270)){
+            this.pitch = pitch;
+            updateVectors(right, diffPitch);
+        }
     }
 
     /**
@@ -93,7 +90,7 @@ public class Player implements ICollidable, IMovable, KeyboardListener, MouseLis
      */
     public void updateYaw(float diffYaw) {
         this.yaw = fixDegrees(diffYaw + this.yaw);
-        updateVectors(up, diffYaw);
+        updateVectors(globalUp, diffYaw);
     }
 
     public void checkPlayerHealth(){
@@ -124,6 +121,13 @@ public class Player implements ICollidable, IMovable, KeyboardListener, MouseLis
     }
 
     public void setPitch(float pitch) {
+        System.out.println(pitch);
+        if(pitch>180){
+            return;
+        }
+        if(pitch<0){
+            return;
+        }
         this.pitch = fixDegrees(pitch);
     }
 
@@ -161,42 +165,42 @@ public class Player implements ICollidable, IMovable, KeyboardListener, MouseLis
     }
     private void notifyListeners(){
         for(OnMoveListener listener : moveListeners){
-            listener.moving();
+            listener.moving(this);
         }
     }
-    public void update(Commands direction){       // This should maybe be reversed, so Keyboard sends a prompt that a key has been pressed.
-            switch (direction){
-                case MOVEFORWARD:
-                    velocity = forward.mul(speed);
-                    break;
-                case MOVEBACKWARD:
-                    velocity = forward.mul(-1*speed);
-                    break;
-                case MOVELEFT:
-                    velocity = right.mul(-1*speed);
-                    break;
-                case MOVERIGHT:
-                    velocity = right.mul(speed);
-                    break;
-                case SHIFTMOD:
-                    speed *= 2;
-                    break;
-                case CONROLMOD:
-                    speed*=0.5;
-                    break;
-            }
-            for(int i = 0; i<moveListeners.size(); i++) {
-                moveListeners.get(i).moving();
-            }
-            // Act on each of the directions.
-        }
-  //  }
 
     @Override
-    public void instructionSent(Commands command) {
-        update(command);
+    public void instructionSent(Commands direction) {
         toUpdate = true;
+        switch (direction){
+            case MOVEFORWARD:
+                velocity = forwardXZ.mul(speed);
+                break;
+            case MOVEBACKWARD:
+                velocity = forwardXZ.mul(-1*speed);
+                break;
+            case MOVELEFT:
+                velocity = right.mul(-1*speed);
+                break;
+            case MOVERIGHT:
+                velocity = right.mul(speed);
+                break;
+            case SUPERSPEED:
+                speed = 1000000;
+                break;
+            case SHIFTDOWN:
+                speed = runModifier;
+                return;
+            case SHIFTUP:
+                speed = 1;
+                return;
         }
+        System.out.println(velocity);
+        for(int i = 0; i<moveListeners.size(); i++) {
+            moveListeners.get(i).moving(this);
+        }
+        // Act on each of the directions.
+    }
 
     @Override
     public void mouseMoved(float xVelocity, float yVelocity) {
@@ -207,10 +211,10 @@ public class Player implements ICollidable, IMovable, KeyboardListener, MouseLis
 
     public void updateVectors(Vec3 axis, float angle) {
         Quaternion rotQuat = new Quaternion(axis, angle);
-
         forward = rotQuat.mul(forward).normalize();
         up = rotQuat.mul(up).normalize();
         right = forward.cross(up);
+        forwardXZ = new Vec3(forward.getX(), 0, forward.getZ()).normalize();        // to fix velocity vector so speed always is the same, no matter elevation of focus.
     }
 
     public void collected(ICollectible collectible) {
