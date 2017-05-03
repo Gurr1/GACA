@@ -1,8 +1,6 @@
 package hills.model;
 
-import hills.services.generation.TerrainData;
 import hills.services.terrain.TerrainService;
-import hills.util.math.Vec2;
 import hills.util.math.Vec3;
 import hills.view.CameraModel;
 
@@ -20,8 +18,8 @@ public class World implements OnMoveListener, OnCreatureMoveListener{
             return world;
     }
 
-    public static World createInstance(TerrainData[][] terrainDatas) {
-        world = new World(terrainDatas);
+    public static World createInstance() {
+        world = new World();
         return world;
     }
 
@@ -30,7 +28,6 @@ public class World implements OnMoveListener, OnCreatureMoveListener{
     private final int WIDTH = TerrainService.TERRAIN_WIDTH;
     private List<Coin> coins;
     private int frame = 0;
-    private TerrainData[][] storedVectors = new TerrainData[WIDTH][HEIGHT];
     double delta;
     private CameraModel cameraModel;
     private List<ICollectible> collectibles = new ArrayList<>();
@@ -38,9 +35,8 @@ public class World implements OnMoveListener, OnCreatureMoveListener{
     private int creatureCount = 1;
     Random rand = new Random();
 
-    private World(TerrainData[][] heights) {
+    private World() {
         player = new Player(new Vec3(100, 0, 100));
-        storedVectors = heights;
         Vec3 spawnPosition = createSpawn();
         player.setPosition(spawnPosition);
         coins = getCoins(10);
@@ -71,14 +67,10 @@ public class World implements OnMoveListener, OnCreatureMoveListener{
     public void updateWorld(double delta){
         frame++;
         this.delta = delta;
-        if(player.isToUpdate()) {
-            cameraModel.setParams(player.get3DPos(), player.getForward(), player.getRight(), player.getUp());
-        }
         player.setToUpdate(false);
         if(frame%100 == 0)
         for (Creature creature : creatureList){
             creature.moveRandomly();
-
         }
     }
 
@@ -116,41 +108,13 @@ public class World implements OnMoveListener, OnCreatureMoveListener{
      * @param z - The z coordinate to check height from terrain.
      * @return The height of the terrain at the x, z coordinate.
      */
-    public float getHeight(float x, float z){
-        // Handle edge cases
-        if(x < 1.0f || x > storedVectors.length - 1 || z < 1.0f || z > storedVectors[0].length - 1)
-            return 0.0f;
-        int intX = (int) x;
-        int intZ = (int) z;
-
-        boolean xGreater = x - intX > z - intZ;
-        float heightA = storedVectors[intX][intZ].getPosition().getY(),
-                heightB = xGreater ? storedVectors[intX + 1][intZ].getPosition().getY() : storedVectors[intX][intZ + 1].getPosition().getY(),
-                heightC = storedVectors[intX + 1][intZ + 1].getPosition().getY();
-
-        // Calculate barycentric coordinates of terrain triangle at x, 0.0, z.
-        Vec2 A = new Vec2(intX, intZ);
-        Vec2 v0 = (xGreater ? new Vec2(intX + 1, intZ) : new Vec2(intX, intZ + 1)).sub(A),
-                v1 = new Vec2(1, 1),
-                v2 = new Vec2(x, z).sub(A);
-
-        float d00 = v0.getLengthSqr();
-        float d01 = v0.dot(v1);
-        float d11 = v1.getLengthSqr();
-        float d20 = v2.dot(v0);
-        float d21 = v2.dot(v1);
-
-        float denom = d00 * d11 - d01 * d01;
-
-        // Barycentric coordinates
-        float a = (d11 * d20 - d01 * d21) / denom;
-        float b = (d00 * d21 - d01 * d20) / denom;
-        float c = 1.0f - a - b;
-
-        return heightA * a + heightB * b + heightC * c + player.getPlayerHeight();
+    public float getHeight(float x, float z) {
+     //   ServiceMediator.
+        return 0;
     }
 
-    public float getHeight(Vec3 pos){
+
+        public float getHeight(Vec3 pos){
         return getHeight(pos.getX(), pos.getZ());
     }
 

@@ -1,6 +1,6 @@
 package hills.services.terrain;
 
-import hills.services.generation.TerrainData;
+import hills.engine.system.EngineSystem;
 import hills.services.terrain.mesh.GridMeshData;
 import hills.services.terrain.tree.LODTree;
 import hills.util.loader.TerrainLoader;
@@ -9,14 +9,11 @@ import hills.util.math.Vec2;
 import hills.util.math.Vec3;
 import hills.util.shader.ShaderProgram;
 import hills.util.texturemap.TerrainTexture;
-import hills.engine.system.EngineSystem;
 import hills.view.CameraModel;
 import hills.view.renderer.TerrainRenderer;
-
 import org.lwjgl.system.MemoryStack;
 
 import javax.imageio.ImageIO;
-
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -24,6 +21,25 @@ import java.nio.ByteBuffer;
 
 // TODO Split
 public class TerrainService extends EngineSystem {
+
+	public static final String HEIGHT_MAP_DIRECTORY = "src/main/resources/textures/";
+	public static final String HEIGHT_MAP_NAME = "finalNoise.png";
+	public static final String HEIGHT_MAP_NORMAL_MAP_NAME = "normal.png";
+
+	public static final float MORPH_FACTOR = 0.8f;
+
+	public static final float[] RANGES = new float[10];
+	public static final float FIRST_RANGE = 128.0f;
+
+	public static final float[] SCALES = { 1.0f, 2.0f, 4.0f, 8.0f, 16.0f, 32.0f, 64.0f, 128.0f, 256.0f, 512.0f };
+
+	public static final int GRID_WIDTH = 16;
+	public static final int GRID_DEPTH = 16;
+
+	public static final float MAX_HEIGHT = 100.0f;
+
+	public static final int TERRAIN_WIDTH = 2056;
+	public static final int TERRAIN_HEIGHT = 2056;
 
 	private final GridMeshData gridMeshData;
 	private final TerrainTexture heightMapTexture;
@@ -47,9 +63,6 @@ public class TerrainService extends EngineSystem {
 		try {
 			heightMap = ImageIO.read(new File(HEIGHT_MAP_DIRECTORY + HEIGHT_MAP_NAME));
 			heightNormalMap = ImageIO.read(new File(HEIGHT_MAP_DIRECTORY + HEIGHT_MAP_NORMAL_MAP_NAME));
-
-			TERRAIN_WIDTH = heightMap.getWidth();
-			TERRAIN_HEIGHT = heightMap.getHeight();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -88,6 +101,16 @@ public class TerrainService extends EngineSystem {
 	@Override
 	public void render() {
 		TerrainRenderer.INSTANCE.batchNodes(TREE.getLODNodeTree(), gridMeshData, heightMapTexture);
+	}
+
+	private void loadHeightValues(BufferedImage heightMap){
+		heightValues = new float[TERRAIN_WIDTH][TERRAIN_HEIGHT];
+
+		float heightStep = MAX_HEIGHT / 0xFFFFFF;
+
+		for(int z = 0; z < TERRAIN_HEIGHT; z++)
+			for(int x = 0; x < TERRAIN_WIDTH; x++)
+				heightValues[x][z] = (heightMap.getRGB(x, z) & 0xFFFFFF) * heightStep;
 	}
 
 	/**
@@ -136,6 +159,117 @@ public class TerrainService extends EngineSystem {
 
 	public float getHeight(Vec3 pos){
 		return getHeight(pos.getX(), pos.getZ());
+	}
+	
+	/**
+	 * Load terrain-shader terrain constants.
+	 */
+	private void loadTerrainConstants(){
+		loadRangesSquaredConstant();
+		loadScalesConstant();
+		loadGridSizeConstant();
+		loadTerrainSizeConstant();
+		loadMaxHeightConstant();
+		loadStartRangeConstant(0);
+	}
+
+	/**
+	 * Load ranges squared constant array
+	 */
+	private void loadRangesSquaredConstant() {
+		try (MemoryStack stack = MemoryStack.stackPush()) {
+			ByteBuffer dataBuffer = stack
+					.calloc(STD140Formatable.ARRAY_ALIGNMENT
+							* TerrainService.RANGES.length);
+			for (int i = 0; i < TerrainService.RANGES.length; i++) {
+				dataBuffer.putFloat((TerrainService.RANGES[i] * TerrainService.MORPH_FACTOR));
+				dataBuffer.putFloat(TerrainService.RANGES[i]);
+				dataBuffer.putFloat(0.0f);
+				dataBuffer.putFloat(0.0f);
+			}
+			dataBuffer.flip();
+
+			ShaderProgram.map("TERRAIN_CONSTANTS", "RANGES_SQUARED[0]",
+					dataBuffer);
+		}
+	}
+	
+	/**
+	 * Load scales constant array
+	 */
+	private void loadScalesConstant() {
+		try (MemoryStack stack = MemoryStack.stackPush()) {
+			ByteBuffer dataBuffer = stack
+					.calloc(STD140Formatable.ARRAY_ALIGNMENT
+							* TerrainService.SCALES.length);
+			for (int i = 0; i < TerrainService.SCALES.length; i++) {
+				dataBuffer.putFloat(TerrainService.SCALES[i]);
+				dataBuffer.putFloat(0.0f);
+				dataBuffer.putFloat(0.0f);
+				dataBuffer.putFloat(0.0f);
+			}
+			dataBuffer.flip();
+			
+			ShaderProgram.map("TERRAIN_CONSTANTS", "SCALES[0]", dataBuffer);
+		}
+	}
+	
+	/**
+	 * Load grid size constant
+	 */
+	private void loadGridSizeConstant() {
+		try (MemoryStack stack = MemoryStack.stackPush()) {
+			ByteBuffer dataBuffer = stack
+					.calloc(STD140Formatable.VECTOR_2_ALIGNMENT);
+			dataBuffer.putFloat(TerrainService.GRID_WIDTH);
+			dataBuffer.putFloat(TerrainService.GRID_DEPTH);
+			dataBuffer.flip();
+			
+			ShaderProgram.map("TERRAIN_CONSTANTS", "GRID_SIZE", dataBuffer);
+		}
+	}
+	
+	/**
+	 * Load terrain size constant
+	 */
+	private void loadTerrainSizeConstant() {
+		try (MemoryStack stack = MemoryStack.stackPush()) {
+			ByteBuffer dataBuffer = stack
+					.calloc(STD140Formatable.VECTOR_2_ALIGNMENT);
+			dataBuffer.putFloat(TERRAIN_WIDTH);
+			dataBuffer.putFloat(TERRAIN_HEIGHT);
+			dataBuffer.flip();
+			
+			ShaderProgram.map("TERRAIN_CONSTANTS", "TERRAIN_SIZE", dataBuffer);
+		}
+	}
+	
+	/**
+	 * Load max height constant
+	 */
+	private void loadMaxHeightConstant() {
+		try (MemoryStack stack = MemoryStack.stackPush()) {
+			ByteBuffer dataBuffer = stack
+					.calloc(STD140Formatable.SCALAR_ALIGNMENT);
+			dataBuffer.putFloat(TerrainService.MAX_HEIGHT);
+			dataBuffer.flip();
+			
+			ShaderProgram.map("TERRAIN_CONSTANTS", "MAX_HEIGHT", dataBuffer);
+		}
+	}
+	
+	/**
+	 * Load start range constant
+	 */
+	public void loadStartRangeConstant(int startRange) {
+		try (MemoryStack stack = MemoryStack.stackPush()) {
+			ByteBuffer dataBuffer = stack
+					.calloc(STD140Formatable.SCALAR_ALIGNMENT);
+			dataBuffer.putInt(startRange);
+			dataBuffer.flip();
+			
+			ShaderProgram.map("TERRAIN_CONSTANTS", "START_RANGE", dataBuffer);
+		}
 	}
 
 	@Override
