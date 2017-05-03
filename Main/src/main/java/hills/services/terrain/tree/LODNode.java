@@ -1,6 +1,6 @@
 package hills.services.terrain.tree;
 
-import hills.services.terrain.TerrainService;
+import hills.services.terrain.TerrainServiceConstants;
 import hills.util.math.STD140Formatable;
 import hills.util.math.Vec3;
 import hills.util.math.Vec4;
@@ -55,24 +55,20 @@ public class LODNode implements STD140Formatable {
 		float width = size.getX() / 2.0f;
 		float depth = size.getZ() / 2.0f;
 
-		int tileX = (int) x / (int) (TerrainService.GRID_WIDTH * TerrainService.SCALES[lodLevel]) * 2;
-		int tileZ = (int) z / (int) (TerrainService.GRID_DEPTH * TerrainService.SCALES[lodLevel]) * 2;
+		int tileX = (int) x / (int) (TerrainServiceConstants.GRID_WIDTH * TerrainServiceConstants.SCALES[lodLevel]) * 2;
+		int tileZ = (int) z / (int) (TerrainServiceConstants.GRID_DEPTH * TerrainServiceConstants.SCALES[lodLevel]) * 2;
 
 		float[] minMaxHeight = nodeMinMaxHeight[tileX + 1][tileZ + 1];
-		nodes[0] = new LODNode(x + width, minMaxHeight[0], z + depth, width,
-				minMaxHeight[1] - minMaxHeight[0], depth, lodLevel - 1);
+		nodes[0] = new LODNode(x + width, minMaxHeight[0], z + depth, width, minMaxHeight[1] - minMaxHeight[0], depth, lodLevel - 1);
 
 		minMaxHeight = nodeMinMaxHeight[tileX][tileZ + 1];
-		nodes[1] = new LODNode(x, minMaxHeight[0], z + depth, width,
-				minMaxHeight[1] - minMaxHeight[0], depth, lodLevel - 1);
+		nodes[1] = new LODNode(x, minMaxHeight[0], z + depth, width, minMaxHeight[1] - minMaxHeight[0], depth, lodLevel - 1);
 
 		minMaxHeight = nodeMinMaxHeight[tileX][tileZ];
-		nodes[2] = new LODNode(x, minMaxHeight[0], z, width, minMaxHeight[1]
-				- minMaxHeight[0], depth, lodLevel - 1);
+		nodes[2] = new LODNode(x, minMaxHeight[0], z, width, minMaxHeight[1] - minMaxHeight[0], depth, lodLevel - 1);
 
 		minMaxHeight = nodeMinMaxHeight[tileX + 1][tileZ];
-		nodes[3] = new LODNode(x + width, minMaxHeight[0], z, width,
-				minMaxHeight[1] - minMaxHeight[0], depth, lodLevel - 1);
+		nodes[3] = new LODNode(x + width, minMaxHeight[0], z, width, minMaxHeight[1] - minMaxHeight[0], depth, lodLevel - 1);
 
 		return nodes;
 	}

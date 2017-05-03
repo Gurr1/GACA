@@ -8,7 +8,8 @@ public class TerrainServiceConstants {
 
 	public static final float MORPH_FACTOR = 0.8f;
 
-	public static final float[] RANGES = new float[10];
+	/** OBS! Not true constants! **/
+	protected static final float[] RANGES = new float[10];
 	public static final float FIRST_RANGE = 128.0f;
 
 	public static final float[] SCALES = { 1.0f, 2.0f, 4.0f, 8.0f, 16.0f, 32.0f, 64.0f, 128.0f, 256.0f, 512.0f };

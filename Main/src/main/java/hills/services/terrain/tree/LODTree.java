@@ -1,6 +1,6 @@
 package hills.services.terrain.tree;
 
-import hills.services.terrain.TerrainService;
+import hills.services.terrain.TerrainServiceConstants;
 import hills.util.math.Vec3;
 import hills.util.math.shape.Frustrum;
 
@@ -43,38 +43,25 @@ public class LODTree {
 	 *            - The frustrum to use for culling. Any nodes outside of this
 	 *            frustrum will not be rendered.
 	 */
-	public void genLODTree(Vec3 pos, float[] ranges, int lodLevel,
-			Frustrum viewFrustrum) {
+	public void genLODTree(Vec3 pos, float[] ranges, int lodLevel, Frustrum viewFrustrum) {
 		tree.clear();
 
-		float topNodeScale = TerrainService.SCALES[lodLevel];
-		float topNodeWidth = TerrainService.GRID_WIDTH * topNodeScale;
-		float topNodeDepth = TerrainService.GRID_DEPTH * topNodeScale;
-		float topNodeX = TerrainService.GRID_WIDTH
-				* ((int) pos.getX() / TerrainService.GRID_WIDTH)
-				- (topNodeWidth / 2);
-		float topNodeZ = TerrainService.GRID_DEPTH
-				* ((int) pos.getZ() / TerrainService.GRID_DEPTH)
-				- (topNodeDepth / 2);
+		float topNodeScale = TerrainServiceConstants.SCALES[lodLevel];
+		float topNodeWidth = TerrainServiceConstants.GRID_WIDTH * topNodeScale;
+		float topNodeDepth = TerrainServiceConstants.GRID_DEPTH * topNodeScale;
+		float topNodeX = TerrainServiceConstants.GRID_WIDTH * ((int) pos.getX() / TerrainServiceConstants.GRID_WIDTH) - (topNodeWidth / 2);
+		float topNodeZ = TerrainServiceConstants.GRID_DEPTH * ((int) pos.getZ() / TerrainServiceConstants.GRID_DEPTH) - (topNodeDepth / 2);
 
 		topNodeX = Math.min(MAP_WIDTH - topNodeWidth, Math.max(0, topNodeX));
 		topNodeZ = Math.min(MAP_DEPTH - topNodeDepth, Math.max(0, topNodeZ));
 
-		float topNodeY = nodeMinMaxHeights[lodLevel][(int) topNodeX
-				/ TerrainService.GRID_WIDTH][(int) topNodeZ
-				/ TerrainService.GRID_DEPTH][0];
-		float topNodeHeight = nodeMinMaxHeights[lodLevel][(int) topNodeX
-				/ TerrainService.GRID_WIDTH][(int) topNodeZ
-				/ TerrainService.GRID_DEPTH][0]
-				- topNodeY;
+		float topNodeY = nodeMinMaxHeights[lodLevel][(int) topNodeX / TerrainServiceConstants.GRID_WIDTH][(int) topNodeZ / TerrainServiceConstants.GRID_DEPTH][0];
+		float topNodeHeight = nodeMinMaxHeights[lodLevel][(int) topNodeX / TerrainServiceConstants.GRID_WIDTH][(int) topNodeZ / TerrainServiceConstants.GRID_DEPTH][0] - topNodeY;
 
-		genLODTree(new LODNode(topNodeX, topNodeY, topNodeZ, topNodeWidth,
-				topNodeHeight, topNodeDepth, lodLevel), pos, ranges,
-				viewFrustrum);
+		genLODTree(new LODNode(topNodeX, topNodeY, topNodeZ, topNodeWidth, topNodeHeight, topNodeDepth, lodLevel), pos, ranges, viewFrustrum);
 	}
 
-	private boolean genLODTree(LODNode node, Vec3 pos, float[] ranges,
-			Frustrum viewFrustrum) {
+	private boolean genLODTree(LODNode node, Vec3 pos, float[] ranges, Frustrum viewFrustrum) {
 		int lodLevel = node.getLodLevel();
 
 		// Check if node is within it's LOD range from position.
@@ -128,21 +115,21 @@ public class LODTree {
 	 */
 	private void calcNodesMinMaxHeights(BufferedImage heightMapImage) {
 		// First calculate highest detailed LOD heights
-		int gridWidth = TerrainService.GRID_WIDTH;
-		int gridDepth = TerrainService.GRID_DEPTH;
+		int gridWidth = TerrainServiceConstants.GRID_WIDTH;
+		int gridDepth = TerrainServiceConstants.GRID_DEPTH;
 		int gridTilesX = MAP_WIDTH / gridWidth;
 		int gridTilesZ = MAP_DEPTH / gridDepth;
 		float[][][] nodeMinMaxHeightsLOD0 = new float[gridTilesX][gridTilesZ][2];
 
-		float heightStep = TerrainService.MAX_HEIGHT / 0xFFFFFF;
+		float heightStep = TerrainServiceConstants.MAX_HEIGHT / 0xFFFFFF;
 
 		for (int gridTileZ = 0; gridTileZ < gridTilesZ; gridTileZ++)
 			for (int gridTileX = 0; gridTileX < gridTilesX; gridTileX++) {
 				float tileMax = 0;
-				float tileMin = TerrainService.MAX_HEIGHT;
+				float tileMin = TerrainServiceConstants.MAX_HEIGHT;
 
-				for (int y = 0; y < TerrainService.GRID_DEPTH; y++)
-					for (int x = 0; x < TerrainService.GRID_WIDTH; x++) {
+				for (int y = 0; y < TerrainServiceConstants.GRID_DEPTH; y++)
+					for (int x = 0; x < TerrainServiceConstants.GRID_WIDTH; x++) {
 						int heightRGB = heightMapImage.getRGB(gridTileX
 								* gridWidth + x, gridTileZ * gridDepth + y) & 0x00FFFFFF;
 
@@ -157,10 +144,9 @@ public class LODTree {
 		// Use calculated LOD heights of highest detail to get lower detailed
 		// heights
 		int topLODLevel = 0;
-		for (int i = 0; TerrainService.SCALES[i] <= gridTilesX; i++)
+		for (int i = 0; TerrainServiceConstants.SCALES[i] <= gridTilesX; i++)
 			topLODLevel++;
-
-		System.out.println(topLODLevel);
+		
 		nodeMinMaxHeights = new float[topLODLevel][][][];
 		nodeMinMaxHeights[0] = nodeMinMaxHeightsLOD0;
 
@@ -169,8 +155,7 @@ public class LODTree {
 		}
 	}
 
-	private float[][][] calcSingleLODNodesMinMaxHeights(
-			float[][][] minMaxHeightNextLOD) {
+	private float[][][] calcSingleLODNodesMinMaxHeights(float[][][] minMaxHeightNextLOD) {
 		int tilesX = minMaxHeightNextLOD.length;
 		int tilesY = minMaxHeightNextLOD[0].length;
 
@@ -178,7 +163,7 @@ public class LODTree {
 
 		for (int tileY = 0; tileY < result[0].length; tileY++)
 			for (int tileX = 0; tileX < result.length; tileX++) {
-				float tileMin = TerrainService.MAX_HEIGHT;
+				float tileMin = TerrainServiceConstants.MAX_HEIGHT;
 				float tileMax = 0;
 
 				for (int y = 0; y < 2; y++)

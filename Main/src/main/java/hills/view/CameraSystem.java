@@ -18,8 +18,7 @@ public class CameraSystem {
 		// Construct camera matrix according to position, and direction vectors.
 		Mat4 cameraMatrix = Mat4.look(position, forward, up, right, false);
 		
-		// Update camera view frustrum
-		
+		// Update camera matrix
 		try(MemoryStack stack = MemoryStack.stackPush()){
 			ByteBuffer dataBuffer = stack.calloc(cameraMatrix.get140DataSize());
 			cameraMatrix.get140Data(dataBuffer);

@@ -8,17 +8,23 @@ import org.lwjgl.system.MemoryStack;
 import hills.util.math.STD140Formatable;
 import hills.util.shader.ShaderProgram;
 
-public class TerrainServiceLoader {
-
-	public TerrainServiceLoader(){
-		
+public enum TerrainServiceLoader {
+	INSTANCE;
+	
+	private TerrainServiceLoader(){
+	}
+	
+	protected void loadRangesConstant(float startRange){
+		TerrainServiceConstants.RANGES[0] = TerrainServiceConstants.FIRST_RANGE;
+		for (int i = 1; i < TerrainServiceConstants.RANGES.length; i++)
+			TerrainServiceConstants.RANGES[i] = TerrainServiceConstants.RANGES[i - 1] * 2.0f;
 	}
 	
 	/**
 	 * Load terrain height values from height map image
 	 * @param heightMap
 	 */
-	private float[][] loadHeightValues(BufferedImage heightMap){
+	protected float[][] loadHeightValues(BufferedImage heightMap){
 		float[][] heightValues = new float[heightMap.getWidth()][heightMap.getHeight()];
 
 		float heightStep = TerrainServiceConstants.MAX_HEIGHT / 0xFFFFFF;
@@ -29,11 +35,11 @@ public class TerrainServiceLoader {
 		
 		return heightValues;
 	}
-	
+
 	/**
 	 * Load terrain-shader terrain constants.
 	 */
-	private void loadTerrainConstants(){
+	protected void uploadTerrainShaderConstants(){
 		loadRangesSquaredConstant();
 		loadScalesConstant();
 		loadGridSizeConstant();
@@ -41,7 +47,7 @@ public class TerrainServiceLoader {
 		loadMaxHeightConstant();
 		loadStartRangeConstant(0);
 	}
-
+	
 	/**
 	 * Load ranges squared constant array
 	 */
@@ -83,10 +89,9 @@ public class TerrainServiceLoader {
 	 */
 	private void loadGridSizeConstant() {
 		try (MemoryStack stack = MemoryStack.stackPush()) {
-			ByteBuffer dataBuffer = stack
-					.calloc(STD140Formatable.VECTOR_2_ALIGNMENT);
-			dataBuffer.putFloat(TerrainService.GRID_WIDTH);
-			dataBuffer.putFloat(TerrainService.GRID_DEPTH);
+			ByteBuffer dataBuffer = stack.calloc(STD140Formatable.VECTOR_2_ALIGNMENT);
+			dataBuffer.putFloat(TerrainServiceConstants.GRID_WIDTH);
+			dataBuffer.putFloat(TerrainServiceConstants.GRID_DEPTH);
 			dataBuffer.flip();
 			
 			ShaderProgram.map("TERRAIN_CONSTANTS", "GRID_SIZE", dataBuffer);
@@ -98,10 +103,9 @@ public class TerrainServiceLoader {
 	 */
 	private void loadTerrainSizeConstant() {
 		try (MemoryStack stack = MemoryStack.stackPush()) {
-			ByteBuffer dataBuffer = stack
-					.calloc(STD140Formatable.VECTOR_2_ALIGNMENT);
-			dataBuffer.putFloat(TERRAIN_WIDTH);
-			dataBuffer.putFloat(TERRAIN_HEIGHT);
+			ByteBuffer dataBuffer = stack.calloc(STD140Formatable.VECTOR_2_ALIGNMENT);
+			dataBuffer.putFloat(TerrainServiceConstants.TERRAIN_WIDTH);
+			dataBuffer.putFloat(TerrainServiceConstants.TERRAIN_HEIGHT);
 			dataBuffer.flip();
 			
 			ShaderProgram.map("TERRAIN_CONSTANTS", "TERRAIN_SIZE", dataBuffer);
@@ -113,9 +117,8 @@ public class TerrainServiceLoader {
 	 */
 	private void loadMaxHeightConstant() {
 		try (MemoryStack stack = MemoryStack.stackPush()) {
-			ByteBuffer dataBuffer = stack
-					.calloc(STD140Formatable.SCALAR_ALIGNMENT);
-			dataBuffer.putFloat(TerrainService.MAX_HEIGHT);
+			ByteBuffer dataBuffer = stack.calloc(STD140Formatable.SCALAR_ALIGNMENT);
+			dataBuffer.putFloat(TerrainServiceConstants.MAX_HEIGHT);
 			dataBuffer.flip();
 			
 			ShaderProgram.map("TERRAIN_CONSTANTS", "MAX_HEIGHT", dataBuffer);
@@ -125,10 +128,9 @@ public class TerrainServiceLoader {
 	/**
 	 * Load start range constant
 	 */
-	public void loadStartRangeConstant(int startRange) {
+	protected void loadStartRangeConstant(int startRange) {
 		try (MemoryStack stack = MemoryStack.stackPush()) {
-			ByteBuffer dataBuffer = stack
-					.calloc(STD140Formatable.SCALAR_ALIGNMENT);
+			ByteBuffer dataBuffer = stack.calloc(STD140Formatable.SCALAR_ALIGNMENT);
 			dataBuffer.putInt(startRange);
 			dataBuffer.flip();
 			
