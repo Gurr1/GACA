@@ -1,6 +1,5 @@
 package hills.controller;
 
-import hills.engine.system.EngineSystem;
 import hills.model.World;
 import hills.util.display.Display;
 import hills.util.display.FrameBuffer;
@@ -88,6 +87,7 @@ public final class GameLoop {
 	 */
 	public static void update(double delta){
 		for(EngineSystem system: systems)
+
 			system.systemUpdate(delta);
 	}
 	

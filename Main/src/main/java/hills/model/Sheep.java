@@ -1,8 +1,6 @@
 package hills.model;
 
-import hills.services.generation.MapFactory;
-import hills.services.generation.IMapFactory;
-import hills.services.generation.RandomWalker;
+import hills.controller.ServiceMediator;
 import hills.util.math.Vec3;
 import hills.util.math.shape.Sphere;
 import hills.util.model.Model;
@@ -17,9 +15,8 @@ public class Sheep extends Creature{
      * {@inheritDoc}
      */
     float radius;
-    RandomWalker randomWalker;
     Random rand = new Random();
-    IMapFactory generation = new MapFactory();
+    ServiceMediator serviceMediator;
     private float move = 0;
 
 
@@ -30,7 +27,7 @@ public class Sheep extends Creature{
         this.speed = 1;
         this.maxHealth = 20;
         this.radius = 1;
-        randomWalker = new RandomWalker();
+        serviceMediator = ServiceMediator.INSTANCE;
     }
 
     @Override
@@ -57,7 +54,7 @@ public class Sheep extends Creature{
         pos = new Vec3(x, y, z);
     }
     private double decideDirection(){
-        double randomNum = generation.generateDirection(move+=50);
+        double randomNum = serviceMediator.generateDirection(move+=50);
         return randomNum*2*Math.PI;
     }
 

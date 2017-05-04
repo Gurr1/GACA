@@ -4,7 +4,7 @@ import hills.util.math.Mat4;
 import hills.util.math.Vec3;
 import hills.util.math.shape.Frustrum;
 import hills.util.shader.ShaderProgram;
-import hills.engine.system.EngineSystem;
+import hills.controller.EngineSystem;
 import lombok.Getter;
 import lombok.Setter;
 

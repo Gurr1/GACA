@@ -1,13 +1,13 @@
 package hills.controller.manager;
 
-import hills.engine.system.EngineSystem;
+import hills.controller.EngineSystem;
 import hills.model.World;
 import hills.util.math.Vec2;
 import hills.util.math.Vec3;
 import hills.util.math.Vertex;
 import hills.util.model.MeshTexture;
 import hills.util.model.Model;
-import hills.view.ModelDataHandler;
+import hills.controller.ModelDataHandler;
 
 public final class GameManager extends EngineSystem {
 
@@ -77,7 +77,7 @@ public final class GameManager extends EngineSystem {
 	private GameManager(float scale, boolean isPaused, float startTime) {
 		super(scale, isPaused, startTime);
 		world = World.getInstance();
-		modelDataHandler = ModelDataHandler.getInstance();
+		modelDataHandler = ModelDataHandler.INSTANCE;
 		//texture = new MeshTexture("test.png");
 		
 		//Mesh cubeMesh = ModelLoader.load(v, ind, texture, Mat4.identity());

@@ -1,17 +1,12 @@
 package hills;
 
+import hills.controller.GameLoop;
 import hills.controller.ServiceMediator;
-import hills.services.debug.DebugService;
-import hills.services.generation.MapFactory;
-import hills.services.generation.IMapFactory;
+import hills.controller.manager.GameManager;
 import hills.util.display.AspectRatios;
 import hills.util.display.Display;
 import hills.util.display.FrameBuffer;
 import hills.view.CameraModel;
-import hills.services.terrain.TerrainService;
-import hills.controller.GameLoop;
-import hills.controller.manager.GameManager;
-
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
 import org.lwjgl.glfw.GLFWWindowCloseCallback;

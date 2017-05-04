@@ -1,12 +1,12 @@
 package hills.controller.manager;
 
-import java.util.List;
-
-import hills.engine.system.EngineSystem;
+import hills.controller.EngineSystem;
 import hills.services.camera.CameraService;
 import hills.services.terrain.TerrainService;
 import hills.services.terrain.tree.LODNode;
 import hills.view.renderer.TerrainRenderer;
+
+import java.util.List;
 
 public final class TerrainManager extends EngineSystem {
 

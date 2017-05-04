@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.util.List;
 
 public enum TerrainService implements Service {
-	INSTANCE;
+	INSTANCE();
 	
 	private final LODTree tree;
 	private final GridMeshData gridMeshData;

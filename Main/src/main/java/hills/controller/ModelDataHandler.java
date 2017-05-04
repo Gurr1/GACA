@@ -1,17 +1,16 @@
-package hills.view;
+package hills.controller;
 
 import hills.model.IMovable;
 import hills.model.World;
-
-import java.util.List;
+import hills.view.CameraModel;
 
 /**
  * Created by gustav on 2017-04-29.
  */
-public class ModelDataHandler {
+public enum ModelDataHandler {
+    INSTANCE();
     private World w;
     private CameraModel cameraModel;
-    private static ModelDataHandler instance;
     private ModelDataHandler(){
         this.w = World.createInstance();
         cameraModel = CameraModel.getInstance();
@@ -26,21 +25,12 @@ public class ModelDataHandler {
         }
         updateCamera();
     }
-
     private void updateCamera() {
-      //  w.getPlayerPosition();
-       // w.getPlayerHeading();
-       // cameraModel.setParams();
+        cameraModel.setParams(w.getPlayerPosition(), w.getPlayerHeading(), w.getPlayerRight(), w.getPlayerUp());
     }
 
     protected void updateModel(double delta){
         w.updateWorld(delta);
     }
 
-    public static ModelDataHandler getInstance(){
-        if(instance == null){
-            instance = new ModelDataHandler();
-        }
-        return instance;
-    }
 }

@@ -7,16 +7,11 @@ import hills.util.shader.ShaderAttribute;
 import hills.util.shader.ShaderProgram;
 import hills.util.texturemap.TerrainTexture;
 import hills.util.texturemap.TextureMap2D;
+import org.lwjgl.opengl.*;
+import org.lwjgl.system.MemoryStack;
 
 import java.nio.ByteBuffer;
 import java.util.List;
-
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL15;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
-import org.lwjgl.opengl.GL31;
-import org.lwjgl.system.MemoryStack;
 
 public enum TerrainRenderer {
 	INSTANCE();
@@ -40,7 +35,7 @@ public enum TerrainRenderer {
 
 	public void render() {
 		if (nodes == null) {
-			System.err.println("No terrain nodes batched!");
+		//	System.err.println("No terrain nodes batched!");
 			return;
 		}
 

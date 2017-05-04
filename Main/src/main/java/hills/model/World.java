@@ -1,9 +1,8 @@
 package hills.model;
 
-import hills.services.terrain.TerrainService;
+import hills.controller.ServiceMediator;
 import hills.services.terrain.TerrainServiceConstants;
 import hills.util.math.Vec3;
-import hills.view.CameraModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +15,9 @@ public class World implements OnMoveListener, OnCreatureMoveListener{
     private static World world;
     private double waterHeight = 30;
     public static World getInstance() {
+        if(world == null){
+            world = new World();
+        }
             return world;
     }
 
@@ -30,7 +32,6 @@ public class World implements OnMoveListener, OnCreatureMoveListener{
     private List<Coin> coins;
     private int frame = 0;
     double delta;
-    private CameraModel cameraModel;
     private List<ICollectible> collectibles = new ArrayList<>();
     private List<Creature> creatureList = new ArrayList<>();
     private int creatureCount = 1;
@@ -47,9 +48,19 @@ public class World implements OnMoveListener, OnCreatureMoveListener{
             creatureList.get(i).addListener(this);
         }
         player.addPositionObserver(this);
-        cameraModel = CameraModel.getInstance();
     }
-
+    public Vec3 getPlayerPosition(){
+        return player.get3DPos();
+    }
+    public Vec3 getPlayerHeading(){
+        return player.getForward();
+    }
+    public Vec3 getPlayerUp(){
+        return player.getUp();
+    }
+    public Vec3 getPlayerRight(){
+        return player.getRight();
+    }
     private Vec3 createSpawn() {
         float x;
         float z;
@@ -110,8 +121,7 @@ public class World implements OnMoveListener, OnCreatureMoveListener{
      * @return The height of the terrain at the x, z coordinate.
      */
     public float getHeight(float x, float z) {
-     //   ServiceMediator.
-        return 0;
+        return ServiceMediator.INSTANCE.getHeight(x,z);
     }
 
 

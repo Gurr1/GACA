@@ -11,7 +11,10 @@ public enum ServiceMediator {
     INSTANCE();
     private TerrainService terrainService;
     private IMapFactory generator = new MapFactory();
-    public double getHeight(int x, int z){
+    ServiceMediator(){
+        terrainService = TerrainService.INSTANCE;
+    }
+    public float getHeight(float x, float z){
         return terrainService.getHeight(x, z);
     }
     public void generateMap(){

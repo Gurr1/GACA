@@ -1,6 +1,6 @@
 package hills.controller.manager;
 
-import hills.engine.system.EngineSystem;
+import hills.controller.EngineSystem;
 
 public class CameraManager extends EngineSystem {
 

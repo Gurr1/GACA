@@ -194,7 +194,6 @@ public class Player implements ICollidable, IMovable, KeyboardListener, MouseLis
                 speed = 1;
                 return;
         }
-        System.out.println(velocity);
         for(int i = 0; i<moveListeners.size(); i++) {
             moveListeners.get(i).moving(this);
         }

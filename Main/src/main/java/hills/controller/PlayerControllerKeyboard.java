@@ -41,20 +41,21 @@ public final class PlayerControllerKeyboard{
 		System.out.println(key);
 		if(key < 0)
 			return;
-		if (action == GLFW.GLFW_PRESS){
+//		if (action == GLFW.GLFW_PRESS){
 			pressed[key] = true;
 			nPressed++;
 			input(key);
-		}
-		else if(action == GLFW.GLFW_RELEASE){
-			nPressed--;
-			pressed[key] = false;
-		}
+//		}
+//		else if(action == GLFW.GLFW_RELEASE){
+//			nPressed--;
+//			pressed[key] = false;
+//		}
 	}
 
 	public static void update(){
 		checkInGame();
 	}
+
 	/**
 	 * interprets actions that have in-game consequences.
 	 */
@@ -106,6 +107,10 @@ public final class PlayerControllerKeyboard{
 		return pressed[key];
 	}
 
+	/**
+	 * Interprets inputs that affects other services.
+	 * @param key the Key pressed.
+	 */
 	public static void input(int key) {
 
 		if (key  == GLFW.GLFW_KEY_SPACE)
