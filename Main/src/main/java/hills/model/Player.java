@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Created by Anders on 2017-03-30.
  */
-public class Player implements ICollidable, IMovable, KeyboardListener, MouseListener {
+public class Player implements ICollidable, IMovable, ITime {
     /**
      * {@inheritDoc}
      */
@@ -30,11 +30,11 @@ public class Player implements ICollidable, IMovable, KeyboardListener, MouseLis
     private List<Coin> coinsCollected = new ArrayList<>();
     private List/*<>*/ bugsCollected = new ArrayList();
     private double playerHealth;
-
-    private List<OnMoveListener> moveListeners = new ArrayList<>();
+    private float delta;
     private float speed = 1;
     private float runModifier = 2;
     @Getter @Setter private boolean toUpdate = true;
+    private List<Commands> commandsList = new ArrayList<>();
 
     /**
      * Camera up direction.
@@ -53,8 +53,6 @@ public class Player implements ICollidable, IMovable, KeyboardListener, MouseLis
     //<editor-fold desc="Constructors">
 
     public Player(Vec3 pos) {
-        PlayerControllerKeyboard.addListener(this);
-        PlayerControllerMouse.addListener(this);
         this.pos = pos;
         forward = new Vec3(0.0f, 0.0f, -1.0f);
         up = new Vec3(0.0f, 1.0f, 0.0f);
@@ -82,6 +80,13 @@ public class Player implements ICollidable, IMovable, KeyboardListener, MouseLis
             updateVectors(right, diffPitch);
         }
     }
+    public void setHeight(float y){
+        pos =  new Vec3(pos.getX(), y, pos.getZ());
+    }
+    @Override
+    void setDelta(float delta){
+        this.delta = delta;
+    }
 
     /**
      * adds to the current yaw and corrects it to the 0 - 360 degree range
@@ -96,10 +101,6 @@ public class Player implements ICollidable, IMovable, KeyboardListener, MouseLis
         if(playerHealth<=0){
             System.out.println("you died");
         }
-    }
-    @Override
-    public void updatePosition() {
-        notifyListeners();
     }
 
     /**
@@ -159,44 +160,43 @@ public class Player implements ICollidable, IMovable, KeyboardListener, MouseLis
     public Vec3 get3DPos() {
         return pos;
     }
-    public void addPositionObserver(OnMoveListener newListener){
-        moveListeners.add(newListener);
-    }
-    private void notifyListeners(){
-        for(OnMoveListener listener : moveListeners){
-            listener.moving(this);
-        }
-    }
 
-    @Override
-    public void instructionSent(Commands direction) {
-        toUpdate = true;
-        switch (direction){
-            case MOVEFORWARD:
-                velocity = forwardXZ.mul(speed);
-                break;
-            case MOVEBACKWARD:
-                velocity = forwardXZ.mul(-1*speed);
-                break;
-            case MOVELEFT:
-                velocity = right.mul(-1*speed);
-                break;
-            case MOVERIGHT:
-                velocity = right.mul(speed);
-                break;
-            case SUPERSPEED:
-                speed = 1000000;
-                break;
-            case SHIFTDOWN:
-                speed = runModifier;
-                return;
-            case SHIFTUP:
-                speed = 1;
-                return;
+    public void instructionSent(Commands direction, boolean pressed) {
+        if(pressed){
+            if(!commandsList.contains(direction)){
+                commandsList.add(direction);
+            }
         }
-        for(int i = 0; i<moveListeners.size(); i++) {
-            moveListeners.get(i).moving(this);
+        else{
+            commandsList.remove(direction);
         }
+        for(Commands c : commandsList) {
+            switch (c) {            // this might not work.
+                case MOVEFORWARD:
+                    velocity = velocity.add(forwardXZ.mul(speed));
+                    break;
+                case MOVEBACKWARD:
+                    velocity = forwardXZ.mul(-1 * speed);
+                    break;
+                case MOVELEFT:
+                    velocity = right.mul(-1 * speed);
+                    break;
+                case MOVERIGHT:
+                    velocity = right.mul(speed);
+                    break;
+                case SUPERSPEED:
+                    speed = 1000000;
+                    break;
+                case SHIFTDOWN:
+                    speed = runModifier;
+                    return;
+                case SHIFTUP:
+                    speed = 1;
+                    return;
+            }
+        }
+        System.out.println(velocity);
+        pos = pos.add(velocity.mul(delta));
         // Act on each of the directions.
     }
 

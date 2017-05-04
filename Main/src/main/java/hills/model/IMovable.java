@@ -34,4 +34,5 @@ public interface IMovable {
 
     Vec3 getVelocity();
 
+    void setHeight(float height);
 }

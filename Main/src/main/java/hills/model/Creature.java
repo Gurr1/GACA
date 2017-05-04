@@ -72,5 +72,8 @@ public abstract class Creature implements IWoundable,IMovable, ICollidable{
         listeners.add(listener);
     }
     public abstract void moveRandomly();
-
+    @Override
+    public void setHeight(float height){
+        pos = new Vec3(pos.getX(), height, pos.getZ());
+    }
 }

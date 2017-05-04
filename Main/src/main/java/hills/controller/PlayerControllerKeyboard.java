@@ -1,8 +1,11 @@
 package hills.controller;
 
 import hills.model.Commands;
+import hills.model.Player;
+import hills.model.World;
 import hills.util.display.Display;
 
+import hills.util.math.Vec3;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
@@ -10,25 +13,18 @@ import java.util.List;
 public final class PlayerControllerKeyboard{
 
 
-
-	/**
-	 * Which keys are down/up.
-	 */
-	private static boolean[] down = new boolean[GLFW.GLFW_KEY_LAST];
-	
 	/**
 	 * Which keys have been pressed this cycle.
 	 */
-	private static List<KeyboardListener> listenerList = new ArrayList<>();
 	private static boolean[] pressed = new boolean[GLFW.GLFW_KEY_LAST];
-	
+	Player player;
 	/**
 	 * Which keys have been released this cycle.
 	 */
-	private static List<Commands> directions = new ArrayList<>();
-	private static int nPressed = 0;
 
-	private PlayerControllerKeyboard(){} // Private constructor no instances
+	PlayerControllerKeyboard(){
+
+	}
 	
 	/**
 	 * Called by GLFW display key callback.
@@ -37,74 +33,39 @@ public final class PlayerControllerKeyboard{
 	 * @param action - What event happened.
 	 * @param mods - What modifier keys were held down.
 	 */
-	public static void keyEvent(int key, int scancode, int action, int mods){ // Handle key events
-		System.out.println(key);
+	public void keyEvent(int key, int scancode, int action, int mods){ // Handle key events
 		if(key < 0)
 			return;
-//		if (action == GLFW.GLFW_PRESS){
-			pressed[key] = true;
-			nPressed++;
+		if (action == GLFW.GLFW_PRESS){
+			checkInGame(key, mods, true);
 			input(key);
-//		}
-//		else if(action == GLFW.GLFW_RELEASE){
-//			nPressed--;
-//			pressed[key] = false;
-//		}
-	}
-
-	public static void update(){
-		checkInGame();
-	}
-
-	/**
-	 * interprets actions that have in-game consequences.
-	 */
-	private static void checkInGame() {
-		if (nPressed > 0) {
-			if (isPressed(GLFW.GLFW_KEY_W)) {
-				for (int i = 0; i < listenerList.size(); i++) {
-					listenerList.get(i).instructionSent(Commands.MOVEFORWARD);
-				}
-			}
-			if (isPressed(GLFW.GLFW_KEY_S))
-				for (int i = 0; i < listenerList.size(); i++) {
-					listenerList.get(i).instructionSent(Commands.MOVEBACKWARD);
-				}
-
-			if (isPressed(GLFW.GLFW_KEY_A))
-				for (int i = 0; i < listenerList.size(); i++) {
-					listenerList.get(i).instructionSent(Commands.MOVELEFT);
-				}
-
-			if (isPressed(GLFW.GLFW_KEY_D))
-				for (int i = 0; i < listenerList.size(); i++) {
-					listenerList.get(i).instructionSent(Commands.MOVERIGHT);
-				}
-			if (isPressed(GLFW.GLFW_KEY_F3)) {
-				for (KeyboardListener listener : listenerList) {
-					listener.instructionSent(Commands.SUPERSPEED);
-				}
-			}
-			if (isPressed(GLFW.GLFW_KEY_LEFT_SHIFT)) {
-				for (KeyboardListener listener : listenerList) {
-					System.out.println("fast");
-					listener.instructionSent(Commands.SHIFTDOWN);
-				}
-			} else {
-				for (KeyboardListener listener : listenerList) {
-					listener.instructionSent(Commands.SHIFTUP);
-				}
-			}
+		}
+		else if(action == GLFW.GLFW_RELEASE){
+			checkInGame(key,mods,  false);
 		}
 	}
 
-	/**
-	 * Checks if key was pressed this cycle.
-	 * @param key - Key to check.
-	 * @return True if key was pressed this cycle.
-	 */
-	public static boolean isPressed(int key){ // Returns true if key was pressed this update cycle
-		return pressed[key];
+	private void checkInGame(int key, int mods, boolean pressed) {
+		if (key == GLFW.GLFW_KEY_W && mods != GLFW.GLFW_MOD_SHIFT) {
+			player.instructionSent(Commands.MOVEFORWARD, pressed);
+		}
+		if (key == GLFW.GLFW_KEY_W && mods != GLFW.GLFW_MOD_SHIFT){
+			player.instructionSent(Commands.MOVEFORWARD, pressed);
+		}
+		if (key == (GLFW.GLFW_KEY_S))
+			player.instructionSent(Commands.MOVEBACKWARD, pressed);
+
+		if (key == (GLFW.GLFW_KEY_A))
+				player.instructionSent(Commands.MOVELEFT, pressed);
+
+		if (key == (GLFW.GLFW_KEY_D))
+				player.instructionSent(Commands.MOVERIGHT, pressed);
+
+		if (key == (GLFW.GLFW_KEY_F3)) {
+				player.instructionSent(Commands.SUPERSPEED, pressed);
+		}
+		Vec3 pos = player.get3DPos();
+		player.setHeight(ServiceMediator.INSTANCE.getHeight(pos.getX(), pos.getZ()));
 	}
 
 	/**
@@ -125,11 +86,6 @@ public final class PlayerControllerKeyboard{
 			pressed[key] = true;
 		}
 	}
-
-	public static void addListener(KeyboardListener listener){
-		listenerList.add(listener);
-	}
-
 
 
 }

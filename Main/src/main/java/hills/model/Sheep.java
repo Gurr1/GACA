@@ -39,6 +39,7 @@ public class Sheep extends Creature{
     public void updatePosition() {
 
     }
+
     @Override
     public void moveRandomly(){        // Moves one meter in random direction. Can be improved with 1D noise to create psudo-Random.
         float x = pos.getX();

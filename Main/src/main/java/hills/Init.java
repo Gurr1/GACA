@@ -61,7 +61,7 @@ public class Init {
 //		DebugService.getInstance().setFPSDebugMode(true);	// Activate FPS debug mode
 		CameraModel.createInstance(1.0f, false, 0.0f);
 		ServiceMediator.INSTANCE.generateMap();
-				CameraModel cameraModel = CameraModel.getInstance();// Get the CameraSystem instance
+		CameraModel cameraModel = CameraModel.getInstance();// Get the CameraSystem instance
 		cameraModel.updatePerspective(0.1f, 3000.0f, (float) Display.getWidth() / (float) Display.getHeight(), 70.0f);	// Update the perspective matrix
 		initDisplayCallbacks();
 		

@@ -86,7 +86,6 @@ public final class GameManager extends EngineSystem {
 
 	@Override
 	protected void update(double delta) {
-		world.updateWorld(delta);
 		modelDataHandler.update(delta);
 	}
 
