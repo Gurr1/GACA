@@ -4,12 +4,11 @@ import hills.services.Service;
 import hills.util.math.Vec3;
 import hills.util.math.shape.Frustrum;
 
-public enum CameraService implements Service {
-	INSTANCE;
+public class CameraService implements Service, CameraDataService {
 	
 	private final CameraData data;
 	
-	private CameraService(){
+	public CameraService(){
 		data = new CameraData();
 	}
 	
