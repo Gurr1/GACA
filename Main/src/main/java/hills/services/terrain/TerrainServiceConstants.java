@@ -19,7 +19,9 @@ public class TerrainServiceConstants {
 
 	public static final float MAX_HEIGHT = 100.0f;
 
-	public static int TERRAIN_WIDTH = 2056;
-	public static int TERRAIN_HEIGHT = 2056;
+	public static final int TERRAIN_WIDTH = 2056;
+	public static final int TERRAIN_HEIGHT = 2056;
+
+	public static final float WATER_HEIGHT = 30;
 	
 }

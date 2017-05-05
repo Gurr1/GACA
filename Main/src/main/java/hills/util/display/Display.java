@@ -1,5 +1,6 @@
 package hills.util.display;
 
+import hills.controller.InputLocator;
 import hills.controller.PlayerControllerKeyboard;
 import hills.controller.PlayerControllerMouse;
 import org.lwjgl.BufferUtils;
@@ -21,11 +22,11 @@ public final class Display {
 	private static GLFWErrorCallback errorCallback;
 
 	// Input callback's
-	private static GLFWKeyCallback keyCallback;
+	private static GLFWKeyCallbackI keyCallback;
 	private static GLFWCharCallback charCallback;
 	private static GLFWCharModsCallback charModsCallback;
-	private static GLFWMouseButtonCallback mouseButtonCallback;
-	private static GLFWCursorPosCallback cursorPosCallback;
+	private static GLFWMouseButtonCallbackI mouseButtonCallback;
+	private static GLFWCursorPosCallbackI cursorPosCallback;
 	private static GLFWCursorEnterCallback cursorEnterCallback;
 	private static GLFWScrollCallback scrollCallback;
 	private static GLFWDropCallback dropCallback;
@@ -136,31 +137,12 @@ public final class Display {
 		// Setup input callback's
 
 
-		setKeyCallback(new GLFWKeyCallback() {
-			public void invoke(long window, int key, int scancode, int action,
-					int mods) {
-				PlayerControllerKeyboard.keyEvent(key, scancode, action, mods);
-			}
-		});
+		setKeyCallback(InputLocator.INSTANCE.getKeyCallBack());
 		
-		setMouseButtonCallback(new GLFWMouseButtonCallback(){
-			public void invoke(long window, int button, int action, int mods) {
-				PlayerControllerMouse.buttonEvent(button, action, mods);
-			}
-		});
+		setMouseButtonCallback(InputLocator.INSTANCE.getMouseButtonCallback());
 		
-		setCursorPosCallback(new GLFWCursorPosCallback(){
-			public void invoke(long window, double xpos, double ypos) {
-				PlayerControllerMouse.positionEvent(xpos, ypos);
-			}
-		});
-		
-		setScrollCallback(new GLFWScrollCallback(){
-			public void invoke(long window, double xoffset, double yoffset) {
-				PlayerControllerMouse.scrollEvent(xoffset, yoffset);
-			}
-		});
-		
+		setCursorPosCallback(InputLocator.INSTANCE.getCursorPositionCallback());
+
 		Display.title = title;
 		created = true;
 	}
@@ -225,7 +207,7 @@ public final class Display {
 			callback.free();
 	}
 
-	public static void setKeyCallback(GLFWKeyCallback keyCallback) {
+	public static void setKeyCallback(GLFWKeyCallbackI keyCallback) {
 		Display.keyCallback = keyCallback;
 		GLFWKeyCallback callback = glfwSetKeyCallback(HANDLE, Display.keyCallback);
 		if(callback != null)
@@ -247,14 +229,14 @@ public final class Display {
 	}
 
 	public static void setMouseButtonCallback(
-			GLFWMouseButtonCallback mouseButtonCallback) {
+			GLFWMouseButtonCallbackI mouseButtonCallback) {
 		Display.mouseButtonCallback = mouseButtonCallback;
 		GLFWMouseButtonCallback callback = glfwSetMouseButtonCallback(HANDLE, Display.mouseButtonCallback);
 		if(callback != null)
 			callback.free();
 	}
 
-	public static void setCursorPosCallback(GLFWCursorPosCallback cursorPosCallback) {
+	public static void setCursorPosCallback(GLFWCursorPosCallbackI cursorPosCallback) {
 		Display.cursorPosCallback = cursorPosCallback;
 		GLFWCursorPosCallback callback = glfwSetCursorPosCallback(HANDLE, Display.cursorPosCallback);
 		if(callback != null)

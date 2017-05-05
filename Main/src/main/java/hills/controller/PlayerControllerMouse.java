@@ -3,11 +3,14 @@ package hills.controller;
 import hills.util.display.Display;
 
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWCursorPosCallbackI;
+import org.lwjgl.glfw.GLFWMouseButtonCallback;
+import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public final class PlayerControllerMouse implements MouseSubscibe{
+public final class PlayerControllerMouse extends GLFWMouseButtonCallback implements MouseSubscribe, GLFWMouseButtonCallbackI, GLFWCursorPosCallbackI{
 
 	/**
 	 * Horizontal position of cursor in pixels.
@@ -86,5 +89,25 @@ public final class PlayerControllerMouse implements MouseSubscibe{
 	@Override
 	public void subscribe(MouseListener listener) {
 		mouseListeners.add(listener);
+	}
+
+	@Override
+	public String getSignature() {
+		return null;
+	}
+
+	@Override
+	public void callback(long args) {
+
+	}
+
+	@Override
+	public void invoke(long window, double xpos, double ypos) {
+		positionEvent(xpos, ypos);
+	}
+
+	@Override
+	public void invoke(long window, int button, int action, int mods) {
+		buttonEvent(button, action, mods);
 	}
 }

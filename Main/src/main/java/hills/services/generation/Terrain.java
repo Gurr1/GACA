@@ -1,6 +1,5 @@
 package hills.services.generation;
 
-import hills.services.terrain.TerrainService;
 import hills.services.terrain.TerrainServiceConstants;
 import hills.util.math.Vec3;
 
@@ -24,7 +23,7 @@ public class Terrain {
     private static String NORMAL_MAP_PATH = TerrainServiceConstants.HEIGHT_MAP_DIRECTORY
             + TerrainServiceConstants.HEIGHT_MAP_NORMAL_MAP_NAME;
     private int[][] matrix = new int[WIDTH + 1][HEIGHT + 1];
-
+    private float WATER_HEIGHT = TerrainServiceConstants.WATER_HEIGHT;
     protected Terrain(long seed) {
         noise = new NoiseMapGenerator(seed);
     }
@@ -110,7 +109,7 @@ public class Terrain {
         for(int x = 0; x<WIDTH; x++){
             for(int y = 0; y<HEIGHT; y++){
                 finalMatrix[x][y] = islandMatrix[x][y] * noiseMatrix[x][y];
-                finalMatrix[x][y] = setToZero(finalMatrix[x][y]);
+                finalMatrix[x][y] = setUnderWaterToZero(finalMatrix[x][y]);
                 int r = ((int)(finalMatrix[x][y]))<<16 & 0xFF0000;
                 int g = ((int)(finalMatrix[x][y]))<<8 & 0xFF00;
                 int b = ((int)(finalMatrix[x][y])) & 0xFF;
@@ -162,8 +161,8 @@ public class Terrain {
         }
         return green;
     }
-    private double setToZero(double green) {
-        if(green<30){
+    private double setUnderWaterToZero(double green) {
+        if(green<WATER_HEIGHT){
             return 0;
         }
         return green;

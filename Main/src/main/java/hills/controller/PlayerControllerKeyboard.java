@@ -2,6 +2,7 @@ package hills.controller;
 
 import hills.model.Player;
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWKeyCallbackI;
 
 import java.util.ArrayList;
@@ -9,17 +10,12 @@ import java.util.List;
 
 public final class PlayerControllerKeyboard implements KeyboardSubscribe, GLFWKeyCallbackI{
 
+	/**
+	 * List of Subscribers.
+	 */
 	private List<KeyboardListener> subscribers = new ArrayList<>();
-	/**
-	 * Which keys have been pressed this cycle.
-	 */
-	private static boolean[] pressed = new boolean[GLFW.GLFW_KEY_LAST];
-	Player player;
-	/**
-	 * Which keys have been released this cycle.
-	 */
 
-	public PlayerControllerKeyboard(){		//How should player be acquired?
+	public PlayerControllerKeyboard(){
 
 	}
 	
