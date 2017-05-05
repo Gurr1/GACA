@@ -5,4 +5,7 @@ package hills.controller;
  */
 public interface MouseListener {
     void mouseMoved(float xVelocity, float yVelocity);
+    void mousePressed(int button, int mods);
+    void mouseReleased(int button, int mods);
+
 }

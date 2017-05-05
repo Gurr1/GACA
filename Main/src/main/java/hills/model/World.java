@@ -13,7 +13,6 @@ import java.util.Random;
  */
 public class World{
     private static World world;
-    private double waterHeight = 30;
     public static World getInstance() {
         if(world == null){
             world = new World();
@@ -27,9 +26,6 @@ public class World{
     }
 
     private Player player;
-    private final int HEIGHT = TerrainServiceConstants.TERRAIN_HEIGHT;
-    private final int WIDTH = TerrainServiceConstants.TERRAIN_WIDTH;
-    private List<Coin> coins;
     private int frame = 0;
     double delta;
     private List<ICollectible> collectibles = new ArrayList<>();
@@ -39,12 +35,10 @@ public class World{
 
     private World() {
         player = new Player(new Vec3(100, 0, 100));
-        coins = getCoins(10);
         world = this;
         for(int i = 0; i < creatureCount; i++){
             creatureList.add(new Sheep(null, ));
         }
-        player.addPositionObserver(this);
     }
     public Vec3 getPlayerPosition(){
         return player.get3DPos();
@@ -58,18 +52,6 @@ public class World{
     public Vec3 getPlayerRight(){
         return player.getRight();
     }
-    private Vec3 createSpawn() {
-        float x;
-        float z;
-        float y;
-        do{
-        x = rand.nextInt(HEIGHT);
-        z = rand.nextInt(WIDTH);
-        y = getHeight(x,z);
-
-        }while(y<waterHeight);
-        return new Vec3(x,y,z);
-    }
     public int getNNPCs(){
         return creatureCount;
     }
@@ -79,7 +61,6 @@ public class World{
     public void updateWorld(double delta){
         frame++;
         this.delta = delta;
-        player.setToUpdate(false);
         if(frame%100 == 0)
         for (Creature creature : creatureList){
             creature.moveRandomly();

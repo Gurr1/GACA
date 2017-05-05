@@ -1,11 +1,13 @@
 package domainModelTests;
 
+import hills.controller.PlayerControllerKeyboard;
 import hills.util.math.Vec3;
 import hills.model.Player;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.lwjgl.glfw.GLFW;
 
 /**
  * Created by Anders on 2017-03-31.
@@ -57,6 +59,19 @@ public class PlayerTest {
         Assert.assertEquals(diff,player.get3DPos());
         player.setPosition(pos);
         Assert.assertEquals(pos,player.get3DPos());
+    }
+
+    @Test public void testVelocity(){       // not done. all move velocity behaviour should be tested.
+        PlayerControllerKeyboard playerControllerKeyboard = new PlayerControllerKeyboard();
+        playerControllerKeyboard.keyEvent(GLFW.GLFW_KEY_W, 0, GLFW.GLFW_PRESS, 0);
+        Vec3 velocity = player.getVelocity();
+        for(int i = 0; i<10; i++) {
+            playerControllerKeyboard.keyEvent(GLFW.GLFW_KEY_W, 0, GLFW.GLFW_PRESS, 0);
+            Assert.assertFalse(velocity == player.getVelocity());
+            Assert.assertTrue(velocity.equals(player.getVelocity()));
+        }
+        playerControllerKeyboard.keyEvent(GLFW.GLFW_KEY_W, 0, GLFW.GLFW_RELEASE, 0);
+        Assert.assertFalse(velocity.equals(player.getVelocity()));
     }
 
 }

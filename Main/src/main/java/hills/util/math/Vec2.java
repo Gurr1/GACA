@@ -153,7 +153,7 @@ public class Vec2 implements STD140Formatable {
 
 	/**
 	 * @param vector
-	 *            - Vector to compare with.
+	 *            - Vector to equals with.
 	 * @return True if This vector is equal to vector
 	 */
 	public boolean compare(Vec2 vector) {

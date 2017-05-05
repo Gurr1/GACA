@@ -26,7 +26,7 @@ public class Player implements ICollidable, IMovable, ITime {
     @Getter private float pitch = 0;
     @Getter private float yaw = 0;
     @Setter private float radius = 1;
-    @Getter private Vec3 velocity;
+    private Vec3 velocity;
     private List<Coin> coinsCollected = new ArrayList<>();
     private List/*<>*/ bugsCollected = new ArrayList();
     private double playerHealth;
@@ -34,7 +34,6 @@ public class Player implements ICollidable, IMovable, ITime {
     private float speed = 1;
     private float runModifier = 2;
     @Getter @Setter private boolean toUpdate = true;
-    private List<Commands> commandsList = new ArrayList<>();
 
     /**
      * Camera up direction.
@@ -65,6 +64,11 @@ public class Player implements ICollidable, IMovable, ITime {
         updatePitch(0);
 
     }
+    public Vec3 getVelocity(){
+        return new Vec3(velocity);
+    }
+
+
     //</editor-fold>
 
     //<editor-fold desc="Updates">
@@ -117,7 +121,6 @@ public class Player implements ICollidable, IMovable, ITime {
     //<editor-fold desc = "Setters">
     public void setYaw(float yaw) {
         this.yaw = fixDegrees(yaw);
-
     }
 
     public void setPitch(float pitch) {
@@ -162,41 +165,32 @@ public class Player implements ICollidable, IMovable, ITime {
     }
 
     public void instructionSent(Commands direction, boolean pressed) {
+        int moving;
         if(pressed){
-            if(!commandsList.contains(direction)){
-                commandsList.add(direction);
-            }
+            moving = 1;
         }
         else{
-            commandsList.remove(direction);
+            moving = -1;
         }
-        for(Commands c : commandsList) {
-            switch (c) {            // this might not work.
+
+            switch (direction) {            // this might not work.
                 case MOVEFORWARD:
-                    velocity = velocity.add(forwardXZ.mul(speed));
+                    velocity = velocity.add(forwardXZ.mul(moving * speed));
                     break;
                 case MOVEBACKWARD:
-                    velocity = forwardXZ.mul(-1 * speed);
+                    velocity = velocity.add(forwardXZ.mul(-1 * speed * moving));
                     break;
                 case MOVELEFT:
-                    velocity = right.mul(-1 * speed);
+                    velocity = velocity.add(right.mul(-1 * speed * moving));
                     break;
                 case MOVERIGHT:
-                    velocity = right.mul(speed);
+                    velocity = velocity.add(right.mul(speed * moving));
                     break;
-                case SUPERSPEED:
-                    speed = 1000000;
+                case SPRINT:
+                    velocity = velocity.add(forwardXZ.mul(speed*runModifier));
                     break;
-                case SHIFTDOWN:
-                    speed = runModifier;
-                    return;
-                case SHIFTUP:
-                    speed = 1;
-                    return;
             }
-        }
         System.out.println(velocity);
-        pos = pos.add(velocity.mul(delta));
         // Act on each of the directions.
     }
 

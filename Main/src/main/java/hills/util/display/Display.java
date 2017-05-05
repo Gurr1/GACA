@@ -134,6 +134,8 @@ public final class Display {
 		GL11.glViewport(0, 0, width, height);
 		
 		// Setup input callback's
+
+
 		setKeyCallback(new GLFWKeyCallback() {
 			public void invoke(long window, int key, int scancode, int action,
 					int mods) {

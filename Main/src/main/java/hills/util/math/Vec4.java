@@ -197,7 +197,7 @@ public class Vec4 implements STD140Formatable {
 
 	/**
 	 * @param vector
-	 *            - Vector to compare with.
+	 *            - Vector to equals with.
 	 * @return True if this vector is equal to vector
 	 */
 	public boolean compare(Vec4 vector) {

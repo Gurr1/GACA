@@ -1,18 +1,15 @@
 package hills.controller;
 
-import hills.model.Commands;
 import hills.model.Player;
-import hills.model.World;
-import hills.util.display.Display;
-
-import hills.util.math.Vec3;
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWKeyCallbackI;
 
 import java.util.ArrayList;
 import java.util.List;
-public final class PlayerControllerKeyboard{
 
+public final class PlayerControllerKeyboard implements KeyboardSubscribe, GLFWKeyCallbackI{
 
+	private List<KeyboardListener> subscribers = new ArrayList<>();
 	/**
 	 * Which keys have been pressed this cycle.
 	 */
@@ -22,7 +19,7 @@ public final class PlayerControllerKeyboard{
 	 * Which keys have been released this cycle.
 	 */
 
-	PlayerControllerKeyboard(){
+	public PlayerControllerKeyboard(){		//How should player be acquired?
 
 	}
 	
@@ -37,55 +34,45 @@ public final class PlayerControllerKeyboard{
 		if(key < 0)
 			return;
 		if (action == GLFW.GLFW_PRESS){
-			checkInGame(key, mods, true);
-			input(key);
+			keyPressed(key, mods);
 		}
 		else if(action == GLFW.GLFW_RELEASE){
-			checkInGame(key,mods,  false);
+			keyReleased(key, mods);
 		}
 	}
 
-	private void checkInGame(int key, int mods, boolean pressed) {
-		if (key == GLFW.GLFW_KEY_W && mods != GLFW.GLFW_MOD_SHIFT) {
-			player.instructionSent(Commands.MOVEFORWARD, pressed);
-		}
-		if (key == GLFW.GLFW_KEY_W && mods != GLFW.GLFW_MOD_SHIFT){
-			player.instructionSent(Commands.MOVEFORWARD, pressed);
-		}
-		if (key == (GLFW.GLFW_KEY_S))
-			player.instructionSent(Commands.MOVEBACKWARD, pressed);
-
-		if (key == (GLFW.GLFW_KEY_A))
-				player.instructionSent(Commands.MOVELEFT, pressed);
-
-		if (key == (GLFW.GLFW_KEY_D))
-				player.instructionSent(Commands.MOVERIGHT, pressed);
-
-		if (key == (GLFW.GLFW_KEY_F3)) {
-				player.instructionSent(Commands.SUPERSPEED, pressed);
-		}
-		Vec3 pos = player.get3DPos();
-		player.setHeight(ServiceMediator.INSTANCE.getHeight(pos.getX(), pos.getZ()));
-	}
-
-	/**
-	 * Interprets inputs that affects other services.
-	 * @param key the Key pressed.
-	 */
-	public static void input(int key) {
-
-		if (key  == GLFW.GLFW_KEY_SPACE)
-			if (Display.isMouseCaptured())
-				Display.captureMouse(false);
-			else
-				Display.captureMouse(true);
-		if(key == GLFW.GLFW_KEY_F1){
-			pressed[key] = true;
-		}
-		if(key == GLFW.GLFW_KEY_F2){
-			pressed[key] = true;
+	private void keyPressed(int key, int mods) {
+		for(KeyboardListener listener : subscribers){
+			listener.KeyPressed(key, mods);
 		}
 	}
+	private void keyReleased(int key, int mods){
+		for (KeyboardListener listener : subscribers){
+			listener.keyReleased(key, mods);
+		}
+	}
+	@Override
+	public void subscribe(KeyboardListener listener) {
+		subscribers.add(listener);
+	}
 
+	@Override
+	public String getSignature() {
+		return null;
+	}
 
+	@Override
+	public long address() {
+		return 0;
+	}
+
+	@Override
+	public void callback(long args) {
+
+	}
+
+	@Override
+	public void invoke(long window, int key, int scancode, int action, int mods) {
+		keyEvent(key, scancode, action, mods);
+	}
 }

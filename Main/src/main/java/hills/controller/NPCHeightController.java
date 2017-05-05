@@ -1,7 +1,6 @@
 package hills.controller;
 
 import hills.model.World;
-import hills.services.Service;
 import hills.util.math.Vec3;
 
 /**
