@@ -17,8 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-public enum TerrainService implements Service {
-	INSTANCE();
+public class TerrainService implements Service, TerrainTreeService, TerrainHeightService, TerrainRenderDataService {
 	
 	private final LODTree tree;
 	private final GridMeshData gridMeshData;
@@ -26,7 +25,7 @@ public enum TerrainService implements Service {
 
 	private final float[][] heightValues;
 	
-	private TerrainService() {
+	public TerrainService() {
 		// Load the ranges 'constant'
 		TerrainServiceLoader.INSTANCE.loadRangesConstant(TerrainServiceConstants.FIRST_RANGE);
 		
@@ -63,7 +62,7 @@ public enum TerrainService implements Service {
 	 * @param frustrum - The view frustrum.
 	 * @return A list of all visible terrain nodes. OBS! Returns a direct reference to the list. Use with caution!
 	 */
-	public List<LODNode> updateLODNodeTree(Vec3 position, Frustrum frustrum){
+	public List<LODNode> getLODNodeTree(Vec3 position, Frustrum frustrum){
 		tree.genLODTree(position, TerrainServiceConstants.RANGES, 7, frustrum); // TODO Customize top LOD level
 		return tree.getLODNodeTree();
 	}

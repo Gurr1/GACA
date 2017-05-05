@@ -1,17 +1,14 @@
 package hills.services.debug;
 
 import hills.controller.PlayerControllerKeyboard;
+import hills.services.Service;
 import hills.util.display.Display;
 import hills.util.display.FrameBuffer;
 
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
-public enum DebugService {
-	INSTANCE();
-	
-	///** Singleton instance **/
-	//private static DebugService instance = null;
+public class DebugService implements Service {
 	
 	// FPS debug variables
 	/**
@@ -48,11 +45,11 @@ public enum DebugService {
 	
 	// TODO Move
 	protected void update(double delta) {
-		if(PlayerControllerKeyboard.isPressed(GLFW.GLFW_KEY_F1))
-			setWireframeMode(!wireframeMode);
-		
-		if(PlayerControllerKeyboard.isPressed(GLFW.GLFW_KEY_F2))
-			setCullingMode(!cullingMode);
+//		if(PlayerControllerKeyboard.isPressed(GLFW.GLFW_KEY_F1))
+//			setWireframeMode(!wireframeMode);
+//		
+//		if(PlayerControllerKeyboard.isPressed(GLFW.GLFW_KEY_F2))
+//			setCullingMode(!cullingMode);
 		
 		if(fpsDebugMode)
 			timePassedSinceFPSTextUpdate += delta; // Update last text update timer
@@ -77,7 +74,7 @@ public enum DebugService {
 		fpsDebugMode = mode;
 	}
 	
-	public void setWireframeMode(boolean mode){
+	protected void setWireframeMode(boolean mode){
 		if(mode)
 			GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE);
 		else
@@ -86,7 +83,7 @@ public enum DebugService {
 		wireframeMode = mode;
 	}
 	
-	public void setCullingMode(boolean mode){
+	protected void setCullingMode(boolean mode){
 		if(mode)
 			FrameBuffer.enableCulling();
 		else
@@ -98,29 +95,5 @@ public enum DebugService {
 	public void cleanUp() {
 		System.out.println("DebugSystem cleaned up!");
 	}
-	
-//	/**
-//	 * Creates the singleton instance of DebugSystem.
-//	 * @return False if an instance has already been created.
-//	 */
-//	public static boolean createInstance() {
-//		if(instance != null)
-//			return false;
-//		
-//		instance = new DebugService();
-//		return true;
-//	}
-//	
-//	/**
-//	 * 
-//	 * @return The singleton instance of DebugSystem.
-//	 * @throws NullPointerException If singleton instance has not been created.
-//	 */
-//	public static DebugService getInstance() throws NullPointerException {
-//		if(instance == null)
-//			throw new NullPointerException("Singleton instance not created!");
-//		
-//		return instance;
-//	}
 
 }
