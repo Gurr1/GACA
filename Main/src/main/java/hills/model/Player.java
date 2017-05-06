@@ -1,9 +1,5 @@
 package hills.model;
 
-import hills.controller.KeyboardListener;
-import hills.controller.MouseListener;
-import hills.controller.PlayerControllerKeyboard;
-import hills.controller.PlayerControllerMouse;
 import hills.util.math.Quaternion;
 import hills.util.math.Vec2;
 import hills.util.math.Vec3;

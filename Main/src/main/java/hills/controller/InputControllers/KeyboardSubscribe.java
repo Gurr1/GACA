@@ -1,4 +1,4 @@
-package hills.controller;
+package hills.controller.InputControllers;
 
 /**
  * Created by gustav on 2017-05-05.

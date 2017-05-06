@@ -1,8 +1,6 @@
 package hills.util.display;
 
-import hills.controller.InputLocator;
-import hills.controller.PlayerControllerKeyboard;
-import hills.controller.PlayerControllerMouse;
+import hills.controller.InputControllers.InputLocator;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.glfw.*;

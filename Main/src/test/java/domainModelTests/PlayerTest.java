@@ -1,6 +1,6 @@
 package domainModelTests;
 
-import hills.controller.PlayerControllerKeyboard;
+import hills.controller.InputControllers.PlayerControllerKeyboard;
 import hills.util.math.Vec3;
 import hills.model.Player;
 

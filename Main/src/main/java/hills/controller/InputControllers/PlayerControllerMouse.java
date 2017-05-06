@@ -1,4 +1,4 @@
-package hills.controller;
+package hills.controller.InputControllers;
 
 import hills.util.display.Display;
 

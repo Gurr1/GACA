@@ -1,11 +1,9 @@
 package hills.services.debug;
 
-import hills.controller.PlayerControllerKeyboard;
 import hills.services.Service;
 import hills.util.display.Display;
 import hills.util.display.FrameBuffer;
 
-import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
 public class DebugService implements Service {

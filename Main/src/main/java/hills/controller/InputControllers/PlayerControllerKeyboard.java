@@ -1,8 +1,6 @@
-package hills.controller;
+package hills.controller.InputControllers;
 
-import hills.model.Player;
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWKeyCallbackI;
 
 import java.util.ArrayList;

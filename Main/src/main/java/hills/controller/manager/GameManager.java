@@ -1,6 +1,9 @@
 package hills.controller.manager;
 
 import hills.controller.EngineSystem;
+import hills.controller.EntityFactory;
+import hills.controller.ServiceMediator;
+import hills.model.Player;
 import hills.model.World;
 import hills.util.math.Vec2;
 import hills.util.math.Vec3;
@@ -9,11 +12,13 @@ import hills.util.model.MeshTexture;
 import hills.util.model.Model;
 import hills.controller.ModelDataHandler;
 
+import java.util.List;
+
 public final class GameManager extends EngineSystem {
 
 	/** Singleton instance **/
 	private static GameManager instance = null;
-	
+	private int nNPCs = 10;
 	Vertex[] v = {
 			new Vertex(new Vec3(-.5f, -.5f, .5f), new Vec2(0.0f, 0.0f), new Vec3(0.0f, 0.0f, 1.0f)),
 			new Vertex(new Vec3(-.5f, -.5f, .5f), new Vec2(0.0f, 1.0f), new Vec3(0.0f, -1.0f, 0.0f)),
@@ -78,10 +83,22 @@ public final class GameManager extends EngineSystem {
 		super(scale, isPaused, startTime);
 		world = World.getInstance();
 		modelDataHandler = ModelDataHandler.INSTANCE;
+		loadGame();
 		//texture = new MeshTexture("test.png");
 		
 		//Mesh cubeMesh = ModelLoader.load(v, ind, texture, Mat4.identity());
 		//cube = new model(new Mesh[]{cubeMesh});
+	}
+
+	private void loadGame() {
+		loadEntities();
+	}
+
+	private void loadEntities() {
+		Player player = EntityFactory.createPlayer(ServiceMediator.INSTANCE.generateSpawnLocation());
+		for(int i = 0; i < ){
+
+		}
 	}
 
 	@Override
