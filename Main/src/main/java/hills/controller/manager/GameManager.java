@@ -95,7 +95,7 @@ public final class GameManager extends EngineSystem {
 	}
 
 	private void loadEntities() {
-		Player player = EntityFactory.createPlayer(ServiceMediator.INSTANCE.generateSpawnLocation());
+
 		for(int i = 0; i < ){
 
 		}

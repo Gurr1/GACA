@@ -6,6 +6,7 @@ import hills.util.math.Vec3;
 import hills.util.math.shape.Sphere;
 import lombok.Getter;
 import lombok.Setter;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,8 @@ import java.util.List;
 /**
  * Created by Anders on 2017-03-30.
  */
-public class Player implements ICollidable, IMovable, ITime {
+public class Player implements PlayerMovable {
+    // Add a method that recalculates reworks the base into global base from addVelocity.
     /**
      * {@inheritDoc}
      */
@@ -131,6 +133,11 @@ public class Player implements ICollidable, IMovable, ITime {
     }
 
     @Override
+    public void updatePosition() {
+
+    }
+
+    @Override
     public void setPosition(Vec3 pos) {
         this.pos = pos;
 
@@ -150,6 +157,7 @@ public class Player implements ICollidable, IMovable, ITime {
     }
 
 
+
     @Override
     public Vec2 get2DPos() {
         return new Vec2(pos.getX(),pos.getZ());
@@ -160,7 +168,7 @@ public class Player implements ICollidable, IMovable, ITime {
         return pos;
     }
 
-    public void instructionSent(Commands direction, boolean pressed) {
+    public void updateVelocity(int key, int mods,  boolean pressed) {
         int moving;
         if(pressed){
             moving = 1;
@@ -169,24 +177,22 @@ public class Player implements ICollidable, IMovable, ITime {
             moving = -1;
         }
 
-            switch (direction) {            // this might not work.
-                case MOVEFORWARD:
+            switch (key) {            // this might not work.
+                case GLFW.GLFW_KEY_W:
                     velocity = velocity.add(forwardXZ.mul(moving * speed));
                     break;
-                case MOVEBACKWARD:
+                case GLFW.GLFW_KEY_A:
                     velocity = velocity.add(forwardXZ.mul(-1 * speed * moving));
                     break;
-                case MOVELEFT:
+                case GLFW.GLFW_KEY_S:
                     velocity = velocity.add(right.mul(-1 * speed * moving));
                     break;
-                case MOVERIGHT:
+                case GLFW.GLFW_KEY_D:
                     velocity = velocity.add(right.mul(speed * moving));
-                    break;
-                case SPRINT:
-                    velocity = velocity.add(forwardXZ.mul(speed*runModifier));
                     break;
             }
         System.out.println(velocity);
+        if(mods == GLFW.GLFW_MOD_SHIFT || key == GLFW.GLFW_KEY_LEFT_SHIFT);
         // Act on each of the directions.
     }
 
@@ -195,6 +201,16 @@ public class Player implements ICollidable, IMovable, ITime {
         updatePitch(yVelocity*-0.3f);
         updateYaw(xVelocity*-0.3f);
         toUpdate = true;
+    }
+
+    @Override
+    public void mousePressed(int button, int mods) {
+
+    }
+
+    @Override
+    public void mouseReleased(int button, int mods) {
+
     }
 
     public void updateVectors(Vec3 axis, float angle) {
@@ -209,5 +225,15 @@ public class Player implements ICollidable, IMovable, ITime {
         if(collectible.getClass() == Coin.class){
             coinsCollected.add((Coin) collectible);
         }
+    }
+
+    @Override
+    public void KeyPressed(int key, int mods) {
+        updateVelocity(key, mods, true);
+    }
+
+    @Override
+    public void keyReleased(int key, int mods) {
+        updateVelocity(key, mods, false);
     }
 }
