@@ -35,4 +35,14 @@ public interface IMovable {
     void addVelocity(Vec3 deltaVelocity);
 
     void setHeight(float height);
+
+    void setPitch(float pitch);
+
+    void setYaw(float yaw);
+
+    void updatePitch(float deltaPitch);
+
+    void updateYaw(float deltaYaw);
+
+
 }
