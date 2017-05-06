@@ -1,18 +1,12 @@
 package hills.controller.manager;
 
-import hills.controller.EngineSystem;
-import hills.controller.EntityFactory;
-import hills.controller.ServiceMediator;
-import hills.model.Player;
+import hills.controller.*;
 import hills.model.World;
 import hills.util.math.Vec2;
 import hills.util.math.Vec3;
 import hills.util.math.Vertex;
 import hills.util.model.MeshTexture;
 import hills.util.model.Model;
-import hills.controller.ModelDataHandler;
-
-import java.util.List;
 
 public final class GameManager extends EngineSystem {
 
@@ -78,11 +72,13 @@ public final class GameManager extends EngineSystem {
 	Vec3 pos;
 	World world;
 	ModelDataHandler modelDataHandler;
+	MovableController movableController;
 
 	private GameManager(float scale, boolean isPaused, float startTime) {
 		super(scale, isPaused, startTime);
 		world = World.getInstance();
 		modelDataHandler = ModelDataHandler.INSTANCE;
+		movableController = new MovableController();
 		loadGame();
 		//texture = new MeshTexture("test.png");
 		
@@ -95,9 +91,11 @@ public final class GameManager extends EngineSystem {
 	}
 
 	private void loadEntities() {
-
-		for(int i = 0; i < ){
-
+		movableController.setPlayer(EntityFactory.createPlayer
+				(ServiceMediator.INSTANCE.generateSpawnLocation()));
+		for(int i = 0; i < nNPCs; i++){
+			movableController.addAIMovable(EntityFactory.createSheep
+					(ServiceMediator.INSTANCE.generateSpawnLocation()));
 		}
 	}
 

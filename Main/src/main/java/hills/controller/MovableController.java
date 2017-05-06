@@ -18,17 +18,17 @@ public class MovableController{
     private IMovable player;
     private List<IMovable> movableList = new ArrayList<>();
 
-    protected MovableController(){
+    public MovableController(){
         InputLocator.INSTANCE.subscribeToKeyboard(this);
         InputLocator.INSTANCE.subscribeToMouse(this);
     }
-    void addAIMovable(IMovable movable){
+    public void addAIMovable(IMovable movable){
         movableList.add(movable);
     }
-    void setPlayer(IMovable movable){
+    public void setPlayer(IMovable movable){
         player = movable;
     }
-    void updateMovables(){
+    public void updateMovables(){
         // Send updates to all saved objects.
     }
 
