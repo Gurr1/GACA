@@ -8,10 +8,6 @@ import hills.util.math.Vec3;
  */
 public interface IMovable {
 
-    /**
-     * adds the variable diff to the current position
-     */
-    void updatePosition();
 
     /**
      * sets the objects position to that of the parameter
@@ -33,6 +29,10 @@ public interface IMovable {
     Vec3 get3DPos();
 
     Vec3 getVelocity();
+
+    void addVelocity(Vec2 deltaVelocity);
+
+    void addVelocity(Vec3 deltaVelocity);
 
     void setHeight(float height);
 }
