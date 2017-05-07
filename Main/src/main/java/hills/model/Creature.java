@@ -24,7 +24,7 @@ public abstract class Creature implements IWoundable,IMovable, ICollidable{
     protected int healthPoints;
     protected int maxHealth;
     protected Model model;
-    protected Vec3 velocity;
+    protected Vec2 velocity;
     private List<OnCreatureMoveListener> listeners = new ArrayList<>();
 
     @Override
@@ -60,7 +60,7 @@ public abstract class Creature implements IWoundable,IMovable, ICollidable{
         healthPoints -= amount;
     }
 
-    public Vec3 getVelocity(){
+    public Vec2 getVelocity(){
         return velocity;
     }
 
@@ -71,7 +71,6 @@ public abstract class Creature implements IWoundable,IMovable, ICollidable{
     public void addListener(OnCreatureMoveListener listener){
         listeners.add(listener);
     }
-    public abstract void moveRandomly();
     @Override
     public void setHeight(float height){
         pos = new Vec3(pos.getX(), height, pos.getZ());

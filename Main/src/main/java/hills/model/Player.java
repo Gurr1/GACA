@@ -143,8 +143,8 @@ public class Player implements PlayerMovable, ICollidable {
     }
 
     @Override
-    public void updatePosition() {
-
+    public void updatePosition(float delta) {
+        
     }
 
     @Override

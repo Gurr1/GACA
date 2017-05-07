@@ -40,23 +40,5 @@ public class Sheep extends Creature{
 
     }
 
-    @Override
-    public void moveRandomly(){        // Moves one meter in random direction. Can be improved with 1D noise to create psudo-Random.
-        float x = pos.getX();
-        float z = pos.getZ();
-        float y;
-        double direction = decideDirection();
-        x += Math.cos(direction);
-        z += Math.sin(direction);
-        y = getHeight(this);
-        if(y<=3){
-            return;
-        }
-        pos = new Vec3(x, y, z);
-    }
-    private double decideDirection(){
-        double randomNum = serviceMediator.generateDirection(move+=50);
-        return randomNum*2*Math.PI;
-    }
 
 }
