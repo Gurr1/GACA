@@ -1,6 +1,8 @@
 package hills.controller.manager;
 
 import hills.controller.*;
+import hills.model.Creature;
+import hills.model.Player;
 import hills.model.World;
 import hills.util.math.Vec2;
 import hills.util.math.Vec3;
@@ -72,6 +74,7 @@ public final class GameManager extends EngineSystem {
 	Vec3 pos;
 	World world;
 	ModelDataHandler modelDataHandler;
+	CollidableController collidableController;
 	MovableController movableController;
 
 	private GameManager(float scale, boolean isPaused, float startTime) {
@@ -79,6 +82,7 @@ public final class GameManager extends EngineSystem {
 		world = World.getInstance();
 		modelDataHandler = ModelDataHandler.INSTANCE;
 		movableController = new MovableController();
+		collidableController = new CollidableController();
 		loadGame();
 		//texture = new MeshTexture("test.png");
 		
@@ -88,20 +92,29 @@ public final class GameManager extends EngineSystem {
 
 	private void loadGame() {
 		loadEntities();
+		loadStaticObjects();
 	}
 
-	private void loadEntities() {
-		movableController.setPlayer(EntityFactory.createPlayer
-				(ServiceMediator.INSTANCE.generateSpawnLocation()));
+    private void loadStaticObjects() {
+        // Load rocks, trees etc.
+    }
+
+    private void loadEntities() {
+        Player p = EntityFactory.createPlayer(
+                ServiceMediator.INSTANCE.generateSpawnLocation());
+		movableController.setPlayer(p);
+		collidableController.addCollidable(p);
 		for(int i = 0; i < nNPCs; i++){
-			movableController.addAIMovable(EntityFactory.createSheep
-					(ServiceMediator.INSTANCE.generateSpawnLocation()));
+            Creature sheep = EntityFactory.createPlayer(createSheep(ServiceMediator.INSTANCE.generateSpawnLocation()));
+			movableController.addAIMovable(sheep);
+			collidableController.addCollidable(sheep);
 		}
 	}
 
 	@Override
 	protected void update(double delta) {
-		modelDataHandler.update(delta);
+		movableController.updateMovables();
+		collidableController.update();
 	}
 
 	@Override

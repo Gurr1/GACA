@@ -1,9 +1,9 @@
 package domainModelTests;
 
 import hills.controller.InputControllers.PlayerControllerKeyboard;
-import hills.util.math.Vec3;
 import hills.model.Player;
-
+import hills.util.math.Vec2;
+import hills.util.math.Vec3;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -64,7 +64,7 @@ public class PlayerTest {
     @Test public void testVelocity(){       // not done. all move velocity behaviour should be tested.
         PlayerControllerKeyboard playerControllerKeyboard = new PlayerControllerKeyboard();
         playerControllerKeyboard.keyEvent(GLFW.GLFW_KEY_W, 0, GLFW.GLFW_PRESS, 0);
-        Vec3 velocity = player.getVelocity();
+        Vec2 velocity = player.getVelocity();
         for(int i = 0; i<10; i++) {
             playerControllerKeyboard.keyEvent(GLFW.GLFW_KEY_W, 0, GLFW.GLFW_PRESS, 0);
             Assert.assertFalse(velocity == player.getVelocity());

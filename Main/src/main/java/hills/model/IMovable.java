@@ -28,7 +28,7 @@ public interface IMovable {
      */
     Vec3 get3DPos();
 
-    Vec3 getVelocity();
+    Vec2 getVelocity();
 
     void addVelocity(Vec2 deltaVelocity);
 

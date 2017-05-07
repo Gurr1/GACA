@@ -1,8 +1,8 @@
 package hills.util.math;
 
-import java.nio.ByteBuffer;
-
 import lombok.Value;
+
+import java.nio.ByteBuffer;
 
 @Value
 public class Vec2 implements STD140Formatable {
@@ -156,7 +156,7 @@ public class Vec2 implements STD140Formatable {
 	 *            - Vector to equals with.
 	 * @return True if This vector is equal to vector
 	 */
-	public boolean compare(Vec2 vector) {
+	public boolean equals(Vec2 vector) {
 		if (x == vector.x && y == vector.y)
 			return true;
 

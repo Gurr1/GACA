@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by Anders on 2017-03-30.
  */
-public class Player implements PlayerMovable {
+public class Player implements PlayerMovable, ICollidable {
     // Add a method that recalculates reworks the base into global base from addVelocity.
     /**
      * {@inheritDoc}
@@ -24,7 +24,7 @@ public class Player implements PlayerMovable {
     @Getter private float pitch = 0;
     @Getter private float yaw = 0;
     @Setter private float radius = 1;
-    private Vec3 velocity;
+    private Vec2 velocity;
     private List<Coin> coinsCollected = new ArrayList<>();
     private List/*<>*/ bugsCollected = new ArrayList();
     private double playerHealth;
@@ -62,8 +62,18 @@ public class Player implements PlayerMovable {
         updatePitch(0);
 
     }
-    public Vec3 getVelocity(){
-        return new Vec3(velocity);
+    public Vec2 getVelocity(){
+        return new Vec2(velocity);
+    }
+
+    @Override
+    public void addVelocity(Vec2 deltaVelocity) {
+        velocity.add(deltaVelocity);
+    }
+
+    @Override
+    public void addVelocity(Vec3 deltaVelocity) {
+        Vec3 revised
     }
 
 
@@ -203,15 +213,6 @@ public class Player implements PlayerMovable {
         toUpdate = true;
     }
 
-    @Override
-    public void mousePressed(int button, int mods) {
-
-    }
-
-    @Override
-    public void mouseReleased(int button, int mods) {
-
-    }
 
     public void updateVectors(Vec3 axis, float angle) {
         Quaternion rotQuat = new Quaternion(axis, angle);
@@ -227,13 +228,4 @@ public class Player implements PlayerMovable {
         }
     }
 
-    @Override
-    public void KeyPressed(int key, int mods) {
-        updateVelocity(key, mods, true);
-    }
-
-    @Override
-    public void keyReleased(int key, int mods) {
-        updateVelocity(key, mods, false);
-    }
 }
