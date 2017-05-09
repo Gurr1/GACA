@@ -9,7 +9,7 @@ public interface IWoundable {
      * Lowers the objects health with the amount parameter
      * @param amount the amount to be lowered
      */
-    void dealDamage(int amount);
+    void takeDamage(int amount);
 
     /**
      * returns the current amount of healthpoints of the woundable object has

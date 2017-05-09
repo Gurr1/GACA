@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by Anders on 2017-04-03.
  */
-public abstract class Creature implements IWoundable,IMovable, ICollidable{
+public abstract class Creature implements IWoundable, IMovable, ICollidable{
 
     /**
      * {@inheritDoc}
@@ -56,7 +56,7 @@ public abstract class Creature implements IWoundable,IMovable, ICollidable{
     public int getMaxHealth(){return maxHealth;}
 
     @Override
-    public void dealDamage(int amount){
+    public void takeDamage(int amount){
         healthPoints -= amount;
     }
 

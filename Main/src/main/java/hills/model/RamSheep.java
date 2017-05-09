@@ -9,37 +9,30 @@ import hills.util.model.Model;
 import java.util.Random;
 
 /**
- * Created by Anders on 2017-04-03.
+ * Created by corne on 5/6/2017.
  */
-public class Sheep extends Creature{
-    /**
-     * {@inheritDoc}
-     */
+public class RamSheep extends Mob {
+
     float radius;
     Random rand = new Random();
     ServiceMediator serviceMediator;
     private float move = 0;
+    private final int damagePoints = 10;
 
-
-    public Sheep(Model model, Vec3 pos){
+    public RamSheep(Model model, Vec3 pos){
         this.model = model;
         this.pos = pos;
-        this.healthPoints = 20;
-        this.speed = 1;
-        this.maxHealth = 20;
+        this.healthPoints = 30;
+        this.speed = 2;
+        this.maxHealth = 30;
         this.radius = 1;
         serviceMediator = ServiceMediator.INSTANCE;
     }
 
     @Override
-    public Sphere getBoundingSphere() {
-        return new Sphere(pos, radius);
+    void dealDamage() {
+        //TODO
     }
-
-    public void updatePosition() {
-
-    }
-
 
     @Override
     public void addVelocity(Vec2 deltaVelocity) {
@@ -50,4 +43,17 @@ public class Sheep extends Creature{
     public void addVelocity(Vec3 deltaVelocity) {
         //TODO
     }
+
+    @Override
+    public Sphere getBoundingSphere() {
+        return null;
+        //TODO
+    }
+
+    @Override
+    public void moveRandomly() {
+        //TODO
+    }
+
+    //TODO
 }

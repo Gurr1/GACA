@@ -9,4 +9,5 @@ public abstract class Mob extends Creature{
      */
     protected int damagePoints;
 
-}
+    abstract void dealDamage();
+    }

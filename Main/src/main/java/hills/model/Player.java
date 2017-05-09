@@ -76,6 +76,16 @@ public class Player implements PlayerMovable, ICollidable {
         Vec3 revised
     }
 
+    @Override
+    public void addVelocity(Vec2 deltaVelocity) {
+        //TODO
+    }
+
+    @Override
+    public void addVelocity(Vec3 deltaVelocity) {
+        //TODO
+    }
+
 
     //</editor-fold>
 
@@ -96,7 +106,7 @@ public class Player implements PlayerMovable, ICollidable {
         pos =  new Vec3(pos.getX(), y, pos.getZ());
     }
     @Override
-    void setDelta(float delta){
+    public void setDelta(float delta){
         this.delta = delta;
     }
 
@@ -206,7 +216,6 @@ public class Player implements PlayerMovable, ICollidable {
         // Act on each of the directions.
     }
 
-    @Override
     public void mouseMoved(float xVelocity, float yVelocity) {
         updatePitch(yVelocity*-0.3f);
         updateYaw(xVelocity*-0.3f);
