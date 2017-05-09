@@ -1,5 +1,9 @@
 package hills.util.display;
 
+import hills.services.ServiceLocator;
+import hills.services.display.DisplayService;
+import hills.services.display.DisplayServiceI;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,11 +38,15 @@ public class FrameBuffer {
 	 */
 	@Getter
 	private final int width, height;
+	
+	private final DisplayServiceI displayService;
 
 	public FrameBuffer(int width, int height) {
 		handle = GL30.glGenFramebuffers();
 		this.width = width;
 		this.height = height;
+		
+		displayService = ServiceLocator.INSTANCE.getDisplayService();
 	}
 
 	/**
@@ -87,7 +95,7 @@ public class FrameBuffer {
 	 */
 	public void unbind() {
 		GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
-		GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());
+		GL11.glViewport(0, 0, displayService.getWidth(), displayService.getHeight());
 	}
 
 	/**

@@ -1,6 +1,8 @@
-package hills.util.display;
+package hills.services.display;
 
 import hills.controller.InputControllers.InputLocator;
+import hills.services.Service;
+
 import org.lwjgl.BufferUtils;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.glfw.*;
@@ -12,48 +14,48 @@ import java.nio.IntBuffer;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
-public final class Display {
+public final class DisplayService implements Service, DisplayServiceI {
 
 	// GLFW callback's
 	
 	// Error callback's
-	private static GLFWErrorCallback errorCallback;
+	private GLFWErrorCallback errorCallback;
 
 	// Input callback's
-	private static GLFWKeyCallbackI keyCallback;
-	private static GLFWCharCallback charCallback;
-	private static GLFWCharModsCallback charModsCallback;
-	private static GLFWMouseButtonCallbackI mouseButtonCallback;
-	private static GLFWCursorPosCallbackI cursorPosCallback;
-	private static GLFWCursorEnterCallback cursorEnterCallback;
-	private static GLFWScrollCallback scrollCallback;
-	private static GLFWDropCallback dropCallback;
+	private GLFWKeyCallbackI keyCallback;
+	private GLFWCharCallback charCallback;
+	private GLFWCharModsCallback charModsCallback;
+	private GLFWMouseButtonCallbackI mouseButtonCallback;
+	private GLFWCursorPosCallbackI cursorPosCallback;
+	private GLFWCursorEnterCallback cursorEnterCallback;
+	private GLFWScrollCallback scrollCallback;
+	private GLFWDropCallback dropCallback;
 	// NOT INCLUDED YET! private static GLFWJoystickCallback joystickCallback;
 
 	// Monitor callback's
-	private static GLFWMonitorCallback monitorCallback;
+	private GLFWMonitorCallback monitorCallback;
 
 	// Window callback's
-	private static GLFWWindowPosCallback winPosCallback;
-	private static GLFWWindowSizeCallback winSizeCallback;
-	private static GLFWWindowCloseCallback winCloseCallback;
-	private static GLFWWindowRefreshCallback winRefreshCallback;
-	private static GLFWWindowFocusCallback winFocusCallback;
-	private static GLFWWindowIconifyCallback winIconifyCallback;
-	private static GLFWFramebufferSizeCallback framebufferSizeCallback;
+	private GLFWWindowPosCallback winPosCallback;
+	private GLFWWindowSizeCallback winSizeCallback;
+	private GLFWWindowCloseCallback winCloseCallback;
+	private GLFWWindowRefreshCallback winRefreshCallback;
+	private GLFWWindowFocusCallback winFocusCallback;
+	private GLFWWindowIconifyCallback winIconifyCallback;
+	private GLFWFramebufferSizeCallback framebufferSizeCallback;
 
 	// Window handle
-	private static long HANDLE = NULL;
+	private long HANDLE = NULL;
 
 	// State variables
-	private static boolean created = false; // If window has been successfully
+	private boolean created = false; // If window has been successfully
 											// created
-	private static boolean vsync = false; // VSync default off
-	private static boolean mouseCaptured = false; // Mouse captured default
+	private boolean vsync = false; // VSync default off
+	private boolean mouseCaptured = false; // Mouse captured default
 													// false
-	private static String title; // Title of window
+	private String title; // Title of window
 
-	private Display() {
+	public DisplayService() {
 	} // Private constructor = no instances
 
 	/**
@@ -68,7 +70,7 @@ public final class Display {
 	 * @param title
 	 *            - Initial, UTF-8 encoded window title
 	 */
-	public static void create(int width, int height, String title){
+	public void create(int width, int height, String title){
 		create(width, height, title, NULL, NULL);
 	}
 	
@@ -91,7 +93,7 @@ public final class Display {
 	 *            - The window whose context to share resources with, or NULL to
 	 *            not share resources
 	 *            */
-	public static void create(int width, int height, String title,
+	public void create(int width, int height, String title,
 			long monitor, long share) {
 		if (created) {
 			System.err.println("Display has already been created!");
@@ -141,7 +143,7 @@ public final class Display {
 		
 		setCursorPosCallback(InputLocator.INSTANCE.getCursorPositionCallback());
 
-		Display.title = title;
+		this.title = title;
 		created = true;
 	}
 	
@@ -149,15 +151,15 @@ public final class Display {
 	 * Set window title.
 	 * @param title - Title of window.
 	 */
-	public static void setTitle(String title){
-		Display.title = title;
+	public void setTitle(String title){
+		this.title = title;
 		GLFW.glfwSetWindowTitle(HANDLE, title);
 	}
 	
 	/**
 	 * Update window. Swap draw buffers and poll for window events.
 	 */
-	public static void update() {
+	public void update() {
 		glfwSwapBuffers(HANDLE); // Swap draw buffers
 		glfwPollEvents(); // Poll for window events. keyCallback "invoke" will
 							// be called
@@ -167,7 +169,7 @@ public final class Display {
 	 * Capture/Release mouse.
 	 * @param capture - Capture/Release.
 	 */
-	public static void captureMouse(boolean capture){
+	public void captureMouse(boolean capture){
 		if(capture)
 			glfwSetInputMode(HANDLE, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 		else
@@ -180,8 +182,8 @@ public final class Display {
 	 * Will enable/disable VSync making a call to glfwSwapInterval(int).
 	 * @param vsync - VSync on or off.
 	 */
-	public static void enableVSync(boolean vsync){
-		Display.vsync = vsync;
+	public void enableVSync(boolean vsync){
+		this.vsync = vsync;
 		glfwSwapInterval(vsync ? 1 : 0);
 	}
 	
@@ -190,146 +192,146 @@ public final class Display {
 	 * @param width - New width of window.
 	 * @param height  - New height of window.
 	 */
-	public static void resize(int width, int height){
+	public void resize(int width, int height){
 		GLFW.glfwSetWindowSize(HANDLE, width, height);
 	}
 	
-	public static boolean isMouseCaptured(){
+	public boolean isMouseCaptured(){
 		return mouseCaptured;
 	}
 	
-	public static void setErrorCallback(GLFWErrorCallback errorCallback) {
-		Display.errorCallback = errorCallback;
-		GLFWErrorCallback callback = glfwSetErrorCallback(Display.errorCallback);
+	public void setErrorCallback(GLFWErrorCallback errorCallback) {
+		this.errorCallback = errorCallback;
+		GLFWErrorCallback callback = glfwSetErrorCallback(this.errorCallback);
 		if(callback != null)
 			callback.free();
 	}
 
-	public static void setKeyCallback(GLFWKeyCallbackI keyCallback) {
-		Display.keyCallback = keyCallback;
-		GLFWKeyCallback callback = glfwSetKeyCallback(HANDLE, Display.keyCallback);
+	public void setKeyCallback(GLFWKeyCallbackI keyCallback) {
+		this.keyCallback = keyCallback;
+		GLFWKeyCallback callback = glfwSetKeyCallback(HANDLE, this.keyCallback);
 		if(callback != null)
 			callback.free();
 	}
 
-	public static void setCharCallback(GLFWCharCallback charCallback) {
-		Display.charCallback = charCallback;
-		GLFWCharCallback callback = glfwSetCharCallback(HANDLE, Display.charCallback);
+	public void setCharCallback(GLFWCharCallback charCallback) {
+		this.charCallback = charCallback;
+		GLFWCharCallback callback = glfwSetCharCallback(HANDLE, this.charCallback);
 		if(callback != null)
 			callback.free();
 	}
 
-	public static void setCharModsCallback(GLFWCharModsCallback charModsCallback) {
-		Display.charModsCallback = charModsCallback;
-		GLFWCharModsCallback callback = glfwSetCharModsCallback(HANDLE, Display.charModsCallback);
+	public  void setCharModsCallback(GLFWCharModsCallback charModsCallback) {
+		this.charModsCallback = charModsCallback;
+		GLFWCharModsCallback callback = glfwSetCharModsCallback(HANDLE, this.charModsCallback);
 		if(callback != null)
 			callback.free();
 	}
 
-	public static void setMouseButtonCallback(
+	public  void setMouseButtonCallback(
 			GLFWMouseButtonCallbackI mouseButtonCallback) {
-		Display.mouseButtonCallback = mouseButtonCallback;
-		GLFWMouseButtonCallback callback = glfwSetMouseButtonCallback(HANDLE, Display.mouseButtonCallback);
+		this.mouseButtonCallback = mouseButtonCallback;
+		GLFWMouseButtonCallback callback = glfwSetMouseButtonCallback(HANDLE, this.mouseButtonCallback);
 		if(callback != null)
 			callback.free();
 	}
 
-	public static void setCursorPosCallback(GLFWCursorPosCallbackI cursorPosCallback) {
-		Display.cursorPosCallback = cursorPosCallback;
-		GLFWCursorPosCallback callback = glfwSetCursorPosCallback(HANDLE, Display.cursorPosCallback);
+	public  void setCursorPosCallback(GLFWCursorPosCallbackI cursorPosCallback) {
+		this.cursorPosCallback = cursorPosCallback;
+		GLFWCursorPosCallback callback = glfwSetCursorPosCallback(HANDLE, this.cursorPosCallback);
 		if(callback != null)
 			callback.free();
 	}
 
-	public static void setCursorEnterCallback(
+	public  void setCursorEnterCallback(
 			GLFWCursorEnterCallback cursorEnterCallback) {
-		Display.cursorEnterCallback = cursorEnterCallback;
-		GLFWCursorEnterCallback callback = glfwSetCursorEnterCallback(HANDLE, Display.cursorEnterCallback);
+		this.cursorEnterCallback = cursorEnterCallback;
+		GLFWCursorEnterCallback callback = glfwSetCursorEnterCallback(HANDLE, this.cursorEnterCallback);
 		if(callback != null)
 			callback.free();
 	}
 
-	public static void setScrollCallback(GLFWScrollCallback scrollCallback) {
-		Display.scrollCallback = scrollCallback;
-		GLFWScrollCallback callback = glfwSetScrollCallback(HANDLE, Display.scrollCallback);
+	public  void setScrollCallback(GLFWScrollCallback scrollCallback) {
+		this.scrollCallback = scrollCallback;
+		GLFWScrollCallback callback = glfwSetScrollCallback(HANDLE, this.scrollCallback);
 		if(callback != null)
 			callback.free();
 	}
 
-	public static void setDropCallback(GLFWDropCallback dropCallback) {
-		Display.dropCallback = dropCallback;
-		GLFWDropCallback callback = glfwSetDropCallback(HANDLE, Display.dropCallback);
+	public  void setDropCallback(GLFWDropCallback dropCallback) {
+		this.dropCallback = dropCallback;
+		GLFWDropCallback callback = glfwSetDropCallback(HANDLE, this.dropCallback);
 		if(callback != null)
 			callback.free();
 	}
 
-	public static void setMonitorCallback(GLFWMonitorCallback monitorCallback) {
-		Display.monitorCallback = monitorCallback;
-		GLFWMonitorCallback callback = glfwSetMonitorCallback(Display.monitorCallback);
+	public  void setMonitorCallback(GLFWMonitorCallback monitorCallback) {
+		this.monitorCallback = monitorCallback;
+		GLFWMonitorCallback callback = glfwSetMonitorCallback(this.monitorCallback);
 		if(callback != null)
 			callback.free();
 	}
 
-	public static void setWindowPosCallback(GLFWWindowPosCallback winPosCallback) {
-		Display.winPosCallback = winPosCallback;
-		GLFWWindowPosCallback callback = glfwSetWindowPosCallback(HANDLE, Display.winPosCallback);
+	public  void setWindowPosCallback(GLFWWindowPosCallback winPosCallback) {
+		this.winPosCallback = winPosCallback;
+		GLFWWindowPosCallback callback = glfwSetWindowPosCallback(HANDLE, this.winPosCallback);
 		if(callback != null)
 			callback.free();
 	}
 
-	public static void setWindowSizeCallback(GLFWWindowSizeCallback winSizeCallback) {
-		Display.winSizeCallback = winSizeCallback;
-		GLFWWindowSizeCallback callback = glfwSetWindowSizeCallback(HANDLE, Display.winSizeCallback);
+	public  void setWindowSizeCallback(GLFWWindowSizeCallback winSizeCallback) {
+		this.winSizeCallback = winSizeCallback;
+		GLFWWindowSizeCallback callback = glfwSetWindowSizeCallback(HANDLE, this.winSizeCallback);
 		if(callback != null)
 			callback.free();
 	}
 
-	public static void setWindowCloseCallback(GLFWWindowCloseCallback winCloseCallback) {
-		Display.winCloseCallback = winCloseCallback;
-		GLFWWindowCloseCallback callback = glfwSetWindowCloseCallback(HANDLE, Display.winCloseCallback);
+	public  void setWindowCloseCallback(GLFWWindowCloseCallback winCloseCallback) {
+		this.winCloseCallback = winCloseCallback;
+		GLFWWindowCloseCallback callback = glfwSetWindowCloseCallback(HANDLE, this.winCloseCallback);
 		if(callback != null)
 			callback.free();
 	}
 
-	public static void setWindowRefreshCallback(
+	public  void setWindowRefreshCallback(
 			GLFWWindowRefreshCallback winRefreshCallback) {
-		Display.winRefreshCallback = winRefreshCallback;
-		GLFWWindowRefreshCallback callback = glfwSetWindowRefreshCallback(HANDLE, Display.winRefreshCallback);
+		this.winRefreshCallback = winRefreshCallback;
+		GLFWWindowRefreshCallback callback = glfwSetWindowRefreshCallback(HANDLE, this.winRefreshCallback);
 		if(callback != null)
 			callback.free();
 	}
 
-	public static void setWindowFocusCallback(GLFWWindowFocusCallback winFocusCallback) {
-		Display.winFocusCallback = winFocusCallback;
-		GLFWWindowFocusCallback callback = glfwSetWindowFocusCallback(HANDLE, Display.winFocusCallback);
+	public  void setWindowFocusCallback(GLFWWindowFocusCallback winFocusCallback) {
+		this.winFocusCallback = winFocusCallback;
+		GLFWWindowFocusCallback callback = glfwSetWindowFocusCallback(HANDLE, this.winFocusCallback);
 		if(callback != null)
 			callback.free();
 	}
 
-	public static void setWindowIconifyCallback(
+	public  void setWindowIconifyCallback(
 			GLFWWindowIconifyCallback winIconifyCallback) {
-		Display.winIconifyCallback = winIconifyCallback;
-		GLFWWindowIconifyCallback callback = glfwSetWindowIconifyCallback(HANDLE, Display.winIconifyCallback);
+		this.winIconifyCallback = winIconifyCallback;
+		GLFWWindowIconifyCallback callback = glfwSetWindowIconifyCallback(HANDLE, this.winIconifyCallback);
 		if(callback != null)
 			callback.free();
 	}
 
-	public static void setFramebufferSizeCallback(
+	public  void setFramebufferSizeCallback(
 			GLFWFramebufferSizeCallback framebufferSizeCallback) {
-		Display.framebufferSizeCallback = framebufferSizeCallback;
-		GLFWFramebufferSizeCallback callback = glfwSetFramebufferSizeCallback(HANDLE, Display.framebufferSizeCallback);
+		this.framebufferSizeCallback = framebufferSizeCallback;
+		GLFWFramebufferSizeCallback callback = glfwSetFramebufferSizeCallback(HANDLE, this.framebufferSizeCallback);
 		if(callback != null)
 			callback.free();
 	}
 	
-	public static String getTitle(){
+	public  String getTitle(){
 		return title;
 	}
 	
 	/**
 	 * @return Window width
 	 */
-	public static int getWidth(){
+	public  int getWidth(){
 		IntBuffer width = BufferUtils.createIntBuffer(1);
 		GLFW.glfwGetFramebufferSize(HANDLE, width, null);
 		return width.get(0);
@@ -338,7 +340,7 @@ public final class Display {
 	/**
 	 * @return Window height
 	 */
-	public static int getHeight(){
+	public  int getHeight(){
 		IntBuffer height = BufferUtils.createIntBuffer(1);
 		GLFW.glfwGetFramebufferSize(HANDLE, null, height);
 		return height.get(0);
@@ -350,7 +352,7 @@ public final class Display {
 	 * Get all monitor handles
 	 * @return Connected monitor handles
 	 */
-	public static long[] getMonitors(){
+	public  long[] getMonitors(){
 		PointerBuffer buffer = glfwGetMonitors();
 		long[] handles = new long[buffer.limit()];
 		for(int i = 0; i < handles.length; i++)
@@ -363,7 +365,7 @@ public final class Display {
 	 * Get window ratio.
 	 * @return Window ratio. (height / width)
 	 */
-	public static double getWindowRatio(){
+	public  double getWindowRatio(){
 		return (double) getHeight() / (double) getWidth();
 	}
 	
@@ -371,7 +373,7 @@ public final class Display {
 	 * Get monitor ratio.
 	 * @return Monitor ratio. (height / width)
 	 */
-	public static double getMonitorRatio(long monitorHandle){
+	public  double getMonitorRatio(long monitorHandle){
 		GLFWVidMode vidMode = glfwGetVideoMode(monitorHandle);
 		return (double) vidMode.height() / (double) vidMode.width();
 	}
@@ -379,52 +381,34 @@ public final class Display {
 	/**
 	 * @return True if Display call to create(int, int, String, long, long) has been successful.
 	 */
-	public static boolean hasBeenCreated(){
+	public  boolean hasBeenCreated(){
 		return created;
 	}
 
 	/** 
 	 * Releases all callback's, destroys window and terminates GLFW
 	 */
-	public static void destroy(){
+	public  void destroy(){
 		try {
 			if(errorCallback != null)
 				errorCallback.free();
 			
-			if(keyCallback != null)
-				keyCallback.free();
-			if(charCallback != null)
-				charCallback.free();
-			if(charModsCallback != null)
-				charModsCallback.free();
-			if(mouseButtonCallback != null)
-				mouseButtonCallback.free();
-			if(cursorPosCallback != null)
-				cursorPosCallback.free();
-			if(cursorEnterCallback != null)
-				cursorEnterCallback.free();
-			if(scrollCallback != null)
-				scrollCallback.free();
-			if(dropCallback != null)
-				dropCallback.free();
-			
-			if(monitorCallback != null)
-				monitorCallback.free();
-			
-			if(winPosCallback != null)
-				winPosCallback.free();
-			if(winSizeCallback != null)
-				winSizeCallback.free();
-			if(winCloseCallback != null)
-				winCloseCallback.free();
-			if(winRefreshCallback != null)
-				winRefreshCallback.free();
-			if(winFocusCallback != null)
-				winFocusCallback.free();
-			if(winIconifyCallback != null)
-				winIconifyCallback.free();
-			if(framebufferSizeCallback != null)
-				framebufferSizeCallback.free();
+			setKeyCallback(null);
+			setCharCallback(null);
+			setCharModsCallback(null);
+			setMouseButtonCallback(null);
+			setCursorPosCallback(null);
+			setCursorEnterCallback(null);
+			setScrollCallback(null);
+			setDropCallback(null);
+			setMonitorCallback(null);
+			setWindowPosCallback(null);
+			setWindowSizeCallback(null);
+			setWindowCloseCallback(null);
+			setWindowRefreshCallback(null);
+			setWindowFocusCallback(null);
+			setWindowIconifyCallback(null);
+			setFramebufferSizeCallback(null);
 			
 			glfwDestroyWindow(HANDLE);
 		} finally {
@@ -444,8 +428,14 @@ public final class Display {
 	 * Displays window title to title + FPS. Display.title will not contain FPS.
 	 * @param fps - Amount of FPS to display.
 	 */
-	public static void displayFPS(int fps){
+	public  void displayFPS(int fps){
 		GLFW.glfwSetWindowTitle(HANDLE, title + " | FPS: " + fps);
+	}
+
+	@Override
+	public void cleanUp() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

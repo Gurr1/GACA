@@ -1,6 +1,6 @@
 package hills.services.camera;
 
-import hills.util.display.Display;
+import hills.services.display.DisplayService;
 import hills.util.math.Vec3;
 import hills.util.math.shape.Frustrum;
 
@@ -54,7 +54,7 @@ public class CameraData {
      * forward - (0, 0, -1).
      * near - 0.1.
      * far - 3000.
-     * aspect - Display width / display height.
+     * aspect - 4:3
      * fov - 75.
      */
     protected CameraData(){
@@ -64,7 +64,7 @@ public class CameraData {
     	forward = new Vec3(0.0f, 0.0f, -1.0f);
     	near = 0.1f;
     	far = 3000.0f;
-    	aspect = Display.getWidth() / Display.getHeight();
+    	aspect = 4.0f / 3.0f;
     	fov = 75.0f;
     }
     
