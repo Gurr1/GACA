@@ -1,7 +1,7 @@
 package hills.services.debug;
 
 import hills.services.Service;
-import hills.util.display.Display;
+import hills.services.display.DisplayService;
 import hills.util.display.FrameBuffer;
 
 import org.lwjgl.opengl.GL11;
@@ -56,7 +56,7 @@ public class DebugService implements Service {
 			fps++; // Increment FPS for current render cycle
 			
 			if(timePassedSinceFPSTextUpdate >= 1.0f){ // If 1 second has passed
-				Display.displayFPS(fps);              // Display FPS in window title bar
+				// TODO Fix new function calls DisplayService.displayFPS(fps);              // Display FPS in window title bar
 				fps = 0;                              // Reset FPS counter
 				timePassedSinceFPSTextUpdate -= 1.0f; // Remove 1 second from last text update
 			}

@@ -1,7 +1,8 @@
 package hills.controller;
 
 import hills.model.World;
-import hills.util.display.Display;
+import hills.services.ServiceLocator;
+import hills.services.display.DisplayService;
 import hills.util.display.FrameBuffer;
 import hills.util.loader.ModelLoader;
 import hills.util.loader.TextureLoader;
@@ -69,8 +70,8 @@ public final class GameLoop {
 			
 			update(delta); 					// Update
 			render();      					// Render
-			if(Display.hasBeenCreated())
-				Display.update();     		// Update display
+			if(ServiceLocator.INSTANCE.getDisplayService().hasBeenCreated())
+				ServiceLocator.INSTANCE.getDisplayService().update();     		// Update display
 
 		}
 		

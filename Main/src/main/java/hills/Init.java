@@ -3,10 +3,13 @@ package hills;
 import hills.controller.GameLoop;
 import hills.controller.ServiceMediator;
 import hills.controller.manager.GameManager;
+import hills.services.ServiceLocator;
+import hills.services.display.DisplayService;
+import hills.services.display.DisplayServiceI;
 import hills.util.display.AspectRatios;
-import hills.util.display.Display;
 import hills.util.display.FrameBuffer;
 import hills.view.CameraModel;
+
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
 import org.lwjgl.glfw.GLFWWindowCloseCallback;
@@ -43,13 +46,13 @@ public class Init {
 
 		//TerrainNormalMapCreator.createFlatNormals("height_map_test_3.png");
 		Random rand = new Random();
-
-
+		
 		System.setProperty("org.lwjgl.util.Debug", "true");
 		System.setProperty("org.lwjgl.util.DebugAllocator", "true");
 		
-		Display.setErrorCallback(GLFWErrorCallback.createPrint(System.err));
-		Display.create(WIDTH, HEIGHT, TITLE);
+		DisplayServiceI displayService = ServiceLocator.INSTANCE.getDisplayService();
+		displayService.setErrorCallback(GLFWErrorCallback.createPrint(System.err));
+		displayService.create(WIDTH, HEIGHT, TITLE);
 
 		FrameBuffer.setClearColor(0.55f, 0.55f, 1.0f, 1.0f);	// Set clear color
 		FrameBuffer.enableDepthTesting(0.0f, 1.0f);				// Enable depth testing
@@ -62,13 +65,14 @@ public class Init {
 		CameraModel.createInstance(1.0f, false, 0.0f);
 		ServiceMediator.INSTANCE.generateMap();
 		CameraModel cameraModel = CameraModel.getInstance();// Get the CameraSystem instance
-		cameraModel.updatePerspective(0.1f, 3000.0f, (float) Display.getWidth() / (float) Display.getHeight(), 70.0f);	// Update the perspective matrix
+		cameraModel.updatePerspective(0.1f, 3000.0f, (float) displayService.getWidth() / (float) displayService.getHeight(), 70.0f);	// Update the perspective matrix
 		initDisplayCallbacks();
 		
-		//TerrainService.createInstance();						// Create TerrainSystem instance
+		//TerrainService.createInstance();					// Create TerrainSystem instance
 		GameManager.createInstance(1.0f, false, 0.0f);		// Create GameSystem instance
 		GameLoop.start();                            		// Start engine game loop
-		Display.destroy();                           		// Terminate GLFW window and GLFW when program ends
+		
+		displayService.destroy();                           // Terminate GLFW window and GLFW when program ends
 	}
 	
 	/**
@@ -76,21 +80,22 @@ public class Init {
 	 */
 	public void initDisplayCallbacks(){
 		CameraModel cameraSystem = CameraModel.getInstance();
+		DisplayServiceI displayService = ServiceLocator.INSTANCE.getDisplayService();
 		
 		// Window close callback
-		Display.setWindowCloseCallback(new GLFWWindowCloseCallback(){
+		displayService.setWindowCloseCallback(new GLFWWindowCloseCallback(){
 			public void invoke(long window) {
 				GameLoop.stop();
 			}
 		});
 		
 		// Frame buffer resize callback
-		Display.setFramebufferSizeCallback(new GLFWFramebufferSizeCallback(){
+		displayService.setFramebufferSizeCallback(new GLFWFramebufferSizeCallback(){
 			public void invoke(long window, int width, int height) {
 				GL11.glViewport(0, 0, width, height);
 				
 				// Set perspective matrix according to new width and height
-				cameraSystem.updatePerspective(0.1f, 3000.0f, (float) Display.getWidth() / (float) Display.getHeight(), 70.0f);
+				cameraSystem.updatePerspective(0.1f, 3000.0f, (float) displayService.getWidth() / (float) displayService.getHeight(), 70.0f);
 			}
 		});
 	}

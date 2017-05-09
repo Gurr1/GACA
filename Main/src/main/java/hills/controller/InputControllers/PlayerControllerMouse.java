@@ -1,6 +1,7 @@
 package hills.controller.InputControllers;
 
-import hills.util.display.Display;
+import hills.services.ServiceLocator;
+import hills.services.display.DisplayService;
 
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCursorPosCallbackI;
@@ -66,7 +67,7 @@ public final class PlayerControllerMouse extends GLFWMouseButtonCallback impleme
 		
 		xPosition = (float) xpos;
 		yPosition = (float) ypos;
-		if(Display.isMouseCaptured()) {
+		if(ServiceLocator.INSTANCE.getDisplayService().isMouseCaptured()) {
 			if(xVelocity!=0 || yVelocity!=0)
 				mouseMoved(xVelocity, yVelocity);
 		}
