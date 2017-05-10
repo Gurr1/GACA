@@ -1,6 +1,6 @@
 package hills.services.terrain;
 
-import hills.services.IService;
+import hills.services.Service;
 import hills.services.terrain.mesh.GridMeshData;
 import hills.services.terrain.tree.LODNode;
 import hills.services.terrain.tree.LODTree;
@@ -17,7 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-public class TerrainIService implements IService, ITerrainTreeService, TerrainHeightService, TerrainRenderDataService {
+public class TerrainService implements Service, TerrainTreeService, TerrainHeightService, TerrainRenderDataService {
 	
 	private final LODTree tree;
 	private final GridMeshData gridMeshData;
@@ -25,7 +25,7 @@ public class TerrainIService implements IService, ITerrainTreeService, TerrainHe
 
 	private final float[][] heightValues;
 	
-	public TerrainIService() {
+	public TerrainService() {
 		// Load the ranges 'constant'
 		TerrainServiceLoader.INSTANCE.loadRangesConstant(TerrainServiceConstants.FIRST_RANGE);
 		
@@ -45,7 +45,7 @@ public class TerrainIService implements IService, ITerrainTreeService, TerrainHe
 		
 		// Load grid mesh
 		gridMeshData = TerrainLoader.loadGridMesh(TerrainServiceConstants.GRID_WIDTH, TerrainServiceConstants.GRID_DEPTH, TerrainServiceConstants.TERRAIN_WIDTH, TerrainServiceConstants.TERRAIN_HEIGHT);
-
+		
 		// Load height map texture ready for GPU usage
 		heightMapTexture = new TerrainTexture(TerrainServiceConstants.HEIGHT_MAP_NAME, TerrainServiceConstants.HEIGHT_MAP_NORMAL_MAP_NAME);
 		
