@@ -14,7 +14,7 @@ import java.nio.IntBuffer;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
-public final class DisplayService implements Service, DisplayServiceI {
+public final class DisplayService implements Service, IDisplayService {
 
 	// GLFW callback's
 	
