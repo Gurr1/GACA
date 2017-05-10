@@ -60,8 +60,6 @@ public enum ServiceLocator {
 		return displayService;
 	}
 
-	private ICameraUpdateService getCameraServiceInstance() {
-	}
 
 
 
