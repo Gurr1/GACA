@@ -39,19 +39,19 @@ public class Init {
 	// Absolute first thing that gets done. (Hacky?)
 	// Initialize GLFW, OpenGL and create a new window.
 	// This allows OpenGL calls when initializing static final variables such as shader programs.
-
-	public void init(){
-		//TerrainNormalMapCreator.createSmoothNormals("height_map_test_3.png");
-
-		//TerrainNormalMapCreator.createFlatNormals("height_map_test_3.png");
-		Random rand = new Random();
-		
+	static{
 		System.setProperty("org.lwjgl.util.Debug", "true");
 		System.setProperty("org.lwjgl.util.DebugAllocator", "true");
 		
 		DisplayServiceI displayService = ServiceLocator.INSTANCE.getDisplayService();
 		displayService.setErrorCallback(GLFWErrorCallback.createPrint(System.err));
 		displayService.create(WIDTH, HEIGHT, TITLE);
+	}
+	public void init(){
+		//TerrainNormalMapCreator.createSmoothNormals("height_map_test_3.png");
+
+		//TerrainNormalMapCreator.createFlatNormals("height_map_test_3.png");
+		Random rand = new Random();
 
 		FrameBuffer.setClearColor(0.55f, 0.55f, 1.0f, 1.0f);	// Set clear color
 		FrameBuffer.enableDepthTesting(0.0f, 1.0f);				// Enable depth testing
@@ -71,7 +71,7 @@ public class Init {
 		GameManager.createInstance(1.0f, false, 0.0f);		// Create GameSystem instance
 		GameLoop.start();                            		// Start engine game loop
 		
-		displayService.destroy();                           // Terminate GLFW window and GLFW when program ends
+		ServiceLocator.INSTANCE.getDisplayService().destroy();                           // Terminate GLFW window and GLFW when program ends
 	}
 	
 	/**
