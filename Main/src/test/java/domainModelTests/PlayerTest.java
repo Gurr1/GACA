@@ -1,8 +1,7 @@
 package domainModelTests;
 
-import hills.controller.InputControllers.PlayerControllerKeyboard;
+import hills.controller.ModelInterfaceControllers.MovableController;
 import hills.model.Player;
-import hills.util.math.Vec2;
 import hills.util.math.Vec3;
 import org.junit.Assert;
 import org.junit.Before;
@@ -55,23 +54,72 @@ public class PlayerTest {
     public void testPosition(){
         Vec3 pos = player.get3DPos();
         Vec3 diff = new Vec3(1,1,1);
-        player.updatePosition();
         Assert.assertEquals(diff,player.get3DPos());
         player.setPosition(pos);
         Assert.assertEquals(pos,player.get3DPos());
     }
 
-    @Test public void testVelocity(){       // not done. all move velocity behaviour should be tested.
-        PlayerControllerKeyboard playerControllerKeyboard = new PlayerControllerKeyboard();
-        playerControllerKeyboard.keyEvent(GLFW.GLFW_KEY_W, 0, GLFW.GLFW_PRESS, 0);
-        Vec2 velocity = player.getVelocity();
-        for(int i = 0; i<10; i++) {
-            playerControllerKeyboard.keyEvent(GLFW.GLFW_KEY_W, 0, GLFW.GLFW_PRESS, 0);
+    @Test
+    public void testForwardVelocity(){       // not done. all move velocity behaviour should be tested.
+        MovableController movableController = new MovableController();
+        movableController.setPlayer(player);
+        movableController.KeyPressed(GLFW.GLFW_KEY_W, 0);
+        Vec3 velocity = player.getForwardVector();
+        for(int i = 0; i<10; i++) {     // Tests if adding velocity works properly.
+            movableController.KeyPressed(GLFW.GLFW_KEY_W, 0);
             Assert.assertFalse(velocity == player.getVelocity());
             Assert.assertTrue(velocity.equals(player.getVelocity()));
         }
-        playerControllerKeyboard.keyEvent(GLFW.GLFW_KEY_W, 0, GLFW.GLFW_RELEASE, 0);
-        Assert.assertFalse(velocity.equals(player.getVelocity()));
+        movableController.keyReleased(GLFW.GLFW_KEY_W, 0);
+        Assert.assertTrue(player.getVelocity().equals(new Vec3(0,0,0)));
+    }
+
+    @Test
+    public void testNonLinearVelocity(){
+        MovableController movableController = new MovableController();
+        movableController.setPlayer(player);
+        movableController.KeyPressed(GLFW.GLFW_KEY_W, 0);
+        movableController.KeyPressed(GLFW.GLFW_KEY_A, 0);
+        System.out.println(player.getVelocity());
+        Assert.assertTrue(player.getVelocity().equals((player.getForwardVector().add(player.getRightVector().mul(-1))).normalize()));
+    }
+
+    @Test
+    public void testForwardAndBackwardSim(){
+        MovableController movableController = new MovableController();
+        movableController.setPlayer(player);
+        movableController.KeyPressed(GLFW.GLFW_KEY_W, 0);
+        movableController.KeyPressed(GLFW.GLFW_KEY_S, 0);
+        System.out.println(player.getVelocity());
+        Assert.assertTrue(player.getVelocity().equals((new Vec3(0,0,0))));
+    }
+
+    @Test
+    public void testSprint(){
+        MovableController movableController = new MovableController();
+        movableController.setPlayer(player);
+        movableController.KeyPressed(GLFW.GLFW_KEY_W, GLFW.GLFW_MOD_SHIFT);
+        System.out.println(player.getVelocity());
+        Assert.assertTrue(player.getVelocity().equals((player.getForwardVector().mul(2))));
+    }
+
+    @Test
+    public void testSprintForAndBack(){
+        MovableController movableController = new MovableController();
+        movableController.setPlayer(player);
+        movableController.KeyPressed(GLFW.GLFW_KEY_W, GLFW.GLFW_MOD_SHIFT);
+        movableController.KeyPressed(GLFW.GLFW_KEY_S, 0);
+        System.out.println(player.getVelocity());
+        Assert.assertTrue(player.getVelocity().equals(player.getForwardVector()));
+    }
+    @Test
+    public void testSprintSide(){
+        MovableController movableController = new MovableController();
+        movableController.setPlayer(player);
+        movableController.KeyPressed(GLFW.GLFW_KEY_W, GLFW.GLFW_MOD_SHIFT);
+        movableController.KeyPressed(GLFW.GLFW_KEY_A, 0);
+        System.out.println(player.getVelocity());
+        Assert.assertTrue(player.getVelocity().equals((player.getForwardVector().add(player.getRightVector().mul(-1)).normalize().mul(2))));
     }
 
 }

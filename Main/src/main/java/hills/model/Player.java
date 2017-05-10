@@ -23,7 +23,7 @@ public class Player implements PlayerMovable, ICollidable {
     @Getter private float pitch = 0;
     @Getter private float yaw = 0;
     @Setter private float radius = 1;
-    private Vec2 velocity;
+    private Vec3 velocity = new Vec3(0,0,0);
     private List<Coin> coinsCollected = new ArrayList<>();
     private List/*<>*/ bugsCollected = new ArrayList();
     private double playerHealth;
@@ -61,20 +61,21 @@ public class Player implements PlayerMovable, ICollidable {
         updatePitch(0);
 
     }
-    public Vec2 getVelocity(){
-        return new Vec2(velocity);
+    public Vec3 getVelocity(){
+        return new Vec3(velocity);
     }
 
     @Override
     public void addVelocity(Vec2 deltaVelocity) {
-        float speed = deltaVelocity.getLength();
-        velocity = velocity.add(deltaVelocity).normalize().mul(speed);
+        addVelocity(new Vec3(deltaVelocity.getX(), 0, deltaVelocity.getY()));
     }
 
 
     @Override
     public void addVelocity(Vec3 deltaVelocity) {
-        addVelocity(new Vec2(deltaVelocity.getX(), deltaVelocity.getZ()));
+        float speed = deltaVelocity.getLength();
+        System.out.println(velocity);
+        velocity = velocity.add(deltaVelocity).normalize().mul(speed);
     }
 
 
@@ -96,11 +97,6 @@ public class Player implements PlayerMovable, ICollidable {
     public void setHeight(float y){
         pos =  new Vec3(pos.getX(), y, pos.getZ());
     }
-    @Override
-    public void setCurrentUpdate(float delta){
-        this.delta = delta;
-    }
-
     /**
      * adds to the current yaw and corrects it to the 0 - 360 degree range
      * @param diffYaw the amount that should be added to the yaw
@@ -108,6 +104,11 @@ public class Player implements PlayerMovable, ICollidable {
     public void updateYaw(float diffYaw) {
         this.yaw = fixDegrees(diffYaw + this.yaw);
         updateVectors(globalUp, diffYaw);
+    }
+
+    @Override
+    public void updateMovable(float delta) {
+        pos = pos.add(velocity);
     }
 
     public void checkPlayerHealth(){

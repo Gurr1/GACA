@@ -1,12 +1,5 @@
 package hills;
 
-import java.util.Random;
-
-import org.lwjgl.glfw.GLFWErrorCallback;
-import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
-import org.lwjgl.glfw.GLFWWindowCloseCallback;
-import org.lwjgl.opengl.GL11;
-
 import hills.controller.GameLoop;
 import hills.controller.ServiceMediator;
 import hills.controller.manager.GameManager;
@@ -14,6 +7,12 @@ import hills.services.ServiceLocator;
 import hills.services.display.DisplayServiceI;
 import hills.util.display.AspectRatios;
 import hills.util.display.FrameBuffer;
+import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
+import org.lwjgl.glfw.GLFWWindowCloseCallback;
+import org.lwjgl.opengl.GL11;
+
+import java.util.Random;
 
 /**
  * Created by gustav on 2017-03-21.
@@ -39,9 +38,10 @@ public class Main {
 	// Initialize GLFW, OpenGL and create a new window.
 	// This allows OpenGL calls when initializing static final variables such as shader programs.
 	static{
+
 		System.setProperty("org.lwjgl.util.Debug", "true");
 		System.setProperty("org.lwjgl.util.DebugAllocator", "true");
-		
+		System.out.println("launch");
 		DisplayServiceI displayService = ServiceLocator.INSTANCE.getDisplayService();
 		displayService.setErrorCallback(GLFWErrorCallback.createPrint(System.err));
 		displayService.create(WIDTH, HEIGHT, TITLE);
@@ -51,11 +51,9 @@ public class Main {
 
     	//TerrainNormalMapCreator.createFlatNormals("height_map_test_3.png");
     	Random rand = new Random();
-
-    	FrameBuffer.setClearColor(0.55f, 0.55f, 1.0f, 1.0f);	// Set clear color
+		FrameBuffer.setClearColor(0.55f, 0.55f, 1.0f, 1.0f);	// Set clear color
     	FrameBuffer.enableDepthTesting(0.0f, 1.0f);				// Enable depth testing
     	FrameBuffer.setClearDepth(1.0f);						// Clear depth buffer to 1.0
-
     	FrameBuffer.setDepthFunction(GL11.GL_LEQUAL);		// Set OpenGL depth function.
 
     	//    			DebugService.createInstance();						// Create DebugSystem instance

@@ -112,7 +112,7 @@ public final class GameManager extends EngineSystem {
 
 	@Override
 	protected void update(double delta) {
-		movableController.updateMovables();
+		movableController.updateMovables((float) delta);
 		collidableController.update();
 	}
 

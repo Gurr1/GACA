@@ -1,18 +1,16 @@
 package hills.Unused_Usable_Code;
 
-import hills.util.math.NormalDistribution;
 import hills.services.generation.NoiseMapGenerator;
+import hills.util.math.NormalDistribution;
 import lombok.Setter;
 
 import javax.imageio.ImageIO;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by Anders on 2017-03-21.
@@ -76,7 +74,6 @@ public class ObjectPlacer {
             e.printStackTrace();
             return;
         }
-        NOISE_MAP = new NoiseMapGenerator(new Random().nextLong());
         //NOISE_MAP.create2DNoiseImage("ObjectDensity");
         OBJECT_MAP = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         copyImage(OBJECT_MAP, HEIGHT_MAP);

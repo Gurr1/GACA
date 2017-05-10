@@ -57,6 +57,9 @@ import java.nio.ByteBuffer;
 	 */
 	public Vec3 normalize() {
 		float length = getLength();
+		if(length == 0){
+			return new Vec3(0,0,0);
+		}
 		return new Vec3(x / length, y / length, z / length);
 	}
 

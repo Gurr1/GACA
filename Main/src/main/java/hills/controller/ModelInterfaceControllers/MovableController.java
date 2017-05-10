@@ -28,7 +28,11 @@ public class MovableController implements KeyboardListener, MouseListener{
     public void setPlayer(PlayerMovable movable){
         player = movable;
     }
-    public void updateMovables(){
+    public void updateMovables(float delta){
+        player.updateMovable(delta);
+        for(IMovable movable : movableList){
+            movable.updateMovable(delta);
+        }
         // Send updates to all saved objects.
     }
 
