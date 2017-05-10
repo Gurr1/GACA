@@ -1,9 +1,11 @@
 package hills.services.generation;
 
+import java.awt.image.BufferedImage;
+
 /**
  * Created by gustav on 2017-04-27.
  */
-public interface IMapFactory {
+public interface IGenerationFactory {
     /**
      * generates two PNG files, one with Height data, and one with data about Normals.
      */
@@ -16,4 +18,6 @@ public interface IMapFactory {
      * @return returns a number between 0 and 1 depending on params.
      */
     double generateDirection(float x);
+
+    BufferedImage getRandomNoisemap(double frequency, double scale);
 }

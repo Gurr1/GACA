@@ -1,9 +1,12 @@
 package hills.controller.manager;
 
-import hills.controller.*;
+import hills.controller.EngineSystem;
+import hills.controller.EntityFactory;
+import hills.controller.ModelInterfaceControllers.CollidableController;
+import hills.controller.ModelInterfaceControllers.MovableController;
+import hills.controller.ServiceMediator;
 import hills.model.Creature;
 import hills.model.Player;
-import hills.model.World;
 import hills.util.math.Vec2;
 import hills.util.math.Vec3;
 import hills.util.math.Vertex;
@@ -72,15 +75,11 @@ public final class GameManager extends EngineSystem {
 	MeshTexture texture;
 	Model model, cube;
 	Vec3 pos;
-	World world;
-	ModelDataHandler modelDataHandler;
 	CollidableController collidableController;
 	MovableController movableController;
 
 	private GameManager(float scale, boolean isPaused, float startTime) {
 		super(scale, isPaused, startTime);
-		world = World.getInstance();
-		modelDataHandler = ModelDataHandler.INSTANCE;
 		movableController = new MovableController();
 		collidableController = new CollidableController();
 		loadGame();
@@ -105,7 +104,7 @@ public final class GameManager extends EngineSystem {
 		movableController.setPlayer(p);
 		collidableController.addCollidable(p);
 		for(int i = 0; i < nNPCs; i++){
-            Creature sheep = EntityFactory.createPlayer(createSheep(ServiceMediator.INSTANCE.generateSpawnLocation()));
+            Creature sheep = EntityFactory.createSheep(ServiceMediator.INSTANCE.generateSpawnLocation());
 			movableController.addAIMovable(sheep);
 			collidableController.addCollidable(sheep);
 		}

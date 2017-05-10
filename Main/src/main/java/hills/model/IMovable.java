@@ -44,5 +44,6 @@ public interface IMovable {
 
     void updateYaw(float deltaYaw);
 
+    void setCurrentUpdate(float delta);
 
 }

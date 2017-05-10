@@ -6,7 +6,6 @@ import hills.util.math.Vec3;
 import hills.util.math.shape.Sphere;
 import lombok.Getter;
 import lombok.Setter;
-import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,22 +67,14 @@ public class Player implements PlayerMovable, ICollidable {
 
     @Override
     public void addVelocity(Vec2 deltaVelocity) {
-        velocity.add(deltaVelocity);
+        float speed = deltaVelocity.getLength();
+        velocity = velocity.add(deltaVelocity).normalize().mul(speed);
     }
+
 
     @Override
     public void addVelocity(Vec3 deltaVelocity) {
-        Vec3 revised
-    }
-
-    @Override
-    public void addVelocity(Vec2 deltaVelocity) {
-        //TODO
-    }
-
-    @Override
-    public void addVelocity(Vec3 deltaVelocity) {
-        //TODO
+        addVelocity(new Vec2(deltaVelocity.getX(), deltaVelocity.getZ()));
     }
 
 
@@ -106,7 +97,7 @@ public class Player implements PlayerMovable, ICollidable {
         pos =  new Vec3(pos.getX(), y, pos.getZ());
     }
     @Override
-    public void setDelta(float delta){
+    public void setCurrentUpdate(float delta){
         this.delta = delta;
     }
 
@@ -153,11 +144,6 @@ public class Player implements PlayerMovable, ICollidable {
     }
 
     @Override
-    public void updatePosition(float delta) {
-        
-    }
-
-    @Override
     public void setPosition(Vec3 pos) {
         this.pos = pos;
 
@@ -188,41 +174,6 @@ public class Player implements PlayerMovable, ICollidable {
         return pos;
     }
 
-    public void updateVelocity(int key, int mods,  boolean pressed) {
-        int moving;
-        if(pressed){
-            moving = 1;
-        }
-        else{
-            moving = -1;
-        }
-
-            switch (key) {            // this might not work.
-                case GLFW.GLFW_KEY_W:
-                    velocity = velocity.add(forwardXZ.mul(moving * speed));
-                    break;
-                case GLFW.GLFW_KEY_A:
-                    velocity = velocity.add(forwardXZ.mul(-1 * speed * moving));
-                    break;
-                case GLFW.GLFW_KEY_S:
-                    velocity = velocity.add(right.mul(-1 * speed * moving));
-                    break;
-                case GLFW.GLFW_KEY_D:
-                    velocity = velocity.add(right.mul(speed * moving));
-                    break;
-            }
-        System.out.println(velocity);
-        if(mods == GLFW.GLFW_MOD_SHIFT || key == GLFW.GLFW_KEY_LEFT_SHIFT);
-        // Act on each of the directions.
-    }
-
-    public void mouseMoved(float xVelocity, float yVelocity) {
-        updatePitch(yVelocity*-0.3f);
-        updateYaw(xVelocity*-0.3f);
-        toUpdate = true;
-    }
-
-
     public void updateVectors(Vec3 axis, float angle) {
         Quaternion rotQuat = new Quaternion(axis, angle);
         forward = rotQuat.mul(forward).normalize();
@@ -237,4 +188,23 @@ public class Player implements PlayerMovable, ICollidable {
         }
     }
 
+    @Override
+    public void updateVelocity(Direction direction, boolean AddOrRemove) {
+
+    }
+
+    @Override
+    public Vec3 getForwardVector() {
+        return forward;
+    }
+
+    @Override
+    public Vec3 getRightVector() {
+        return right;
+    }
+
+    @Override
+    public Vec3 getUpVector() {
+        return up;
+    }
 }

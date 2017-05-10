@@ -1,8 +1,6 @@
 package hills.controller;
 
-import hills.model.World;
 import hills.services.ServiceLocator;
-import hills.services.display.DisplayService;
 import hills.util.display.FrameBuffer;
 import hills.util.loader.ModelLoader;
 import hills.util.loader.TextureLoader;
@@ -11,7 +9,6 @@ import hills.view.renderer.ModelRenderer;
 import hills.view.renderer.SkyBoxRenderer;
 import hills.view.renderer.TerrainRenderer;
 import hills.view.renderer.WaterRenderer;
-
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
@@ -31,7 +28,6 @@ public final class GameLoop {
 	 * EngineSystem is created.
 	 */
 	private static List<EngineSystem> systems = new ArrayList<EngineSystem>();
-	private static World world;
 	private GameLoop(){} // Private constructor = no instances
 	
 	/**
@@ -40,7 +36,6 @@ public final class GameLoop {
 	public static void start() {
 		if(isRunning)
 			return;
-		world = World.getInstance();
 		isRunning = true;
 		run(); // Run engine
 	}

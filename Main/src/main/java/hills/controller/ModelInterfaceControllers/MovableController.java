@@ -1,9 +1,12 @@
-package hills.controller;
+package hills.controller.ModelInterfaceControllers;
 
 import hills.controller.InputControllers.InputLocator;
 import hills.controller.InputControllers.KeyboardListener;
 import hills.controller.InputControllers.MouseListener;
 import hills.model.IMovable;
+import hills.model.PlayerMovable;
+import hills.util.math.Vec3;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +15,7 @@ import java.util.List;
  * Created by gustav on 2017-05-06.
  */
 public class MovableController implements KeyboardListener, MouseListener{
-    private IMovable player;
+    private PlayerMovable player;
     private List<IMovable> movableList = new ArrayList<>();
 
     public MovableController(){
@@ -22,7 +25,7 @@ public class MovableController implements KeyboardListener, MouseListener{
     public void addAIMovable(IMovable movable){
         movableList.add(movable);
     }
-    public void setPlayer(IMovable movable){
+    public void setPlayer(PlayerMovable movable){
         player = movable;
     }
     public void updateMovables(){
@@ -37,7 +40,6 @@ public class MovableController implements KeyboardListener, MouseListener{
 
     @Override
     public void mousePressed(int button, int mods) {
-
     }
 
     @Override
@@ -47,12 +49,38 @@ public class MovableController implements KeyboardListener, MouseListener{
 
     @Override
     public void KeyPressed(int key, int mods) {
-
+        setDirection(key, mods, true);
     }
 
     @Override
     public void keyReleased(int key, int mods) {
-
+        setDirection(key, mods, false);
     }
-
+    private void setDirection(int key, int mods, boolean pressed){
+        Vec3 forw = player.getForwardVector();
+        Vec3 forward = new Vec3(forw.getX(), 0, forw.getZ());
+        Vec3 right = player.getRightVector();
+        int posOrNeg = 1;
+        int speed = 1;
+        if(!pressed){
+            posOrNeg = -1;
+        }
+        if(key == GLFW.GLFW_KEY_LEFT_SHIFT || mods == GLFW.GLFW_MOD_SHIFT){
+            speed = 2;
+        }
+        switch (key){
+            case GLFW.GLFW_KEY_W:
+                player.addVelocity(forward.mul(posOrNeg).mul(speed));       // Forward Velocity
+                break;
+            case GLFW.GLFW_KEY_A:
+                player.addVelocity(right.mul(posOrNeg).mul(-1));       // RightVelocity
+                break;
+            case GLFW.GLFW_KEY_S:
+                player.addVelocity(forward.mul(posOrNeg).mul(-1));       //Backward Velocity
+                break;
+            case GLFW.GLFW_KEY_D:
+                player.addVelocity(right.mul(posOrNeg));       // Left Velocity
+                break;
+        }
+    }
 }
