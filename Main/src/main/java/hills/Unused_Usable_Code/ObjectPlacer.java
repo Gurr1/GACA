@@ -6,6 +6,7 @@ import hills.services.terrain.TerrainHeightService;
 import hills.services.terrain.TerrainServiceConstants;
 import hills.util.math.NormalDistribution;
 import hills.util.math.Vec3;
+import lombok.Getter;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -23,14 +24,12 @@ public class ObjectPlacer {
     private double DENSITY = 0.2;
     private double RADIUS = 1;
     private double OPTIMAL_HEIGHT = 0.3;
-    private BufferedImage OBJECT_MAP;
+    @Getter private BufferedImage OBJECT_MAP;
     private BufferedImage NOISE_MAP;
     private List<Vec3> vecList = new ArrayList<Vec3>();
     private TerrainHeightService terrainHeight;
 
-    /**
-     * Constructor with a File to be read from and a filename to save after placement
-     */
+
     public ObjectPlacer() {
     }
 
@@ -57,13 +56,14 @@ public class ObjectPlacer {
      * The objects are marked with the red color value of the variable COLOR
      * and then stored in a .png-file with the name of the variable SAVE_FILE
      */
-    public void placeObjects() {
+    public List<Vec3> placeObjects() {
         IGenerationMediator gm= ServiceLocator.INSTANCE.getGenerationMediator();
         NOISE_MAP = gm.getRandomNoisemap(1.0f,1.0f);
         //NOISE_MAP.create2DNoiseImage("ObjectDensity");
         OBJECT_MAP = new BufferedImage(WIDTH,HEIGHT, BufferedImage.TYPE_3BYTE_BGR);
        // copyImage(OBJECT_MAP, HEIGHT_MAP);
         CalculatePlacement();
+        return vecList;
 
     }
 
