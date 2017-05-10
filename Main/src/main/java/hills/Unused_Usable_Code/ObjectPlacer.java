@@ -1,7 +1,7 @@
 package hills.Unused_Usable_Code;
 
 import hills.services.ServiceLocator;
-import hills.services.generation.MapFactory;
+import hills.services.generation.IGenerationMediator;
 import hills.services.terrain.TerrainHeightService;
 import hills.services.terrain.TerrainServiceConstants;
 import hills.util.math.NormalDistribution;
@@ -58,8 +58,8 @@ public class ObjectPlacer {
      * and then stored in a .png-file with the name of the variable SAVE_FILE
      */
     public void placeObjects() {
-
-        NOISE_MAP = new MapFactory().getRandomNoise(1,1);
+        IGenerationMediator gm= ServiceLocator.INSTANCE.getGenerationMediator();
+        NOISE_MAP = gm.getRandomNoisemap(1.0f,1.0f);
         //NOISE_MAP.create2DNoiseImage("ObjectDensity");
         OBJECT_MAP = new BufferedImage(WIDTH,HEIGHT, BufferedImage.TYPE_3BYTE_BGR);
        // copyImage(OBJECT_MAP, HEIGHT_MAP);

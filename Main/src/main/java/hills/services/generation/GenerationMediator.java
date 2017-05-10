@@ -6,13 +6,13 @@ import java.util.Random;
 /**
  * Created by gustav on 2017-04-27.
  */
-public class GenerationFactory implements IGenerationFactory {
+public class GenerationMediator implements IGenerationMediator {
 
     RandomWalker walker;
     Random r;
     Terrain terrain;
     NoiseMapGenerator noiseMapGenerator;
-    public GenerationFactory(){
+    public GenerationMediator(){
         r = new Random();
         terrain = new Terrain(r.nextLong());
         walker = new RandomWalker();

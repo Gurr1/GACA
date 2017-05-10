@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 /**
  * Created by gustav on 2017-04-27.
  */
-public interface IGenerationFactory {
+public interface IGenerationMediator {
     /**
      * generates two PNG files, one with Height data, and one with data about Normals.
      */

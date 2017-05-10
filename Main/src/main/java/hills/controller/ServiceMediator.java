@@ -1,7 +1,7 @@
 package hills.controller;
 
-import hills.services.generation.GenerationFactory;
-import hills.services.generation.IGenerationFactory;
+import hills.services.generation.GenerationMediator;
+import hills.services.generation.IGenerationMediator;
 import hills.services.terrain.TerrainService;
 import hills.services.terrain.TerrainServiceConstants;
 import hills.util.math.Vec3;
@@ -14,7 +14,7 @@ import java.util.Random;
 public enum ServiceMediator {
     INSTANCE();
     private TerrainService terrainService;
-    private IGenerationFactory generator = new GenerationFactory();
+    private IGenerationMediator generator = new GenerationMediator();
     ServiceMediator(){
         terrainService = new TerrainService();
     }
