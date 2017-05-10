@@ -1,18 +1,16 @@
 package hills.Unused_Usable_Code;
 
+import hills.services.ServiceLocator;
+import hills.services.generation.MapFactory;
+import hills.services.terrain.TerrainHeightService;
+import hills.services.terrain.TerrainServiceConstants;
 import hills.util.math.NormalDistribution;
-import hills.services.generation.NoiseMapGenerator;
-import lombok.Setter;
-
-import javax.imageio.ImageIO;
+import hills.util.math.Vec3;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by Anders on 2017-03-21.
@@ -25,21 +23,15 @@ public class ObjectPlacer {
     private double DENSITY = 0.2;
     private double RADIUS = 1;
     private double OPTIMAL_HEIGHT = 0.3;
-    @Setter private String READ_FILE;
-    @Setter private String SAVE_FILE;
     private BufferedImage OBJECT_MAP;
-    private BufferedImage HEIGHT_MAP;
-    private NoiseMapGenerator NOISE_MAP;
-    private List<Point> pointList = new ArrayList<>();
+    private BufferedImage NOISE_MAP;
+    private List<Vec3> vecList = new ArrayList<Vec3>();
+    private TerrainHeightService terrainHeight;
 
     /**
      * Constructor with a File to be read from and a filename to save after placement
-     * @param readFile name of the file to be read from
-     * @param saveFile name of the file that will be created after ObjectPlacement() is run
      */
-    public ObjectPlacer(String readFile, String saveFile) {
-        READ_FILE = readFile;
-        SAVE_FILE = saveFile;
+    public ObjectPlacer() {
     }
 
     /**
@@ -48,16 +40,15 @@ public class ObjectPlacer {
      * @param density value of  objects will be placed between 0 and 1(standard 0.1)
      * @param radius value of the minimum distance objects will have from eachother above 0 (standard 1)
      * @param optimalHeight value of the most likely height objects will spawn at (standard 0.3)
-     * @param readFile name of the file to be read from
-     * @param saveFile name of the file that will be created after ObjectPlacement() is run
      */
-    public ObjectPlacer(int color, double density, double radius, double optimalHeight, String readFile, String saveFile) {
+    public ObjectPlacer(int color, double density, double radius, double optimalHeight) {
         setDensity(density);
         setColor(color);
         setRadius(radius);
         setOptimalHeight(optimalHeight);
-        this.READ_FILE = readFile;
-        this.SAVE_FILE = saveFile;
+        terrainHeight = ServiceLocator.INSTANCE.getTerrainHeightService();
+        HEIGHT = TerrainServiceConstants.TERRAIN_HEIGHT;
+        WIDTH = TerrainServiceConstants.TERRAIN_WIDTH;
     }
 
     /**
@@ -67,27 +58,13 @@ public class ObjectPlacer {
      * and then stored in a .png-file with the name of the variable SAVE_FILE
      */
     public void placeObjects() {
-        try {
-            HEIGHT_MAP = ImageIO.read(new File(READ_FILE));
-            WIDTH = HEIGHT_MAP.getWidth();
-            HEIGHT = HEIGHT_MAP.getHeight();
-        } catch (IOException e) {
-            System.out.println("failed to read file");
-            e.printStackTrace();
-            return;
-        }
-        NOISE_MAP = new NoiseMapGenerator(new Random().nextLong());
+
+        NOISE_MAP = new MapFactory().getRandomNoise(1,1);
         //NOISE_MAP.create2DNoiseImage("ObjectDensity");
-        OBJECT_MAP = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-        copyImage(OBJECT_MAP, HEIGHT_MAP);
+        OBJECT_MAP = new BufferedImage(WIDTH,HEIGHT, BufferedImage.TYPE_3BYTE_BGR);
+       // copyImage(OBJECT_MAP, HEIGHT_MAP);
         CalculatePlacement();
 
-        try {
-            ImageIO.write(OBJECT_MAP, "png", new File("Main/src/main/resources/" + SAVE_FILE + ".png"));
-        } catch (IOException e) {
-            System.out.println("Failed to create File");
-            e.printStackTrace();
-        }
     }
 
     private void copyImage(BufferedImage copyTo, BufferedImage copyFrom) {
@@ -100,18 +77,18 @@ public class ObjectPlacer {
     private void CalculatePlacement() { //calculates for each pixel if an object will be placed or not and marks it in OBJECT_MAP
         for (int i = 0; i < WIDTH; i++) {
             for (int j = 0; j < WIDTH; j++) {
-                Color c = new Color(HEIGHT_MAP.getRGB(j, i));
-                if (c.getRed() == 0 && c.getBlue() == 0 && canPlace(c, j, i)) {
-                    OBJECT_MAP.setRGB(j, i, new Color(COLOR, c.getGreen(), c.getBlue()).getRGB());
-                   // pointList.add(new Point(j,i));
+                float height = terrainHeight.getHeight(j,i);
+                if (height != 0 && canPlace(height, j, i)) {
+                    OBJECT_MAP.setRGB(j, i, new Color(COLOR,0,0).getRGB());
+                    vecList.add(new Vec3(j,height,i));
                     j+=(int)Math.round(RADIUS);
                 }
             }
         }
     }
 
-    private boolean canPlace(Color c, int x, int y) { //checks if an object can be placed in coordinate(x,y)
-        return (isClear(x, y) && Math.random() <= GetProbability(c, x, y));
+    private boolean canPlace(float height, int x, int y) { //checks if an object can be placed in coordinate(x,y)
+        return (isClear(x, y) && Math.random() <= GetProbability(height, x, y));
     }
 
     private boolean isClear(int x, int y) { // checks the surroundings of point x,y if objects are to close. returns true if not
@@ -125,7 +102,7 @@ public class ObjectPlacer {
                 }
                 if (tempX >= 0 && tempX < WIDTH && (j * j) + (i * i) <= (RADIUS * RADIUS)) {
                     Color c = new Color(OBJECT_MAP.getRGB(tempX, tempY));
-                    if (c.getRed() > 0) {
+                    if (c.getRed() == COLOR && c.getBlue() != 255) {
                         return false;
                     }
                 }
@@ -148,10 +125,11 @@ public class ObjectPlacer {
         return true;
     }
 
-    private double GetProbability(Color c, int x, int y) { // Calculates the probability for an object to be placed on the point x,y
-        double prob = c.getGreen() / 255.0;
+    private double GetProbability(float height, int x, int y) { // Calculates the probability for an object to be placed on the point x,y
+        double prob = height / TerrainServiceConstants.MAX_HEIGHT;
+        Color c = new Color(NOISE_MAP.getRGB(x,y));
         prob = NormalDistribution.solve(prob, OPTIMAL_HEIGHT, 0.01, 0, 0.5);
-       // prob *= NormalDistribution.solve(NOISE_MAP.getDoubleValue(x / 4, y / 4), 1, 0.02, 0, 0.5);
+        prob *= NormalDistribution.solve(c.getGreen(), 1, 0.02, 0, 0.5);
         prob *= DENSITY;
         return prob;
     }
