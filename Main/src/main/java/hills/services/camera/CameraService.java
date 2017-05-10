@@ -76,6 +76,10 @@ public class CameraService implements Service, ICameraDataService, ICameraUpdate
 		toUpdate = true;
 	}
 	
+	public void setPerspective(float near, float far, float aspect, float fov){
+		data.setPerspective(near, far, aspect, fov);
+	}
+	
 	public Vec3 getPosition(){
 		return data.getPosition();
 	}
