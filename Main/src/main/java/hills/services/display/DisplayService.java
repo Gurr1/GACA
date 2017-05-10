@@ -55,8 +55,7 @@ public final class DisplayService implements Service, DisplayServiceI {
 													// false
 	private String title; // Title of window
 
-	public DisplayService() {
-	} // Private constructor = no instances
+	public DisplayService() {}
 
 	/**
 	 * Create new GLFW window. <br>
@@ -93,8 +92,7 @@ public final class DisplayService implements Service, DisplayServiceI {
 	 *            - The window whose context to share resources with, or NULL to
 	 *            not share resources
 	 *            */
-	public void create(int width, int height, String title,
-			long monitor, long share) {
+	public void create(int width, int height, String title, long monitor, long share) {
 		if (created) {
 			System.err.println("Display has already been created!");
 			return;

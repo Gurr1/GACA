@@ -45,7 +45,7 @@ public class TerrainService implements Service, TerrainTreeService, TerrainHeigh
 		
 		// Load grid mesh
 		gridMeshData = TerrainLoader.loadGridMesh(TerrainServiceConstants.GRID_WIDTH, TerrainServiceConstants.GRID_DEPTH, TerrainServiceConstants.TERRAIN_WIDTH, TerrainServiceConstants.TERRAIN_HEIGHT);
-
+		
 		// Load height map texture ready for GPU usage
 		heightMapTexture = new TerrainTexture(TerrainServiceConstants.HEIGHT_MAP_NAME, TerrainServiceConstants.HEIGHT_MAP_NORMAL_MAP_NAME);
 		
