@@ -15,30 +15,30 @@ public class EntityFactory {
         return new Player(position);
     }
 
-    public static Sheep createSheep(Model model, Vec3 position) {return new Sheep(model, position); }
+    public static Sheep createSheep(Vec3 position) {return new Sheep(position); }
 
-    public static RamSheep createRamSheep(Model model, Vec3 position) {return new RamSheep(model, position); }
+    public static RamSheep createRamSheep(Vec3 position) {return new RamSheep(position); }
 
     public static Creature createAnySheep(Model model, Vec3 position) {
         Random random = new Random();
         int x = random.nextInt(2);
 
         if (x == 0){
-            return new Sheep(model, position);
+            return new Sheep(position);
         }
-        else return new RamSheep(model, position);
+        else return new RamSheep(position);
     }
 
     public static Creature createAnySheep(Model model, Vec3 position, int sheepChance){
         Random random = new Random();
         int x = random.nextInt(100);
 
-        if ((sheepChance >= 100) || (x <= sheepChance)){return new Sheep(model, position); }
+        if ((sheepChance >= 100) || (x <= sheepChance)){return new Sheep(position); }
 
-        else return new RamSheep(model, position);
+        else return new RamSheep(position);
     }
 
-    public static Coin createCoin(Model model, Vec3 position) {return new Coin(position, model); }
+    public static Coin createCoin(Vec3 position) {return new Coin(position); }
 
     //TODO bug etc
 

@@ -12,17 +12,15 @@ public class Coin implements ICollectible {
 
     @Getter private final Vec3 pos;
     private float radius = 1;
-    private final Model model;
+    protected Model model;
 
-    public Coin(Vec3 pos, float radius, Model model) {
+    public Coin(Vec3 pos, float radius) {
         this.pos = pos;
         this.radius = radius;
-        this.model = model;
     }
 
-    public Coin(Vec3 pos, Model model) {
+    public Coin(Vec3 pos) {
         this.pos = pos;
-        this.model = model;
     }
 
     @Override

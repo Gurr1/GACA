@@ -19,10 +19,10 @@ public class Sheep extends Creature{
     Random rand = new Random();
     ServiceMediator serviceMediator;
     private float move = 0;
+    protected Model model;
 
 
-    public Sheep(Model model, Vec3 pos){
-        this.model = model;
+    public Sheep(Vec3 pos){
         this.pos = pos;
         this.healthPoints = 20;
         this.speed = 1;
@@ -37,7 +37,7 @@ public class Sheep extends Creature{
     }
 
     public void updatePosition() {
-
+        //TODO
     }
 
 
@@ -48,6 +48,26 @@ public class Sheep extends Creature{
 
     @Override
     public void addVelocity(Vec3 deltaVelocity) {
+        //TODO
+    }
+
+    @Override
+    public void setPitch(float pitch) {
+        //TODO
+    }
+
+    @Override
+    public void setYaw(float yaw) {
+        //TODO
+    }
+
+    @Override
+    public void updatePitch(float deltaPitch) {
+        //TODO
+    }
+
+    @Override
+    public void updateYaw(float deltaYaw) {
         //TODO
     }
 }

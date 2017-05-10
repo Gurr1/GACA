@@ -18,9 +18,9 @@ public class RamSheep extends Mob {
     ServiceMediator serviceMediator;
     private float move = 0;
     private final int damagePoints = 10;
+    protected Model model;
 
-    public RamSheep(Model model, Vec3 pos){
-        this.model = model;
+    public RamSheep(Vec3 pos){
         this.pos = pos;
         this.healthPoints = 30;
         this.speed = 2;
@@ -45,12 +45,31 @@ public class RamSheep extends Mob {
     }
 
     @Override
+    public void setPitch(float pitch) {
+        //TODO
+    }
+
+    @Override
+    public void setYaw(float yaw) {
+        //TODO
+    }
+
+    @Override
+    public void updatePitch(float deltaPitch) {
+        //TODO
+    }
+
+    @Override
+    public void updateYaw(float deltaYaw) {
+        //TODO
+    }
+
+    @Override
     public Sphere getBoundingSphere() {
         return null;
         //TODO
     }
 
-    @Override
     public void moveRandomly() {
         //TODO
     }
