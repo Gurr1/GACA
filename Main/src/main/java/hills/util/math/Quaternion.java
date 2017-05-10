@@ -80,8 +80,7 @@ public final class Quaternion {
 	/**
 	 * Multiply with a quaternion.
 	 * 
-	 * @param quat
-	 *            - The quaternion to multiply with.
+	 * @param quat - The quaternion to multiply with.
 	 * @return A new Quaternion made from the product of this quaternion * quat.
 	 */
 	public Quaternion mul(final Quaternion quat) {
@@ -90,14 +89,10 @@ public final class Quaternion {
 		float z = quat.versor.getZ();
 		float w = quat.versor.getW();
 
-		float qx = w * versor.getX() + x * versor.getW() - y * versor.getZ()
-				+ z * versor.getY();
-		float qy = w * versor.getY() + x * versor.getZ() + y * versor.getW()
-				- z * versor.getX();
-		float qz = w * versor.getZ() - x * versor.getY() + y * versor.getX()
-				+ z * versor.getW();
-		float qw = w * versor.getW() - x * versor.getX() - y * versor.getY()
-				- z * versor.getZ();
+		float qx = w * versor.getX() + x * versor.getW() - y * versor.getZ()+ z * versor.getY();
+		float qy = w * versor.getY() + x * versor.getZ() + y * versor.getW()- z * versor.getX();
+		float qz = w * versor.getZ() - x * versor.getY() + y * versor.getX()+ z * versor.getW();
+		float qw = w * versor.getW() - x * versor.getX() - y * versor.getY()- z * versor.getZ();
 
 		return new Quaternion(qw, qx, qy, qz);
 	}
@@ -111,8 +106,7 @@ public final class Quaternion {
 	 */
 	public Vec3 mul(final Vec3 vector) {
 		Vec3 v = getAxis().cross(vector);
-		return vector.add(v.mul(2 * versor.getW()).add(
-				getAxis().cross(v).mul(2)));
+		return vector.add(v.mul(2 * versor.getW()).add(getAxis().cross(v).mul(2)));
 	}
 
 	/**

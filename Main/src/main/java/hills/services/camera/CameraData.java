@@ -1,6 +1,5 @@
 package hills.services.camera;
 
-import hills.services.display.DisplayService;
 import hills.util.math.Vec3;
 import hills.util.math.shape.Frustrum;
 
@@ -87,8 +86,6 @@ public class CameraData {
 		
 		setPerspective(near, far, aspect, fov);
 	}
-	
-	
 	
 	protected Vec3 getPosition() {
 		return position;
