@@ -8,7 +8,6 @@ import hills.services.display.DisplayService;
 import hills.services.display.DisplayServiceI;
 import hills.util.display.AspectRatios;
 import hills.util.display.FrameBuffer;
-import hills.view.CameraModel;
 
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
@@ -62,10 +61,10 @@ public class Init {
 		
 //		DebugService.createInstance();						// Create DebugSystem instance
 //		DebugService.getInstance().setFPSDebugMode(true);	// Activate FPS debug mode
-		CameraModel.createInstance(1.0f, false, 0.0f);
+		//CameraModel.createInstance(1.0f, false, 0.0f);
 		ServiceMediator.INSTANCE.generateMap();
-		CameraModel cameraModel = CameraModel.getInstance();// Get the CameraSystem instance
-		cameraModel.updatePerspective(0.1f, 3000.0f, (float) displayService.getWidth() / (float) displayService.getHeight(), 70.0f);	// Update the perspective matrix
+		//CameraModel cameraModel = CameraModel.getInstance();// Get the CameraSystem instance
+		//cameraModel.updatePerspective(0.1f, 3000.0f, (float) displayService.getWidth() / (float) displayService.getHeight(), 70.0f);	// Update the perspective matrix
 		initDisplayCallbacks();
 		
 		//TerrainService.createInstance();					// Create TerrainSystem instance
@@ -79,7 +78,6 @@ public class Init {
 	 * Initialize GLFW callback methods.
 	 */
 	public void initDisplayCallbacks(){
-		CameraModel cameraSystem = CameraModel.getInstance();
 		DisplayServiceI displayService = ServiceLocator.INSTANCE.getDisplayService();
 		
 		// Window close callback
@@ -95,7 +93,8 @@ public class Init {
 				GL11.glViewport(0, 0, width, height);
 				
 				// Set perspective matrix according to new width and height
-				cameraSystem.updatePerspective(0.1f, 3000.0f, (float) displayService.getWidth() / (float) displayService.getHeight(), 70.0f);
+				ServiceLocator.INSTANCE.getCameraDataService().setPerspective(0.1f, 3000.0f, (float) displayService.getWidth() / (float) displayService.getHeight(), 70.0f);
+				ServiceLocator.INSTANCE.getCameraUpdateService().updateGPUPerspectiveMatrix();
 			}
 		});
 	}

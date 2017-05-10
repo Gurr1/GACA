@@ -2,7 +2,7 @@ package hills.controller.manager;
 
 import hills.controller.EngineSystem;
 import hills.services.ServiceLocator;
-import hills.services.camera.CameraDataService;
+import hills.services.camera.ICameraDataService;
 import hills.services.terrain.TerrainRenderDataService;
 import hills.services.terrain.TerrainTreeService;
 import hills.services.terrain.tree.LODNode;
@@ -17,7 +17,7 @@ public final class TerrainManager extends EngineSystem {
 	
 	private TerrainTreeService treeService;
 	private TerrainRenderDataService renderDataService;
-	private CameraDataService camDataService;
+	private ICameraDataService camDataService;
 	
 	protected TerrainManager(float scale, boolean isPaused, float startTime) {
 		super(scale, isPaused, startTime);

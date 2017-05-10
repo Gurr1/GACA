@@ -1,6 +1,7 @@
 package hills.services;
 
-import hills.services.camera.CameraDataService;
+import hills.services.camera.ICameraDataService;
+import hills.services.camera.ICameraUpdateService;
 import hills.services.camera.CameraService;
 import hills.services.debug.DebugService;
 import hills.services.display.DisplayService;
@@ -41,7 +42,11 @@ public enum ServiceLocator {
 		return terrainService;
 	}
 	
-	public CameraDataService getCameraDataService(){
+	public ICameraUpdateService getCameraUpdateService(){
+		return cameraService;
+	}
+	
+	public ICameraDataService getCameraDataService(){
 		return cameraService;
 	}
 	
