@@ -30,6 +30,7 @@ public class Terrain {
     
     private int[][] createHeightMap() {
         Random rand = new Random();
+        Thread t = new Thread();
         double[][] noise1 = noise.createMatrix(500, 1, false);
         noise.setSeed(rand.nextLong());
         double[][] noise2 = noise.createMatrix(150, 0.8, false);

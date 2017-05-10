@@ -70,4 +70,9 @@ public class Sheep extends Creature{
     public void updateYaw(float deltaYaw) {
         //TODO
     }
+
+    @Override
+    public void setCurrentUpdate(float delta) {
+
+    }
 }

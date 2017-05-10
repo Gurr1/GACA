@@ -10,12 +10,12 @@ Once the File getter is implemented in services, use that to fetch file.
  */
 /*public class terrainTest {
 
-	IMapFactory generator;
+	IGenerationFactory generator;
 
 	@Before
 	public void testTerrain() {
 		Random random = new Random();
-        generator = new MapFactory();
+        generator = new GenerationFactory();
 		assertNotNull(generator);
 	}
 

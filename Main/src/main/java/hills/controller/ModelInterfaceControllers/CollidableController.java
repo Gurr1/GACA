@@ -1,4 +1,4 @@
-package hills.controller;
+package hills.controller.ModelInterfaceControllers;
 
 import hills.model.ICollidable;
 import lombok.Getter;
