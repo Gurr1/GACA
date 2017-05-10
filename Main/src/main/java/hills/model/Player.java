@@ -49,6 +49,7 @@ public class Player implements PlayerMovable, ICollidable {
     //<editor-fold desc="Constructors">
 
     public Player(Vec3 pos) {
+        System.out.println("creaing player");
         this.pos = pos;
         forward = new Vec3(0.0f, 0.0f, -1.0f);
         up = new Vec3(0.0f, 1.0f, 0.0f);
@@ -94,9 +95,12 @@ public class Player implements PlayerMovable, ICollidable {
             updateVectors(right, diffPitch);
         }
     }
+
+    @Override
     public void setHeight(float y){
         pos =  new Vec3(pos.getX(), y, pos.getZ());
     }
+
     /**
      * adds to the current yaw and corrects it to the 0 - 360 degree range
      * @param diffYaw the amount that should be added to the yaw
@@ -108,7 +112,7 @@ public class Player implements PlayerMovable, ICollidable {
 
     @Override
     public void updateMovable(float delta) {
-        pos = pos.add(velocity);
+        pos = pos.add(velocity.mul(delta));
     }
 
     public void checkPlayerHealth(){

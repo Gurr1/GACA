@@ -34,8 +34,8 @@ public enum ServiceMediator {
         int z;
         float y;
         do {
-            x = random.nextInt();
-            z = random.nextInt();
+            x = random.nextInt(TerrainServiceConstants.TERRAIN_WIDTH);
+            z = random.nextInt(TerrainServiceConstants.TERRAIN_HEIGHT);
             y = ServiceMediator.INSTANCE.getHeight(x, z);
         }while(y < TerrainServiceConstants.WATER_HEIGHT);
         return new Vec3(x, y, z);

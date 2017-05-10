@@ -5,11 +5,13 @@ import hills.controller.InputControllers.KeyboardListener;
 import hills.controller.InputControllers.MouseListener;
 import hills.model.IMovable;
 import hills.model.PlayerMovable;
+import hills.services.ServiceLocator;
 import hills.util.math.Vec3;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ServiceLoader;
 
 /**
  * Created by gustav on 2017-05-06.
@@ -33,6 +35,9 @@ public class MovableController implements KeyboardListener, MouseListener{
         for(IMovable movable : movableList){
             movable.updateMovable(delta);
         }
+        ServiceLocator.INSTANCE.getCameraDataService().setOrientation(
+                player.getForwardVector(), player.getUpVector(), player.getRightVector(), false);
+        ServiceLocator.INSTANCE.getCameraUpdateService().updateGPUCameraMatrix();
         // Send updates to all saved objects.
     }
 

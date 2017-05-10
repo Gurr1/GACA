@@ -1,6 +1,6 @@
 package hills.services.terrain;
 
-import hills.services.IService;
+import hills.services.Service;
 import hills.services.terrain.mesh.GridMeshData;
 import hills.services.terrain.tree.LODNode;
 import hills.services.terrain.tree.LODTree;
@@ -16,7 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-public class TerrainService implements IService, TerrainTreeService, TerrainHeightService, TerrainRenderDataService {
+public class TerrainService implements Service, TerrainTreeService, TerrainHeightService, TerrainRenderDataService {
 	
 	private final LODTree tree;
 	private final GridMeshData gridMeshData;

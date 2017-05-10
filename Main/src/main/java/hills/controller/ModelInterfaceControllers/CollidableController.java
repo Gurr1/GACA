@@ -14,7 +14,7 @@ public class CollidableController {
    @Getter private List<ICollidable> collidables;
 
 
-    public CollidableController(){ //Add collision IService
+    public CollidableController(){ //Add collision Service
         this.collidables = new ArrayList<>();
     }
 

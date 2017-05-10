@@ -91,6 +91,7 @@ public final class GameManager extends EngineSystem {
 
 	private void loadGame() {
 		loadEntities();
+		System.out.println("loaded entities");
 		loadStaticObjects();
 	}
 
@@ -99,8 +100,10 @@ public final class GameManager extends EngineSystem {
     }
 
     private void loadEntities() {
-        Player p = EntityFactory.createPlayer(
+		System.out.println("loading player");
+		Player p = EntityFactory.createPlayer(
                 ServiceMediator.INSTANCE.generateSpawnLocation());
+		System.out.println("player created");
 		movableController.setPlayer(p);
 		collidableController.addCollidable(p);
 		for(int i = 0; i < nNPCs; i++){

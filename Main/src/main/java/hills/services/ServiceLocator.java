@@ -39,10 +39,6 @@ public enum ServiceLocator {
 		return getCameraServiceInstance();
 	}
 
-	private ICameraUpdateService getCameraServiceInstance() {
-
-	}
-
 	public ICameraDataService getCameraDataService(){
 		return getCameraServiceInstance();
 	}
@@ -69,6 +65,19 @@ public enum ServiceLocator {
 		return displayService;
 	}
 
+	private CameraService getCameraServiceInstance(){
+		if(cameraService == null)
+			cameraService = new CameraService();
+
+		return cameraService;
+	}
+
+	private DebugService getDebugServiceInstance(){
+		if(debugService == null)
+			debugService = new DebugService();
+
+		return debugService;
+	}
 
 
 

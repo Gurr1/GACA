@@ -2,7 +2,7 @@ package hills.services.camera;
 
 import java.nio.ByteBuffer;
 
-import hills.services.IService;
+import hills.services.Service;
 import org.lwjgl.system.MemoryStack;
 
 import hills.util.math.Mat4;
@@ -10,13 +10,13 @@ import hills.util.math.Vec3;
 import hills.util.math.shape.Frustrum;
 import hills.util.shader.ShaderProgram;
 
-public class CameraIService implements IService, ICameraDataService, ICameraUpdateService {
+public class CameraService implements Service, ICameraDataService, ICameraUpdateService {
 	
 	private final CameraData data;
 	
 	private boolean toUpdate = true;
 	
-	public CameraIService(){
+	public CameraService(){
 		data = new CameraData();
 	}
 	

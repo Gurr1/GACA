@@ -1,11 +1,11 @@
 package hills.services.debug;
 
-import hills.services.IService;
+import hills.services.Service;
 import hills.util.display.FrameBuffer;
 
 import org.lwjgl.opengl.GL11;
 
-public class DebugService implements IService {
+public class DebugService implements Service {
 	
 	// FPS debug variables
 	/**

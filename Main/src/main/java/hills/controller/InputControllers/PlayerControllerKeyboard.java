@@ -27,6 +27,7 @@ public final class PlayerControllerKeyboard implements KeyboardSubscribe, GLFWKe
 	public void keyEvent(int key, int scancode, int action, int mods){ // Handle key events
 		if(key < 0)
 			return;
+		System.out.println("pressed");
 		if (action == GLFW.GLFW_PRESS){
 			keyPressed(key, mods);
 		}
@@ -67,6 +68,7 @@ public final class PlayerControllerKeyboard implements KeyboardSubscribe, GLFWKe
 
 	@Override
 	public void invoke(long window, int key, int scancode, int action, int mods) {
+		System.out.println("invoked");
 		keyEvent(key, scancode, action, mods);
 	}
 }

@@ -65,8 +65,7 @@ public class Main {
     	//CameraModel cameraModel = CameraModel.getInstance();// Get the CameraSystem instance
     	//cameraModel.updatePerspective(0.1f, 3000.0f, (float) displayService.getWidth() / (float) displayService.getHeight(), 70.0f);	// Update the perspective matrix
     	initDisplayCallbacks();
-
-    	//TerrainService.createInstance();					// Create TerrainSystem instance
+		//TerrainService.createInstance();					// Create TerrainSystem instance
     	GameManager.createInstance(1.0f, false, 0.0f);		// Create GameSystem instance
     	GameLoop.start();                            		// Start engine game loop
 
