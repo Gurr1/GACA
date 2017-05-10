@@ -11,7 +11,7 @@ import hills.controller.GameLoop;
 import hills.controller.ServiceMediator;
 import hills.controller.manager.GameManager;
 import hills.services.ServiceLocator;
-import hills.services.display.DisplayServiceI;
+import hills.services.display.IDisplayService;
 import hills.util.display.AspectRatios;
 import hills.util.display.FrameBuffer;
 
@@ -42,7 +42,7 @@ public class Main {
 		System.setProperty("org.lwjgl.util.Debug", "true");
 		System.setProperty("org.lwjgl.util.DebugAllocator", "true");
 		
-		DisplayServiceI displayService = ServiceLocator.INSTANCE.getDisplayService();
+		IDisplayService displayService = ServiceLocator.INSTANCE.getDisplayService();
 		displayService.setErrorCallback(GLFWErrorCallback.createPrint(System.err));
 		displayService.create(WIDTH, HEIGHT, TITLE);
 	}
@@ -78,7 +78,7 @@ public class Main {
 	 * Initialize GLFW callback methods.
 	 */
 	public static void initDisplayCallbacks(){
-		DisplayServiceI displayService = ServiceLocator.INSTANCE.getDisplayService();
+		IDisplayService displayService = ServiceLocator.INSTANCE.getDisplayService();
 		
 		// Window close callback
 		displayService.setWindowCloseCallback(new GLFWWindowCloseCallback(){

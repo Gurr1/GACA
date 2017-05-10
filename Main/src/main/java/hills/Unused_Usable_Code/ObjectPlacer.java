@@ -22,7 +22,7 @@ public class ObjectPlacer {
     private int HEIGHT;
     private int COLOR = 255;
     private double DENSITY = 0.2;
-    private double RADIUS = 1;
+    @Getter private double RADIUS = 1;
     private double OPTIMAL_HEIGHT = 0.3;
     @Getter private BufferedImage OBJECT_MAP;
     private BufferedImage NOISE_MAP;

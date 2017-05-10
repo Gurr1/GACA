@@ -12,7 +12,7 @@ public class FileService implements IPictureFileService{
 
     public void writeImage(BufferedImage bufferedImage, String name){
         try {
-            ImageIO.write(bufferedImage, "png", new File("Main/src/main/resources/" + name +".png"));
+            ImageIO.write(bufferedImage, "png", new File("src/main/resources/" + name +".png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
