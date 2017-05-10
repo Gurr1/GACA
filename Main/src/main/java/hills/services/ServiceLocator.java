@@ -6,6 +6,7 @@ import hills.services.camera.CameraService;
 import hills.services.debug.DebugService;
 import hills.services.display.DisplayService;
 import hills.services.display.DisplayServiceI;
+import hills.services.generation.IGenerationMediator;
 import hills.services.terrain.TerrainHeightService;
 import hills.services.terrain.TerrainRenderDataService;
 import hills.services.terrain.TerrainService;
@@ -38,8 +39,16 @@ public enum ServiceLocator {
 		return getCameraServiceInstance();
 	}
 
+	private ICameraUpdateService getCameraServiceInstance() {
+
+	}
+
 	public ICameraDataService getCameraDataService(){
 		return getCameraServiceInstance();
+	}
+
+	public IGenerationMediator getGenerationMediator(){
+		return null;
 	}
 	
 	public DisplayServiceI getDisplayService(){
