@@ -10,17 +10,17 @@ import java.io.IOException;
  */
 public class FileService implements IPictureFileService{
 
-    public void writeImage(BufferedImage bufferedImage, String path){
+    public void writeImage(BufferedImage bufferedImage, String name){
         try {
-            ImageIO.write(bufferedImage, "png", new File(path));
+            ImageIO.write(bufferedImage, "png", new File("Main/src/main/resources/" + name +".png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void readImage(String path){
+    public void readImage(String name){
         try {
-            ImageIO.read(new File(path));
+            ImageIO.read(new File("Main/src/main/resources/" + name +".png"));
         } catch (IOException e){
             e.printStackTrace();
         }

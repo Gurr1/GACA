@@ -1,7 +1,6 @@
 package hills.controller.InputControllers;
 
 import hills.services.ServiceLocator;
-import hills.services.display.DisplayService;
 
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCursorPosCallbackI;

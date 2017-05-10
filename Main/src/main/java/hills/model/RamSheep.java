@@ -65,6 +65,11 @@ public class RamSheep extends Mob {
     }
 
     @Override
+    public void setCurrentUpdate(float delta) {
+        //TODO
+    }
+
+    @Override
     public Sphere getBoundingSphere() {
         return null;
         //TODO

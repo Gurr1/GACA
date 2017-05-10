@@ -1,32 +1,32 @@
 package hills.services;
 
+import hills.services.camera.CameraIService;
 import hills.services.camera.ICameraDataService;
 import hills.services.camera.ICameraUpdateService;
-import hills.services.camera.CameraService;
-import hills.services.debug.DebugService;
-import hills.services.display.DisplayService;
+import hills.services.debug.DebugIService;
+import hills.services.display.DisplayIService;
 import hills.services.display.IDisplayService;
 import hills.services.files.FileService;
 import hills.services.files.IPictureFileService;
+import hills.services.terrain.TerrainIService;
 import hills.services.terrain.TerrainHeightService;
 import hills.services.terrain.TerrainRenderDataService;
-import hills.services.terrain.TerrainService;
-import hills.services.terrain.TerrainTreeService;
+import hills.services.terrain.ITerrainTreeService;
 
 public enum ServiceLocator {
 	INSTANCE;
 	
-	private DebugService debugService;
-	private CameraService cameraService;
-	private TerrainService terrainService;
-	private DisplayService displayService;
+	private DebugIService debugService;
+	private CameraIService cameraService;
+	private TerrainIService terrainService;
+	private DisplayIService displayService;
 	private FileService fileService;
 	
 	private ServiceLocator(){
-		debugService = new DebugService();
-		cameraService = new CameraService();
-		terrainService = new TerrainService();
-		displayService = new DisplayService();
+		debugService = new DebugIService();
+		cameraService = new CameraIService();
+		terrainService = new TerrainIService();
+		displayService = new DisplayIService();
 		fileService = new FileService();
 	}
 	
@@ -38,7 +38,7 @@ public enum ServiceLocator {
 		return terrainService;
 	}
 	
-	public TerrainTreeService getTerrainTreeService(){
+	public ITerrainTreeService getTerrainTreeService(){
 		return terrainService;
 	}
 	
