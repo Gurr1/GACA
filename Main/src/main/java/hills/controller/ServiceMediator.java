@@ -3,7 +3,7 @@ package hills.controller;
 import hills.services.ServiceLocator;
 import hills.services.generation.GenerationMediator;
 import hills.services.generation.IGenerationMediator;
-import hills.services.terrain.TerrainHeightService;
+import hills.services.terrain.ITerrainHeightService;
 import hills.services.terrain.TerrainServiceConstants;
 import hills.util.math.Vec3;
 
@@ -14,7 +14,7 @@ import java.util.Random;
  */
 public enum ServiceMediator {
     INSTANCE();
-    private TerrainHeightService terrainService;
+    private ITerrainHeightService terrainService;
     private IGenerationMediator generator = new GenerationMediator();
     ServiceMediator(){
         terrainService = ServiceLocator.INSTANCE.getTerrainHeightService();
