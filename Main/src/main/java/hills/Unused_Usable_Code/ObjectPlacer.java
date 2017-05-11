@@ -2,7 +2,7 @@ package hills.Unused_Usable_Code;
 
 import hills.services.ServiceLocator;
 import hills.services.generation.IGenerationMediator;
-import hills.services.terrain.TerrainHeightService;
+import hills.services.terrain.ITerrainHeightService;
 import hills.services.terrain.TerrainServiceConstants;
 import hills.util.math.NormalDistribution;
 import hills.util.math.Vec3;
@@ -26,8 +26,8 @@ public class ObjectPlacer {
     private double OPTIMAL_HEIGHT = 0.3;
     @Getter private BufferedImage OBJECT_MAP;
     private BufferedImage NOISE_MAP;
-    private List<Vec3> vecList = new ArrayList<Vec3>();
-    private TerrainHeightService terrainHeight;
+    private List<Vec3> vecList = new ArrayList<>();
+    private ITerrainHeightService terrainHeight;
 
 
     public ObjectPlacer() {

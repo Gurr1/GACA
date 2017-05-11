@@ -1,6 +1,7 @@
 package hills.services.display;
 
 import hills.controller.InputControllers.InputLocator;
+import hills.controller.InputControllers.KeyboardListener;
 import hills.services.Service;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.PointerBuffer;
@@ -13,7 +14,7 @@ import java.nio.IntBuffer;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
-public final class DisplayService implements Service, DisplayServiceI {
+public final class DisplayService implements Service, DisplayServiceI, KeyboardListener {
 
 	// GLFW callback's
 	
@@ -434,5 +435,17 @@ public final class DisplayService implements Service, DisplayServiceI {
 		// TODO Auto-generated method stub
 		
 	}
-	
+
+	@Override
+	public void KeyPressed(int key, int mods) {
+		if(key == GLFW.GLFW_KEY_SPACE){
+			System.out.println("mouse grabbed");
+			captureMouse(true);
+		}
+	}
+
+	@Override
+	public void keyReleased(int key, int mods) {
+
+	}
 }

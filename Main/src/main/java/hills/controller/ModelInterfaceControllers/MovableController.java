@@ -37,9 +37,9 @@ public class MovableController implements KeyboardListener, MouseListener{
 
             }
         }
+        ServiceLocator.INSTANCE.getCameraDataService().setPosition(player.get3DPos());
         ServiceLocator.INSTANCE.getCameraDataService().setOrientation(
                 player.getForwardVector(), player.getUpVector(), player.getRightVector(), false);
-        ServiceLocator.INSTANCE.getCameraUpdateService().updateGPUCameraMatrix();
         // Send updates to all saved objects.
     }
 
