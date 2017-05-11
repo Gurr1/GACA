@@ -3,6 +3,7 @@ package hills.services.display;
 import hills.controller.InputControllers.InputLocator;
 import hills.controller.InputControllers.KeyboardListener;
 import hills.services.Service;
+
 import org.lwjgl.BufferUtils;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.glfw.*;
@@ -134,9 +135,7 @@ public final class DisplayService implements Service, DisplayServiceI, KeyboardL
 		
 		// Setup input callback's
 		setKeyCallback(InputLocator.INSTANCE.getKeyCallBack());
-		
 		setMouseButtonCallback(InputLocator.INSTANCE.getMouseButtonCallback());
-		
 		setCursorPosCallback(InputLocator.INSTANCE.getCursorPositionCallback());
 
 		this.title = title;

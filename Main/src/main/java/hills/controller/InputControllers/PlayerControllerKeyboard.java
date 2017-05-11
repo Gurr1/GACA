@@ -27,7 +27,7 @@ public final class PlayerControllerKeyboard implements KeyboardSubscribe, GLFWKe
 	public void keyEvent(int key, int scancode, int action, int mods){ // Handle key events
 		if(key < 0)
 			return;
-		System.out.println("pressed");
+		
 		if (action == GLFW.GLFW_PRESS){
 			keyPressed(key, mods);
 		}
@@ -51,21 +51,6 @@ public final class PlayerControllerKeyboard implements KeyboardSubscribe, GLFWKe
 	@Override
 	public void subscribe(KeyboardListener listener) {
 		subscribers.add(listener);
-	}
-
-	@Override
-	public String getSignature() {
-		return null;
-	}
-
-	@Override
-	public long address() {
-		return 0;
-	}
-
-	@Override
-	public void callback(long args) {
-
 	}
 
 	@Override

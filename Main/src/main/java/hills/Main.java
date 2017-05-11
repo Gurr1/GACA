@@ -59,7 +59,7 @@ public class Main {
 
     	FrameBuffer.setDepthFunction(GL11.GL_LEQUAL);				// Set OpenGL depth function.
 
-    	ServiceMediator.INSTANCE.generateMap();
+    	//ServiceMediator.INSTANCE.generateMap();
     	initDisplayCallbacks();
 
     	GameLoop.addSystem(new CameraManager(1.0f, false, 0.0f));	// Add camera controller to loop
