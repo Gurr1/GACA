@@ -9,14 +9,13 @@ import java.util.List;
 /**
  * Created by gustav on 2017-05-11.
  */
-public class PlayerControllerMouseButton implements MouseButtonSubscribe,  GLFWMouseButtonCallbackI {
+public class PlayerControllerMouseButton implements GLFWMouseButtonCallbackI {
     List<MouseButtonListener> subscribers = new ArrayList<>();
     @Override
     public void invoke(long window, int button, int action, int mods) {
         buttonEvent(button, action, mods);
     }
 
-    @Override
     public void subscribe(MouseButtonListener listener) {
         subscribers.add(listener);
     }

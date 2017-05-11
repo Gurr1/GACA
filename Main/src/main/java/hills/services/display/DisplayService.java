@@ -205,6 +205,7 @@ public final class DisplayService implements Service, DisplayServiceI, KeyboardL
 	public void setKeyCallback(GLFWKeyCallbackI keyCallback) {
 		this.keyCallback = keyCallback;
 		GLFWKeyCallback callback = glfwSetKeyCallback(HANDLE, this.keyCallback);
+		System.out.println(keyCallback);
 		if(callback != null)
 			callback.free();
 	}

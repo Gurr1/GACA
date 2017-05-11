@@ -67,11 +67,12 @@ public class Player implements PlayerMovable, ICollidable, IAttack {
     }
 
     @Override
-    public void addVelocity(Direction direction, boolean pressed) {     // this needs to be fixed on mousemoved, since forward is not same as pitch is happening
+    public void addVelocity(Direction direction, boolean pressed) {
         int mOs = 1;
         if(!pressed){
             mOs = 0;
         }
+        float s = 1;
         if(direction == Direction.FORWARD){
             velocityX = new Vec3(forward.mul(mOs));
         }
@@ -80,6 +81,7 @@ public class Player implements PlayerMovable, ICollidable, IAttack {
         }
         if(direction == Direction.FORWARD_SPRINT){
             velocityX = new Vec3(forward.mul(mOs*runModifier));
+            s = runModifier;
         }
         if(direction == Direction.LEFT){
             velocityY = new Vec3(right.mul(mOs*-1));
@@ -87,7 +89,7 @@ public class Player implements PlayerMovable, ICollidable, IAttack {
         if(direction == Direction.RIGHT){
             velocityY = new Vec3(right.mul(mOs));
         }
-        velocity = velocityX.add(velocityY).normalize();
+        velocity = velocityX.add(velocityY).normalize().mul(s);
     }
 
 
@@ -109,7 +111,7 @@ public class Player implements PlayerMovable, ICollidable, IAttack {
 
     @Override
     public void setHeight(float y){
-        pos =  new Vec3(pos.getX(), y, pos.getZ());
+        pos =  new Vec3(pos.getX(), y + playerHeight, pos.getZ());
     }
 
     /**
@@ -119,6 +121,23 @@ public class Player implements PlayerMovable, ICollidable, IAttack {
     public void updateYaw(float diffYaw) {
         this.yaw = fixDegrees(diffYaw + this.yaw);
         updateVectors(globalUp, diffYaw);
+        updateVelocity();
+    }
+
+    private void updateVelocity() {
+        int yDir = 1;
+        int xDir = 1;
+        if((velocityY.add(right).getLength())<1){       // Checks if velocity is backwards
+            yDir = -1;
+        }
+        if((velocityX.add(forward).getLength())<1){     // Checks is velocity is to the left.
+            xDir = -1;
+        }
+        float xVelocity = velocityX.getLength()*xDir;
+        float yVelocity = velocityY.getLength()*yDir;
+        velocityX = forward.mul(xVelocity);
+        velocityY = right.mul(yVelocity);
+        velocity = velocityX.add(velocityY).normalize();
     }
 
     @Override

@@ -91,7 +91,7 @@ public class PlayerTest {
         movableController.KeyPressed(GLFW.GLFW_KEY_W, 0);
         movableController.KeyPressed(GLFW.GLFW_KEY_S, 0);
         System.out.println(player.getVelocity());
-        Assert.assertTrue(player.getVelocity().equals((new Vec3(0,0,0))));
+        Assert.assertTrue(player.getVelocity().equals((player.getForwardVector().mul(-1))));
     }
 
     @Test
@@ -119,7 +119,7 @@ public class PlayerTest {
         movableController.KeyPressed(GLFW.GLFW_KEY_W, GLFW.GLFW_MOD_SHIFT);
         movableController.KeyPressed(GLFW.GLFW_KEY_A, 0);
         System.out.println(player.getVelocity());
-        Assert.assertTrue(player.getVelocity().equals((player.getForwardVector().add(player.getRightVector().mul(-1)).normalize().mul(2))));
+        Assert.assertTrue(player.getVelocity().equals((player.getForwardVector().mul(2).add(player.getRightVector().mul(-1)).normalize())));
     }
 
 }

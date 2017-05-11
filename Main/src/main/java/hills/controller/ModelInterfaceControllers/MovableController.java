@@ -63,6 +63,10 @@ public class MovableController implements KeyboardListener, MouseListener{
     private void setDirection(int key, int mods, boolean pressed){
         switch (key){
             case GLFW.GLFW_KEY_W:
+                if(mods == GLFW.GLFW_MOD_SHIFT){
+                    player.addVelocity(PlayerMovable.Direction.FORWARD_SPRINT, pressed);
+                    break;
+                }
                 player.addVelocity(PlayerMovable.Direction.FORWARD, pressed);       // Forward Velocity
                 break;
             case GLFW.GLFW_KEY_A:
