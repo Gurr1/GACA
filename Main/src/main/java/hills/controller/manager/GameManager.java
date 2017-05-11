@@ -2,6 +2,7 @@ package hills.controller.manager;
 
 import hills.controller.EngineSystem;
 import hills.controller.EntityFactory;
+import hills.controller.ModelInterfaceControllers.AttackController;
 import hills.controller.ModelInterfaceControllers.CollidableController;
 import hills.controller.ModelInterfaceControllers.MovableController;
 import hills.controller.ServiceMediator;
@@ -14,9 +15,7 @@ import hills.util.model.MeshTexture;
 import hills.util.model.Model;
 
 public final class GameManager extends EngineSystem {
-
-	/** Singleton instance **/
-	private static GameManager instance = null;
+	
 	private int nNPCs = 10;
 	Vertex[] v = {
 			new Vertex(new Vec3(-.5f, -.5f, .5f), new Vec2(0.0f, 0.0f), new Vec3(0.0f, 0.0f, 1.0f)),
@@ -74,14 +73,17 @@ public final class GameManager extends EngineSystem {
 	
 	MeshTexture texture;
 	Model model, cube;
-	Vec3 pos;
-	CollidableController collidableController;
-	MovableController movableController;
+	private CollidableController collidableController;
+	private MovableController movableController;
+	private AttackController attackController;
+	private long nFrame = 0;
+	private double runtime = 0;
 
-	private GameManager(float scale, boolean isPaused, float startTime) {
+	public GameManager(float scale, boolean isPaused, float startTime) {
 		super(scale, isPaused, startTime);
 		movableController = new MovableController();
 		collidableController = new CollidableController();
+		attackController = new AttackController();
 		loadGame();
 		//texture = new MeshTexture("test.png");
 		
@@ -91,6 +93,7 @@ public final class GameManager extends EngineSystem {
 
 	private void loadGame() {
 		loadEntities();
+		System.out.println("loaded entities");
 		loadStaticObjects();
 	}
 
@@ -99,10 +102,11 @@ public final class GameManager extends EngineSystem {
     }
 
     private void loadEntities() {
-        Player p = EntityFactory.createPlayer(
+		Player p = EntityFactory.createPlayer(
                 ServiceMediator.INSTANCE.generateSpawnLocation());
 		movableController.setPlayer(p);
 		collidableController.addCollidable(p);
+		attackController.setPlayer(p);
 		for(int i = 0; i < nNPCs; i++){
             Creature sheep = EntityFactory.createSheep(ServiceMediator.INSTANCE.generateSpawnLocation());
 			movableController.addAIMovable(sheep);
@@ -112,7 +116,8 @@ public final class GameManager extends EngineSystem {
 
 	@Override
 	protected void update(double delta) {
-		movableController.updateMovables();
+		runtime += delta;
+		movableController.updateMovables((float) delta, runtime);
 		collidableController.update();
 	}
 
@@ -124,28 +129,5 @@ public final class GameManager extends EngineSystem {
 	@Override
 	public void cleanUp() {
 		System.out.println("GameSystem cleaned up!");
-	}
-
-	/**
-	 * Creates the singleton instance of GameSystem.
-	 * @return False if an instance has already been created.
-	 */
-	public static boolean createInstance(float scale, boolean isPaused, float startTime) {
-		if(instance != null)
-			return false;
-		
-		instance = new GameManager(scale, isPaused, startTime);
-		return true;
-	}
-	
-	/**
-	 * @return The singleton instance of GameSystem.
-	 * @throws NullPointerException If singleton instance has not been created.
-	 */
-	public static GameManager getInstance() throws NullPointerException {
-		if(instance == null)
-			throw new NullPointerException("Singleton instance not created!");
-		
-		return instance;
 	}
 }

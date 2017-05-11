@@ -3,9 +3,10 @@ package hills.controller.ModelInterfaceControllers;
 import hills.controller.InputControllers.InputLocator;
 import hills.controller.InputControllers.KeyboardListener;
 import hills.controller.InputControllers.MouseListener;
+import hills.controller.ServiceMediator;
 import hills.model.IMovable;
 import hills.model.PlayerMovable;
-import hills.util.math.Vec3;
+import hills.services.ServiceLocator;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
@@ -28,23 +29,26 @@ public class MovableController implements KeyboardListener, MouseListener{
     public void setPlayer(PlayerMovable movable){
         player = movable;
     }
-    public void updateMovables(){
+    public void updateMovables(float delta, double runtime){
+        player.updateMovable(delta);
+        float h = ServiceMediator.INSTANCE.getHeight(player.get3DPos().getX(), player.get3DPos().getZ());
+        player.setHeight(h);
+        for(IMovable movable : movableList){
+            movable.updateMovable(delta);
+            if(runtime % 1000 == 0){
+
+            }
+        }
+        ServiceLocator.INSTANCE.getCameraDataService().setPosition(player.get3DPos());
+        ServiceLocator.INSTANCE.getCameraDataService().setOrientation
+                (player.getRightVector(), player.getUpVector(), player.getForwardVector(), false);
         // Send updates to all saved objects.
     }
 
     @Override
     public void mouseMoved(float xVelocity, float yVelocity) {
-        player.updateYaw(xVelocity);
-        player.updatePitch(yVelocity);
-    }
-
-    @Override
-    public void mousePressed(int button, int mods) {
-    }
-
-    @Override
-    public void mouseReleased(int button, int mods) {
-
+        player.updateYaw(xVelocity*-0.3f);
+        player.updatePitch(yVelocity*-0.3f);
     }
 
     @Override
@@ -57,29 +61,18 @@ public class MovableController implements KeyboardListener, MouseListener{
         setDirection(key, mods, false);
     }
     private void setDirection(int key, int mods, boolean pressed){
-        Vec3 forw = player.getForwardVector();
-        Vec3 forward = new Vec3(forw.getX(), 0, forw.getZ());
-        Vec3 right = player.getRightVector();
-        int posOrNeg = 1;
-        int speed = 1;
-        if(!pressed){
-            posOrNeg = -1;
-        }
-        if(key == GLFW.GLFW_KEY_LEFT_SHIFT || mods == GLFW.GLFW_MOD_SHIFT){
-            speed = 2;
-        }
         switch (key){
             case GLFW.GLFW_KEY_W:
-                player.addVelocity(forward.mul(posOrNeg).mul(speed));       // Forward Velocity
+                player.addVelocity(PlayerMovable.Direction.FORWARD, pressed);       // Forward Velocity
                 break;
             case GLFW.GLFW_KEY_A:
-                player.addVelocity(right.mul(posOrNeg).mul(-1));       // RightVelocity
+                player.addVelocity(PlayerMovable.Direction.LEFT, pressed);       // RightVelocity
                 break;
             case GLFW.GLFW_KEY_S:
-                player.addVelocity(forward.mul(posOrNeg).mul(-1));       //Backward Velocity
+                player.addVelocity(PlayerMovable.Direction.BACK, pressed);       //Backward Velocity
                 break;
             case GLFW.GLFW_KEY_D:
-                player.addVelocity(right.mul(posOrNeg));       // Left Velocity
+                player.addVelocity(PlayerMovable.Direction.RIGHT, pressed);       // Left Velocity
                 break;
         }
     }

@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by Anders on 2017-03-30.
  */
-public class Player implements PlayerMovable, ICollidable {
+public class Player implements PlayerMovable, ICollidable, IAttack {
     // Add a method that recalculates reworks the base into global base from addVelocity.
     /**
      * {@inheritDoc}
@@ -23,14 +23,13 @@ public class Player implements PlayerMovable, ICollidable {
     @Getter private float pitch = 0;
     @Getter private float yaw = 0;
     @Setter private float radius = 1;
-    private Vec2 velocity;
+    private Vec3 velocity = new Vec3(0,0,0);
     private List<Coin> coinsCollected = new ArrayList<>();
     private List/*<>*/ bugsCollected = new ArrayList();
-    private double playerHealth;
-    private float delta;
-    private float speed = 1;
+    private int playerHealth = 100;
     private float runModifier = 2;
-    @Getter @Setter private boolean toUpdate = true;
+    private Weapon gun = new Gun();
+    private boolean attacking = false;
 
     /**
      * Camera up direction.
@@ -45,6 +44,8 @@ public class Player implements PlayerMovable, ICollidable {
     @Getter private Vec3 forward;
     @Getter private float playerHeight = 3;
     private Vec3 forwardXZ;
+    Vec3 velocityX = new Vec3(0,0,0);
+    Vec3 velocityY = new Vec3(0,0,0);
 
     //<editor-fold desc="Constructors">
 
@@ -61,20 +62,32 @@ public class Player implements PlayerMovable, ICollidable {
         updatePitch(0);
 
     }
-    public Vec2 getVelocity(){
-        return new Vec2(velocity);
+    public Vec3 getVelocity(){
+        return new Vec3(velocity);
     }
 
     @Override
-    public void addVelocity(Vec2 deltaVelocity) {
-        float speed = deltaVelocity.getLength();
-        velocity = velocity.add(deltaVelocity).normalize().mul(speed);
-    }
-
-
-    @Override
-    public void addVelocity(Vec3 deltaVelocity) {
-        addVelocity(new Vec2(deltaVelocity.getX(), deltaVelocity.getZ()));
+    public void addVelocity(Direction direction, boolean pressed) {     // this needs to be fixed on mousemoved, since forward is not same as pitch is happening
+        int mOs = 1;
+        if(!pressed){
+            mOs = 0;
+        }
+        if(direction == Direction.FORWARD){
+            velocityX = new Vec3(forward.mul(mOs));
+        }
+        if(direction == Direction.BACK){
+            velocityX = new Vec3(forward.mul(mOs*-1));
+        }
+        if(direction == Direction.FORWARD_SPRINT){
+            velocityX = new Vec3(forward.mul(mOs*runModifier));
+        }
+        if(direction == Direction.LEFT){
+            velocityY = new Vec3(right.mul(mOs*-1));
+        }
+        if(direction == Direction.RIGHT){
+            velocityY = new Vec3(right.mul(mOs));
+        }
+        velocity = velocityX.add(velocityY).normalize();
     }
 
 
@@ -93,12 +106,10 @@ public class Player implements PlayerMovable, ICollidable {
             updateVectors(right, diffPitch);
         }
     }
+
+    @Override
     public void setHeight(float y){
         pos =  new Vec3(pos.getX(), y, pos.getZ());
-    }
-    @Override
-    public void setCurrentUpdate(float delta){
-        this.delta = delta;
     }
 
     /**
@@ -108,6 +119,12 @@ public class Player implements PlayerMovable, ICollidable {
     public void updateYaw(float diffYaw) {
         this.yaw = fixDegrees(diffYaw + this.yaw);
         updateVectors(globalUp, diffYaw);
+    }
+
+    @Override
+    public void updateMovable(float delta) {
+        pos = pos.add(velocity.mul(delta));
+
     }
 
     public void checkPlayerHealth(){
@@ -189,11 +206,6 @@ public class Player implements PlayerMovable, ICollidable {
     }
 
     @Override
-    public void updateVelocity(Direction direction, boolean AddOrRemove) {
-
-    }
-
-    @Override
     public Vec3 getForwardVector() {
         return forward;
     }
@@ -206,5 +218,10 @@ public class Player implements PlayerMovable, ICollidable {
     @Override
     public Vec3 getUpVector() {
         return up;
+    }
+
+    @Override
+    public void setAttacking(boolean attacking) {
+        this.attacking = attacking;
     }
 }

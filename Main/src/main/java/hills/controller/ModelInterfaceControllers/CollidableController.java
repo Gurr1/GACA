@@ -9,12 +9,13 @@ import java.util.List;
 /**
  * Created by Anders on 2017-05-06.
  */
-public class CollidableController {
+public class CollidableController {     // Visitor patter?
+
 
    @Getter private List<ICollidable> collidables;
 
 
-    public CollidableController(){ //Add collision IService
+    public CollidableController(){ //Add collision Service
         this.collidables = new ArrayList<>();
     }
 

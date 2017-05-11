@@ -1,7 +1,5 @@
 package hills.model;
 
-import hills.controller.ServiceMediator;
-import hills.util.math.Vec2;
 import hills.util.math.Vec3;
 import hills.util.math.shape.Sphere;
 import hills.util.model.Model;
@@ -17,7 +15,6 @@ public class Sheep extends Creature{
      */
     float radius;
     Random rand = new Random();
-    ServiceMediator serviceMediator;
     private float move = 0;
     protected Model model;
 
@@ -28,7 +25,6 @@ public class Sheep extends Creature{
         this.speed = 1;
         this.maxHealth = 20;
         this.radius = 1;
-        serviceMediator = ServiceMediator.INSTANCE;
     }
 
     @Override
@@ -37,17 +33,6 @@ public class Sheep extends Creature{
     }
 
     public void updatePosition() {
-        //TODO
-    }
-
-
-    @Override
-    public void addVelocity(Vec2 deltaVelocity) {
-        //TODO
-    }
-
-    @Override
-    public void addVelocity(Vec3 deltaVelocity) {
         //TODO
     }
 
@@ -72,7 +57,7 @@ public class Sheep extends Creature{
     }
 
     @Override
-    public void setCurrentUpdate(float delta) {
+    public void updateMovable(float delta) {
 
     }
 }

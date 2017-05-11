@@ -1,7 +1,5 @@
 package hills.model;
 
-import hills.controller.ServiceMediator;
-import hills.util.math.Vec2;
 import hills.util.math.Vec3;
 import hills.util.math.shape.Sphere;
 import hills.util.model.Model;
@@ -15,7 +13,6 @@ public class RamSheep extends Mob {
 
     float radius;
     Random rand = new Random();
-    ServiceMediator serviceMediator;
     private float move = 0;
     private final int damagePoints = 10;
     protected Model model;
@@ -26,22 +23,12 @@ public class RamSheep extends Mob {
         this.speed = 2;
         this.maxHealth = 30;
         this.radius = 1;
-        serviceMediator = ServiceMediator.INSTANCE;
     }
 
     @Override
-    void dealDamage() {
-        //TODO
-    }
-
-    @Override
-    public void addVelocity(Vec2 deltaVelocity) {
-        //TODO
-    }
-
-    @Override
-    public void addVelocity(Vec3 deltaVelocity) {
-        //TODO
+    void dealDamage(int health) {
+        int damage = rand.nextInt(40) + 20;
+        health -= damage;
     }
 
     @Override
@@ -65,8 +52,8 @@ public class RamSheep extends Mob {
     }
 
     @Override
-    public void setCurrentUpdate(float delta) {
-        //TODO
+    public void updateMovable(float delta) {
+
     }
 
     @Override

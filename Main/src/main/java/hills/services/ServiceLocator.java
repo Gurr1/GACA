@@ -1,67 +1,84 @@
 package hills.services;
 
-import hills.services.camera.CameraIService;
 import hills.services.camera.ICameraDataService;
 import hills.services.camera.ICameraUpdateService;
-import hills.services.debug.DebugIService;
-import hills.services.display.DisplayIService;
-import hills.services.display.IDisplayService;
-import hills.services.files.FileService;
-import hills.services.files.IPictureFileService;
-import hills.services.generation.GenerationMediator;
+import hills.services.camera.CameraService;
+import hills.services.debug.DebugService;
+import hills.services.display.DisplayService;
+import hills.services.display.DisplayServiceI;
 import hills.services.generation.IGenerationMediator;
-import hills.services.terrain.TerrainIService;
-import hills.services.terrain.TerrainHeightService;
-import hills.services.terrain.TerrainRenderDataService;
+import hills.services.terrain.ITerrainHeightService;
+import hills.services.terrain.ITerrainRenderDataService;
+import hills.services.terrain.TerrainService;
 import hills.services.terrain.ITerrainTreeService;
 
 public enum ServiceLocator {
 	INSTANCE;
 	
-	private DebugIService debugService;
-	private CameraIService cameraService;
-	private TerrainIService terrainService;
-	private DisplayIService displayService;
-	private FileService fileService;
-    private GenerationMediator generationMediator;
-
-
-
-    private ServiceLocator(){
-		debugService = new DebugIService();
-		cameraService = new CameraIService();
-		terrainService = new TerrainIService();
-		displayService = new DisplayIService();
-		fileService = new FileService();
-        generationMediator = new GenerationMediator();
-    }
+	private DisplayService displayService;
+	private DebugService debugService;
+	private CameraService cameraService;
+	private TerrainService terrainService;
 	
-	public TerrainHeightService getTerrainHeightService(){
-		return terrainService;
+	private ServiceLocator(){	
 	}
 	
-	public TerrainRenderDataService getTerrianRenderDataService(){
-		return terrainService;
+	public ITerrainHeightService getTerrainHeightService(){
+		return getTerrainServiceInstance();
+	}
+	
+	public ITerrainRenderDataService getTerrianRenderDataService(){
+		return getTerrainServiceInstance();
 	}
 	
 	public ITerrainTreeService getTerrainTreeService(){
-		return terrainService;
+		return getTerrainServiceInstance();
 	}
 	
 	public ICameraUpdateService getCameraUpdateService(){
-		return cameraService;
+		return getCameraServiceInstance();
 	}
-	
+
 	public ICameraDataService getCameraDataService(){
-		return cameraService;
+		return getCameraServiceInstance();
+	}
+
+	public IGenerationMediator getGenerationMediator(){
+		return null;
 	}
 	
-	public IDisplayService getDisplayService(){
+	public DisplayServiceI getDisplayService(){
+		return getDisplayServiceInstance();
+	}
+	
+	private TerrainService getTerrainServiceInstance(){
+		if(terrainService == null)
+			terrainService = new TerrainService();
+		
+		return terrainService;
+	}
+	
+	private DisplayService getDisplayServiceInstance(){
+		if(displayService == null)
+			displayService = new DisplayService();
+		
 		return displayService;
 	}
 
-	public IPictureFileService getFileService() { return fileService; }
+	private CameraService getCameraServiceInstance(){
+		if(cameraService == null)
+			cameraService = new CameraService();
 
-    public IGenerationMediator getGenerationMediator(){return generationMediator;}
+		return cameraService;
+	}
+
+	private DebugService getDebugServiceInstance(){
+		if(debugService == null)
+			debugService = new DebugService();
+
+		return debugService;
+	}
+
+
 
 }
