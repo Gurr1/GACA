@@ -37,6 +37,8 @@ public final class PlayerControllerKeyboard implements KeyboardSubscribe, GLFWKe
 	}
 
 	private void keyPressed(int key, int mods) {
+		System.out.println("Pressed");
+		
 		for(KeyboardListener listener : subscribers){
 			listener.KeyPressed(key, mods);
 		}

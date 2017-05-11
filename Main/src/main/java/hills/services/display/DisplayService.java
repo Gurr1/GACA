@@ -133,8 +133,6 @@ public final class DisplayService implements Service, DisplayServiceI, KeyboardL
 		GL11.glViewport(0, 0, width, height);
 		
 		// Setup input callback's
-
-
 		setKeyCallback(InputLocator.INSTANCE.getKeyCallBack());
 		
 		setMouseButtonCallback(InputLocator.INSTANCE.getMouseButtonCallback());
