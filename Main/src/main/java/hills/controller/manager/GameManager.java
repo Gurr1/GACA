@@ -14,9 +14,7 @@ import hills.util.model.MeshTexture;
 import hills.util.model.Model;
 
 public final class GameManager extends EngineSystem {
-
-	/** Singleton instance **/
-	private static GameManager instance = null;
+	
 	private int nNPCs = 10;
 	Vertex[] v = {
 			new Vertex(new Vec3(-.5f, -.5f, .5f), new Vec2(0.0f, 0.0f), new Vec3(0.0f, 0.0f, 1.0f)),
@@ -78,7 +76,7 @@ public final class GameManager extends EngineSystem {
 	CollidableController collidableController;
 	MovableController movableController;
 
-	private GameManager(float scale, boolean isPaused, float startTime) {
+	public GameManager(float scale, boolean isPaused, float startTime) {
 		super(scale, isPaused, startTime);
 		movableController = new MovableController();
 		collidableController = new CollidableController();
@@ -127,28 +125,5 @@ public final class GameManager extends EngineSystem {
 	@Override
 	public void cleanUp() {
 		System.out.println("GameSystem cleaned up!");
-	}
-
-	/**
-	 * Creates the singleton instance of GameSystem.
-	 * @return False if an instance has already been created.
-	 */
-	public static boolean createInstance(float scale, boolean isPaused, float startTime) {
-		if(instance != null)
-			return false;
-		
-		instance = new GameManager(scale, isPaused, startTime);
-		return true;
-	}
-	
-	/**
-	 * @return The singleton instance of GameSystem.
-	 * @throws NullPointerException If singleton instance has not been created.
-	 */
-	public static GameManager getInstance() throws NullPointerException {
-		if(instance == null)
-			throw new NullPointerException("Singleton instance not created!");
-		
-		return instance;
 	}
 }

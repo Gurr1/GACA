@@ -9,7 +9,9 @@ import org.lwjgl.opengl.GL11;
 
 import hills.controller.GameLoop;
 import hills.controller.ServiceMediator;
+import hills.controller.manager.CameraManager;
 import hills.controller.manager.GameManager;
+import hills.controller.manager.TerrainManager;
 import hills.services.ServiceLocator;
 import hills.services.display.DisplayServiceI;
 import hills.util.display.AspectRatios;
@@ -52,25 +54,22 @@ public class Main {
 		displayService.setErrorCallback(GLFWErrorCallback.createPrint(System.err));
 		displayService.create(WIDTH, HEIGHT, TITLE);
 		
-    	FrameBuffer.setClearColor(0.55f, 0.55f, 1.0f, 1.0f);	// Set clear color
-    	FrameBuffer.enableDepthTesting(0.0f, 1.0f);				// Enable depth testing
-    	FrameBuffer.setClearDepth(1.0f);						// Clear depth buffer to 1.0
+    	FrameBuffer.setClearColor(0.55f, 0.55f, 1.0f, 1.0f);		// Set clear color
+    	FrameBuffer.enableDepthTesting(0.0f, 1.0f);					// Enable depth testing
+    	FrameBuffer.setClearDepth(1.0f);							// Clear depth buffer to 1.0
 
-    	FrameBuffer.setDepthFunction(GL11.GL_LEQUAL);		// Set OpenGL depth function.
+    	FrameBuffer.setDepthFunction(GL11.GL_LEQUAL);				// Set OpenGL depth function.
 
-    	//    			DebugService.createInstance();						// Create DebugSystem instance
-    	//    			DebugService.getInstance().setFPSDebugMode(true);	// Activate FPS debug mode
-    	//CameraModel.createInstance(1.0f, false, 0.0f);
     	ServiceMediator.INSTANCE.generateMap();
-    	//CameraModel cameraModel = CameraModel.getInstance();// Get the CameraSystem instance
-    	//cameraModel.updatePerspective(0.1f, 3000.0f, (float) displayService.getWidth() / (float) displayService.getHeight(), 70.0f);	// Update the perspective matrix
     	initDisplayCallbacks();
-		//TerrainService.createInstance();					// Create TerrainSystem instance
-    	GameManager.createInstance(1.0f, false, 0.0f);		// Create GameSystem instance
-    	GameLoop.start();                            		// Start engine game loop
-
-    	ServiceLocator.INSTANCE.getDisplayService().destroy();                           // Terminate GLFW window and GLFW when program ends
-
+    	
+    	GameLoop.addSystem(new CameraManager(1.0f, false, 0.0f));	// Add camera controller to loop
+    	GameLoop.addSystem(new TerrainManager(1.0f, false, 0.0f));	// Add terrain controller to loop
+    	GameLoop.addSystem(new GameManager(1.0f, false, 0.0f));		// Add game controller to loop
+    	
+    	GameLoop.start();                            				// Start engine game loop
+    	
+    	ServiceLocator.INSTANCE.getDisplayService().destroy();		// Terminate GLFW window and GLFW when program ends
     }
 	
 	/**

@@ -16,7 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-public class TerrainService implements Service, TerrainTreeService, TerrainHeightService, TerrainRenderDataService {
+public class TerrainService implements Service, ITerrainTreeService, ITerrainHeightService, ITerrainRenderDataService {
 	
 	private final LODTree tree;
 	private final GridMeshData gridMeshData;
