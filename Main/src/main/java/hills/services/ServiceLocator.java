@@ -7,10 +7,10 @@ import hills.services.debug.DebugService;
 import hills.services.display.DisplayService;
 import hills.services.display.DisplayServiceI;
 import hills.services.generation.IGenerationMediator;
-import hills.services.terrain.TerrainHeightService;
-import hills.services.terrain.TerrainRenderDataService;
+import hills.services.terrain.ITerrainHeightService;
+import hills.services.terrain.ITerrainRenderDataService;
 import hills.services.terrain.TerrainService;
-import hills.services.terrain.TerrainTreeService;
+import hills.services.terrain.ITerrainTreeService;
 
 public enum ServiceLocator {
 	INSTANCE;
@@ -23,15 +23,15 @@ public enum ServiceLocator {
 	private ServiceLocator(){	
 	}
 	
-	public TerrainHeightService getTerrainHeightService(){
+	public ITerrainHeightService getTerrainHeightService(){
 		return getTerrainServiceInstance();
 	}
 	
-	public TerrainRenderDataService getTerrianRenderDataService(){
+	public ITerrainRenderDataService getTerrianRenderDataService(){
 		return getTerrainServiceInstance();
 	}
 	
-	public TerrainTreeService getTerrainTreeService(){
+	public ITerrainTreeService getTerrainTreeService(){
 		return getTerrainServiceInstance();
 	}
 	

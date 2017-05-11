@@ -6,7 +6,7 @@ import hills.services.terrain.tree.LODNode;
 import hills.util.math.Vec3;
 import hills.util.math.shape.Frustrum;
 
-public interface TerrainTreeService {
+public interface ITerrainTreeService {
 	
 	/**
 	 * Will construct a new tree of terrain nodes and return the visible ones in a list.

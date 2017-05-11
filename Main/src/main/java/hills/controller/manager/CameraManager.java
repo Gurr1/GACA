@@ -8,10 +8,11 @@ public class CameraManager extends EngineSystem {
 
 	ICameraUpdateService updateService;
 	
-	protected CameraManager(float scale, boolean isPaused, float startTime) {
+	public CameraManager(float scale, boolean isPaused, float startTime) {
 		super(scale, isPaused, startTime);
 		
-		ServiceLocator.INSTANCE.getCameraUpdateService();
+		updateService = ServiceLocator.INSTANCE.getCameraUpdateService();
+		updateService.updateGPUPerspectiveMatrix();
 	}
 
 	@Override
