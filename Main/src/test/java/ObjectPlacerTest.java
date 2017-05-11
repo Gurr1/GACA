@@ -16,7 +16,7 @@ public class ObjectPlacerTest {
     IPictureFileService fileService;
     @Before
     public void init(){objectPlacer = new ObjectPlacer();
-    fileService = ServiceLocator.INSTANCE.getFileService();
+   // fileService = ServiceLocator.INSTANCE.getFileService();
     }
 
     @Test

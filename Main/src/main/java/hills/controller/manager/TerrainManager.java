@@ -3,8 +3,8 @@ package hills.controller.manager;
 import hills.controller.EngineSystem;
 import hills.services.ServiceLocator;
 import hills.services.camera.ICameraDataService;
-import hills.services.terrain.ITerrainTreeService;
-import hills.services.terrain.ITerrainRenderDataService;
+import hills.services.terrain.TerrainTreeService;
+import hills.services.terrain.TerrainRenderDataService;
 import hills.services.terrain.tree.LODNode;
 import hills.view.renderer.TerrainRenderer;
 
@@ -15,8 +15,8 @@ public final class TerrainManager extends EngineSystem {
 	// TODO Move LODNode to Util package?
 	private List<LODNode> TerrainNodes;
 	
-	private ITerrainTreeService treeService;
-	private ITerrainRenderDataService renderDataService;
+	private TerrainTreeService treeService;
+	private TerrainRenderDataService renderDataService;
 	private ICameraDataService camDataService;
 	
 	protected TerrainManager(float scale, boolean isPaused, float startTime) {

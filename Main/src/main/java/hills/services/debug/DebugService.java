@@ -1,11 +1,11 @@
 package hills.services.debug;
 
-import hills.services.IService;
+import hills.services.Service;
 import hills.util.display.FrameBuffer;
 
 import org.lwjgl.opengl.GL11;
 
-public class DebugIService implements IService {
+public class DebugService implements Service {
 	
 	// FPS debug variables
 	/**
@@ -36,7 +36,7 @@ public class DebugIService implements IService {
 	private boolean cullingMode = false;			
 	
 	// TODO Move
-//	private DebugIService() {
+//	private DebugService() {
 //		super(1.0f, false, 0.0f);
 //	}
 	
@@ -55,7 +55,7 @@ public class DebugIService implements IService {
 			fps++; // Increment FPS for current render cycle
 			
 			if(timePassedSinceFPSTextUpdate >= 1.0f){ // If 1 second has passed
-				// TODO Fix new function calls DisplayIService.displayFPS(fps);              // Display FPS in window title bar
+				// TODO Fix new function calls DisplayService.displayFPS(fps);              // Display FPS in window title bar
 				fps = 0;                              // Reset FPS counter
 				timePassedSinceFPSTextUpdate -= 1.0f; // Remove 1 second from last text update
 			}

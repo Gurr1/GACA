@@ -53,6 +53,9 @@ public class Vec2 implements STD140Formatable {
 	 */
 	public Vec2 normalize() {
 		float length = getLength();
+		if(length == 0){
+			return new Vec2(0,0);
+		}
 		return new Vec2(x / length, y / length);
 	}
 

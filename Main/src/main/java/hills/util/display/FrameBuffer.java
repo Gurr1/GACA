@@ -1,13 +1,14 @@
 package hills.util.display;
 
 import hills.services.ServiceLocator;
-import hills.services.display.IDisplayService;
+import hills.services.display.DisplayService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import hills.services.display.DisplayServiceI;
 import lombok.Getter;
 
 import org.lwjgl.opengl.GL11;
@@ -38,7 +39,7 @@ public class FrameBuffer {
 	@Getter
 	private final int width, height;
 	
-	private final IDisplayService displayService;
+	private final DisplayServiceI displayService;
 
 	public FrameBuffer(int width, int height) {
 		handle = GL30.glGenFramebuffers();

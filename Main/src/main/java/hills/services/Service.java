@@ -1,6 +1,6 @@
 package hills.services;
 
-public interface IService {
+public interface Service {
 	
 	public void cleanUp();
 }

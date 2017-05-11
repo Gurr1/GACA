@@ -28,7 +28,7 @@ public interface IMovable {
      */
     Vec3 get3DPos();
 
-    Vec2 getVelocity();
+    Vec3 getVelocity();
 
     void addVelocity(Vec2 deltaVelocity);
 
@@ -44,6 +44,5 @@ public interface IMovable {
 
     void updateYaw(float deltaYaw);
 
-    void setCurrentUpdate(float delta);
-
+    void updateMovable(float delta);
 }

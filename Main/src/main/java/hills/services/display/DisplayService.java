@@ -1,8 +1,7 @@
 package hills.services.display;
 
 import hills.controller.InputControllers.InputLocator;
-import hills.services.IService;
-
+import hills.services.Service;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.glfw.*;
@@ -14,7 +13,7 @@ import java.nio.IntBuffer;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
-public final class DisplayIService implements IService, IDisplayService {
+public final class DisplayService implements Service, DisplayServiceI {
 
 	// GLFW callback's
 	
@@ -55,8 +54,7 @@ public final class DisplayIService implements IService, IDisplayService {
 													// false
 	private String title; // Title of window
 
-	public DisplayIService() {
-	} // Private constructor = no instances
+	public DisplayService() {}
 
 	/**
 	 * Create new GLFW window. <br>
@@ -93,8 +91,7 @@ public final class DisplayIService implements IService, IDisplayService {
 	 *            - The window whose context to share resources with, or NULL to
 	 *            not share resources
 	 *            */
-	public void create(int width, int height, String title,
-			long monitor, long share) {
+	public void create(int width, int height, String title, long monitor, long share) {
 		if (created) {
 			System.err.println("Display has already been created!");
 			return;

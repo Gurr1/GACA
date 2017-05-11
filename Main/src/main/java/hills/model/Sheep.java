@@ -72,7 +72,7 @@ public class Sheep extends Creature{
     }
 
     @Override
-    public void setCurrentUpdate(float delta) {
+    public void updateMovable(float delta) {
 
     }
 }

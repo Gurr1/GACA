@@ -65,8 +65,8 @@ public class RamSheep extends Mob {
     }
 
     @Override
-    public void setCurrentUpdate(float delta) {
-        //TODO
+    public void updateMovable(float delta) {
+
     }
 
     @Override
