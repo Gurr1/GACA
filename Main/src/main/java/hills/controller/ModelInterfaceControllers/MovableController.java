@@ -11,7 +11,6 @@ import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ServiceLoader;
 
 /**
  * Created by gustav on 2017-05-06.
@@ -30,10 +29,13 @@ public class MovableController implements KeyboardListener, MouseListener{
     public void setPlayer(PlayerMovable movable){
         player = movable;
     }
-    public void updateMovables(float delta){
+    public void updateMovables(float delta, double runtime){
         player.updateMovable(delta);
         for(IMovable movable : movableList){
             movable.updateMovable(delta);
+            if(runtime % 1000 == 0){
+
+            }
         }
         ServiceLocator.INSTANCE.getCameraDataService().setOrientation(
                 player.getForwardVector(), player.getUpVector(), player.getRightVector(), false);

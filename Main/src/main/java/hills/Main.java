@@ -1,12 +1,5 @@
 package hills;
 
-import java.util.Random;
-
-import org.lwjgl.glfw.GLFWErrorCallback;
-import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
-import org.lwjgl.glfw.GLFWWindowCloseCallback;
-import org.lwjgl.opengl.GL11;
-
 import hills.controller.GameLoop;
 import hills.controller.ServiceMediator;
 import hills.controller.manager.GameManager;
@@ -14,6 +7,12 @@ import hills.services.ServiceLocator;
 import hills.services.display.DisplayServiceI;
 import hills.util.display.AspectRatios;
 import hills.util.display.FrameBuffer;
+import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
+import org.lwjgl.glfw.GLFWWindowCloseCallback;
+import org.lwjgl.opengl.GL11;
+
+import java.util.Random;
 
 /**
  * Created by gustav on 2017-03-21.
@@ -65,7 +64,6 @@ public class Main {
     	//CameraModel cameraModel = CameraModel.getInstance();// Get the CameraSystem instance
     	//cameraModel.updatePerspective(0.1f, 3000.0f, (float) displayService.getWidth() / (float) displayService.getHeight(), 70.0f);	// Update the perspective matrix
     	initDisplayCallbacks();
-		//TerrainService.createInstance();					// Create TerrainSystem instance
     	GameManager.createInstance(1.0f, false, 0.0f);		// Create GameSystem instance
     	GameLoop.start();                            		// Start engine game loop
 

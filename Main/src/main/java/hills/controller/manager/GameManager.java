@@ -74,15 +74,17 @@ public final class GameManager extends EngineSystem {
 	
 	MeshTexture texture;
 	Model model, cube;
-	Vec3 pos;
-	CollidableController collidableController;
-	MovableController movableController;
+	private CollidableController collidableController;
+	private MovableController movableController;
+	private long nFrame = 0;
+	private double runtime = 0;
 
 	private GameManager(float scale, boolean isPaused, float startTime) {
 		super(scale, isPaused, startTime);
 		movableController = new MovableController();
 		collidableController = new CollidableController();
 		loadGame();
+
 		//texture = new MeshTexture("test.png");
 		
 		//Mesh cubeMesh = ModelLoader.load(v, ind, texture, Mat4.identity());
@@ -115,7 +117,8 @@ public final class GameManager extends EngineSystem {
 
 	@Override
 	protected void update(double delta) {
-		movableController.updateMovables((float) delta);
+		runtime += delta;
+		movableController.updateMovables((float) delta, runtime);
 		collidableController.update();
 	}
 
