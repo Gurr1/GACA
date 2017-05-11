@@ -9,7 +9,8 @@ import java.util.List;
 /**
  * Created by Anders on 2017-05-06.
  */
-public class CollidableController {
+public class CollidableController {     // Visitor patter?
+
 
    @Getter private List<ICollidable> collidables;
 

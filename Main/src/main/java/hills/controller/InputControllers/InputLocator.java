@@ -10,13 +10,14 @@ import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
 public enum InputLocator {
     INSTANCE();
     PlayerControllerMouse mouse;
-    
+    PlayerControllerMouseButton mouseButton;
     PlayerControllerKeyboard keyboard;
     
     InputLocator(){
        // keyListener = new PlayerControllerKeyboard();
        mouse = new PlayerControllerMouse();
        keyboard = new PlayerControllerKeyboard();
+       mouseButton = new PlayerControllerMouseButton();
     }
     
     // TODO Ska �ndras s� att den retunerar subscribe
@@ -35,7 +36,7 @@ public enum InputLocator {
     }
     
     public GLFWMouseButtonCallbackI getMouseButtonCallback(){
-        return ((mouse));
+        return mouseButton;
     }
     
     public GLFWCursorPosCallbackI getCursorPositionCallback(){

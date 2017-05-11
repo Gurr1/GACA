@@ -67,7 +67,7 @@ public class Player implements PlayerMovable, ICollidable, IAttack {
     }
 
     @Override
-    public void addVelocity(Direction direction, boolean pressed) {
+    public void addVelocity(Direction direction, boolean pressed) {     // this needs to be fixed on mousemoved, since forward is not same as pitch is happening
         int mOs = 1;
         if(!pressed){
             mOs = 0;

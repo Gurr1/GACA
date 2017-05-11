@@ -83,8 +83,8 @@ public final class GameManager extends EngineSystem {
 		super(scale, isPaused, startTime);
 		movableController = new MovableController();
 		collidableController = new CollidableController();
-		loadGame();
 		attackController = new AttackController();
+		loadGame();
 		//texture = new MeshTexture("test.png");
 		
 		//Mesh cubeMesh = ModelLoader.load(v, ind, texture, Mat4.identity());
@@ -102,10 +102,8 @@ public final class GameManager extends EngineSystem {
     }
 
     private void loadEntities() {
-		System.out.println("loading player");
 		Player p = EntityFactory.createPlayer(
                 ServiceMediator.INSTANCE.generateSpawnLocation());
-		System.out.println("player created");
 		movableController.setPlayer(p);
 		collidableController.addCollidable(p);
 		attackController.setPlayer(p);

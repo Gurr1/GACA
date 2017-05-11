@@ -1,16 +1,12 @@
 package hills.controller.InputControllers;
 
 import hills.services.ServiceLocator;
-
-import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCursorPosCallbackI;
-import org.lwjgl.glfw.GLFWMouseButtonCallback;
-import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public final class PlayerControllerMouse implements MouseSubscribe, GLFWMouseButtonCallbackI, GLFWCursorPosCallbackI{
+public final class PlayerControllerMouse implements MouseSubscribe, GLFWCursorPosCallbackI{
 
 	/**
 	 * Horizontal position of cursor in pixels.
@@ -32,28 +28,6 @@ public final class PlayerControllerMouse implements MouseSubscribe, GLFWMouseBut
 	 * @param action - What event happened.
 	 * @param mods - What modifier keys were held down.
 	 */
-	public void buttonEvent(int button, int action, int mods){
-		switch(action){
-		case GLFW.GLFW_PRESS:
-			mousePressed(button, mods);
-			break;
-		case GLFW.GLFW_RELEASE:
-			mouseReleased(button, mods);
-			break;
-		}
-	}
-
-	private void mouseReleased(int button, int mods) {
-		for(MouseListener listener : mouseListeners){
-			listener.mousePressed(button, mods);
-		}
-	}
-
-	private void mousePressed(int button, int mods) {
-		for(MouseListener listener : mouseListeners){
-			listener.mousePressed(button, mods);
-		}
-	}
 
 	/**
 	 * Called by GLFW display cursor position callback.
@@ -66,9 +40,12 @@ public final class PlayerControllerMouse implements MouseSubscribe, GLFWMouseBut
 		
 		xPosition = (float) xpos;
 		yPosition = (float) ypos;
+		System.out.println(xpos);
+		System.out.println(ypos);
 		if(ServiceLocator.INSTANCE.getDisplayService().isMouseCaptured()) {
-			if(xVelocity!=0 || yVelocity!=0)
+			if(xVelocity!=0 || yVelocity!=0) {
 				mouseMoved(xVelocity, yVelocity);
+			}
 		}
 	}
 
@@ -94,10 +71,5 @@ public final class PlayerControllerMouse implements MouseSubscribe, GLFWMouseBut
 	@Override
 	public void invoke(long window, double xpos, double ypos) {
 		positionEvent(xpos, ypos);
-	}
-
-	@Override
-	public void invoke(long window, int button, int action, int mods) {
-		buttonEvent(button, action, mods);
 	}
 }

@@ -47,16 +47,8 @@ public class MovableController implements KeyboardListener, MouseListener{
 
     @Override
     public void mouseMoved(float xVelocity, float yVelocity) {
-        player.updateYaw(xVelocity);
-        player.updatePitch(yVelocity);
-    }
-
-    @Override
-    public void mousePressed(int button, int mods) {
-    }
-
-    @Override
-    public void mouseReleased(int button, int mods) {
+        player.updateYaw(xVelocity*-0.3f);
+        player.updatePitch(yVelocity*-0.3f);
     }
 
     @Override
