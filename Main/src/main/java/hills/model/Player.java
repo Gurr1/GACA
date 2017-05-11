@@ -26,7 +26,7 @@ public class Player implements PlayerMovable, ICollidable {
     private Vec3 velocity = new Vec3(0,0,0);
     private List<Coin> coinsCollected = new ArrayList<>();
     private List/*<>*/ bugsCollected = new ArrayList();
-    private double playerHealth = 100;
+    private int playerHealth = 100;
     private float delta;
     private float speed = 1;
     private float runModifier = 2;

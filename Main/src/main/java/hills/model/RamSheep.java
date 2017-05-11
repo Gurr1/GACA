@@ -27,8 +27,9 @@ public class RamSheep extends Mob {
     }
 
     @Override
-    void dealDamage(double health) {
-        health -= 20;
+    void dealDamage(int health) {
+        int damage = rand.nextInt(40) + 20;
+        health -= damage;
     }
 
     @Override
