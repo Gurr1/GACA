@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by Anders on 2017-03-30.
  */
-public class Player implements PlayerMovable, ICollidable {
+public class Player implements PlayerMovable, ICollidable, IAttack {
     // Add a method that recalculates reworks the base into global base from addVelocity.
     /**
      * {@inheritDoc}
@@ -27,10 +27,9 @@ public class Player implements PlayerMovable, ICollidable {
     private List<Coin> coinsCollected = new ArrayList<>();
     private List/*<>*/ bugsCollected = new ArrayList();
     private int playerHealth = 100;
-    private float delta;
-    private float speed = 1;
     private float runModifier = 2;
-    @Getter @Setter private boolean toUpdate = true;
+    private Weapon gun = new Gun();
+    private boolean attacking = false;
 
     /**
      * Camera up direction.
@@ -45,11 +44,12 @@ public class Player implements PlayerMovable, ICollidable {
     @Getter private Vec3 forward;
     @Getter private float playerHeight = 3;
     private Vec3 forwardXZ;
+    Vec3 velocityX = new Vec3(0,0,0);
+    Vec3 velocityY = new Vec3(0,0,0);
 
     //<editor-fold desc="Constructors">
 
     public Player(Vec3 pos) {
-        System.out.println("creaing player");
         this.pos = pos;
         forward = new Vec3(0.0f, 0.0f, -1.0f);
         up = new Vec3(0.0f, 1.0f, 0.0f);
@@ -67,16 +67,27 @@ public class Player implements PlayerMovable, ICollidable {
     }
 
     @Override
-    public void addVelocity(Vec2 deltaVelocity) {
-        addVelocity(new Vec3(deltaVelocity.getX(), 0, deltaVelocity.getY()));
-    }
-
-
-    @Override
-    public void addVelocity(Vec3 deltaVelocity) {
-        float speed = deltaVelocity.getLength();
-        System.out.println(velocity);
-        velocity = velocity.add(deltaVelocity).normalize().mul(speed);
+    public void addVelocity(Direction direction, boolean pressed) {
+        int mOs = 1;
+        if(!pressed){
+            mOs = 0;
+        }
+        if(direction == Direction.FORWARD){
+            velocityX = new Vec3(forward.mul(mOs));
+        }
+        if(direction == Direction.BACK){
+            velocityX = new Vec3(forward.mul(mOs*-1));
+        }
+        if(direction == Direction.FORWARD_SPRINT){
+            velocityX = new Vec3(forward.mul(mOs*runModifier));
+        }
+        if(direction == Direction.LEFT){
+            velocityY = new Vec3(right.mul(mOs*-1));
+        }
+        if(direction == Direction.RIGHT){
+            velocityY = new Vec3(right.mul(mOs));
+        }
+        velocity = velocityX.add(velocityY).normalize();
     }
 
 
@@ -113,6 +124,7 @@ public class Player implements PlayerMovable, ICollidable {
     @Override
     public void updateMovable(float delta) {
         pos = pos.add(velocity.mul(delta));
+
     }
 
     public void checkPlayerHealth(){
@@ -194,11 +206,6 @@ public class Player implements PlayerMovable, ICollidable {
     }
 
     @Override
-    public void updateVelocity(Direction direction, boolean AddOrRemove) {
-
-    }
-
-    @Override
     public Vec3 getForwardVector() {
         return forward;
     }
@@ -211,5 +218,10 @@ public class Player implements PlayerMovable, ICollidable {
     @Override
     public Vec3 getUpVector() {
         return up;
+    }
+
+    @Override
+    public void setAttacking(boolean attacking) {
+        this.attacking = attacking;
     }
 }

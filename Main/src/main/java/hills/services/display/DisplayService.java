@@ -137,7 +137,7 @@ public final class DisplayService implements Service, DisplayServiceI, KeyboardL
 		setKeyCallback(InputLocator.INSTANCE.getKeyCallBack());
 		setMouseButtonCallback(InputLocator.INSTANCE.getMouseButtonCallback());
 		setCursorPosCallback(InputLocator.INSTANCE.getCursorPositionCallback());
-
+		InputLocator.INSTANCE.subscribeToKeyboard(this);
 		this.title = title;
 		created = true;
 	}
@@ -437,7 +437,7 @@ public final class DisplayService implements Service, DisplayServiceI, KeyboardL
 	public void KeyPressed(int key, int mods) {
 		if(key == GLFW.GLFW_KEY_SPACE){
 			System.out.println("mouse grabbed");
-			captureMouse(true);
+			captureMouse(!mouseCaptured);
 		}
 	}
 

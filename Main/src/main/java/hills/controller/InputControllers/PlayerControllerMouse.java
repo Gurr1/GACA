@@ -10,7 +10,7 @@ import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class PlayerControllerMouse extends GLFWMouseButtonCallback implements MouseSubscribe, GLFWMouseButtonCallbackI, GLFWCursorPosCallbackI{
+public final class PlayerControllerMouse implements MouseSubscribe, GLFWMouseButtonCallbackI, GLFWCursorPosCallbackI{
 
 	/**
 	 * Horizontal position of cursor in pixels.
@@ -89,16 +89,6 @@ public final class PlayerControllerMouse extends GLFWMouseButtonCallback impleme
 	@Override
 	public void subscribe(MouseListener listener) {
 		mouseListeners.add(listener);
-	}
-
-	@Override
-	public String getSignature() {
-		return null;
-	}
-
-	@Override
-	public void callback(long args) {
-
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package hills.controller.manager;
 
 import hills.controller.EngineSystem;
 import hills.controller.EntityFactory;
+import hills.controller.ModelInterfaceControllers.AttackController;
 import hills.controller.ModelInterfaceControllers.CollidableController;
 import hills.controller.ModelInterfaceControllers.MovableController;
 import hills.controller.ServiceMediator;
@@ -74,6 +75,7 @@ public final class GameManager extends EngineSystem {
 	Model model, cube;
 	private CollidableController collidableController;
 	private MovableController movableController;
+	private AttackController attackController;
 	private long nFrame = 0;
 	private double runtime = 0;
 
@@ -82,7 +84,7 @@ public final class GameManager extends EngineSystem {
 		movableController = new MovableController();
 		collidableController = new CollidableController();
 		loadGame();
-
+		attackController = new AttackController();
 		//texture = new MeshTexture("test.png");
 		
 		//Mesh cubeMesh = ModelLoader.load(v, ind, texture, Mat4.identity());
@@ -106,6 +108,7 @@ public final class GameManager extends EngineSystem {
 		System.out.println("player created");
 		movableController.setPlayer(p);
 		collidableController.addCollidable(p);
+		attackController.setPlayer(p);
 		for(int i = 0; i < nNPCs; i++){
             Creature sheep = EntityFactory.createSheep(ServiceMediator.INSTANCE.generateSpawnLocation());
 			movableController.addAIMovable(sheep);

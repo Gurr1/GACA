@@ -1,6 +1,5 @@
 package hills.controller.InputControllers;
 
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.lwjgl.glfw.GLFWCursorPosCallbackI;
 import org.lwjgl.glfw.GLFWKeyCallbackI;
 import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
@@ -10,25 +9,25 @@ import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
  */
 public enum InputLocator {
     INSTANCE();
-    MouseSubscribe mouseListener;
+    PlayerControllerMouse mouse;
     
     PlayerControllerKeyboard keyboard;
     
     InputLocator(){
        // keyListener = new PlayerControllerKeyboard();
-       mouseListener = new PlayerControllerMouse();
+       mouse = new PlayerControllerMouse();
        keyboard = new PlayerControllerKeyboard();
     }
     
-    // TODO Ska ändras så att den retunerar subscribe
+    // TODO Ska ï¿½ndras sï¿½ att den retunerar subscribe
     public void subscribeToKeyboard(KeyboardListener listener){
         //keyListener.subscribe(listener);
         
         keyboard.subscribe(listener);
     }
-    // TODO Samma sak här
+    // TODO Samma sak hï¿½r
     public void subscribeToMouse(MouseListener listener){
-       mouseListener.subscribe(listener);
+       mouse.subscribe(listener);
     }
     
     public GLFWKeyCallbackI getKeyCallBack(){
@@ -36,10 +35,10 @@ public enum InputLocator {
     }
     
     public GLFWMouseButtonCallbackI getMouseButtonCallback(){
-        return ((GLFWMouseButtonCallbackI)(mouseListener));
+        return ((mouse));
     }
     
     public GLFWCursorPosCallbackI getCursorPositionCallback(){
-        return ((GLFWCursorPosCallbackI)(mouseListener));
+        return ((mouse));
     }
 }

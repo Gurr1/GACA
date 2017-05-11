@@ -1,6 +1,5 @@
 package hills.model;
 
-import hills.util.math.Vec2;
 import hills.util.math.Vec3;
 import hills.util.math.shape.Sphere;
 import hills.util.model.Model;
@@ -30,16 +29,6 @@ public class RamSheep extends Mob {
     void dealDamage(int health) {
         int damage = rand.nextInt(40) + 20;
         health -= damage;
-    }
-
-    @Override
-    public void addVelocity(Vec2 deltaVelocity) {
-        //TODO
-    }
-
-    @Override
-    public void addVelocity(Vec3 deltaVelocity) {
-        //TODO
     }
 
     @Override

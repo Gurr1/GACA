@@ -30,10 +30,6 @@ public interface IMovable {
 
     Vec3 getVelocity();
 
-    void addVelocity(Vec2 deltaVelocity);
-
-    void addVelocity(Vec3 deltaVelocity);
-
     void setHeight(float height);
 
     void setPitch(float pitch);

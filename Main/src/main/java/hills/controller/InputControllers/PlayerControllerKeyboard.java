@@ -14,7 +14,6 @@ public final class PlayerControllerKeyboard implements KeyboardSubscribe, GLFWKe
 	private List<KeyboardListener> subscribers = new ArrayList<>();
 
 	public PlayerControllerKeyboard(){
-
 	}
 	
 	/**
@@ -37,8 +36,6 @@ public final class PlayerControllerKeyboard implements KeyboardSubscribe, GLFWKe
 	}
 
 	private void keyPressed(int key, int mods) {
-		System.out.println("Pressed");
-		
 		for(KeyboardListener listener : subscribers){
 			listener.KeyPressed(key, mods);
 		}
@@ -55,7 +52,6 @@ public final class PlayerControllerKeyboard implements KeyboardSubscribe, GLFWKe
 
 	@Override
 	public void invoke(long window, int key, int scancode, int action, int mods) {
-		System.out.println("invoked");
 		keyEvent(key, scancode, action, mods);
 	}
 }
