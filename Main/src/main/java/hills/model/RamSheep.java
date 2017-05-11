@@ -30,8 +30,8 @@ public class RamSheep extends Mob {
     }
 
     @Override
-    void dealDamage() {
-        //TODO
+    void dealDamage(double health) {
+        health -= 20;
     }
 
     @Override
