@@ -6,6 +6,8 @@ import hills.services.camera.CameraService;
 import hills.services.debug.DebugService;
 import hills.services.display.DisplayService;
 import hills.services.display.DisplayServiceI;
+import hills.services.files.FileService;
+import hills.services.files.IPictureFileService;
 import hills.services.generation.IGenerationMediator;
 import hills.services.terrain.ITerrainHeightService;
 import hills.services.terrain.ITerrainRenderDataService;
@@ -19,6 +21,7 @@ public enum ServiceLocator {
 	private DebugService debugService;
 	private CameraService cameraService;
 	private TerrainService terrainService;
+	private FileService fileService;
 	
 	private ServiceLocator(){	
 	}
@@ -50,6 +53,8 @@ public enum ServiceLocator {
 	public DisplayServiceI getDisplayService(){
 		return getDisplayServiceInstance();
 	}
+
+	public IPictureFileService getFileService() { return getFileServiceInstance(); }
 	
 	private TerrainService getTerrainServiceInstance(){
 		if(terrainService == null)
@@ -77,6 +82,13 @@ public enum ServiceLocator {
 			debugService = new DebugService();
 
 		return debugService;
+	}
+
+	private FileService getFileServiceInstance(){
+		if(fileService == null)
+			fileService = new FileService();
+
+		return fileService;
 	}
 
 

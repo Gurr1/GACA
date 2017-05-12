@@ -10,7 +10,7 @@ import lombok.Setter;
 /**
  * Created by Anders on 2017-04-03.
  */
-public abstract class Creature implements IWoundable, IMovable, ICollidable{
+public abstract class Creature implements IWoundable, IMovable, ICollidable, IAIMovable{
 
     /**
      * {@inheritDoc}

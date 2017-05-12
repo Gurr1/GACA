@@ -58,6 +58,11 @@ public class Sheep extends Creature{
 
     @Override
     public void updateMovable(float delta) {
+        //TODO
+    }
 
+    @Override
+    public void changeDirection() {
+        //TODO
     }
 }
