@@ -1,7 +1,8 @@
 package hills;
 
+import hills.controller.DebugController;
 import hills.controller.GameLoop;
-import hills.controller.ServiceMediator;
+import hills.controller.InputControllers.InputMediator;
 import hills.controller.manager.CameraManager;
 import hills.controller.manager.GameManager;
 import hills.controller.manager.TerrainManager;
@@ -13,8 +14,6 @@ import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
 import org.lwjgl.glfw.GLFWWindowCloseCallback;
 import org.lwjgl.opengl.GL11;
-
-import java.util.Random;
 
 /**
  * Created by gustav on 2017-03-21.
@@ -43,26 +42,26 @@ public class Main {
     public static void main(String [] args){
     	//TerrainNormalMapCreator.createSmoothNormals("height_map_test_3.png");
     	//TerrainNormalMapCreator.createFlatNormals("height_map_test_3.png");
-    	
+
 		System.setProperty("org.lwjgl.util.Debug", "true");
 		System.setProperty("org.lwjgl.util.DebugAllocator", "true");
-		
+
 		DisplayServiceI displayService = ServiceLocator.INSTANCE.getDisplayService();
 		displayService.setErrorCallback(GLFWErrorCallback.createPrint(System.err));
 		displayService.create(WIDTH, HEIGHT, TITLE);
-		
+		setDisplayCallbacks(displayService);
     	FrameBuffer.setClearColor(0.55f, 0.55f, 1.0f, 1.0f);		// Set clear color
     	FrameBuffer.enableDepthTesting(0.0f, 1.0f);					// Enable depth testing
     	FrameBuffer.setClearDepth(1.0f);							// Clear depth buffer to 1.0
-
+		DebugController debugController = new DebugController();
     	FrameBuffer.setDepthFunction(GL11.GL_LEQUAL);				// Set OpenGL depth function.
 
     	//ServiceMediator.INSTANCE.generateMap();
-    	
+
     	GameLoop gameLoop = new GameLoop();							// Create a new game loop
-    	
+
     	initDisplayCallbacks(gameLoop);
-    	
+
     	gameLoop.addSystem(new CameraManager(1.0f, false, 0.0f));	// Add camera controller to loop
     	gameLoop.addSystem(new TerrainManager(1.0f, false, 0.0f));	// Add terrain controller to loop
     	gameLoop.addSystem(new GameManager(1.0f, false, 0.0f));		// Add game controller to loop
@@ -71,7 +70,14 @@ public class Main {
 
     	ServiceLocator.INSTANCE.getDisplayService().destroy();		// Terminate GLFW window and GLFW when program ends
     }
-	
+
+	private static void setDisplayCallbacks(DisplayServiceI displayService) {
+		displayService.setCursorPosCallback(InputMediator.INSTANCE.getCursorPositionCallback());
+		displayService.setKeyCallback(InputMediator.INSTANCE.getKeyCallBack());
+		displayService.setMouseButtonCallback(InputMediator.INSTANCE.getMouseButtonCallback());
+
+	}
+
 	/**
 	 * Initialize GLFW callback methods.
 	 */

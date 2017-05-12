@@ -7,7 +7,7 @@ import hills.util.math.Vec3;
  */
 public interface PlayerMovable extends IMovable{
     enum Direction{
-        FORWARD, RIGHT, LEFT, BACK, FORWARD_SPRINT;
+        FORWARD, RIGHT, LEFT, BACK, SPRINT;
     }
     void addVelocity(PlayerMovable.Direction direction, boolean pressed);
     Vec3 getForwardVector();

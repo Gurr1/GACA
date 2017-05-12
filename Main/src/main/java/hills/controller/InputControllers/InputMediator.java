@@ -7,30 +7,29 @@ import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
 /**
  * Created by gustav on 2017-05-05.
  */
-public enum InputLocator {
+public enum InputMediator {
     INSTANCE();
     PlayerControllerMouse mouse;
     PlayerControllerMouseButton mouseButton;
     PlayerControllerKeyboard keyboard;
     
-    InputLocator(){
+    InputMediator(){
        // keyListener = new PlayerControllerKeyboard();
        mouse = new PlayerControllerMouse();
        keyboard = new PlayerControllerKeyboard();
        mouseButton = new PlayerControllerMouseButton();
     }
     
-    // TODO Ska �ndras s� att den retunerar subscribe
     public void subscribeToKeyboard(KeyboardListener listener){
-        //keyListener.subscribe(listener);
-        
         keyboard.subscribe(listener);
     }
-    // TODO Samma sak h�r
     public void subscribeToMouse(MouseListener listener){
        mouse.subscribe(listener);
     }
-    
+
+    public void subscribeToMouseButton(MouseButtonListener listener){
+        mouseButton.subscribe(listener);
+    }
     public GLFWKeyCallbackI getKeyCallBack(){
         return keyboard;
     }

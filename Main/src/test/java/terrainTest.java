@@ -1,3 +1,13 @@
+/*import hills.services.ServiceLocator;
+import hills.services.generation.GenerationMediator;
+import hills.services.generation.IGenerationMediator;
+import org.junit.Before;
+import org.junit.Test;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.util.Random;
+
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
 
@@ -7,8 +17,7 @@ import static junit.framework.TestCase.assertTrue;
 
 /*
 Once the File getter is implemented in services, use that to fetch file.
- */
-/*public class terrainTest {
+public class terrainTest {
 
 	IGenerationMediator generator;
 
@@ -21,18 +30,20 @@ Once the File getter is implemented in services, use that to fetch file.
 
     @Test
     public void testCreateIsland(){
-        TerrainData[][] terrain = generator.generateWorldDataAndImage();
+        generator.generateWorldImage();
+        BufferedImage bf = ImageIO.read(ServiceLocator.INSTANCE.getFileService.readImage());
+        double[][] terrain =
         double smallest = 1;
         double largest = 0;
         for(int x = 0; x<terrain.length; x++){
             for (int y = 0; y < terrain[0].length; y++){
-                assertTrue(terrain[x][y].getPosition().getY()<=1);
-                assertTrue(terrain[x][y].getPosition().getY()>=0);
-                if(smallest>terrain[x][y].getPosition().getY()){
-                    smallest = terrain[x][y].getPosition().getY();
+                assertTrue(terrain[x][y]<=255);
+                assertTrue(terrain[x][y]>=0);
+                if(smallest>terrain[x][y]){
+                    smallest = terrain[x][y]();
                 }
-                if(largest<terrain[x][y].getPosition().getY()){
-                    largest = terrain[x][y].getPosition().getY();
+                if(largest<terrain[x][y]){
+                    largest = terrain[x][y];
                 }
             }
         }
@@ -41,22 +52,25 @@ Once the File getter is implemented in services, use that to fetch file.
     }
     @Test
     public void testCreateFinalMap(){
-        TerrainData[][] terrain = generator.generateWorldDataAndImage();
+        generator.generateWorldImage();
+        BufferedImage bf = ImageIO.read(ServiceLocator.INSTANCE.getFileService.readImage());
+        double[][] terrain = bf.get
         double smallest = 255;
         double largest = 0;
         for(int x = 0; x<terrain.length; x++){
             for (int y = 0; y < terrain[0].length; y++){
-                assertTrue(terrain[x][y].getPosition().getZ()<=255);
-                assertTrue(terrain[x][y].getPosition().getZ()>=0);
-                if(terrain[x][y].getPosition().getZ() < smallest){
-                    smallest = terrain[x][y].getPosition().getZ();
+                assertTrue(terrain[x][y]<=255);
+                assertTrue(terrain[x][y]>=0);
+                if(terrain[x][y] < smallest){
+                    smallest = terrain[x][y];
                 }
-                if(largest < terrain[x][y].getPosition().getZ()){
-                    largest = terrain[x][y].getPosition().getZ();
+                if(largest < terrain[x][y]){
+                    largest = terrain[x][y];
                 }
             }
         }
         assertTrue(largest>0.95);
         assertTrue(smallest<0.05);
     }
-}*/
+}
+*/

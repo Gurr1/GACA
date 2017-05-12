@@ -1,6 +1,6 @@
 package hills.controller.ModelInterfaceControllers;
 
-import hills.controller.InputControllers.InputLocator;
+import hills.controller.InputControllers.InputMediator;
 import hills.controller.InputControllers.KeyboardListener;
 import hills.controller.InputControllers.MouseListener;
 import hills.controller.ServiceMediator;
@@ -20,8 +20,8 @@ public class MovableController implements KeyboardListener, MouseListener{
     private List<IMovable> movableList = new ArrayList<>();
 
     public MovableController(){
-        InputLocator.INSTANCE.subscribeToKeyboard(this);
-        InputLocator.INSTANCE.subscribeToMouse(this);
+        InputMediator.INSTANCE.subscribeToKeyboard(this);
+        InputMediator.INSTANCE.subscribeToMouse(this);
     }
     public void addAIMovable(IMovable movable){
         movableList.add(movable);
@@ -61,12 +61,12 @@ public class MovableController implements KeyboardListener, MouseListener{
         setDirection(key, mods, false);
     }
     private void setDirection(int key, int mods, boolean pressed){
+        System.out.println(key);
+        if(key == GLFW.GLFW_KEY_LEFT_SHIFT){
+            player.addVelocity(PlayerMovable.Direction.SPRINT, pressed);
+        }
         switch (key){
             case GLFW.GLFW_KEY_W:
-                if(mods == GLFW.GLFW_MOD_SHIFT){
-                    player.addVelocity(PlayerMovable.Direction.FORWARD_SPRINT, pressed);
-                    break;
-                }
                 player.addVelocity(PlayerMovable.Direction.FORWARD, pressed);       // Forward Velocity
                 break;
             case GLFW.GLFW_KEY_A:
