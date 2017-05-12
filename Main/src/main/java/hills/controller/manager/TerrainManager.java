@@ -6,7 +6,7 @@ import hills.services.camera.ICameraDataService;
 import hills.services.terrain.ITerrainRenderDataService;
 import hills.services.terrain.ITerrainTreeService;
 import hills.services.terrain.tree.LODNode;
-import hills.view.renderer.TerrainRenderer;
+import hills.view.TerrainRenderer;
 
 import java.util.List;
 

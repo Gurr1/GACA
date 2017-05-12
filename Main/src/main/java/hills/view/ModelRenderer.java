@@ -1,4 +1,4 @@
-package hills.view.renderer;
+package hills.view;
 
 import hills.util.math.Mat4;
 import hills.util.model.Mesh;

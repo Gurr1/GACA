@@ -42,10 +42,8 @@ public class Main {
 	
     public static void main(String [] args){
     	//TerrainNormalMapCreator.createSmoothNormals("height_map_test_3.png");
-
     	//TerrainNormalMapCreator.createFlatNormals("height_map_test_3.png");
-    	Random rand = new Random();
-
+    	
 		System.setProperty("org.lwjgl.util.Debug", "true");
 		System.setProperty("org.lwjgl.util.DebugAllocator", "true");
 		

@@ -1,4 +1,4 @@
-package hills.view.renderer;
+package hills.view;
 
 import hills.util.display.FrameBuffer;
 import hills.util.loader.ModelLoader;
