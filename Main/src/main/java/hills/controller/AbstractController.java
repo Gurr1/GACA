@@ -2,7 +2,7 @@ package hills.controller;
 
 import hills.util.time.Clock;
 
-public abstract class EngineSystem {
+public abstract class AbstractController {
 	
 	/**
 	 * Clock used by system. This clock may run faster or slower than "real time".
@@ -15,10 +15,8 @@ public abstract class EngineSystem {
 	 * @param isPaused - Is clock paused.
 	 * @param startTime - Clock start time.
 	 */
-	protected EngineSystem(float scale, boolean isPaused, float startTime){
+	protected AbstractController(float scale, boolean isPaused, float startTime){
 		systemClock = new Clock(scale, isPaused, startTime); // Initializes this systems clock
-		
-		GameLoop.addSystem(this); // Add this engine system to game loop for updating.
 	}
 	
 	/**

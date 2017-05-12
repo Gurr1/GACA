@@ -19,7 +19,7 @@ public final class GameLoop {
 	/**
 	 * True if game loop is running
 	 */
-	public static boolean isRunning = false;
+	public boolean isRunning = false;
 	
 	/**
 	 * Keeps track of all systems that need to be updated and rendered by the
@@ -27,13 +27,13 @@ public final class GameLoop {
 	 * OBS! Should not be modified! Is filled automatically when a new
 	 * EngineSystem is created.
 	 */
-	private static List<EngineSystem> systems = new ArrayList<EngineSystem>();
-	private GameLoop(){} // Private constructor = no instances
+	private List<AbstractController> systems = new ArrayList<AbstractController>();
+	public GameLoop(){} // Private constructor = no instances
 	
 	/**
 	 * Start game loop
 	 */
-	public static void start() {
+	public void start() {
 		if(isRunning)
 			return;
 		isRunning = true;
@@ -43,7 +43,7 @@ public final class GameLoop {
 	/**
 	 * Stop game loop
 	 */
-	public static void stop() {
+	public void stop() {
 		isRunning = false;
 	}
 	
@@ -54,7 +54,7 @@ public final class GameLoop {
 	 *  - Update input<br>
 	 *  - Update Display (If Display has been created)
 	 */
-	public static void run() {
+	public void run() {
 		double lastCycleTime = GLFW.glfwGetTime(); // Time passed since last frame;
 		
 		while(isRunning){
@@ -78,8 +78,8 @@ public final class GameLoop {
 	 * 
 	 * @param delta - IRL time between calls in seconds
 	 */
-	public static void update(double delta){
-		for(EngineSystem system: systems)
+	public void update(double delta){
+		for(AbstractController system: systems)
 
 			system.systemUpdate(delta);
 	}
@@ -87,8 +87,8 @@ public final class GameLoop {
 	/**
 	 * Render everything
 	 */
-	public static void render() {
-		for (EngineSystem system : systems)
+	public void render() {
+		for (AbstractController system : systems)
 			system.render(); // Update all systems rendering code
 
 		FrameBuffer.clear(true, true, false); // Clear the screen
@@ -105,7 +105,7 @@ public final class GameLoop {
 	/**
 	 * Add an engine system to be updated by the game loop.
 	 */
-	public static void addSystem(EngineSystem system){
+	public void addSystem(AbstractController system){
 		systems.add(system);
 	}
 	
@@ -114,7 +114,7 @@ public final class GameLoop {
 	 * @param system - Engine system to remove from game loop update list.
 	 * @return True if system was found and removed.
 	 */
-	public static boolean removeSystem(EngineSystem system){
+	public boolean removeSystem(AbstractController system){
 		if(systems.remove(system)){
 			system.cleanUp();
 			return true;
@@ -126,8 +126,8 @@ public final class GameLoop {
 	/**
 	 * Clean up all data that needs to be cleaned up
 	 */
-	public static void cleanUp(){
-		for(EngineSystem system: systems)
+	public void cleanUp(){
+		for(AbstractController system: systems)
 			system.cleanUp();
 		
 		ShaderProgram.cleanUp();

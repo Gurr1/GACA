@@ -60,13 +60,16 @@ public class Main {
     	FrameBuffer.setDepthFunction(GL11.GL_LEQUAL);				// Set OpenGL depth function.
 
     	//ServiceMediator.INSTANCE.generateMap();
-    	initDisplayCallbacks();
+    	
+    	GameLoop gameLoop = new GameLoop();							// Create a new game loop
+    	
+    	initDisplayCallbacks(gameLoop);
+    	
+    	gameLoop.addSystem(new CameraManager(1.0f, false, 0.0f));	// Add camera controller to loop
+    	gameLoop.addSystem(new TerrainManager(1.0f, false, 0.0f));	// Add terrain controller to loop
+    	gameLoop.addSystem(new GameManager(1.0f, false, 0.0f));		// Add game controller to loop
 
-    	GameLoop.addSystem(new CameraManager(1.0f, false, 0.0f));	// Add camera controller to loop
-    	GameLoop.addSystem(new TerrainManager(1.0f, false, 0.0f));	// Add terrain controller to loop
-    	GameLoop.addSystem(new GameManager(1.0f, false, 0.0f));		// Add game controller to loop
-
-    	GameLoop.start();                            				// Start engine game loop
+    	gameLoop.start();                            				// Start engine game loop
 
     	ServiceLocator.INSTANCE.getDisplayService().destroy();		// Terminate GLFW window and GLFW when program ends
     }
@@ -74,13 +77,13 @@ public class Main {
 	/**
 	 * Initialize GLFW callback methods.
 	 */
-	public static void initDisplayCallbacks(){
+	public static void initDisplayCallbacks(GameLoop gameLoop){
 		DisplayServiceI displayService = ServiceLocator.INSTANCE.getDisplayService();
 		
 		// Window close callback
 		displayService.setWindowCloseCallback(new GLFWWindowCloseCallback(){
 			public void invoke(long window) {
-				GameLoop.stop();
+				gameLoop.stop();
 			}
 		});
 		

@@ -1,6 +1,7 @@
 package hills.services.display;
 
 import hills.services.Service;
+import hills.services.terrain.TerrainService;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.PointerBuffer;
@@ -409,6 +410,12 @@ public final class DisplayService implements Service, DisplayServiceI {
 		}
 	}
 	
+	@Override
+	public void cleanUp() {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	// DEBUG AREA //
 	
 	// Debug functions 
@@ -420,11 +427,5 @@ public final class DisplayService implements Service, DisplayServiceI {
 	 */
 	public  void displayFPS(int fps){
 		GLFW.glfwSetWindowTitle(HANDLE, title + " | FPS: " + fps);
-	}
-
-	@Override
-	public void cleanUp() {
-		// TODO Auto-generated method stub
-		
 	}
 }
