@@ -66,5 +66,10 @@ public class RamSheep extends Mob {
         //TODO
     }
 
+    @Override
+    public void changeDirection() {
+        //TODO
+    }
+
     //TODO
 }
