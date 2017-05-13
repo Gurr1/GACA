@@ -1,8 +1,7 @@
 package hills.services.display;
 
-import hills.controller.InputControllers.InputLocator;
-import hills.controller.InputControllers.KeyboardListener;
 import hills.services.Service;
+import hills.services.terrain.TerrainService;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.PointerBuffer;
@@ -15,7 +14,7 @@ import java.nio.IntBuffer;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
-public final class DisplayService implements Service, DisplayServiceI, KeyboardListener {
+public final class DisplayService implements Service, DisplayServiceI {
 
 	// GLFW callback's
 	
@@ -133,11 +132,7 @@ public final class DisplayService implements Service, DisplayServiceI, KeyboardL
 		// Set GLViewport to cover the new window
 		GL11.glViewport(0, 0, width, height);
 		
-		// Setup input callback's
-		setKeyCallback(InputLocator.INSTANCE.getKeyCallBack());		// Move these.
-		setMouseButtonCallback(InputLocator.INSTANCE.getMouseButtonCallback());
-		setCursorPosCallback(InputLocator.INSTANCE.getCursorPositionCallback());
-		InputLocator.INSTANCE.subscribeToKeyboard(this);
+		
 		this.title = title;
 		created = true;
 	}
@@ -205,6 +200,7 @@ public final class DisplayService implements Service, DisplayServiceI, KeyboardL
 	public void setKeyCallback(GLFWKeyCallbackI keyCallback) {
 		this.keyCallback = keyCallback;
 		GLFWKeyCallback callback = glfwSetKeyCallback(HANDLE, this.keyCallback);
+		System.out.println(keyCallback);
 		if(callback != null)
 			callback.free();
 	}
@@ -414,6 +410,12 @@ public final class DisplayService implements Service, DisplayServiceI, KeyboardL
 		}
 	}
 	
+	@Override
+	public void cleanUp() {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	// DEBUG AREA //
 	
 	// Debug functions 
@@ -425,24 +427,5 @@ public final class DisplayService implements Service, DisplayServiceI, KeyboardL
 	 */
 	public  void displayFPS(int fps){
 		GLFW.glfwSetWindowTitle(HANDLE, title + " | FPS: " + fps);
-	}
-
-	@Override
-	public void cleanUp() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void KeyPressed(int key, int mods) {
-		if(key == GLFW.GLFW_KEY_SPACE){
-			System.out.println("mouse grabbed");
-			captureMouse(!mouseCaptured);
-		}
-	}
-
-	@Override
-	public void keyReleased(int key, int mods) {
-
 	}
 }

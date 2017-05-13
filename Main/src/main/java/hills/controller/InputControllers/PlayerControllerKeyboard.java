@@ -6,7 +6,7 @@ import org.lwjgl.glfw.GLFWKeyCallbackI;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class PlayerControllerKeyboard implements KeyboardSubscribe, GLFWKeyCallbackI{
+public final class PlayerControllerKeyboard implements GLFWKeyCallbackI{
 
 	/**
 	 * List of Subscribers.
@@ -45,7 +45,6 @@ public final class PlayerControllerKeyboard implements KeyboardSubscribe, GLFWKe
 			listener.keyReleased(key, mods);
 		}
 	}
-	@Override
 	public void subscribe(KeyboardListener listener) {
 		subscribers.add(listener);
 	}

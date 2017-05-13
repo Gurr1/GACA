@@ -1,10 +1,10 @@
 package hills.controller.manager;
 
-import hills.controller.EngineSystem;
+import hills.controller.AbstractController;
 import hills.services.ServiceLocator;
 import hills.services.camera.ICameraUpdateService;
 
-public class CameraManager extends EngineSystem {
+public class CameraManager extends AbstractController {
 
 	ICameraUpdateService updateService;
 	

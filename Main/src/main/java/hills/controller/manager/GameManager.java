@@ -1,6 +1,6 @@
 package hills.controller.manager;
 
-import hills.controller.EngineSystem;
+import hills.controller.AbstractController;
 import hills.controller.EntityFactory;
 import hills.controller.ModelInterfaceControllers.AttackController;
 import hills.controller.ModelInterfaceControllers.CollidableController;
@@ -14,7 +14,7 @@ import hills.util.math.Vertex;
 import hills.util.model.MeshTexture;
 import hills.util.model.Model;
 
-public final class GameManager extends EngineSystem {
+public final class GameManager extends AbstractController {
 	
 	private int nNPCs = 10;
 	Vertex[] v = {

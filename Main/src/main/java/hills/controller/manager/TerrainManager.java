@@ -1,16 +1,16 @@
 package hills.controller.manager;
 
-import hills.controller.EngineSystem;
+import hills.controller.AbstractController;
 import hills.services.ServiceLocator;
 import hills.services.camera.ICameraDataService;
 import hills.services.terrain.ITerrainRenderDataService;
 import hills.services.terrain.ITerrainTreeService;
 import hills.services.terrain.tree.LODNode;
-import hills.view.renderer.TerrainRenderer;
+import hills.view.TerrainRenderer;
 
 import java.util.List;
 
-public final class TerrainManager extends EngineSystem {
+public final class TerrainManager extends AbstractController {
 
 	// TODO Move LODNode to Util package?
 	private List<LODNode> TerrainNodes;

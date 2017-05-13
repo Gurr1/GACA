@@ -6,7 +6,7 @@ import org.lwjgl.glfw.GLFWCursorPosCallbackI;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class PlayerControllerMouse implements MouseSubscribe, GLFWCursorPosCallbackI{
+public final class PlayerControllerMouse implements GLFWCursorPosCallbackI{
 
 	/**
 	 * Horizontal position of cursor in pixels.
@@ -40,8 +40,6 @@ public final class PlayerControllerMouse implements MouseSubscribe, GLFWCursorPo
 		
 		xPosition = (float) xpos;
 		yPosition = (float) ypos;
-		System.out.println(xpos);
-		System.out.println(ypos);
 		if(ServiceLocator.INSTANCE.getDisplayService().isMouseCaptured()) {
 			if(xVelocity!=0 || yVelocity!=0) {
 				mouseMoved(xVelocity, yVelocity);
@@ -63,7 +61,6 @@ public final class PlayerControllerMouse implements MouseSubscribe, GLFWCursorPo
 	public static void scrollEvent(double xOffset, double yOffset){
 	}
 
-	@Override
 	public void subscribe(MouseListener listener) {
 		mouseListeners.add(listener);
 	}

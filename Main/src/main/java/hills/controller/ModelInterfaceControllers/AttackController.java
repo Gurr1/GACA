@@ -1,5 +1,6 @@
 package hills.controller.ModelInterfaceControllers;
 
+import hills.controller.InputControllers.InputMediator;
 import hills.controller.InputControllers.MouseButtonListener;
 import hills.model.IAttack;
 
@@ -8,6 +9,9 @@ import hills.model.IAttack;
  */
 public class AttackController implements MouseButtonListener {
     IAttack player;
+    public AttackController(){
+        InputMediator.INSTANCE.subscribeToMouseButton(this);
+    }
     public void setPlayer(IAttack player){
         this.player = player;
     }

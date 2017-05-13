@@ -9,14 +9,13 @@ import java.util.List;
 /**
  * Created by gustav on 2017-05-11.
  */
-public class PlayerControllerMouseButton implements MouseButtonSubscribe,  GLFWMouseButtonCallbackI {
+public class PlayerControllerMouseButton implements GLFWMouseButtonCallbackI {
     List<MouseButtonListener> subscribers = new ArrayList<>();
     @Override
     public void invoke(long window, int button, int action, int mods) {
         buttonEvent(button, action, mods);
     }
 
-    @Override
     public void subscribe(MouseButtonListener listener) {
         subscribers.add(listener);
     }
@@ -29,15 +28,18 @@ public class PlayerControllerMouseButton implements MouseButtonSubscribe,  GLFWM
             case GLFW.GLFW_RELEASE:
                 mouseReleased(button, mods);
                 break;
+            default:
         }
     }
     private void mouseReleased(int button, int mods) {
+        System.out.println("released");
         for(MouseButtonListener listener : subscribers){
-            listener.mousePressed(button, mods);
+            listener.mouseReleased(button, mods);
         }
     }
 
     private void mousePressed(int button, int mods) {
+        System.out.println("pressed");
         for(MouseButtonListener listener : subscribers){
             listener.mousePressed(button, mods);
         }

@@ -1,4 +1,4 @@
-package hills.view.renderer;
+package hills.view;
 
 import hills.services.terrain.mesh.GridMeshData;
 import hills.services.terrain.tree.LODNode;
