@@ -32,14 +32,19 @@ public class MovableController implements KeyboardListener, MouseListener{
     public void updateMovables(float delta, double runtime){
         player.updateMovable(delta);
         float h = ServiceMediator.INSTANCE.getHeight(player.get3DPos().getX(), player.get3DPos().getZ());
-        player.setHeight(h);
+        if(player.get3DPos().getY()<=h) {
+            player.setHeight(h);
+        }
+        else{
+            player.addGravityVelocity(delta);
+        }
         for(IMovable movable : movableList){
             movable.updateMovable(delta);
             if(runtime % 1000 == 0){
 
             }
         }
-        ServiceLocator.INSTANCE.getCameraDataService().setPosition(player.get3DPos());
+        ServiceLocator.INSTANCE.getCameraDataService().setPosition(player.getHeadPos());
         ServiceLocator.INSTANCE.getCameraDataService().setOrientation
                 (player.getRightVector(), player.getUpVector(), player.getForwardVector(), false);
         // Send updates to all saved objects.
@@ -77,6 +82,10 @@ public class MovableController implements KeyboardListener, MouseListener{
                 break;
             case GLFW.GLFW_KEY_D:
                 player.addVelocity(PlayerMovable.Direction.RIGHT, pressed);       // Left Velocity
+                break;
+            case  GLFW.GLFW_KEY_SPACE:
+                if(player.getVelocity().getY()<=0)
+                    player.addVelocity(PlayerMovable.Direction.UP, pressed);
                 break;
         }
     }

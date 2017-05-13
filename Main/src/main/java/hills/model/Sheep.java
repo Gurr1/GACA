@@ -62,6 +62,11 @@ public class Sheep extends Creature{
     }
 
     @Override
+    public void addGravityVelocity(float delta) {
+
+    }
+
+    @Override
     public void changeDirection() {
         //TODO
     }

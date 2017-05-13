@@ -17,13 +17,13 @@ public class DebugController implements KeyboardListener{
     }
     @Override
     public void KeyPressed(int key, int mods) {
-        if(key == GLFW.GLFW_KEY_SPACE){
+        if(key == GLFW.GLFW_KEY_F1){
              displayService.captureMouse(!displayService.isMouseCaptured());
         }
-        if(key == GLFW.GLFW_KEY_F1){
+        if(key == GLFW.GLFW_KEY_F2){
             // set wireframeMode
         }
-        if(key == GLFW.GLFW_KEY_F2){
+        if(key == GLFW.GLFW_KEY_F3){
             // Culling service.
         }
     }

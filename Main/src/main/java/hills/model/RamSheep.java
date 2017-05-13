@@ -57,6 +57,11 @@ public class RamSheep extends Mob {
     }
 
     @Override
+    public void addGravityVelocity(float delta) {
+
+    }
+
+    @Override
     public Sphere getBoundingSphere() {
         return null;
         //TODO

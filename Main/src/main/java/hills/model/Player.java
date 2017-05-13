@@ -47,8 +47,10 @@ public class Player implements PlayerMovable, ICollidable, IAttack {
     Vec3 velocityX = new Vec3(0,0,0);
     float speed = 5;
     private float defaultSpeed = 5;
+    Vec3 velocityZ = new Vec3(0,0,0);
     Vec3 velocityY = new Vec3(0,0,0);
-
+    Vec3 gravityVelocity = new Vec3(0,-0.01f, 0);
+    Vec3 jumpVelocity = new Vec3(0,0.005f, 0);
     //<editor-fold desc="Constructors">
 
     public Player(Vec3 pos) {
@@ -69,28 +71,35 @@ public class Player implements PlayerMovable, ICollidable, IAttack {
     }
 
     @Override
+    public Vec3 getHeadPos() {
+        return new Vec3(pos.getX(), pos.getY()+playerHeight, pos.getZ());
+    }
+
+    @Override
     public void addVelocity(Direction direction, boolean pressed) {
         int mOs = 1;
         if(!pressed){
             mOs = 0;
         }
         if(direction == Direction.FORWARD){
-            velocityX = new Vec3(forward.mul(mOs));
+            velocityX = new Vec3(forwardXZ.mul(mOs));
         }
         if(direction == Direction.BACK){
-            velocityX = new Vec3(forward.mul(mOs*-1));
+            velocityX = new Vec3(forwardXZ.mul(mOs*-1));
         }
         if(direction == Direction.SPRINT){
             speed = defaultSpeed + runModifier*mOs;
         }
         if(direction == Direction.LEFT){
-            velocityY = new Vec3(right.mul(mOs*-1));
+            velocityZ = new Vec3(right.mul(mOs*-1));
         }
         if(direction == Direction.RIGHT){
-            velocityY = new Vec3(right.mul(mOs));
+            velocityZ = new Vec3(right.mul(mOs));
         }
-        System.out.println(speed);
-        velocity = velocityX.add(velocityY).normalize().mul(speed);
+        if(direction == Direction.UP){
+            velocityY = velocityY.add(jumpVelocity.mul(mOs));
+        }
+        velocity = velocityX.add(velocityZ).normalize().mul(speed);
     }
 
 
@@ -112,7 +121,8 @@ public class Player implements PlayerMovable, ICollidable, IAttack {
 
     @Override
     public void setHeight(float y){
-        pos =  new Vec3(pos.getX(), y + playerHeight, pos.getZ());
+        velocityY = new Vec3(0,0,0);
+        pos =  new Vec3(pos.getX(), y, pos.getZ());
     }
 
     /**
@@ -128,23 +138,29 @@ public class Player implements PlayerMovable, ICollidable, IAttack {
     private void updateVelocity() {
         int yDir = 1;
         int xDir = 1;
-        if((velocityY.add(right).getLength())<1){       // Checks if velocity is backwards
+        if((velocityZ.add(right).getLength())<1){       // Checks if velocity is backwards
             yDir = -1;
         }
-        if((velocityX.add(forward).getLength())<1){     // Checks is velocity is to the left.
+        if((velocityX.add(forwardXZ).getLength())<1){     // Checks is velocity is to the left.
             xDir = -1;
         }
         float xVelocity = velocityX.getLength()*xDir;
-        float yVelocity = velocityY.getLength()*yDir;
-        velocityX = forward.mul(xVelocity);
-        velocityY = right.mul(yVelocity);
-        velocity = velocityX.add(velocityY).normalize().mul(speed);
+        float yVelocity = velocityZ.getLength()*yDir;
+        velocityX = forwardXZ.mul(xVelocity);
+        velocityZ = right.mul(yVelocity);
+        velocity = velocityX.add(velocityZ).normalize().mul(speed);
     }
 
     @Override
     public void updateMovable(float delta) {
+        velocity = velocity.add(velocityY);
         pos = pos.add(velocity.mul(delta));
 
+    }
+
+    @Override
+    public void addGravityVelocity(float delta) {
+        velocityY = velocityY.add(gravityVelocity.mul(delta));
     }
 
     public void checkPlayerHealth(){
