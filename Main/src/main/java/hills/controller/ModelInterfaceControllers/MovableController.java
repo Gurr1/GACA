@@ -3,7 +3,6 @@ package hills.controller.ModelInterfaceControllers;
 import hills.controller.InputControllers.InputMediator;
 import hills.controller.InputControllers.KeyboardListener;
 import hills.controller.InputControllers.MouseListener;
-import hills.controller.ServiceMediator;
 import hills.model.IMovable;
 import hills.model.PlayerMovable;
 import hills.services.ServiceLocator;
@@ -31,7 +30,8 @@ public class MovableController implements KeyboardListener, MouseListener{
     }
     public void updateMovables(float delta, double runtime){
         player.updateMovable(delta);
-        float h = ServiceMediator.INSTANCE.getHeight(player.get3DPos().getX(), player.get3DPos().getZ());
+        float h = ServiceLocator.INSTANCE.getTerrainHeightService()
+                .getHeight(player.get3DPos().getX(), player.get3DPos().getZ());
         if(player.get3DPos().getY()<=h) {
             player.setHeight(h);
         }
@@ -40,8 +40,9 @@ public class MovableController implements KeyboardListener, MouseListener{
         }
         for(IMovable movable : movableList){
             movable.updateMovable(delta);
+            movable.setHeight(ServiceLocator.INSTANCE.getTerrainHeightService().getHeight(movable.get3DPos()));
             if(runtime % 1000 == 0){
-
+                movable.setYaw((float) ServiceLocator.INSTANCE.getGenerationService().generateDirection((float) runtime/1000));
             }
         }
         ServiceLocator.INSTANCE.getCameraDataService().setPosition(player.getHeadPos());
@@ -65,6 +66,8 @@ public class MovableController implements KeyboardListener, MouseListener{
     public void keyReleased(int key, int mods) {
         setDirection(key, mods, false);
     }
+
+
     private void setDirection(int key, int mods, boolean pressed){
         System.out.println(key);
         if(key == GLFW.GLFW_KEY_LEFT_SHIFT){
@@ -84,8 +87,11 @@ public class MovableController implements KeyboardListener, MouseListener{
                 player.addVelocity(PlayerMovable.Direction.RIGHT, pressed);       // Left Velocity
                 break;
             case  GLFW.GLFW_KEY_SPACE:
-                if(player.getVelocity().getY()<=0)
+                if(player.getVelocity().getY()<=0 &&
+                        player.get3DPos().getY()<=ServiceLocator.
+                                INSTANCE.getTerrainHeightService().getHeight(player.get3DPos())+0.1) {
                     player.addVelocity(PlayerMovable.Direction.UP, pressed);
+                }
                 break;
         }
     }

@@ -5,14 +5,17 @@ import hills.controller.EntityFactory;
 import hills.controller.ModelInterfaceControllers.AttackController;
 import hills.controller.ModelInterfaceControllers.CollidableController;
 import hills.controller.ModelInterfaceControllers.MovableController;
-import hills.controller.ServiceMediator;
 import hills.model.Creature;
 import hills.model.Player;
+import hills.services.ServiceLocator;
+import hills.services.terrain.TerrainServiceConstants;
 import hills.util.math.Vec2;
 import hills.util.math.Vec3;
 import hills.util.math.Vertex;
 import hills.util.model.MeshTexture;
 import hills.util.model.Model;
+
+import java.util.Random;
 
 public final class GameManager extends AbstractController {
 	
@@ -103,15 +106,28 @@ public final class GameManager extends AbstractController {
 
     private void loadEntities() {
 		Player p = EntityFactory.createPlayer(
-                ServiceMediator.INSTANCE.generateSpawnLocation());
+                generateSpawnLocation());
 		movableController.setPlayer(p);
 		collidableController.addCollidable(p);
 		attackController.setPlayer(p);
 		for(int i = 0; i < nNPCs; i++){
-            Creature sheep = EntityFactory.createSheep(ServiceMediator.INSTANCE.generateSpawnLocation());
+            Creature sheep = EntityFactory.createSheep(generateSpawnLocation());
 			movableController.addAIMovable(sheep);
 			collidableController.addCollidable(sheep);
 		}
+	}
+
+	private Vec3 generateSpawnLocation(){
+		Random random = new Random();
+		int x;
+		int z;
+		float y;
+		do {
+			x = random.nextInt(TerrainServiceConstants.TERRAIN_WIDTH-1);
+			z = random.nextInt(TerrainServiceConstants.TERRAIN_HEIGHT-1);
+			y = ServiceLocator.INSTANCE.getTerrainHeightService().getHeight(x,z);
+		}while(y < TerrainServiceConstants.WATER_HEIGHT);
+		return new Vec3(x, y, z);
 	}
 
 	@Override

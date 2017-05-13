@@ -57,7 +57,7 @@ public class ObjectPlacer {
      * and then stored in a .png-file with the name of the variable SAVE_FILE
      */
     public List<Vec3> placeObjects() {
-        IGenerationMediator gm= ServiceLocator.INSTANCE.getGenerationMediator();
+        IGenerationMediator gm= ServiceLocator.INSTANCE.getGenerationService();
         NOISE_MAP = gm.getRandomNoisemap(1.0f,1.0f);
         //NOISE_MAP.create2DNoiseImage("ObjectDensity");
         OBJECT_MAP = new BufferedImage(WIDTH,HEIGHT, BufferedImage.TYPE_3BYTE_BGR);

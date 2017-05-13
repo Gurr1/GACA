@@ -6,6 +6,9 @@ import org.lwjgl.glfw.GLFWCursorPosCallbackI;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @Author Gustav Engsmyre
+ */
 public final class PlayerControllerMouse implements GLFWCursorPosCallbackI{
 
 	/**

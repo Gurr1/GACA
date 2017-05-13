@@ -1,7 +1,7 @@
 package hills.controller.InputControllers;
 
 /**
- * Created by gustav on 2017-05-11.
+ * @Author Gustav Engsmyre
  */
 public interface MouseButtonListener {
 

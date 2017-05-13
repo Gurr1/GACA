@@ -1,5 +1,6 @@
 package hills.model;
 
+import hills.util.math.Quaternion;
 import hills.util.math.Vec2;
 import hills.util.math.Vec3;
 import hills.util.math.shape.Sphere;
@@ -17,11 +18,18 @@ public abstract class Creature implements IWoundable, IMovable, ICollidable, IAI
      */
 
     protected Vec3 pos;
-    @Setter @Getter protected float speed;
+    @Setter @Getter protected float speed = 5;
     protected int healthPoints;
     protected int maxHealth;
     protected Model model;
-    protected Vec3 velocity;
+    protected Vec3 velocity = new Vec3(0,0,0);
+    protected float yaw;
+    protected float pitch;
+    protected Vec3 forward = new Vec3(0,0,-1.0f);
+    protected Vec3 right = new Vec3(0,1.0f,0);
+    protected Vec3 up = new Vec3(1.0f,0,0);
+    protected Vec3 velocityX = new Vec3(0,0,0);
+    protected Vec3 velocityZ = new Vec3(0,0,0);
 
     @Override
     public abstract Sphere getBoundingSphere();
@@ -67,4 +75,64 @@ public abstract class Creature implements IWoundable, IMovable, ICollidable, IAI
     public void setHeight(float height){
         pos = new Vec3(pos.getX(), height, pos.getZ());
     }
+
+    @Override
+    public void setPitch(float pitch) {
+        this.pitch = pitch;
+    }
+
+    @Override
+    public void setYaw(float yaw) {
+        this.yaw = yaw;
+    }
+
+    @Override
+    public void updatePitch(float deltaPitch) {
+        pitch += fixDegrees(pitch + deltaPitch);
+        updateVectors(right, pitch);
+        updateVelocity();
+    }
+
+    private void updateVelocity() {
+            int yDir = 1;
+            int xDir = 1;
+            if((velocityZ.add(right).getLength())<1){       // Checks if velocity is backwards
+                yDir = -1;
+            }
+            if((velocityX.add(forward).getLength())<1){     // Checks is velocity is to the left.
+                xDir = -1;
+            }
+            float xVelocity = velocityX.getLength()*xDir;
+            float yVelocity = velocityZ.getLength()*yDir;
+            velocityX = forward.mul(xVelocity);
+            velocityZ = right.mul(yVelocity);
+            velocity = velocityX.add(velocityZ).normalize().mul(speed);
+    }
+
+    @Override
+    public void updateYaw(float deltaYaw) {
+        yaw = fixDegrees(yaw+deltaYaw);
+        updateVectors(up, yaw);
+        updateVelocity();
+    }
+
+
+    private float fixDegrees(float degree) {
+        degree %= 360;
+        if (degree <= 0)
+            degree += 360;
+
+        return degree;
+    }
+
+    @Override
+    public void addGravityVelocity(float delta) {
+
+    }
+    private void updateVectors(Vec3 axis, float angle){
+            Quaternion rotQuat = new Quaternion(axis, angle);
+            forward = rotQuat.mul(forward).normalize();
+            up = rotQuat.mul(up).normalize();
+            right = forward.cross(up);
+        }
 }

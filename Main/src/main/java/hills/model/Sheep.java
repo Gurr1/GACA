@@ -37,37 +37,9 @@ public class Sheep extends Creature{
     }
 
     @Override
-    public void setPitch(float pitch) {
-        //TODO
-    }
-
-    @Override
-    public void setYaw(float yaw) {
-        //TODO
-    }
-
-    @Override
-    public void updatePitch(float deltaPitch) {
-        //TODO
-    }
-
-    @Override
-    public void updateYaw(float deltaYaw) {
-        //TODO
-    }
-
-    @Override
     public void updateMovable(float delta) {
-        //TODO
-    }
+        pos = pos.add(velocity.mul(delta));
 
-    @Override
-    public void addGravityVelocity(float delta) {
-
-    }
-
-    @Override
-    public void changeDirection() {
         //TODO
     }
 }

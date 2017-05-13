@@ -3,7 +3,6 @@ package hills.model;
 /**
  * Created by corne on 5/11/2017.
  */
-public interface IAIMovable {
+public interface IAIMovable extends IMovable{
 
-    public void changeDirection();
 }

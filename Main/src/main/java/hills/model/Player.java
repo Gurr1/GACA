@@ -227,7 +227,7 @@ public class Player implements PlayerMovable, ICollidable, IAttack {
         return pos;
     }
 
-    public void updateVectors(Vec3 axis, float angle) {
+    private void updateVectors(Vec3 axis, float angle) {
         Quaternion rotQuat = new Quaternion(axis, angle);
         forward = rotQuat.mul(forward).normalize();
         up = rotQuat.mul(up).normalize();

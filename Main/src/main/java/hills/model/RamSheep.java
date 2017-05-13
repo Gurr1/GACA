@@ -32,36 +32,6 @@ public class RamSheep extends Mob {
     }
 
     @Override
-    public void setPitch(float pitch) {
-        //TODO
-    }
-
-    @Override
-    public void setYaw(float yaw) {
-        //TODO
-    }
-
-    @Override
-    public void updatePitch(float deltaPitch) {
-        //TODO
-    }
-
-    @Override
-    public void updateYaw(float deltaYaw) {
-        //TODO
-    }
-
-    @Override
-    public void updateMovable(float delta) {
-
-    }
-
-    @Override
-    public void addGravityVelocity(float delta) {
-
-    }
-
-    @Override
     public Sphere getBoundingSphere() {
         return null;
         //TODO
@@ -72,8 +42,8 @@ public class RamSheep extends Mob {
     }
 
     @Override
-    public void changeDirection() {
-        //TODO
+    public void updateMovable(float delta) {
+
     }
 
     //TODO

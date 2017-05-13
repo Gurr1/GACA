@@ -5,7 +5,7 @@ import org.lwjgl.glfw.GLFWKeyCallbackI;
 import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
 
 /**
- * Created by gustav on 2017-05-05.
+ * @Author Gustav Engsmyre
  */
 public enum InputMediator {
     INSTANCE();
