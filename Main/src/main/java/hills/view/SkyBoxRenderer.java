@@ -14,8 +14,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
-public enum SkyBoxRenderer {
-	INSTANCE();
+public final class SkyBoxRenderer implements ISkyBoxRendererDrawable {
 	
 	private final ShaderProgram shaderProgram;
 	private final MeshData meshData;
