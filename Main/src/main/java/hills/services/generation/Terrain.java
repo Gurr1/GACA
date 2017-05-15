@@ -134,10 +134,10 @@ public class Terrain {
                     image.setRGB(x,y,0);
                     continue;
                 }
-                Vec3 v1 = new Vec3(x-1, (float)terrain[x-1][y], y+1);
-                Vec3 v2 = new Vec3(x+1, (float)terrain[x+1][y],y);
-                Vec3 v3 = new Vec3(x, (float)terrain[x][y-1],y-1);
-                Vec3 v4 = new Vec3(x, (float)terrain[x][y+1], y+1);
+                Vec3 v1 = new Vec3(x-1, (float)terrain[x-1][y-1], y-1);
+                Vec3 v2 = new Vec3(x-1, (float)terrain[x-1][y+1],y+1);
+                Vec3 v3 = new Vec3(x+1, (float)terrain[x+1][y-1],y-1);
+                Vec3 v4 = new Vec3(x+1, (float)terrain[x+1][y+1], y+1);
                 int[]rgb = generateNormal(v1,v2,v3,v4);
                 image.getRaster().setPixel(x,y,rgb);
             }

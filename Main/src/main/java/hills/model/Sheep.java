@@ -19,7 +19,8 @@ public class Sheep extends Creature{
     protected Model model;
 
 
-    public Sheep(Vec3 pos){
+    public Sheep(Vec3 pos, Model model){
+        this.model = model;
         this.pos = pos;
         this.healthPoints = 20;
         this.speed = 1;
