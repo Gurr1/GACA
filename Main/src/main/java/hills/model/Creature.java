@@ -27,8 +27,8 @@ public abstract class Creature implements IWoundable, IMovable, ICollidable, IAI
     protected float yaw;
     protected float pitch;
     protected Vec3 forward = new Vec3(0,0,-1.0f);
-    protected Vec3 right = new Vec3(0,1.0f,0);
-    protected Vec3 up = new Vec3(1.0f,0,0);
+    protected Vec3 right = new Vec3(1.0f,0,0);
+    protected Vec3 up = new Vec3(0,1.0f,0);
     protected Vec3 velocityX = new Vec3(1,0,0);
     protected Vec3 velocityZ = new Vec3(1,0,0);
 
@@ -85,7 +85,7 @@ public abstract class Creature implements IWoundable, IMovable, ICollidable, IAI
     @Override
     public void setYaw(float yaw) {
         this.yaw = yaw;
-        updateVectors(up, pitch);
+        updateVectors(up, yaw);
         updateVelocity();
     }
 
@@ -137,6 +137,7 @@ public abstract class Creature implements IWoundable, IMovable, ICollidable, IAI
             forward = rotQuat.mul(forward).normalize();
             up = rotQuat.mul(up).normalize();
             right = forward.cross(up);
+        System.out.println(forward);
         }
     @Override
     public Model getModel() {
@@ -146,8 +147,8 @@ public abstract class Creature implements IWoundable, IMovable, ICollidable, IAI
     @Override
     public Mat4 getMatrix() {
         Mat4 matrix = Mat4.identity();
+        matrix = matrix.scale(5,5,10);
         matrix = matrix.translate(pos);
-        matrix = matrix.scale(5,5,5);
         return matrix;
     }
 }

@@ -17,8 +17,8 @@ import java.util.Random;
 
 public final class GameManager extends AbstractController {
 	
-	private int nNPCs = 10;
-	RenderController renderController;
+	private int nNPCs = 20;
+	private RenderController renderController;
 	private CollidableController collidableController;
 	private MovableController movableController;
 	private AttackController attackController;
