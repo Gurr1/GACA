@@ -65,17 +65,17 @@ public class CubeModel implements IModelService {
             13, 16, 4,
             13, 4, 1
     };
-    MeshTexture texture;
-    private final Model cube;
+    private MeshTexture texture;
+    private final Model sheep;
 
     public CubeModel(){
-        texture = new MeshTexture("grass.png");
+        texture = new MeshTexture("sheepTexture.png");
         Mesh cubeMesh = ModelLoader.load(v, ind, texture, Mat4.identity());
-        cube = new Model(new Mesh[]{cubeMesh});
+        sheep = new Model(new Mesh[]{cubeMesh});
     }
 
     @Override
-    public Model getCube() {
-        return cube;
+    public Model getSheep() {
+        return sheep;
     }
 }

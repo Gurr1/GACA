@@ -1,5 +1,6 @@
 package hills.model;
 
+import hills.util.math.Mat4;
 import hills.util.math.Vec3;
 import hills.util.math.shape.Sphere;
 import hills.util.model.Model;
@@ -16,7 +17,6 @@ public class Sheep extends Creature{
     float radius;
     Random rand = new Random();
     private float move = 0;
-    protected Model model;
 
 
     public Sheep(Vec3 pos, Model model){
@@ -40,7 +40,6 @@ public class Sheep extends Creature{
     @Override
     public void updateMovable(float delta) {
         pos = pos.add(velocity.mul(delta));
-
         //TODO
     }
 }

@@ -29,6 +29,7 @@ public class MovableController implements KeyboardListener, MouseListener{
         player = movable;
     }
     public void updateMovables(float delta, double runtime){
+        boolean updateDir = false;
         player.updateMovable(delta);
         float h = ServiceLocator.INSTANCE.getTerrainHeightService()
                 .getHeight(player.get3DPos().getX(), player.get3DPos().getZ());
@@ -38,11 +39,15 @@ public class MovableController implements KeyboardListener, MouseListener{
         else{
             player.addGravityVelocity(delta);
         }
+        if(runtime > 1){
+            updateDir = true;
+            runtime = 0;
+        }
         for(IMovable movable : movableList){
             movable.updateMovable(delta);
             movable.setHeight(ServiceLocator.INSTANCE.getTerrainHeightService().getHeight(movable.get3DPos()));
-            if(runtime % 1000 == 0){
-                movable.setYaw((float) ServiceLocator.INSTANCE.getGenerationService().generateDirection((float) runtime/1000));
+            if(updateDir){
+                movable.setYaw((float) ServiceLocator.INSTANCE.getGenerationService().generateDirection((float) runtime*10));
             }
         }
         ServiceLocator.INSTANCE.getCameraDataService().setPosition(player.getHeadPos());
