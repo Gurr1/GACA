@@ -19,14 +19,14 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.system.MemoryStack;
 
-public final class ModelRenderer implements IModelRendererBatchable, IModelRendererDrawable {
+public final class ModelRenderer implements IModelRendererBatchable, IRendererDrawable {
 	
 	/**
 	 * Holds all rendering data for next round of rendering.
 	 */
 	private static Map<ShaderProgram, Map<MeshData, Map<MeshTexture, List<Mat4>>>> batch = new HashMap<ShaderProgram, Map<MeshData, Map<MeshTexture, List<Mat4>>>>();
 	
-	private ModelRenderer(){} // Private constructor no instances
+	protected ModelRenderer(){} // Private constructor no instances
 	
 	/**
 	 * Add model to render batch. All batched models will be rendered automatically and then removed from batch.

@@ -35,10 +35,6 @@ public class Main {
 	 */
 	private static final int HEIGHT = (int) (WIDTH * AspectRatios.SIXTEEN_TO_NINE);
 	
-	// Absolute first thing that gets done. (Hacky?)
-	// Initialize GLFW, OpenGL and create a new window.
-	// This allows OpenGL calls when initializing static final variables such as shader programs.
-	
     public static void main(String [] args){
     	//TerrainNormalMapCreator.createSmoothNormals("height_map_test_3.png");
     	//TerrainNormalMapCreator.createFlatNormals("height_map_test_3.png");

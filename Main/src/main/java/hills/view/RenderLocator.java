@@ -1,13 +1,44 @@
 package hills.view;
 
-public class RenderLocator {
+public enum RenderLocator {
+	INSTANCE();
 	
 	private ModelRenderer model;
 	private SkyBoxRenderer skyBox;
 	private TerrainRenderer terrain;
 	private WaterRenderer water;
 	
+	public IModelRendererBatchable getModelBatchable(){
+		return getModelInstance();
+	}
 	
+	public ITerrainRendererBatchable getTerrainBatchable(){
+		return getTerrainInstance();
+	}
+
+	public IWaterRendererBatchable getWaterBatchable(){
+		return getWaterInstance();
+	}
+	
+	public IRendererDrawable getModelDrawable(){
+		return getModelInstance();
+	}
+	
+	public IRendererDrawable getTerrainDrawable(){
+		return getTerrainInstance();
+	}
+
+	public IRendererDrawable getWaterDrawable(){
+		return getWaterInstance();
+	}
+	
+	public IRendererDrawable getSkyBoxDrawable(){
+		return getSkyBoxInstance();
+	}
+	
+	public ISkyBoxData getSkyBoxData(){
+		return getSkyBoxInstance();
+	}
 	
 	private ModelRenderer getModelInstance(){
 		if(model == null)
@@ -16,7 +47,7 @@ public class RenderLocator {
 		return model;
 	}
 	
-	private SkyBoxRenderer getSkyBoxlInstance(){
+	private SkyBoxRenderer getSkyBoxInstance(){
 		if(skyBox == null)
 			skyBox = new SkyBoxRenderer();
 		
