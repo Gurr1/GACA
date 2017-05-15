@@ -155,7 +155,7 @@ public class Player implements PlayerMovable, ICollidable, IAttack {
     public void updateMovable(float delta) {
         velocity = velocity.add(velocityY);
         pos = pos.add(velocity.mul(delta));
-
+        System.out.println(pos);
     }
 
     @Override

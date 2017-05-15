@@ -7,4 +7,6 @@ import hills.util.model.Model;
  */
 public interface IModelService {
     Model getSheep();
+    Model getTree();
+    Model getRock();
 }

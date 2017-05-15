@@ -1,15 +1,23 @@
 package hills.model;
 
+import hills.util.math.Mat4;
+import hills.util.math.Vec3;
+import hills.util.model.Model;
+
 /**
  * Created by gustav on 2017-04-25.
  */
-public abstract class ImmovableObject {
-    int x;
-    int y;
+public abstract class ImmovableObject implements IRenderable{
+    protected Vec3 position;
+    Model model;
 
+    public ImmovableObject(Vec3 position, Model model ){
+        this.position = position;
+        this.model = model;
+    }
 
-    public ImmovableObject(int x, int y){
-        this.x = x;
-        this.y = y;
+    @Override
+    public Model getModel() {
+        return model;
     }
 }

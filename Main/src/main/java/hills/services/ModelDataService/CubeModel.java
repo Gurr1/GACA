@@ -65,17 +65,31 @@ public class CubeModel implements IModelService {
             13, 16, 4,
             13, 4, 1
     };
-    private MeshTexture texture;
-    private final Model sheep;
+    private final Model sheep, tree, rock;
 
     public CubeModel(){
-        texture = new MeshTexture("sheepTexture.png");
+        MeshTexture texture = new MeshTexture("sheepTexture.png");
         Mesh cubeMesh = ModelLoader.load(v, ind, texture, Mat4.identity());
         sheep = new Model(new Mesh[]{cubeMesh});
+        texture = new MeshTexture("barkTexture.png");
+        cubeMesh = ModelLoader.load(v, ind, texture, Mat4.identity());
+        tree = new Model(new Mesh[]{cubeMesh});
+        texture = new MeshTexture("rockTexture.png");
+        cubeMesh = ModelLoader.load(v, ind, texture, Mat4.identity());
+        rock = new Model(new Mesh[]{cubeMesh});
     }
-
     @Override
     public Model getSheep() {
         return sheep;
+    }
+
+    @Override
+    public Model getTree() {
+        return tree;
+    }
+
+    @Override
+    public Model getRock() {
+        return rock;
     }
 }

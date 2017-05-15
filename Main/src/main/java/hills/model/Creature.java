@@ -137,7 +137,6 @@ public abstract class Creature implements IWoundable, IMovable, ICollidable, IAI
             forward = rotQuat.mul(forward).normalize();
             up = rotQuat.mul(up).normalize();
             right = forward.cross(up);
-        System.out.println(forward);
         }
     @Override
     public Model getModel() {

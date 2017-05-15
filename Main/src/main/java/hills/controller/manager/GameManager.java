@@ -7,6 +7,7 @@ import hills.controller.ModelInterfaceControllers.CollidableController;
 import hills.controller.ModelInterfaceControllers.MovableController;
 import hills.controller.ModelInterfaceControllers.RenderController;
 import hills.model.Creature;
+import hills.model.ImmovableObject;
 import hills.model.Player;
 import hills.services.ServiceLocator;
 import hills.services.terrain.TerrainServiceConstants;
@@ -18,6 +19,7 @@ import java.util.Random;
 public final class GameManager extends AbstractController {
 	
 	private int nNPCs = 20;
+	private int nImmovables = 200;
 	private RenderController renderController;
 	private CollidableController collidableController;
 	private MovableController movableController;
@@ -57,6 +59,20 @@ public final class GameManager extends AbstractController {
 			collidableController.addCollidable(sheep);
 			renderController.addRenderable(sheep);
 		}
+		for (int i = 0; i<nImmovables; i++){
+			ImmovableObject tree = EntityFactory.createTree(ServiceLocator.INSTANCE.getModelService().getTree(), generateTreeSpawnLocation());
+			renderController.addRenderable(tree);
+		}
+	}
+
+	private Vec3 generateTreeSpawnLocation() {
+    	Vec3 spawn;
+    	do {
+			spawn = generateSpawnLocation();
+		}while (spawn.getY()>40);
+    	return spawn;
+
+
 	}
 
 	private Vec3 generateSpawnLocation(){
