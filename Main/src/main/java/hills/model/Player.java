@@ -49,8 +49,8 @@ public class Player implements PlayerMovable, ICollidable, IAttack {
     private float defaultSpeed = 5;
     Vec3 velocityZ = new Vec3(0,0,0);
     Vec3 velocityY = new Vec3(0,0,0);
-    Vec3 gravityVelocity = new Vec3(0,-0.01f, 0);
-    Vec3 jumpVelocity = new Vec3(0,0.005f, 0);
+    Vec3 gravityVelocity = new Vec3(0,-9.82f, 0);
+    Vec3 jumpVelocity = new Vec3(0,2.0f, 0);
     //<editor-fold desc="Constructors">
 
     public Player(Vec3 pos) {
@@ -155,7 +155,6 @@ public class Player implements PlayerMovable, ICollidable, IAttack {
     public void updateMovable(float delta) {
         velocity = velocity.add(velocityY);
         pos = pos.add(velocity.mul(delta));
-        System.out.println(pos);
     }
 
     @Override
