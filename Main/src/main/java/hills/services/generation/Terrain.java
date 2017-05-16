@@ -33,16 +33,18 @@ public class Terrain {
         Thread t = new Thread();
         double[][] noise1 = noise.createMatrix(500, 1, false);
         noise.setSeed(rand.nextLong());
-        double[][] noise2 = noise.createMatrix(150, 0.8, false);
+        double[][] noise2 = noise.createMatrix(250, 0.8, false);
         noise.setSeed(rand.nextLong());
-        double[][] noise3 = noise.createMatrix(70, 0.5, false);
+        double[][] noise3 = noise.createMatrix(150, 0.6, false);
         noise.setSeed(rand.nextLong());
-        double[][] noise4 = noise.createMatrix(30, 0.4, false);
+        double[][] noise4 = noise.createMatrix(70, 0.5, false);
+        noise.setSeed(rand.nextLong());
+        double[][] noise5 = noise.createMatrix(30, 0.4, false);
         noise.setSeed(rand.nextLong());
         double maximum = 0;
         for (int x = 0; x < WIDTH; x++) {
             for (int y = 0; y < HEIGHT; y++) {
-                            double green = noise1[x][y] + noise2[x][y]*0.5 + noise3[x][y]*0.25 + noise4[x][y]*0.2;
+                            double green = noise1[x][y] + noise2[x][y]*0.5 + noise3[x][y]*0.4 + noise4[x][y]*0.25 + noise5[x][y]*0.20;
                             if (green>maximum){
                                 maximum = green;
                             }

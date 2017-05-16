@@ -28,7 +28,7 @@ public class WaterRenderer implements IRendererDrawable, IWaterRendererBatchable
 	private final FrameBuffer refractionFrameBuffer;
 	private final FrameBuffer reflectionFrameBuffer;
 
-	private List<WaterPlane> waterPlanes = new ArrayList<WaterPlane>();
+	private List<WaterPlane> waterPlanes = new ArrayList<>();
 
 	private final int REFRACTION_FB_WIDTH = 300;
 	private final int REFRACTION_FB_HEIGHT = 300;
