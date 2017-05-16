@@ -59,6 +59,9 @@ public final class GameLoop {
 	public void run() {
 		double lastCycleTime = GLFW.glfwGetTime(); // Time passed since last frame;
 		
+		int fps = 0;
+		double fpsTime = 0.0;
+		
 		while(isRunning){
 			
 			double cycleTime = GLFW.glfwGetTime();
@@ -67,8 +70,19 @@ public final class GameLoop {
 			
 			update(delta); 					// Update
 			render();      					// Render
-			if(ServiceLocator.INSTANCE.getDisplayService().hasBeenCreated())
+			
+			fps += 1;
+			fpsTime += delta;
+			
+			if(ServiceLocator.INSTANCE.getDisplayService().hasBeenCreated()){
 				ServiceLocator.INSTANCE.getDisplayService().update();     		// Update display
+				
+				if(fpsTime >= 1.0){
+					ServiceLocator.INSTANCE.getDisplayService().displayFPS(fps);
+					fps = 0;
+					fpsTime -= 1.0;
+				}
+			}
 
 		}
 		
