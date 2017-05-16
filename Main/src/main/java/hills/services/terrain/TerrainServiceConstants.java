@@ -10,7 +10,7 @@ public class TerrainServiceConstants {
 
 	/** OBS! Not true constants! **/
 	protected static final float[] RANGES = new float[10];
-	public static final float FIRST_RANGE = 128.0f;
+	public static final float FIRST_RANGE = 32.0f;
 
 	public static final float[] SCALES = { 1.0f, 2.0f, 4.0f, 8.0f, 16.0f, 32.0f, 64.0f, 128.0f, 256.0f, 512.0f };
 
@@ -19,8 +19,8 @@ public class TerrainServiceConstants {
 
 	public static final float MAX_HEIGHT = 100.0f;
 
-	public static final int TERRAIN_WIDTH = 2056;
-	public static final int TERRAIN_HEIGHT = 2056;
+	public static final int TERRAIN_WIDTH = 2048;
+	public static final int TERRAIN_HEIGHT = 2048;
 
 	public static final float WATER_HEIGHT = 30;
 	

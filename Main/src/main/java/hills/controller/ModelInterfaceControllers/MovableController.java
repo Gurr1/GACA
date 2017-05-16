@@ -33,12 +33,13 @@ public class MovableController implements KeyboardListener, MouseListener{
         player.updateMovable(delta);
         float h = ServiceLocator.INSTANCE.getTerrainHeightService()
                 .getHeight(player.get3DPos().getX(), player.get3DPos().getZ());
-        if(player.get3DPos().getY()<=h) {
-            player.setHeight(h);
-        }
-        else{
-            player.addGravityVelocity(delta);
-        }
+        player.setHeight(h);
+        //if(player.get3DPos().getY()<=h) {
+        //   player.setHeight(h);
+        //}
+        //else{
+        //    player.addGravityVelocity(delta);
+        //}
         if(runtime > update){
             updateDir = true;
             update++;
