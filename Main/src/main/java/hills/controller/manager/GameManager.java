@@ -12,14 +12,13 @@ import hills.model.Player;
 import hills.services.ServiceLocator;
 import hills.services.terrain.TerrainServiceConstants;
 import hills.util.math.Vec3;
-import hills.util.model.Model;
 
 import java.util.Random;
 
 public final class GameManager extends AbstractController {
 	
 	private int nNPCs = 20;
-	private int nImmovables = 200;
+	private int nImmovables = 20;
 	private RenderController renderController;
 	private CollidableController collidableController;
 	private MovableController movableController;

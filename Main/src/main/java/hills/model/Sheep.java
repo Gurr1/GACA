@@ -20,6 +20,8 @@ public class Sheep extends Creature{
 
 
     public Sheep(Vec3 pos, Model model){
+        matrix = Mat4.identity();
+        matrix = matrix.scale(5,5,10);
         this.model = model;
         this.pos = pos;
         this.healthPoints = 20;

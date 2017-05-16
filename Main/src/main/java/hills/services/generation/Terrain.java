@@ -2,15 +2,12 @@ package hills.services.generation;
 
 import hills.services.terrain.TerrainServiceConstants;
 import hills.util.math.Vec3;
-import org.lwjgl.system.CallbackI;
 
 import javax.imageio.ImageIO;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -118,9 +115,10 @@ public class Terrain {
                 int g = ((int)(finalMatrix[x][y]))<<8 & 0xFF00;
                 int b = ((int)(finalMatrix[x][y])) & 0xFF;
                 int rgb = r+b+g;
-                image.setRGB(x,y, rgb);
+                image.setRGB(x,y,rgb);
             }
         }
+  //      blurImage(image);
         try {
             ImageIO.write(image, "png", new File(HEIGHT_MAP_PATH));
         } catch (IOException e) {
@@ -128,6 +126,30 @@ public class Terrain {
         }
         generateTerrain(finalMatrix);
     }
+
+    private void blurImage(BufferedImage bf) {
+        double[][] blur = {
+                {0.003765, 0.015019, 0.023792, 0.015019, 0.003765},
+                {0.015019, 0.059912, 0.094907, 0.059912, 0.015019},
+                {0.023792, 0.094907, 0.150342, 0.094907, 0.023792},
+                {0.015019, 0.059912, 0.094907, 0.059912, 0.015019},
+                {0.003765, 0.015019, 0.023792, 0.015019, 0.003765}};
+        for(int x = 20; x < WIDTH-20; x++) {
+            for(int y = 20; y<HEIGHT-20; y++) {
+                long rgb = 0;
+                for (int i = -2; i < blur.length-2; i++) {
+                    for (int j = -2; j < blur[0].length-2; j++) {
+                        rgb += bf.getRGB(i+x, j+y)*blur[i+2][j+2];
+                        if(x == 1028 && y == 1028){
+                            System.out.println(rgb);
+                        }
+                    }
+                }
+       //         image.setRGB(x,y, rgb);
+            }
+        }
+    }
+
     private void generateTerrain(double[][] terrain){
         BufferedImage image = new BufferedImage(terrain.length, terrain[0].length, BufferedImage.TYPE_INT_RGB);
         float upValue;
