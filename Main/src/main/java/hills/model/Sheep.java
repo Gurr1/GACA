@@ -1,6 +1,5 @@
 package hills.model;
 
-import hills.util.math.Mat4;
 import hills.util.math.Vec3;
 import hills.util.math.shape.Sphere;
 import hills.util.model.Model;
@@ -20,8 +19,6 @@ public class Sheep extends Creature{
 
 
     public Sheep(Vec3 pos, Model model){
-        matrix = Mat4.identity();
-        matrix = matrix.scale(5,5,10);
         this.model = model;
         this.pos = pos;
         this.healthPoints = 20;
