@@ -40,6 +40,10 @@ public class EntityFactory {
 
     public static Coin createCoin(Vec3 position) {return new Coin(position); }
 
+    public static ImmovableObject createTree(Model model, Vec3 position){
+        return new Tree(position, model);
+    }
+
     //TODO bug etc
 
 

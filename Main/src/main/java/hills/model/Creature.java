@@ -1,5 +1,6 @@
 package hills.model;
 
+import hills.util.math.Mat4;
 import hills.util.math.Quaternion;
 import hills.util.math.Vec2;
 import hills.util.math.Vec3;
@@ -11,7 +12,7 @@ import lombok.Setter;
 /**
  * Created by Anders on 2017-04-03.
  */
-public abstract class Creature implements IWoundable, IMovable, ICollidable, IAIMovable{
+public abstract class Creature implements IWoundable, IMovable, ICollidable, IAIMovable, IRenderable{
 
     /**
      * {@inheritDoc}
@@ -26,10 +27,10 @@ public abstract class Creature implements IWoundable, IMovable, ICollidable, IAI
     protected float yaw;
     protected float pitch;
     protected Vec3 forward = new Vec3(0,0,-1.0f);
-    protected Vec3 right = new Vec3(0,1.0f,0);
-    protected Vec3 up = new Vec3(1.0f,0,0);
-    protected Vec3 velocityX = new Vec3(0,0,0);
-    protected Vec3 velocityZ = new Vec3(0,0,0);
+    protected Vec3 right = new Vec3(1.0f,0,0);
+    protected Vec3 up = new Vec3(0,1.0f,0);
+    protected Vec3 velocityX = new Vec3(1,0,0);
+    protected Vec3 velocityZ = new Vec3(1,0,0);
 
     @Override
     public abstract Sphere getBoundingSphere();
@@ -84,6 +85,8 @@ public abstract class Creature implements IWoundable, IMovable, ICollidable, IAI
     @Override
     public void setYaw(float yaw) {
         this.yaw = yaw;
+        updateVectors(up, yaw);
+        updateVelocity();
     }
 
     @Override
@@ -135,4 +138,16 @@ public abstract class Creature implements IWoundable, IMovable, ICollidable, IAI
             up = rotQuat.mul(up).normalize();
             right = forward.cross(up);
         }
+    @Override
+    public Model getModel() {
+        return model;
+    }
+
+    @Override
+    public Mat4 getMatrix() {
+        Mat4 matrix = Mat4.identity();
+        matrix = matrix.scale(5,5,10);
+        matrix = matrix.translate(pos);
+        return matrix;
+    }
 }

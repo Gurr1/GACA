@@ -35,9 +35,9 @@ public class RandomWalker {
                     138,236,205,93,222,114,67,29,24,72,243,141,128,195,78,66,215,61,156,180
             };
 
-    float generate(float x)
+    float generate(float x)         // this doesn't seem to work?
     {
-        x = x/1000;
+        x = x/600;
         int flooredX = FastFloor(x);
         int roofedX = flooredX + 1;
         float fromFlooredInt = x - flooredX;
@@ -51,8 +51,6 @@ public class RandomWalker {
         float t1 = 1.0f - toFlooredInt * toFlooredInt;
         t1 *= t1;
         gradient2 = t1 * t1 * grad(permOriginal[roofedX & 0xff], toFlooredInt);
-        // The maximum value of this noise is 8*(3/4)^4 = 2.53125
-        // A factor of 0.395 scales to fit exactly within [-1,1]
         return 0.395f * (gradient1 + gradient2);
     }
     private static int FastFloor(float x)

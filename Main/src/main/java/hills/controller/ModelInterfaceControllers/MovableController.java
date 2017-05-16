@@ -17,7 +17,7 @@ import java.util.List;
 public class MovableController implements KeyboardListener, MouseListener{
     private PlayerMovable player;
     private List<IMovable> movableList = new ArrayList<>();
-
+    int update = 1;
     public MovableController(){
         InputMediator.INSTANCE.subscribeToKeyboard(this);
         InputMediator.INSTANCE.subscribeToMouse(this);
@@ -29,6 +29,7 @@ public class MovableController implements KeyboardListener, MouseListener{
         player = movable;
     }
     public void updateMovables(float delta, double runtime){
+        boolean updateDir = false;
         player.updateMovable(delta);
         float h = ServiceLocator.INSTANCE.getTerrainHeightService()
                 .getHeight(player.get3DPos().getX(), player.get3DPos().getZ());
@@ -38,19 +39,27 @@ public class MovableController implements KeyboardListener, MouseListener{
         else{
             player.addGravityVelocity(delta);
         }
+        if(runtime > update){
+            updateDir = true;
+            update++;
+        }
         for(IMovable movable : movableList){
             movable.updateMovable(delta);
             movable.setHeight(ServiceLocator.INSTANCE.getTerrainHeightService().getHeight(movable.get3DPos()));
-            if(runtime % 1000 == 0){
-                movable.setYaw((float) ServiceLocator.INSTANCE.getGenerationService().generateDirection((float) runtime/1000));
+            if(updateDir){
+                double dir = ServiceLocator.INSTANCE.getGenerationService().generateDirection((float) runtime*1000)*360;
+                movable.setYaw((float) dir);
             }
         }
-        ServiceLocator.INSTANCE.getCameraDataService().setPosition(player.getHeadPos());
-        ServiceLocator.INSTANCE.getCameraDataService().setOrientation
-                (player.getRightVector(), player.getUpVector(), player.getForwardVector(), false);
+        updateCamera();
         // Send updates to all saved objects.
     }
 
+    private void updateCamera(){
+        ServiceLocator.INSTANCE.getCameraDataService().setPosition(player.getHeadPos());
+        ServiceLocator.INSTANCE.getCameraDataService().setOrientation
+                (player.getRightVector(), player.getUpVector(), player.getForwardVector(), false);
+    }
     @Override
     public void mouseMoved(float xVelocity, float yVelocity) {
         player.updateYaw(xVelocity*-0.3f);

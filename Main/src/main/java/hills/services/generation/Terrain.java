@@ -2,12 +2,15 @@ package hills.services.generation;
 
 import hills.services.terrain.TerrainServiceConstants;
 import hills.util.math.Vec3;
+import org.lwjgl.system.CallbackI;
 
 import javax.imageio.ImageIO;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -115,7 +118,7 @@ public class Terrain {
                 int g = ((int)(finalMatrix[x][y]))<<8 & 0xFF00;
                 int b = ((int)(finalMatrix[x][y])) & 0xFF;
                 int rgb = r+b+g;
-                image.setRGB(x,y,rgb);
+                image.setRGB(x,y, rgb);
             }
         }
         try {
@@ -127,21 +130,76 @@ public class Terrain {
     }
     private void generateTerrain(double[][] terrain){
         BufferedImage image = new BufferedImage(terrain.length, terrain[0].length, BufferedImage.TYPE_INT_RGB);
+        float upValue;
+        Vec3 upVec = new Vec3(0,0,0);
+        float leftValue;
+        Vec3 leftVec = new Vec3(0,0,0);
+        float rightValue;
+        Vec3 rightVec = new Vec3(0,0,0);
+        float downValue;
+        Vec3 downVec = new Vec3(0,0,0);
         for(int x = 1; x < terrain.length-1; x++){          // Since the last rows are always Black, no Normal-calculations are needed.
             for(int y = 1; y<terrain[0].length-1; y++){
-                if(terrain[x][y]==0 && terrain[x+1][y] == 0     // Speeds up calculations by ignoring all black space.
-                        && terrain[x][y+1] == 0 && terrain[x][y+1] == 0){
+                if(terrain[x-1][y-1]==0 && terrain[x-1][y+1] == 0     // Speeds up calculations by ignoring all black space.
+                        && terrain[x+1][y-1] == 0 && terrain[x+1][y+1] == 0){
                     image.setRGB(x,y,0);
                     continue;
                 }
-                Vec3 v1 = new Vec3(x-1, (float)terrain[x-1][y-1], y-1);
+                float value = (float) (terrain[x][y] / 255.0f * 100);
+
+                if(y > 0) {
+                    upValue = (float) (terrain[x][y - 1] / 255.0f * 100);
+                    upVec = new Vec3(0.0f, upValue - value, -1.0f).normalize();
+                }
+
+                if(x > 0){
+                    leftValue = (float) (terrain[x - 1][y] / 255.0f * 100);
+                    leftVec = new Vec3(-1.0f, leftValue - value, 0.0f).normalize();
+                }
+
+                if(x < terrain.length - 1){
+                    rightValue = (float) (terrain[x + 1][y] / 255.0f * 100);
+                    rightVec = new Vec3(1.0f, rightValue - value, 0.0f).normalize();
+                }
+
+                if(y < terrain[0].length - 1){
+                    downValue = (float) (terrain[x][y + 1]/ 255.0f * 100);
+                    downVec = new Vec3(0.0f, downValue - value, 1.0f).normalize();
+                }
+
+                Vec3 result = new Vec3(0.0f, 0.0f, 0.0f);
+                if(y > 0 && x > 0)
+                    result = result.add(upVec.cross(leftVec));
+
+                if(x > 0 && y < terrain[0].length - 1)
+                    result = result.add(leftVec.cross(downVec));
+
+                if(y < terrain[0].length - 1 && x < terrain.length - 1)
+                    result = result.add(downVec.cross(rightVec));
+
+                if(x < terrain.length - 1 && y > 0)
+                    result = result.add(rightVec.cross(upVec));
+
+                result = result.normalize().add(1.0f).div(2.0f);
+
+                image.setRGB(x, y, new Color(result.getX(), result.getY(), result.getZ()).getRGB());
+            }
+        }
+
+
+
+
+
+                //Vec3 normX = new Vec3((terrainVertices[x - 1 + ZTimesSize].Position.Y - terrainVertices[x + 1 + ZTimesSize].Position.Y) / 2, 1, 0);
+               // Vec3 normZ = new Vec3(0, 1, (terrainVertices[x + (z - 1) * this.size].Position.Y - terrainVertices[x + (z + 1) * this.size].Position.Y) / 2);
+          /*      Vec3 v1 = new Vec3(x-1, (float)terrain[x-1][y-1], y-1);
                 Vec3 v2 = new Vec3(x-1, (float)terrain[x-1][y+1],y+1);
                 Vec3 v3 = new Vec3(x+1, (float)terrain[x+1][y-1],y-1);
                 Vec3 v4 = new Vec3(x+1, (float)terrain[x+1][y+1], y+1);
                 int[]rgb = generateNormal(v1,v2,v3,v4);
                 image.getRaster().setPixel(x,y,rgb);
             }
-        }
+        }*/
         try {
             ImageIO.write(image, "png", new File(NORMAL_MAP_PATH));
         } catch (IOException e) {
@@ -149,11 +207,14 @@ public class Terrain {
         }
     }
     private int[] generateNormal(Vec3 v1, Vec3 v2, Vec3 v3, Vec3 v4) {
-        Vec3 rel1 = v1.sub(v2);
-        Vec3 rel2 = v3.sub(v4);
-        Vec3 normal =  rel1.cross(rel2).normalize();
+
+        Vec3 rel1 = v4.sub(v1);
+        Vec3 rel2 = v2.sub(v3);
+        System.out.println("rel1 " + rel1);
+        System.out.println("rel2 " + rel2);
+        Vec3 normal = rel2.cross(rel1).normalize();
         return new int[] {(int)(normal.getX() * 255),
-                (int)(normal.getZ() * 255), (int)(normal.getY() * 255)};
+                (int)(normal.getY() * 255), (int)(normal.getZ() * 255)};
     }
 
     private double setMinusToZero(double green) {
