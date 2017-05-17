@@ -22,8 +22,8 @@ public class ObjectPlacer {
     private int HEIGHT;
     private int COLOR = 255;
     private double DENSITY = 0.2;
-    private double RADIUS = 1;
-    private double OPTIMAL_HEIGHT = 0.3;
+    @Getter private double RADIUS = 1;
+    private double OPTIMAL_HEIGHT = 0.2;
     @Getter private BufferedImage OBJECT_MAP;
     private BufferedImage NOISE_MAP;
     private List<Vec3> vecList = new ArrayList<>();
@@ -31,6 +31,9 @@ public class ObjectPlacer {
 
 
     public ObjectPlacer() {
+        terrainHeight = ServiceLocator.INSTANCE.getTerrainHeightService();
+        HEIGHT = TerrainServiceConstants.TERRAIN_HEIGHT;
+        WIDTH = TerrainServiceConstants.TERRAIN_WIDTH;
     }
 
     /**
@@ -60,7 +63,7 @@ public class ObjectPlacer {
         IGenerationMediator gm= ServiceLocator.INSTANCE.getGenerationService();
         NOISE_MAP = gm.getRandomNoisemap(1.0f,1.0f);
         //NOISE_MAP.create2DNoiseImage("ObjectDensity");
-        OBJECT_MAP = new BufferedImage(WIDTH,HEIGHT, BufferedImage.TYPE_3BYTE_BGR);
+        OBJECT_MAP = new BufferedImage(2048,2048, BufferedImage.TYPE_3BYTE_BGR);
        // copyImage(OBJECT_MAP, HEIGHT_MAP);
         CalculatePlacement();
         return vecList;
@@ -75,8 +78,8 @@ public class ObjectPlacer {
 
 
     private void CalculatePlacement() { //calculates for each pixel if an object will be placed or not and marks it in OBJECT_MAP
-        for (int i = 0; i < WIDTH; i++) {
-            for (int j = 0; j < WIDTH; j++) {
+        for (int i = 0; i < WIDTH-1; i++) {
+            for (int j = 0; j < WIDTH-1; j++) {
                 float height = terrainHeight.getHeight(j,i);
                 if (height != 0 && canPlace(height, j, i)) {
                     OBJECT_MAP.setRGB(j, i, new Color(COLOR,0,0).getRGB());
@@ -108,19 +111,6 @@ public class ObjectPlacer {
                 }
             }
         }
-       /* for (Point p : pointList) {
-            int tempX = x - p.x;
-            int tempY = y - p.y;
-            if (tempY < 0) {
-                return true;
-            }
-            if (tempX >= 0 && tempX < WIDTH && (tempX * tempX) + (tempY * tempY) <= (RADIUS * RADIUS)) {
-                Color c = new Color(OBJECT_MAP.getRGB(tempX, tempY));
-                if (c.getRed() > 0) {
-                    return false;
-                }
-            }*/
-
 
         return true;
     }
@@ -129,7 +119,7 @@ public class ObjectPlacer {
         double prob = height / TerrainServiceConstants.MAX_HEIGHT;
         Color c = new Color(NOISE_MAP.getRGB(x,y));
         prob = NormalDistribution.solve(prob, OPTIMAL_HEIGHT, 0.01, 0, 0.5);
-        prob *= NormalDistribution.solve(c.getGreen(), 1, 0.02, 0, 0.5);
+        prob *= NormalDistribution.solve(c.getBlue(), 1, 0.02, 0, 0.5);
         prob *= DENSITY;
         return prob;
     }
