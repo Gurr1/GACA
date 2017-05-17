@@ -15,7 +15,7 @@ public class EntityFactory {
         return new Player(position);
     }
 
-    public static Sheep createSheep(Vec3 position) {return new Sheep(position); }
+    public static Sheep createSheep(Model model, Vec3 position) {return new Sheep(position, model); }
 
     public static RamSheep createRamSheep(Vec3 position) {return new RamSheep(position); }
 
@@ -24,7 +24,7 @@ public class EntityFactory {
         int x = random.nextInt(2);
 
         if (x == 0){
-            return new Sheep(position);
+            return new Sheep(position, model);
         }
         else return new RamSheep(position);
     }
@@ -33,12 +33,16 @@ public class EntityFactory {
         Random random = new Random();
         int x = random.nextInt(100);
 
-        if ((sheepChance >= 100) || (x <= sheepChance)){return new Sheep(position); }
+        if ((sheepChance >= 100) || (x <= sheepChance)){return new Sheep(position, model); }
 
         else return new RamSheep(position);
     }
 
     public static Coin createCoin(Vec3 position) {return new Coin(position); }
+
+    public static ImmovableObject createTree(Model model, Vec3 position){
+        return new Tree(position, model);
+    }
 
     //TODO bug etc
 

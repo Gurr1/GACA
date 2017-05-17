@@ -3,7 +3,6 @@ package hills.controller.ModelInterfaceControllers;
 import hills.controller.InputControllers.InputMediator;
 import hills.controller.InputControllers.KeyboardListener;
 import hills.controller.InputControllers.MouseListener;
-import hills.controller.ServiceMediator;
 import hills.model.IMovable;
 import hills.model.PlayerMovable;
 import hills.services.ServiceLocator;
@@ -18,7 +17,7 @@ import java.util.List;
 public class MovableController implements KeyboardListener, MouseListener{
     private PlayerMovable player;
     private List<IMovable> movableList = new ArrayList<>();
-
+    int update = 1;
     public MovableController(){
         InputMediator.INSTANCE.subscribeToKeyboard(this);
         InputMediator.INSTANCE.subscribeToMouse(this);
@@ -30,21 +29,38 @@ public class MovableController implements KeyboardListener, MouseListener{
         player = movable;
     }
     public void updateMovables(float delta, double runtime){
+        boolean updateDir = false;
         player.updateMovable(delta);
-        float h = ServiceMediator.INSTANCE.getHeight(player.get3DPos().getX(), player.get3DPos().getZ());
+        float h = ServiceLocator.INSTANCE.getTerrainHeightService()
+                .getHeight(player.get3DPos().getX(), player.get3DPos().getZ());
         player.setHeight(h);
+        //if(player.get3DPos().getY()<=h) {
+        //   player.setHeight(h);
+        //}
+        //else{
+        //    player.addGravityVelocity(delta);
+        //}
+        if(runtime > update){
+            updateDir = true;
+            update++;
+        }
         for(IMovable movable : movableList){
             movable.updateMovable(delta);
-            if(runtime % 1000 == 0){
-
+            movable.setHeight(ServiceLocator.INSTANCE.getTerrainHeightService().getHeight(movable.get3DPos()));
+            if(updateDir){
+                double dir = ServiceLocator.INSTANCE.getGenerationService().generateDirection((float) runtime*1000)*360;
+                movable.setYaw((float) dir);
             }
         }
-        ServiceLocator.INSTANCE.getCameraDataService().setPosition(player.get3DPos());
-        ServiceLocator.INSTANCE.getCameraDataService().setOrientation
-                (player.getRightVector(), player.getUpVector(), player.getForwardVector(), false);
+        updateCamera();
         // Send updates to all saved objects.
     }
 
+    private void updateCamera(){
+        ServiceLocator.INSTANCE.getCameraDataService().setPosition(player.getHeadPos());
+        ServiceLocator.INSTANCE.getCameraDataService().setOrientation
+                (player.getRightVector(), player.getUpVector(), player.getForwardVector(), false);
+    }
     @Override
     public void mouseMoved(float xVelocity, float yVelocity) {
         player.updateYaw(xVelocity*-0.3f);
@@ -60,6 +76,8 @@ public class MovableController implements KeyboardListener, MouseListener{
     public void keyReleased(int key, int mods) {
         setDirection(key, mods, false);
     }
+
+
     private void setDirection(int key, int mods, boolean pressed){
         System.out.println(key);
         if(key == GLFW.GLFW_KEY_LEFT_SHIFT){
@@ -77,6 +95,13 @@ public class MovableController implements KeyboardListener, MouseListener{
                 break;
             case GLFW.GLFW_KEY_D:
                 player.addVelocity(PlayerMovable.Direction.RIGHT, pressed);       // Left Velocity
+                break;
+            case  GLFW.GLFW_KEY_SPACE:
+                if(player.getVelocity().getY()<=0 &&
+                        player.get3DPos().getY()<=ServiceLocator.
+                                INSTANCE.getTerrainHeightService().getHeight(player.get3DPos())+0.1) {
+                    player.addVelocity(PlayerMovable.Direction.UP, pressed);
+                }
                 break;
         }
     }

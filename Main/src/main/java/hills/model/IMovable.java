@@ -41,4 +41,6 @@ public interface IMovable {
     void updateYaw(float deltaYaw);
 
     void updateMovable(float delta);
+
+    void addGravityVelocity(float delta);
 }

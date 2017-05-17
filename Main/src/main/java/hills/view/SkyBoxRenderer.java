@@ -14,8 +14,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
-public enum SkyBoxRenderer {
-	INSTANCE();
+public final class SkyBoxRenderer implements IRendererDrawable, ISkyBoxData {
 	
 	private final ShaderProgram shaderProgram;
 	private final MeshData meshData;
@@ -23,7 +22,7 @@ public enum SkyBoxRenderer {
 	private final String EXTENSION = "_blue";
 	private CubeMap skyBoxCubeMap;
 	
-	private SkyBoxRenderer(){
+	protected SkyBoxRenderer(){
 		shaderProgram = ShaderProgram.SKY_BOX;
 		meshData = ModelLoader.load(SKY_BOX_VERTICES, SKY_BOX_INDICES, null, Mat4.identity()).getMeshData();
 		

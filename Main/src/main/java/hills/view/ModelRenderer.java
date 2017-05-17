@@ -19,14 +19,14 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.system.MemoryStack;
 
-public final class ModelRenderer {
+public final class ModelRenderer implements IModelRendererBatchable, IRendererDrawable {
 	
 	/**
 	 * Holds all rendering data for next round of rendering.
 	 */
 	private static Map<ShaderProgram, Map<MeshData, Map<MeshTexture, List<Mat4>>>> batch = new HashMap<ShaderProgram, Map<MeshData, Map<MeshTexture, List<Mat4>>>>();
 	
-	private ModelRenderer(){} // Private constructor no instances
+	protected ModelRenderer(){} // Private constructor no instances
 	
 	/**
 	 * Add model to render batch. All batched models will be rendered automatically and then removed from batch.
@@ -34,7 +34,7 @@ public final class ModelRenderer {
 	 * @param model - model to render.
 	 * @param transformation - Transformation matrix to use when rendering.
 	 */
-	public static void batch(ShaderProgram program, Model model, Mat4 transformation){
+	public void batch(ShaderProgram program, Model model, Mat4 transformation){
 		Mesh[] meshes = model.getMeshes();
 		
 		if(!batch.containsKey(program))
@@ -64,7 +64,7 @@ public final class ModelRenderer {
 	/**
 	 * Clears the current batch list. Should be called every draw loop.
 	 */
-	public static void clearBatch(){
+	public void clearBatch(){
 		// Clear batch
 		batch.clear();
 	}
@@ -73,7 +73,7 @@ public final class ModelRenderer {
 	 * OBS! Should only be called from GameLoop!
 	 * Renders all batched models (from mesh map).
 	 */
-	public static void render(){
+	public void render(){
 		// TODO More customized rendering
 		
 		for(ShaderProgram shaderProgram: batch.keySet()){

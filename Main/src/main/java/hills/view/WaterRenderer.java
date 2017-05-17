@@ -20,8 +20,7 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.system.MemoryStack;
 
-public enum WaterRenderer {
-	INSTANCE();
+public class WaterRenderer implements IRendererDrawable, IWaterRendererBatchable {
 
 	private final ShaderProgram shaderProgram = ShaderProgram.WATER;
 	private final MeshData meshData;
@@ -29,14 +28,14 @@ public enum WaterRenderer {
 	private final FrameBuffer refractionFrameBuffer;
 	private final FrameBuffer reflectionFrameBuffer;
 
-	private List<WaterPlane> waterPlanes = new ArrayList<WaterPlane>();
+	private List<WaterPlane> waterPlanes = new ArrayList<>();
 
 	private final int REFRACTION_FB_WIDTH = 300;
 	private final int REFRACTION_FB_HEIGHT = 300;
 	private final int REFLECTION_FB_WIDTH = 300;
 	private final int REFLECTION_FB_HEIGHT = 300;
 
-	private WaterRenderer() {
+	protected WaterRenderer() {
 		meshData = ModelLoader.load(WaterPlane.WATER_PLANE_VERTICES,
 				WaterPlane.WATER_PLANE_INDICES, null, Mat4.identity())
 				.getMeshData();
@@ -75,9 +74,14 @@ public enum WaterRenderer {
 				ShaderProgram.map("WATER_CLIP_PLANES", "WATER_CLIP_PLANE", buffer);
 			}
 
-			// Render world
-			TerrainRenderer.INSTANCE.render();
-			ModelRenderer.render();
+			// Get world renderer (TODO: Change access)
+			IRendererDrawable terrainDraw = RenderLocator.INSTANCE.getTerrainDrawable();
+			IRendererDrawable modelDraw = RenderLocator.INSTANCE.getModelDrawable();
+			IRendererDrawable skyBoxDraw = RenderLocator.INSTANCE.getSkyBoxDrawable();
+			
+			// Render world		
+			terrainDraw.render();
+			modelDraw.render();
 
 			// Unbind refraction frame buffer
 			refractionFrameBuffer.unbind();
@@ -98,8 +102,8 @@ public enum WaterRenderer {
 			}
 
 			// Render world
-			TerrainRenderer.INSTANCE.render();
-			ModelRenderer.render();
+			terrainDraw.render();
+			modelDraw.render();
 
 			// Unbind reflection frame buffer
 			reflectionFrameBuffer.unbind();
@@ -112,7 +116,7 @@ public enum WaterRenderer {
 			// Activate shader program
 			shaderProgram.enable();
 
-			SkyBoxRenderer.INSTANCE.getSkyBoxCubeMap().bind(); // Unable to call after bindVertexArray call ?!
+			RenderLocator.INSTANCE.getSkyBoxData().getSkyBoxCubeMap().bind(); // Unable to call after bindVertexArray call ?!
 
 			// Bind mesh VAO
 			GL30.glBindVertexArray(meshData.getVao());

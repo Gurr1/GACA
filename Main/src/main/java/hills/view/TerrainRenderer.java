@@ -13,9 +13,7 @@ import org.lwjgl.system.MemoryStack;
 import java.nio.ByteBuffer;
 import java.util.List;
 
-public enum TerrainRenderer {
-	INSTANCE();
-
+public class TerrainRenderer implements ITerrainRendererBatchable, IRendererDrawable {
 	private final ShaderProgram shaderProgram = ShaderProgram.TERRAIN;
 	private GridMeshData gridMeshData; // TerrainLoader.loadGridMesh(TerrainSystem.GRID_WIDTH, TerrainSystem.GRID_DEPTH);
 	private TerrainTexture texture;
@@ -24,13 +22,14 @@ public enum TerrainRenderer {
 
 	private List<LODNode> nodes;
 
-	private TerrainRenderer() {
+	protected TerrainRenderer() {
 	} // Private constructor no instance
 
 	public void batchNodes(List<LODNode> nodes, GridMeshData gridMeshData, TerrainTexture texture) {
 		this.nodes = nodes;
 		this.gridMeshData = gridMeshData;
 		this.texture = texture;
+		System.out.println(nodes.size());
 	}
 
 	public void render() {

@@ -5,74 +5,21 @@ import hills.controller.EntityFactory;
 import hills.controller.ModelInterfaceControllers.AttackController;
 import hills.controller.ModelInterfaceControllers.CollidableController;
 import hills.controller.ModelInterfaceControllers.MovableController;
-import hills.controller.ServiceMediator;
+import hills.controller.ModelInterfaceControllers.RenderController;
 import hills.model.Creature;
+import hills.model.ImmovableObject;
 import hills.model.Player;
-import hills.util.math.Vec2;
+import hills.services.ServiceLocator;
+import hills.services.terrain.TerrainServiceConstants;
 import hills.util.math.Vec3;
-import hills.util.math.Vertex;
-import hills.util.model.MeshTexture;
-import hills.util.model.Model;
+
+import java.util.Random;
 
 public final class GameManager extends AbstractController {
 	
-	private int nNPCs = 10;
-	Vertex[] v = {
-			new Vertex(new Vec3(-.5f, -.5f, .5f), new Vec2(0.0f, 0.0f), new Vec3(0.0f, 0.0f, 1.0f)),
-			new Vertex(new Vec3(-.5f, -.5f, .5f), new Vec2(0.0f, 1.0f), new Vec3(0.0f, -1.0f, 0.0f)),
-			new Vertex(new Vec3(-.5f, -.5f, .5f), new Vec2(1.0f, 0.0f), new Vec3(-1.0f, 0.0f, 0.0f)),
-			
-			new Vertex(new Vec3(.5f, -.5f, .5f), new Vec2(1.0f, 0.0f), new Vec3(0.0f, 0.0f, 1.0f)),
-			new Vertex(new Vec3(.5f, -.5f, .5f), new Vec2(1.0f, 1.0f), new Vec3(0.0f, -1.0f, 0.0f)),
-			new Vertex(new Vec3(.5f, -.5f, .5f), new Vec2(0.0f, 0.0f), new Vec3(1.0f, 0.0f, 0.0f)),
-			
-			new Vertex(new Vec3(.5f, .5f, .5f), new Vec2(1.0f, 1.0f), new Vec3(0.0f, 0.0f, 1.0f)),
-			new Vertex(new Vec3(.5f, .5f, .5f), new Vec2(1.0f, 0.0f), new Vec3(0.0f, 1.0f, 0.0f)),
-			new Vertex(new Vec3(.5f, .5f, .5f), new Vec2(0.0f, 1.0f), new Vec3(1.0f, 0.0f, 0.0f)),
-			
-			new Vertex(new Vec3(-.5f, .5f, .5f), new Vec2(0.0f, 1.0f), new Vec3(0.0f, 0.0f, 1.0f)),
-			new Vertex(new Vec3(-.5f, .5f, .5f), new Vec2(0.0f, 0.0f), new Vec3(0.0f, 1.0f, 0.0f)),
-			new Vertex(new Vec3(-.5f, .5f, .5f), new Vec2(1.0f, 1.0f), new Vec3(-1.0f, 0.0f, 0.0f)),
-			
-			new Vertex(new Vec3(-.5f, -.5f, -.5f), new Vec2(1.0f, 0.0f), new Vec3(0.0f, 0.0f, -1.0f)),
-			new Vertex(new Vec3(-.5f, -.5f, -.5f), new Vec2(0.0f, 0.0f), new Vec3(0.0f, -1.0f, 0.0f)),
-			new Vertex(new Vec3(-.5f, -.5f, -.5f), new Vec2(0.0f, 0.0f), new Vec3(-1.0f, 0.0f, 0.0f)),
-			
-			new Vertex(new Vec3(.5f, -.5f, -.5f), new Vec2(0.0f, 0.0f), new Vec3(0.0f, 0.0f, -1.0f)),
-			new Vertex(new Vec3(.5f, -.5f, -.5f), new Vec2(1.0f, 0.0f), new Vec3(0.0f, -1.0f, 0.0f)),
-			new Vertex(new Vec3(.5f, -.5f, -.5f), new Vec2(1.0f, 0.0f), new Vec3(1.0f, 0.0f, 0.0f)),
-			
-			new Vertex(new Vec3(.5f, .5f, -.5f), new Vec2(0.0f, 1.0f), new Vec3(0.0f, 0.0f, -1.0f)),
-			new Vertex(new Vec3(.5f, .5f, -.5f), new Vec2(1.0f, 1.0f), new Vec3(0.0f, 1.0f, 0.0f)),
-			new Vertex(new Vec3(.5f, .5f, -.5f), new Vec2(1.0f, 1.0f), new Vec3(1.0f, 0.0f, 0.0f)),
-			
-			new Vertex(new Vec3(-.5f, .5f, -.5f), new Vec2(1.0f, 1.0f), new Vec3(0.0f, 0.0f, -1.0f)),
-			new Vertex(new Vec3(-.5f, .5f, -.5f), new Vec2(0.0f, 1.0f), new Vec3(0.0f, 1.0f, 0.0f)),
-			new Vertex(new Vec3(-.5f, .5f, -.5f), new Vec2(0.0f, 1.0f), new Vec3(-1.0f, 0.0f, 0.0f)),
-	};
-	
-	int[] ind = {
-			0, 3, 6,
-			0, 6, 9,
-			
-			15, 12, 21,
-			15, 21, 18,
-			
-			14, 2, 11,
-			14, 11, 23,
-			
-			5, 17, 20,
-			5, 20, 8,
-			
-			10, 7, 19,
-			10, 19, 22,
-			
-			13, 16, 4,
-			13, 4, 1
-	};
-	
-	MeshTexture texture;
-	Model model, cube;
+	private int nNPCs = 20;
+	private int nImmovables = 20;
+	private RenderController renderController;
 	private CollidableController collidableController;
 	private MovableController movableController;
 	private AttackController attackController;
@@ -84,11 +31,8 @@ public final class GameManager extends AbstractController {
 		movableController = new MovableController();
 		collidableController = new CollidableController();
 		attackController = new AttackController();
+		renderController = new RenderController();
 		loadGame();
-		//texture = new MeshTexture("test.png");
-		
-		//Mesh cubeMesh = ModelLoader.load(v, ind, texture, Mat4.identity());
-		//cube = new model(new Mesh[]{cubeMesh});
 	}
 
 	private void loadGame() {
@@ -101,17 +45,46 @@ public final class GameManager extends AbstractController {
         // Load rocks, trees etc.
     }
 
+    Player p;
     private void loadEntities() {
-		Player p = EntityFactory.createPlayer(
-                ServiceMediator.INSTANCE.generateSpawnLocation());
+		p = EntityFactory.createPlayer(
+                generateSpawnLocation());
 		movableController.setPlayer(p);
 		collidableController.addCollidable(p);
 		attackController.setPlayer(p);
 		for(int i = 0; i < nNPCs; i++){
-            Creature sheep = EntityFactory.createSheep(ServiceMediator.INSTANCE.generateSpawnLocation());
+            Creature sheep = EntityFactory.createSheep(ServiceLocator.INSTANCE.getModelService().getSheep(), generateSpawnLocation());
 			movableController.addAIMovable(sheep);
 			collidableController.addCollidable(sheep);
+			renderController.addRenderable(sheep);
 		}
+		for (int i = 0; i<nImmovables; i++){
+			ImmovableObject tree = EntityFactory.createTree(ServiceLocator.INSTANCE.getModelService().getTree(), generateTreeSpawnLocation());
+			renderController.addRenderable(tree);
+		}
+	}
+
+	private Vec3 generateTreeSpawnLocation() {
+    	Vec3 spawn;
+    	do {
+			spawn = generateSpawnLocation();
+		}while (spawn.getY()>40);
+    	return spawn;
+
+
+	}
+
+	private Vec3 generateSpawnLocation(){
+		Random random = new Random();
+		int x;
+		int z;
+		float y;
+		do {
+			x = random.nextInt(TerrainServiceConstants.TERRAIN_WIDTH-1);
+			z = random.nextInt(TerrainServiceConstants.TERRAIN_HEIGHT-1);
+			y = ServiceLocator.INSTANCE.getTerrainHeightService().getHeight(x,z);
+		}while(y < TerrainServiceConstants.WATER_HEIGHT);
+		return new Vec3(x, y, z);
 	}
 
 	@Override
@@ -123,7 +96,8 @@ public final class GameManager extends AbstractController {
 
 	@Override
 	public void render() {
-	//	ModelRenderer.batch(ShaderProgram.STATIC, cube, Mat4.identity().scale(16.0f * 2, 16.0f * 2, 16.0f * 2).translate(CameraSystem.getInstance().getPosition().mul(new Vec3(1.0f, 0.0f, 1.0f))));
+		renderController.updateRender();
+		//.scale(16.0f * 2, 16.0f * 2, 16.0f * 2).translate(CameraSystem.getInstance().getPosition().mul(new Vec3(1.0f, 0.0f, 1.0f))));
 	}
 
 	@Override

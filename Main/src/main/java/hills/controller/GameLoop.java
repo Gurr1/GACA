@@ -6,6 +6,7 @@ import hills.util.loader.ModelLoader;
 import hills.util.loader.TextureLoader;
 import hills.util.shader.ShaderProgram;
 import hills.view.ModelRenderer;
+import hills.view.RenderLocator;
 import hills.view.SkyBoxRenderer;
 import hills.view.TerrainRenderer;
 import hills.view.WaterRenderer;
@@ -58,6 +59,9 @@ public final class GameLoop {
 	public void run() {
 		double lastCycleTime = GLFW.glfwGetTime(); // Time passed since last frame;
 		
+		int fps = 0;
+		double fpsTime = 0.0;
+		
 		while(isRunning){
 			
 			double cycleTime = GLFW.glfwGetTime();
@@ -66,8 +70,19 @@ public final class GameLoop {
 			
 			update(delta); 					// Update
 			render();      					// Render
-			if(ServiceLocator.INSTANCE.getDisplayService().hasBeenCreated())
+			
+			fps += 1;
+			fpsTime += delta;
+			
+			if(ServiceLocator.INSTANCE.getDisplayService().hasBeenCreated()){
 				ServiceLocator.INSTANCE.getDisplayService().update();     		// Update display
+				
+				if(fpsTime >= 1.0){
+					ServiceLocator.INSTANCE.getDisplayService().displayFPS(fps);
+					fps = 0;
+					fpsTime -= 1.0;
+				}
+			}
 
 		}
 		
@@ -94,13 +109,13 @@ public final class GameLoop {
 
 		FrameBuffer.clear(true, true, false); // Clear the screen
 
-		WaterRenderer.INSTANCE.render(); // Draw water planes
-		TerrainRenderer.INSTANCE.render(); // Draw batched terrain nodes
-		ModelRenderer.render(); // Draw all batched models
-		SkyBoxRenderer.INSTANCE.render(); // Draw the Sky box
+		RenderLocator.INSTANCE.getWaterDrawable().render(); 	// Draw water planes
+		RenderLocator.INSTANCE.getTerrainDrawable().render(); 	// Draw batched terrain nodes
+		RenderLocator.INSTANCE.getModelDrawable().render(); 	// Draw all batched models
+		RenderLocator.INSTANCE.getSkyBoxDrawable().render(); 	// Draw the Sky box
 
-		TerrainRenderer.INSTANCE.clearBatch();
-		ModelRenderer.clearBatch();
+		RenderLocator.INSTANCE.getTerrainBatchable().clearBatch();
+		RenderLocator.INSTANCE.getModelBatchable().clearBatch();
 	}
 
 	/**

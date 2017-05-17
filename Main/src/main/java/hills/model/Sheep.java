@@ -16,10 +16,10 @@ public class Sheep extends Creature{
     float radius;
     Random rand = new Random();
     private float move = 0;
-    protected Model model;
 
 
-    public Sheep(Vec3 pos){
+    public Sheep(Vec3 pos, Model model){
+        this.model = model;
         this.pos = pos;
         this.healthPoints = 20;
         this.speed = 1;
@@ -37,32 +37,8 @@ public class Sheep extends Creature{
     }
 
     @Override
-    public void setPitch(float pitch) {
-        //TODO
-    }
-
-    @Override
-    public void setYaw(float yaw) {
-        //TODO
-    }
-
-    @Override
-    public void updatePitch(float deltaPitch) {
-        //TODO
-    }
-
-    @Override
-    public void updateYaw(float deltaYaw) {
-        //TODO
-    }
-
-    @Override
     public void updateMovable(float delta) {
-        //TODO
-    }
-
-    @Override
-    public void changeDirection() {
+        pos = pos.add(velocity.mul(delta));
         //TODO
     }
 }

@@ -1,5 +1,7 @@
 package hills.services;
 
+import hills.services.ModelDataService.CubeModel;
+import hills.services.ModelDataService.IModelService;
 import hills.services.camera.ICameraDataService;
 import hills.services.camera.ICameraUpdateService;
 import hills.services.camera.CameraService;
@@ -8,6 +10,7 @@ import hills.services.display.DisplayService;
 import hills.services.display.DisplayServiceI;
 import hills.services.files.FileService;
 import hills.services.files.IPictureFileService;
+import hills.services.generation.GenerationMediator;
 import hills.services.generation.IGenerationMediator;
 import hills.services.terrain.ITerrainHeightService;
 import hills.services.terrain.ITerrainRenderDataService;
@@ -22,6 +25,8 @@ public enum ServiceLocator {
 	private CameraService cameraService;
 	private TerrainService terrainService;
 	private FileService fileService;
+	private IGenerationMediator generationService;
+	private IModelService modelService;
 	
 	private ServiceLocator(){	
 	}
@@ -46,12 +51,30 @@ public enum ServiceLocator {
 		return getCameraServiceInstance();
 	}
 
-	public IGenerationMediator getGenerationMediator(){
-		return null;
+	public IGenerationMediator getGenerationService(){
+		return getGemerationServiceInstance();
 	}
-	
+
+	private IGenerationMediator getGemerationServiceInstance() {
+		if(generationService == null){
+			generationService = new GenerationMediator();
+		}
+		return generationService;
+	}
+
 	public DisplayServiceI getDisplayService(){
 		return getDisplayServiceInstance();
+	}
+
+	public IModelService getModelService(){
+		return getModelServiceInstance();
+	}
+
+	private IModelService getModelServiceInstance() {
+		if(modelService == null){
+			modelService = new CubeModel();
+		}
+		return modelService;
 	}
 
 	public IPictureFileService getFileService() { return getFileServiceInstance(); }

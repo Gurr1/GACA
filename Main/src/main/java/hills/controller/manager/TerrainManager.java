@@ -6,6 +6,7 @@ import hills.services.camera.ICameraDataService;
 import hills.services.terrain.ITerrainRenderDataService;
 import hills.services.terrain.ITerrainTreeService;
 import hills.services.terrain.tree.LODNode;
+import hills.view.RenderLocator;
 import hills.view.TerrainRenderer;
 
 import java.util.List;
@@ -34,7 +35,7 @@ public final class TerrainManager extends AbstractController {
 
 	@Override
 	public void render() {
-		TerrainRenderer.INSTANCE.batchNodes(TerrainNodes, renderDataService.getGridMeshData(), renderDataService.getHeightMapTexture());
+		RenderLocator.INSTANCE.getTerrainBatchable().batchNodes(TerrainNodes, renderDataService.getGridMeshData(), renderDataService.getHeightMapTexture());
 	}
 
 	@Override

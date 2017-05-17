@@ -1,7 +1,7 @@
 package hills.controller.InputControllers;
 
 /**
- * Created by gustav on 2017-04-05.
+ * @Author Gustav Engsmyre
  */
 public interface KeyboardListener {
     /**

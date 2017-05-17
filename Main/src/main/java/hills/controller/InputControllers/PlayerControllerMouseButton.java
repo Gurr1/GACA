@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by gustav on 2017-05-11.
+ * @Author Gustav Engsmyre
  */
 public class PlayerControllerMouseButton implements GLFWMouseButtonCallbackI {
     List<MouseButtonListener> subscribers = new ArrayList<>();

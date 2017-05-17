@@ -13,5 +13,5 @@ out vec4 COLOR;
 
 void main(){
 	// Set fragment output color
-	COLOR = vec4(1.0f, 0.0f, 0.0f, 1.0f);
+	COLOR = vec4(texture2D(diffuseMap, texCoords).rgb, 1.0f);
 }

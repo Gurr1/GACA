@@ -6,6 +6,9 @@ import org.lwjgl.glfw.GLFWKeyCallbackI;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @Author Gustav Engsmyre
+ */
 public final class PlayerControllerKeyboard implements GLFWKeyCallbackI{
 
 	/**
