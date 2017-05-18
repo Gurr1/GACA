@@ -1,8 +1,6 @@
 package hills.controller.ModelInterfaceControllers;
 
 import hills.model.IRenderable;
-import hills.util.math.Mat4;
-import hills.util.math.Vec3;
 import hills.util.shader.ShaderProgram;
 import hills.view.RenderLocator;
 

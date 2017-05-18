@@ -32,15 +32,19 @@ public enum ServiceLocator {
 	}
 	
 	public ITerrainHeightService getTerrainHeightService(){
-		return getTerrainServiceInstance();
+		return getTerrainServiceInstance(false);
 	}
 	
 	public ITerrainRenderDataService getTerrianRenderDataService(){
-		return getTerrainServiceInstance();
+		return getTerrainServiceInstance(false);
+	}
+
+	public ITerrainHeightService getTerrainHeightTestService(){
+		return getTerrainServiceInstance(true);
 	}
 	
 	public ITerrainTreeService getTerrainTreeService(){
-		return getTerrainServiceInstance();
+		return getTerrainServiceInstance(false);
 	}
 	
 	public ICameraUpdateService getCameraUpdateService(){
@@ -79,9 +83,9 @@ public enum ServiceLocator {
 
 	public IPictureFileService getFileService() { return getFileServiceInstance(); }
 	
-	private TerrainService getTerrainServiceInstance(){
+	private TerrainService getTerrainServiceInstance(boolean b){
 		if(terrainService == null)
-			terrainService = new TerrainService();
+			terrainService = new TerrainService(b);
 		
 		return terrainService;
 	}
