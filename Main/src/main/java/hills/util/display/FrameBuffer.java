@@ -1,22 +1,19 @@
 package hills.util.display;
 
 import hills.services.ServiceLocator;
-import hills.services.display.DisplayService;
+import hills.services.display.DisplayServiceI;
+import lombok.Getter;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+import org.lwjgl.opengl.GL30;
+import org.lwjgl.system.MemoryUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import hills.services.display.DisplayServiceI;
-import lombok.Getter;
-
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-import org.lwjgl.opengl.GL30;
-import org.lwjgl.system.MemoryUtil;
-
-public class FrameBuffer {
+public class FrameBuffer {			// Move
 
 	/**
 	 * The handle (id) of this frame buffer.
@@ -105,10 +102,6 @@ public class FrameBuffer {
 	 *            - The texture target.
 	 * @param internalFormat
 	 *            - The textures internal format.
-	 * @param width
-	 *            - The textures width.
-	 * @param height
-	 *            - The textures height.
 	 * @param format
 	 *            - The texel data format.
 	 * @param attachment
@@ -154,10 +147,6 @@ public class FrameBuffer {
 	 * 
 	 * @param internalFormat
 	 *            - The textures internal format.
-	 * @param width
-	 *            - The render buffer width.
-	 * @param height
-	 *            - The render buffer height.
 	 * @param attachment
 	 *            - The attachment point of the frame buffer.
 	 */
