@@ -260,9 +260,9 @@ public class Player implements PlayerMovable, PlayerCollidable, IAttack {
     }
 
     @Override
-    public void collectCollectible(ICollidable collidable) {
-        if(collidable.getClass() == Coin.class){
-            coinsCollected.add((Coin)collidable);
+    public void collectCollectible(ICollectible collectible) {
+        if(collectible.getClass() == Coin.class){
+            coinsCollected.add((Coin)collectible);
         }
     }
 }

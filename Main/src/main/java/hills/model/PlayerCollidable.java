@@ -5,5 +5,5 @@ package hills.model;
  */
 public interface PlayerCollidable extends ICollidable {
 
-    void collectCollectible(ICollidable collidable);
+    void collectCollectible(ICollectible collectible);
 }

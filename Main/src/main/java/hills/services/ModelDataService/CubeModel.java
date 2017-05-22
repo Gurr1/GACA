@@ -12,7 +12,7 @@ import hills.util.model.Model;
 /**
  * Created by gustav on 2017-05-15.
  */
-public class CubeModel implements IModelService {
+public class CubeModel implements hills.services.ModelDataService.IModelService {
     Vertex[] v = {
             new Vertex(new Vec3(-.5f, -.5f, .5f), new Vec2(0.0f, 0.0f), new Vec3(0.0f, 0.0f, 1.0f)),
             new Vertex(new Vec3(-.5f, -.5f, .5f), new Vec2(0.0f, 1.0f), new Vec3(0.0f, -1.0f, 0.0f)),

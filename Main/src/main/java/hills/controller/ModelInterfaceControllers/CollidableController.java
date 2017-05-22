@@ -1,5 +1,6 @@
 package hills.controller.ModelInterfaceControllers;
 
+import hills.model.CollectibleObject;
 import hills.model.ICollectible;
 import hills.model.ICollidable;
 import hills.model.PlayerCollidable;
@@ -14,8 +15,17 @@ import java.util.List;
  */
 public class CollidableController {     // Visitor patter?
 
+    private List<ICollidable> collidables;
 
-   @Getter private List<ICollidable> collidables;
+    private ICollidable objectToRemove;
+
+    public ICollidable getObjectToRemove(){
+        return objectToRemove;
+    }
+
+    public boolean isRemoved(){
+        return objectToRemove!=null;
+    }
 
 
     public CollidableController(){ //Add collision Service
@@ -42,7 +52,7 @@ public class CollidableController {     // Visitor patter?
                     Class[] classes2 = collidables.get(j).getClass().getSuperclass().getInterfaces();
                     for (Class c : classes) {
                         for (Class c2 : classes2) {
-                            handleCollision(c, c2);
+                            handleCollision(collidables.get(i), collidables.get(j), c, c2);
                         }
                     }
                 }
@@ -51,14 +61,14 @@ public class CollidableController {     // Visitor patter?
     }
         //use collision service
         // Not the best solution. Handles each of the
-    private void handleCollision(Class c, Class c2) {
+    private void handleCollision(ICollidable co1, ICollidable co2, Class c, Class c2) {
         System.out.println(c + " " + c2);
         if(c == ICollectible.class || c2 == ICollectible.class){
-            System.out.println("collectible");
             if(c == PlayerCollidable.class){
-                System.out.println("coins");
-                PlayerCollidable pl = (PlayerCollidable) c.cast(PlayerCollidable.class);
-                pl.collectCollectible((ICollidable) c2.cast(ICollectible.class));
+                PlayerCollidable pc = (PlayerCollidable) co1;
+                pc.collectCollectible((ICollectible) co2);
+                collidables.remove(co2);
+                objectToRemove = co2;
             }
         }
     }
