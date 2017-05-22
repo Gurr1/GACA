@@ -65,7 +65,7 @@ public class CubeModel implements IModelService {
             13, 16, 4,
             13, 4, 1
     };
-    private final Model sheep, tree, rock;
+    private final Model sheep, tree, coin;
 
     public CubeModel(){
         MeshTexture texture = new MeshTexture("sheepTexture.png");
@@ -74,9 +74,12 @@ public class CubeModel implements IModelService {
         texture = new MeshTexture("barkTexture.png");
         cubeMesh = ModelLoader.load(v, ind, texture, Mat4.identity());
         tree = new Model(new Mesh[]{cubeMesh});
-        texture = new MeshTexture("rockTexture.png");
+/*        texture = new MeshTexture("rockTexture.png");
         cubeMesh = ModelLoader.load(v, ind, texture, Mat4.identity());
-        rock = new Model(new Mesh[]{cubeMesh});
+        rock = new Model(new Mesh[]{cubeMesh});*/
+        texture = new MeshTexture("coinTexture.png");
+        cubeMesh = ModelLoader.load(v, ind, texture, Mat4.identity());
+        coin = new Model(new Mesh[]{cubeMesh});
     }
     @Override
     public Model getSheep() {
@@ -90,6 +93,13 @@ public class CubeModel implements IModelService {
 
     @Override
     public Model getRock() {
-        return rock;
+        return null;
     }
+
+    @Override
+    public Model getCoin() {
+        return coin;
+    }
+
+
 }

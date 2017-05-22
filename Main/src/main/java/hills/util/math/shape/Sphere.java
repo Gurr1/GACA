@@ -28,9 +28,9 @@ public class Sphere {
 	}
 
 	public boolean intersects(Sphere sphere){
-		Vec3 v =  pos.sub(sphere.getPos());
-		float distance = v.dot(v);
-		float collisionDistance = (radius + sphere.getRadius())*(radius + sphere.getRadius());
+		Vec3 v = pos.sub(sphere.getPos());
+		float distance = v.getLength();
+		float collisionDistance = (radius + sphere.getRadius());
 		return (distance < collisionDistance);
 	}
 }

@@ -38,7 +38,7 @@ public class EntityFactory {
         else return new RamSheep(position);
     }
 
-    public static Coin createCoin(Vec3 position) {return new Coin(position); }
+    public static Coin createCoin(Model model, Vec3 position) {return new Coin(position, model); }
 
     public static ImmovableObject createTree(Model model, Vec3 position){
         return new Tree(position, model);
