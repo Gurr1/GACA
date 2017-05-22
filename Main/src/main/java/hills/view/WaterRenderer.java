@@ -1,5 +1,8 @@
 package hills.view;
 
+import hills.services.ServiceLocator;
+import hills.services.display.DisplayService;
+import hills.services.display.DisplayServiceI;
 import hills.util.display.FrameBuffer;
 import hills.util.loader.ModelLoader;
 import hills.util.math.Mat4;
@@ -35,18 +38,22 @@ public class WaterRenderer implements IRendererDrawable, IWaterRendererBatchable
 	private final int REFLECTION_FB_WIDTH = 300;
 	private final int REFLECTION_FB_HEIGHT = 300;
 
+	private DisplayServiceI displayServiceI;
+
 	protected WaterRenderer() {
 		meshData = ModelLoader.load(WaterPlane.WATER_PLANE_VERTICES,
 				WaterPlane.WATER_PLANE_INDICES, null, Mat4.identity())
 				.getMeshData();
 
+		displayServiceI = ServiceLocator.INSTANCE.getDisplayService();
+
 		refractionFrameBuffer = new FrameBuffer(REFRACTION_FB_WIDTH, REFRACTION_FB_HEIGHT);
-		refractionFrameBuffer.attachTexture(GL11.GL_TEXTURE_2D, GL11.GL_RGBA, GL11.GL_RGBA, GL30.GL_COLOR_ATTACHMENT0);
-		refractionFrameBuffer.attachRenderBuffer(GL11.GL_TEXTURE_2D, GL30.GL_DEPTH24_STENCIL8);
+		refractionFrameBuffer.attachTexture(GL11.GL_TEXTURE_2D, GL11.GL_RGBA, GL11.GL_RGBA, GL30.GL_COLOR_ATTACHMENT0, displayServiceI.getWidth(), displayServiceI.getHeight());
+		refractionFrameBuffer.attachRenderBuffer(GL11.GL_TEXTURE_2D, GL30.GL_DEPTH24_STENCIL8, displayServiceI.getWidth(), displayServiceI.getHeight());
 
 		reflectionFrameBuffer = new FrameBuffer(REFLECTION_FB_WIDTH, REFLECTION_FB_HEIGHT);
-		reflectionFrameBuffer.attachTexture(GL11.GL_TEXTURE_2D, GL11.GL_RGBA, GL11.GL_RGBA, GL30.GL_COLOR_ATTACHMENT0);
-		reflectionFrameBuffer.attachRenderBuffer(GL11.GL_TEXTURE_2D, GL30.GL_DEPTH24_STENCIL8);
+		reflectionFrameBuffer.attachTexture(GL11.GL_TEXTURE_2D, GL11.GL_RGBA, GL11.GL_RGBA, GL30.GL_COLOR_ATTACHMENT0, displayServiceI.getWidth(), displayServiceI.getHeight());
+		reflectionFrameBuffer.attachRenderBuffer(GL11.GL_TEXTURE_2D, GL30.GL_DEPTH24_STENCIL8, displayServiceI.getWidth(), displayServiceI.getHeight());
 	}
 
 	public void batch(WaterPlane waterPlane) {
@@ -84,7 +91,7 @@ public class WaterRenderer implements IRendererDrawable, IWaterRendererBatchable
 			modelDraw.render();
 
 			// Unbind refraction frame buffer
-			refractionFrameBuffer.unbind();
+			refractionFrameBuffer.unbind(ServiceLocator.INSTANCE.getDisplayService().getWidth(),ServiceLocator.INSTANCE.getDisplayService().getHeight());
 
 			/* SECOND DRAW PASS: Reflection texture */
 			reflectionFrameBuffer.bind(0, 0);
@@ -106,7 +113,7 @@ public class WaterRenderer implements IRendererDrawable, IWaterRendererBatchable
 			modelDraw.render();
 
 			// Unbind reflection frame buffer
-			reflectionFrameBuffer.unbind();
+			reflectionFrameBuffer.unbind(ServiceLocator.INSTANCE.getDisplayService().getWidth(),ServiceLocator.INSTANCE.getDisplayService().getHeight());
 
 			// Disable vertex clipping so that everything can now be rendered
 			GL11.glDisable(GL30.GL_CLIP_DISTANCE5);

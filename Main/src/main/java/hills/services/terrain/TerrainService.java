@@ -102,7 +102,7 @@ public class TerrainService implements Service, ITerrainTreeService, ITerrainHei
 		Vec2 v0 = (xGreater ? new Vec2(intX + 1, intZ) : new Vec2(intX, intZ + 1)).sub(A),
 			 v1 = new Vec2(intX + 1, intZ + 1).sub(A),
 			 v2 = new Vec2(x, z).sub(A);
-		System.out.println(v0 + " " + v1 + " " + v2);
+		//System.out.println(v0 + " " + v1 + " " + v2);
 		float d00 = v0.getLengthSqr();
 	    float d01 = v0.dot(v1);
 	    float d11 = v1.getLengthSqr();

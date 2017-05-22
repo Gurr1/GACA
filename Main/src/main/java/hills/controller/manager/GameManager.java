@@ -1,18 +1,18 @@
 package hills.controller.manager;
 
+import hills.Unused_Usable_Code.ObjectPlacer;
 import hills.controller.AbstractController;
 import hills.controller.EntityFactory;
 import hills.controller.ModelInterfaceControllers.AttackController;
 import hills.controller.ModelInterfaceControllers.CollidableController;
 import hills.controller.ModelInterfaceControllers.MovableController;
 import hills.controller.ModelInterfaceControllers.RenderController;
-import hills.model.Creature;
-import hills.model.ImmovableObject;
-import hills.model.Player;
+import hills.model.*;
 import hills.services.ServiceLocator;
 import hills.services.terrain.TerrainServiceConstants;
 import hills.util.math.Vec3;
 
+import java.util.List;
 import java.util.Random;
 
 public final class GameManager extends AbstractController {
@@ -62,6 +62,19 @@ public final class GameManager extends AbstractController {
 			ImmovableObject tree = EntityFactory.createTree(ServiceLocator.INSTANCE.getModelService().getTree(), generateTreeSpawnLocation());
 			renderController.addRenderable(tree);
 		}
+		/*ObjectPlacer op = new ObjectPlacer();
+		op.setRadius(1);
+		List<Vec3> l = op.placeObjects();
+		for(Vec3 v : l){
+			renderController.addRenderable(new Tree(v,ServiceLocator.INSTANCE.getModelService().getTree()));
+		}
+		op = new ObjectPlacer();
+		op.setOptimalHeight(0.6);
+		op.setRadius(3);
+		 l = op.placeObjects();
+		for(Vec3 v : l){
+			renderController.addRenderable(new Rock(v,ServiceLocator.INSTANCE.getModelService().getRock()));
+		}*/
 	}
 
 	private Vec3 generateTreeSpawnLocation() {

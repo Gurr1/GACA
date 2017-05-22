@@ -36,14 +36,11 @@ public class FrameBuffer {			// Move
 	@Getter
 	private final int width, height;
 	
-	private final DisplayServiceI displayService;
 
 	public FrameBuffer(int width, int height) {
 		handle = GL30.glGenFramebuffers();
 		this.width = width;
 		this.height = height;
-		
-		displayService = ServiceLocator.INSTANCE.getDisplayService();
 	}
 
 	/**
@@ -90,9 +87,9 @@ public class FrameBuffer {			// Move
 	 * the GL view port to Display.WIDTH and Display.HEIGHT<br>
 	 * at x = 0, y = 0.
 	 */
-	public void unbind() {
+	public void unbind(int windowWidth, int windowHeight) {
 		GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
-		GL11.glViewport(0, 0, displayService.getWidth(), displayService.getHeight());
+		GL11.glViewport(0, 0,windowWidth,windowHeight);
 	}
 
 	/**
@@ -108,7 +105,7 @@ public class FrameBuffer {			// Move
 	 *            - The attachment point of the frame buffer.
 	 */
 	public void attachTexture(int target, int internalFormat, int format,
-			int attachment) {
+			int attachment, int windowWidth, int windowHeight) {
 		if (width == 0 || height == 0) {
 			System.err
 					.println("Frambuffer texture attaching failed! Width or height is equal 0");
@@ -139,7 +136,7 @@ public class FrameBuffer {			// Move
 					GL12.GL_TEXTURE_3D, handle, 0, 0);
 
 		textureAttachmentsHandles.put(attachment, handle);
-		unbind();
+		unbind(windowWidth,windowHeight);
 	}
 
 	/**
@@ -150,7 +147,7 @@ public class FrameBuffer {			// Move
 	 * @param attachment
 	 *            - The attachment point of the frame buffer.
 	 */
-	public void attachRenderBuffer(int internalFormat, int attachment) {
+	public void attachRenderBuffer(int internalFormat, int attachment, int windowWidth, int windowHeight) {
 		if (width == 0 || height == 0) {
 			System.err
 					.println("Frambuffer render buffer attaching failed! Width or height is equal 0");
@@ -170,7 +167,7 @@ public class FrameBuffer {			// Move
 				GL30.GL_RENDERBUFFER, handle);
 
 		renderBufferAttachmentsHandles.add(handle);
-		unbind();
+		unbind(windowWidth,windowHeight);
 	}
 
 	public int getTextureAttachment(int attachment) {

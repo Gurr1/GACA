@@ -325,6 +325,8 @@ public final class DisplayService implements Service, DisplayServiceI {
 	public  int getWidth(){
 		IntBuffer width = BufferUtils.createIntBuffer(1);
 		GLFW.glfwGetFramebufferSize(HANDLE, width, null);
+		System.out.println("DEBUG: " + width.get(0));
+
 		return width.get(0);
 	}
 	
@@ -334,6 +336,7 @@ public final class DisplayService implements Service, DisplayServiceI {
 	public  int getHeight(){
 		IntBuffer height = BufferUtils.createIntBuffer(1);
 		GLFW.glfwGetFramebufferSize(HANDLE, null, height);
+		System.out.println("DEBUG: " + height.get(0));
 		return height.get(0);
 	}
 	
