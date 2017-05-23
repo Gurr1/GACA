@@ -1,5 +1,6 @@
 package hills.model;
 
+import hills.util.math.Mat4;
 import hills.util.math.Vec3;
 import hills.util.math.shape.Sphere;
 import hills.util.model.Model;
@@ -35,6 +36,14 @@ public class RamSheep extends Mob {
     public Sphere getBoundingSphere() {
         return null;
         //TODO
+    }
+
+    @Override
+    public Mat4 getMatrix() {
+        Mat4 matrix = Mat4.identity();
+        matrix = matrix.translate(pos);
+        matrix = matrix.translate(radius, 5, radius);
+        return matrix;
     }
 
     public void moveRandomly() {

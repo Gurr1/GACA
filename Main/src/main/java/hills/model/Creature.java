@@ -145,10 +145,5 @@ public abstract class Creature implements IWoundable, IMovable, ICollidable, IAI
     }
 
     @Override
-    public Mat4 getMatrix() {
-        matrix = Mat4.identity();
-        matrix = matrix.scale(5,5,10);
-        matrix = matrix.translate(pos);
-        return matrix;
-    }
+    public abstract Mat4 getMatrix();
 }
