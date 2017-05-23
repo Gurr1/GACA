@@ -8,10 +8,10 @@ import hills.util.model.Model;
 /**
  * Created by Anders on 2017-03-30.
  */
-public class Coin extends CollectibleObject {
+public class Coin extends CollectibleObject{
 
     private float radius = 1;
-    Mat4 matrix;
+    private Mat4 matrix;
 
     public Coin(Vec3 pos, Model model) {
         super(pos, model);
@@ -20,6 +20,7 @@ public class Coin extends CollectibleObject {
         matrix = Mat4.identity();
         matrix = matrix.scale(5,5,1);
         matrix = matrix.translate(pos);
+
     }
 
 
@@ -46,5 +47,10 @@ public class Coin extends CollectibleObject {
     @Override
     public Mat4 getMatrix() {
         return matrix;
+    }
+
+    @Override
+    public void updateMovable(float delta) {
+        // does nothing, because it shouldn't move.
     }
 }

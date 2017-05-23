@@ -10,4 +10,5 @@ public interface IModelService {
     Model getTree();
     Model getRock();
     Model getCoin();
+    Model getBug();
 }

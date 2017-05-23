@@ -1,11 +1,9 @@
 package hills.controller.ModelInterfaceControllers;
 
-import hills.model.CollectibleObject;
 import hills.model.ICollectible;
 import hills.model.ICollidable;
 import hills.model.PlayerCollidable;
 import hills.services.collision.CollisionDetection;
-import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;

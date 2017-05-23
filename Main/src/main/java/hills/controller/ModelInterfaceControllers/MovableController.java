@@ -46,6 +46,7 @@ public class MovableController implements KeyboardListener, MouseListener{
         }
         for(IMovable movable : movableList){
             movable.updateMovable(delta);
+            System.out.println(movable);
             movable.setHeight(ServiceLocator.INSTANCE.getTerrainHeightService().getHeight(movable.get3DPos()));
             if(updateDir){
                 double dir = ServiceLocator.INSTANCE.getGenerationService().generateDirection((float) runtime*1000)*360;

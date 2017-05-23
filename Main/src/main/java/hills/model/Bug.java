@@ -8,10 +8,11 @@ import hills.util.model.Model;
 /**
  * Created by gustav on 2017-05-23.
  */
-public class Bug extends Creature implements ICollectible{
+public class Bug extends CollectibleObject implements ICollectible{
     private float radius = 1.5f;
 
     public Bug(Vec3 position, Model model){
+        super(position, model);
         this.pos = position;
         this.model = model;
         this.healthPoints = 1;

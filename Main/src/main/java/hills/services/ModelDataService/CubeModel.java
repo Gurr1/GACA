@@ -65,7 +65,7 @@ public class CubeModel implements hills.services.ModelDataService.IModelService 
             13, 16, 4,
             13, 4, 1
     };
-    private final Model sheep, tree, coin;
+    private final Model sheep, tree, coin, bug;
 
     public CubeModel(){
         MeshTexture texture = new MeshTexture("sheepTexture.png");
@@ -80,6 +80,9 @@ public class CubeModel implements hills.services.ModelDataService.IModelService 
         texture = new MeshTexture("coinTexture.png");
         cubeMesh = ModelLoader.load(v, ind, texture, Mat4.identity());
         coin = new Model(new Mesh[]{cubeMesh});
+    //    texture = new MeshTexture("coinTexture.png"); change texture.
+        cubeMesh = ModelLoader.load(v, ind, texture, Mat4.identity());
+        bug = new Model(new Mesh[]{cubeMesh});
     }
     @Override
     public Model getSheep() {
@@ -99,6 +102,11 @@ public class CubeModel implements hills.services.ModelDataService.IModelService 
     @Override
     public Model getCoin() {
         return coin;
+    }
+
+    @Override
+    public Model getBug() {
+        return bug;
     }
 
 

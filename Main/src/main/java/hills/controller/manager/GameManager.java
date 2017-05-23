@@ -52,20 +52,21 @@ public final class GameManager extends AbstractController {
 		collidableController.addCollidable(p);
 		attackController.setPlayer(p);
 		for(int i = 0; i < nNPCs; i++){
-            Creature sheep = EntityFactory.createSheep(ServiceLocator.INSTANCE.getModelService().getSheep(), generateSpawnLocation());
+            Creature sheep = EntityFactory.createSheep(generateSpawnLocation());
 			movableController.addAIMovable(sheep);
 			collidableController.addCollidable(sheep);
 			renderController.addRenderable(sheep);
 		}
 		for (int i = 0; i<nImmovables; i++){
-			ImmovableObject tree = EntityFactory.createTree(ServiceLocator.INSTANCE.getModelService().getTree(), generateTreeSpawnLocation());
+			ImmovableObject tree = EntityFactory.createTree(generateTreeSpawnLocation());
 			renderController.addRenderable(tree);
 			collidableController.addCollidable(tree);
 		}
 		for(int i = 0; i<nCollectibles; i++){
-			CollectibleObject coin = EntityFactory.createCoin(ServiceLocator.INSTANCE.getModelService().getCoin(), generateSpawnLocation());		// Change model.
-			renderController.addRenderable(coin);
-			collidableController.addCollidable(coin);
+			CollectibleObject collectible = EntityFactory.createAnyCollectible(generateSpawnLocation());		// Change model.
+			renderController.addRenderable(collectible);
+			collidableController.addCollidable(collectible);
+			movableController.addAIMovable(collectible);
 		}
 	}
 
