@@ -80,7 +80,7 @@ public class CubeModel implements hills.services.ModelDataService.IModelService 
         texture = new MeshTexture("coinTexture.png");
         cubeMesh = ModelLoader.load(v, ind, texture, Mat4.identity());
         coin = new Model(new Mesh[]{cubeMesh});
-    //    texture = new MeshTexture("coinTexture.png"); change texture.
+        texture = new MeshTexture("bugTexture.png");
         cubeMesh = ModelLoader.load(v, ind, texture, Mat4.identity());
         bug = new Model(new Mesh[]{cubeMesh});
     }

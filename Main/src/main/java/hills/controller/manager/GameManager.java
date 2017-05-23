@@ -99,7 +99,9 @@ public final class GameManager extends AbstractController {
 		movableController.updateMovables((float) delta, runtime);
 		collidableController.update();
 		if(collidableController.isRemoved()){
-			renderController.removeObject(collidableController.getObjectToRemove());
+			ICollidable collidable = collidableController.getObjectToRemove();
+			renderController.removeObject(collidable);
+			collidable = null;
 		}
 	}
 
