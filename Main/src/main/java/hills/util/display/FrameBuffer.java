@@ -1,7 +1,5 @@
 package hills.util.display;
 
-import hills.services.ServiceLocator;
-import hills.services.display.DisplayServiceI;
 import lombok.Getter;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;

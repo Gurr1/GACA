@@ -143,7 +143,6 @@ public class Terrain {
                     for (int j = -2; j < blur[0].length-2; j++) {
                         rgb += bf.getRGB(i+x, j+y)*blur[i+2][j+2];
                         if(x == 1028 && y == 1028){
-                            System.out.println(rgb);
                         }
                     }
                 }

@@ -2,11 +2,9 @@ package hills.services.generation;
 
 
 
-import hills.model.Coin;
 import hills.model.ICollectible;
 import hills.services.ServiceLocator;
 import hills.services.terrain.ITerrainHeightService;
-import hills.util.math.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,8 +71,8 @@ public class CollectiblePlacer {
      */
     private void add(float x, float z){
         float y = terrainHeightService.getHeight(x,z);
-        if(y!=0.0f)
-            placedObjects.add(new Coin(new Vec3(x,y,z)));
+      //  if(y!=0.0f)
+            //placedObjects.add(new Coin(new Vec3(x,y,z)));
 
     }
 

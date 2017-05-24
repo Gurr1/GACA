@@ -29,7 +29,6 @@ public class TerrainRenderer implements ITerrainRendererBatchable, IRendererDraw
 		this.nodes = nodes;
 		this.gridMeshData = gridMeshData;
 		this.texture = texture;
-		System.out.println(nodes.size());
 	}
 
 	public void render() {

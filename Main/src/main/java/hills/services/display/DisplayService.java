@@ -1,8 +1,6 @@
 package hills.services.display;
 
 import hills.services.Service;
-import hills.services.terrain.TerrainService;
-
 import org.lwjgl.BufferUtils;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.glfw.*;
@@ -200,7 +198,6 @@ public final class DisplayService implements Service, DisplayServiceI {
 	public void setKeyCallback(GLFWKeyCallbackI keyCallback) {
 		this.keyCallback = keyCallback;
 		GLFWKeyCallback callback = glfwSetKeyCallback(HANDLE, this.keyCallback);
-		System.out.println(keyCallback);
 		if(callback != null)
 			callback.free();
 	}

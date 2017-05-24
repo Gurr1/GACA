@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by Anders on 2017-03-30.
  */
-public class Player implements PlayerMovable, ICollidable, IAttack {
+public class Player implements PlayerMovable, PlayerCollidable, IAttack {
     // Add a method that recalculates reworks the base into global base from addVelocity.
     /**
      * {@inheritDoc}
@@ -185,7 +185,6 @@ public class Player implements PlayerMovable, ICollidable, IAttack {
     }
 
     public void setPitch(float pitch) {
-        System.out.println(pitch);
         if(pitch>180){
             return;
         }
@@ -258,5 +257,12 @@ public class Player implements PlayerMovable, ICollidable, IAttack {
     @Override
     public void setAttacking(boolean attacking) {
         this.attacking = attacking;
+    }
+
+    @Override
+    public void collectCollectible(ICollectible collectible) {
+        if(collectible.getClass() == Coin.class){
+            coinsCollected.add((Coin)collectible);
+        }
     }
 }
