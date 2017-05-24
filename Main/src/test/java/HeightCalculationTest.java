@@ -25,19 +25,15 @@ public class HeightCalculationTest {
             for (int y = 0; y < terrain[0].length-2; y++) {
                 float r = rand.nextFloat();
                if(terrain[x+1][y]>terrain[x][y]){
-                   System.out.println(ts.getHeight(x+1,y) + " " + ts.getHeight(x+r, y));
-                    Assert.assertTrue(ts.getHeight(x+1, y) > ts.getHeight(x+r, y));
+                    Assert.assertTrue(ts.getHeight(x+1, y) >= ts.getHeight(x+r, y));
                 }
                 if(terrain[x+1][y]<terrain[x][y]){
-                    System.out.println(ts.getHeight(x+1,y) + " " + ts.getHeight(x+r, y));
                     Assert.assertTrue(ts.getHeight(x+1, y) <= ts.getHeight(x+r, y));
                 }
                 if(terrain[x][y+1]>terrain[x][y]){
-                    System.out.println(ts.getHeight(x,y+1) + " " + ts.getHeight(x, y+r));
-                    Assert.assertTrue(ts.getHeight(x, y+1) > ts.getHeight(x, y+r));
+                    Assert.assertTrue(ts.getHeight(x, y+1) >= ts.getHeight(x, y+r));
                 }
                 if(terrain[x][y+1]<terrain[x][y]){
-                    System.out.println(ts.getHeight(x,y+1) + " " + ts.getHeight(x, y+r));
                     Assert.assertTrue(ts.getHeight(x, y+1) <= ts.getHeight(x, y+r));
                 }
             }
