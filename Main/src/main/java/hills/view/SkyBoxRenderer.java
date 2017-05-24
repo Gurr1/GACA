@@ -1,6 +1,6 @@
 package hills.view;
 
-import hills.util.loader.ModelLoader;
+import hills.services.loader.ModelLoader;
 import hills.util.math.Mat4;
 import hills.util.math.Vec2;
 import hills.util.math.Vec3;

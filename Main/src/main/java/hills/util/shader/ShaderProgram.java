@@ -1,7 +1,7 @@
 package hills.util.shader;
 
 import hills.util.compatibility.BufferUtil;
-import hills.util.loader.ShaderLoader;
+import hills.service.loader.ShaderLoader;
 import hills.util.math.Mat4;
 import hills.util.math.Vec3;
 

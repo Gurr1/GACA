@@ -4,7 +4,7 @@ import hills.services.Service;
 import hills.services.terrain.mesh.GridMeshData;
 import hills.services.terrain.tree.LODNode;
 import hills.services.terrain.tree.LODTree;
-import hills.util.loader.TerrainLoader;
+import hills.service.loader.TerrainLoader;
 import hills.util.math.Vec2;
 import hills.util.math.Vec3;
 import hills.util.math.shape.Frustrum;

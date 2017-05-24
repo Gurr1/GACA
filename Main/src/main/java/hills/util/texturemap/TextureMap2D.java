@@ -1,6 +1,6 @@
 package hills.util.texturemap;
 
-import hills.util.loader.TextureLoader;
+import hills.services.loader.TextureLoader;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;

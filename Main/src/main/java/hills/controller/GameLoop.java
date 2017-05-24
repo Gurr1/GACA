@@ -2,8 +2,8 @@ package hills.controller;
 
 import hills.services.ServiceLocator;
 import hills.util.display.FrameBuffer;
-import hills.util.loader.ModelLoader;
-import hills.util.loader.TextureLoader;
+import hills.services.loader.ModelLoader;
+import hills.services.loader.TextureLoader;
 import hills.util.shader.ShaderProgram;
 import hills.view.ModelRenderer;
 import hills.view.RenderLocator;

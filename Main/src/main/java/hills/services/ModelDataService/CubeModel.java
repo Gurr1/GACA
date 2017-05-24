@@ -1,6 +1,6 @@
 package hills.services.ModelDataService;
 
-import hills.util.loader.ModelLoader;
+import hills.service.loader.ModelLoader;
 import hills.util.math.Mat4;
 import hills.util.math.Vec2;
 import hills.util.math.Vec3;
