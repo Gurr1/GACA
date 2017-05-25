@@ -47,7 +47,7 @@ public abstract class Creature implements IWoundable, IMovable, ICollidable, IAI
 
     @Override
     public Vec2 get2DPos() {
-        return new Vec2(pos.getX(), pos.getY());
+        return new Vec2(pos.getX(), pos.getZ());
     }
 
     @Override

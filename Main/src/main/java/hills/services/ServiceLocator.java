@@ -1,16 +1,13 @@
 package hills.services;
 
-import hills.services.ModelDataService.CubeModel;
 import hills.services.ModelDataService.IModelService;
 import hills.services.camera.ICameraDataService;
 import hills.services.camera.ICameraUpdateService;
-import hills.services.camera.CameraService;
 import hills.services.debug.DebugService;
 import hills.services.display.DisplayService;
 import hills.services.display.DisplayServiceI;
 import hills.services.files.FileService;
 import hills.services.files.IPictureFileService;
-import hills.services.generation.GenerationMediator;
 import hills.services.generation.IGenerationMediator;
 import hills.services.terrain.ITerrainHeightService;
 import hills.services.terrain.ITerrainRenderDataService;
@@ -37,8 +34,8 @@ public enum ServiceLocator {
 	private ServiceLocator(){	
 	}
 	
-	public ITerrainHeightService getTerrainHeightService(){
-		return getTerrainServiceInstance(false);
+	public ITerrainHeightService getTerrainHeightService(boolean test){
+		return getTerrainServiceInstance(test);
 	}
 	
 	public ITerrainRenderDataService getTerrianRenderDataService(){

@@ -89,7 +89,7 @@ public final class GameManager extends AbstractController {
 		do {
 			x = random.nextInt(TerrainServiceConstants.TERRAIN_WIDTH-1);
 			z = random.nextInt(TerrainServiceConstants.TERRAIN_HEIGHT-1);
-			y = ServiceLocator.INSTANCE.getTerrainHeightService().getHeight(x,z);
+			y = ServiceLocator.INSTANCE.getTerrainHeightService(false).getHeight(x,z);
 		}while(y < TerrainServiceConstants.WATER_HEIGHT);
 		return new Vec3(x, y, z);
 	}
@@ -97,7 +97,7 @@ public final class GameManager extends AbstractController {
 	@Override
 	protected void update(double delta) {
 		runtime += delta;
-		movableController.updateMovables((float) delta, runtime);
+		movableController.updateMovables((float) delta, runtime, true);
 		collidableController.update();
 		if(collidableController.isRemoved()){
 			ICollidable collidable = collidableController.getObjectToRemove();

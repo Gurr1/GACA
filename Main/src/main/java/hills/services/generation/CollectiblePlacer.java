@@ -25,7 +25,7 @@ public class CollectiblePlacer {
 
     public CollectiblePlacer(int nrOfPlacements){
         this.nrOfPlacements = nrOfPlacements;
-        this.terrainHeightService = ServiceLocator.INSTANCE.getTerrainHeightService();
+        this.terrainHeightService = ServiceLocator.INSTANCE.getTerrainHeightService(false);
         random = new Random();
         placedObjects = new ArrayList<>();
 

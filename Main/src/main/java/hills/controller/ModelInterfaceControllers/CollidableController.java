@@ -50,7 +50,8 @@ public class CollidableController {     // Visitor patter?
                     Class[] classes2 = collidables.get(j).getClass().getSuperclass().getInterfaces();
                     for (Class c : classes) {
                         for (Class c2 : classes2) {
-                            handleCollision(collidables.get(i), collidables.get(j), c, c2);
+                           if( handleCollision(collidables.get(i), collidables.get(j), c, c2))
+                               return;
                         }
                     }
                 }
@@ -59,7 +60,7 @@ public class CollidableController {     // Visitor patter?
     }
         //use collision service
         // Not the best solution. Handles each of the
-    private void handleCollision(ICollidable co1, ICollidable co2, Class c, Class c2) {
+    private boolean handleCollision(ICollidable co1, ICollidable co2, Class c, Class c2) {
         System.out.println(c + " " + c2);
         if(c == ICollectible.class || c2 == ICollectible.class){
             if(c == PlayerCollidable.class){
@@ -67,8 +68,10 @@ public class CollidableController {     // Visitor patter?
                 pc.collectCollectible((ICollectible) co2);
                 collidables.remove(co2);
                 objectToRemove = co2;
+                return true;
             }
         }
+        return false;
     }
 
 

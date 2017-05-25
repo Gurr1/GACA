@@ -27,7 +27,7 @@ public class MovableControllerTest {
         movableController.setPlayer(new Player(new Vec3(1,1,1)));
 
         for (int i = 0; i < 4; i++) {
-            movableController.updateMovables(0.5f,i*0.5,true);
+            movableController.updateMovables(0.5f,i*0.5, true);
         }
     }
 
@@ -38,7 +38,7 @@ public class MovableControllerTest {
 
         for (int i = 0; i < 10000; i++) {
             prev = sheep.get2DPos();
-            movableController.updateMovables(0.5f,((float)i)*0.5f , true);
+            movableController.updateMovables(0.5f,((float)i)*0.5f, true);
             neew = sheep.get2DPos();
             testPos(prev , neew);
         }
