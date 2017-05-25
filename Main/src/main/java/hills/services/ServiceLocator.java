@@ -12,6 +12,7 @@ import hills.services.files.FileService;
 import hills.services.files.IPictureFileService;
 import hills.services.generation.GenerationMediator;
 import hills.services.generation.IGenerationMediator;
+import hills.services.loader.LoaderFactory;
 import hills.services.terrain.ITerrainHeightService;
 import hills.services.terrain.ITerrainRenderDataService;
 import hills.services.terrain.TerrainService;
@@ -27,6 +28,7 @@ public enum ServiceLocator {
 	private FileService fileService;
 	private IGenerationMediator generationService;
 	private IModelService modelService;
+	private LoaderFactory loaderFactory;
 	
 	private ServiceLocator(){	
 	}
@@ -116,6 +118,14 @@ public enum ServiceLocator {
 			fileService = new FileService();
 
 		return fileService;
+	}
+
+	public LoaderFactory getLoaderFactory(){return getLoaderFactoryInstance();}
+
+	private LoaderFactory getLoaderFactoryInstance(){
+		if(loaderFactory == null)
+			loaderFactory = new LoaderFactory();
+		return loaderFactory;
 	}
 
 

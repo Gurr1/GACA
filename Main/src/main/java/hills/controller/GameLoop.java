@@ -1,9 +1,10 @@
 package hills.controller;
 
 import hills.services.ServiceLocator;
+import hills.services.loader.LoaderFactory;
 import hills.util.display.FrameBuffer;
-import hills.services.loader.ModelLoader;
-import hills.services.loader.TextureLoader;
+import hills.services.loader.IModelLoader;
+import hills.services.loader.ITextureLoader;
 import hills.util.shader.ShaderProgram;
 import hills.view.ModelRenderer;
 import hills.view.RenderLocator;
@@ -145,9 +146,10 @@ public final class GameLoop {
 	public void cleanUp(){
 		for(AbstractController system: systems)
 			system.cleanUp();
-		
-		ShaderProgram.cleanUp();
-		TextureLoader.cleanUp();
-		ModelLoader.cleanUp();
+
+		LoaderFactory loaderFactory = ServiceLocator.INSTANCE.getLoaderFactory();
+		loaderFactory.getShaderLoader().cleanUp();
+		loaderFactory.getTextureLoader().cleanUp();
+		loaderFactory.getModelLoader().cleanUp();
 	}
 }

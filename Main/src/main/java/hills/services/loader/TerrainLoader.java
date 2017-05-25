@@ -13,9 +13,12 @@ import hills.util.shader.ShaderAttribute;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 
-public final class TerrainLoader {
+public final class TerrainLoader implements ITerrainLoader{
 
-	public static GridMeshData loadGridMesh(int width, int depth, int terrainWidth, int terrainDepth) {
+	private IModelLoader modelLoader;
+	protected TerrainLoader(IModelLoader modelLoader){this.modelLoader = modelLoader;}
+
+	public GridMeshData loadGridMesh(int width, int depth, int terrainWidth, int terrainDepth) {
 		Vertex[] ver = new Vertex[width * depth * 4];
 		int[] ind = new int[width * depth * 6];
 
@@ -39,7 +42,7 @@ public final class TerrainLoader {
 				ind[currentTileIndex * 6 + 5] = currentTileIndex * 4 + 2;
 			}
 
-		Mesh mesh = ModelLoader.load(ver, ind, null, Mat4.identity());
+		Mesh mesh = modelLoader.load(ver, ind, null, Mat4.identity());
 
 		// Bind max vertex attribute instance data needed for terrain rendering
 		// (terrainWidth / gridWidth) * (terrainHeight / gridHeight) * size of:
@@ -53,15 +56,15 @@ public final class TerrainLoader {
 		int stride = LODNode.INSTANCED_DATA_SIZE;
 		long size = stride * (terrainWidth / width) * (terrainDepth / depth);
 		
-		int instanceVBO = ModelLoader.createEmptyVBO(GL15.GL_ARRAY_BUFFER, size, GL15.GL_DYNAMIC_DRAW);
+		int instanceVBO = modelLoader.createEmptyVBO(GL15.GL_ARRAY_BUFFER, size, GL15.GL_DYNAMIC_DRAW);
 
 		// Get the current grid mesh vao, calculate the stride of the attributes
 		// and add the instanced attributes.
 		int vao = mesh.getVao();
-		ModelLoader.addVAOAttribute(vao, instanceVBO, ShaderAttribute.CLIP_PLANE1.getLocation(), 4, GL11.GL_FLOAT, false, stride, 0, 1);
-		ModelLoader.addVAOAttribute(vao, instanceVBO, ShaderAttribute.CLIP_PLANE2.getLocation(), 4, GL11.GL_FLOAT, false, stride, Vec4.SIZE * Float.BYTES, 1);
-		ModelLoader.addVAOAttribute(vao, instanceVBO, ShaderAttribute.TERRAIN_ACTIVE_CLIP_MODES.getLocation(), 4, GL11.GL_FLOAT, false, stride, 2 * Vec4.SIZE * Float.BYTES, 1);
-		ModelLoader.addVAOAttribute(vao, instanceVBO, ShaderAttribute.TERRAIN_POS_AND_LOD.getLocation(), 3, GL11.GL_FLOAT, false, stride, 3 * Vec4.SIZE * Float.BYTES, 1);
+		modelLoader.addVAOAttribute(vao, instanceVBO, ShaderAttribute.CLIP_PLANE1.getLocation(), 4, GL11.GL_FLOAT, false, stride, 0, 1);
+		modelLoader.addVAOAttribute(vao, instanceVBO, ShaderAttribute.CLIP_PLANE2.getLocation(), 4, GL11.GL_FLOAT, false, stride, Vec4.SIZE * Float.BYTES, 1);
+		modelLoader.addVAOAttribute(vao, instanceVBO, ShaderAttribute.TERRAIN_ACTIVE_CLIP_MODES.getLocation(), 4, GL11.GL_FLOAT, false, stride, 2 * Vec4.SIZE * Float.BYTES, 1);
+		modelLoader.addVAOAttribute(vao, instanceVBO, ShaderAttribute.TERRAIN_POS_AND_LOD.getLocation(), 3, GL11.GL_FLOAT, false, stride, 3 * Vec4.SIZE * Float.BYTES, 1);
 
 		return new GridMeshData(vao, instanceVBO, mesh.getMeshData().getIndicesAmount());
 	}

@@ -1,10 +1,11 @@
 package hills.services.terrain;
 
 import hills.services.Service;
+import hills.services.ServiceLocator;
 import hills.services.terrain.mesh.GridMeshData;
 import hills.services.terrain.tree.LODNode;
 import hills.services.terrain.tree.LODTree;
-import hills.service.loader.TerrainLoader;
+import hills.services.loader.ITerrainLoader;
 import hills.util.math.Vec2;
 import hills.util.math.Vec3;
 import hills.util.math.shape.Frustrum;
@@ -42,10 +43,9 @@ public class TerrainService implements Service, ITerrainTreeService, ITerrainHei
 			// TODO Cache normal values
 		if(!testing) {
 			// Load grid mesh
-			gridMeshData = TerrainLoader.loadGridMesh(TerrainServiceConstants.GRID_WIDTH, TerrainServiceConstants.GRID_DEPTH, TerrainServiceConstants.TERRAIN_WIDTH, TerrainServiceConstants.TERRAIN_HEIGHT);
-
+			gridMeshData = ServiceLocator.INSTANCE.getLoaderFactory().getTerrainLoader().loadGridMesh(TerrainServiceConstants.GRID_WIDTH, TerrainServiceConstants.GRID_DEPTH, TerrainServiceConstants.TERRAIN_WIDTH, TerrainServiceConstants.TERRAIN_HEIGHT);
 			// Load height map texture ready for GPU usage
-			heightMapTexture = new TerrainTexture(TerrainServiceConstants.HEIGHT_MAP_NAME, TerrainServiceConstants.HEIGHT_MAP_NORMAL_MAP_NAME);
+			heightMapTexture = new TerrainTexture(TerrainServiceConstants.HEIGHT_MAP_NAME, TerrainServiceConstants.HEIGHT_MAP_NORMAL_MAP_NAME, ServiceLocator.INSTANCE.getLoaderFactory().getTextureLoader());
 
 			// TODO Move? Upload terrain-shader terrain constants to the GPU
 			TerrainServiceLoader.INSTANCE.uploadTerrainShaderConstants();

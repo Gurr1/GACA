@@ -1,6 +1,7 @@
 package hills.util.model;
 
-import hills.service.loader.TextureLoader;
+import hills.services.loader.ITextureLoader;
+import hills.services.loader.TextureLoader;
 import hills.util.shader.SamplerUniform;
 
 import org.lwjgl.opengl.GL11;
@@ -40,44 +41,44 @@ public class MeshTexture {
 	private final int emissive;
 
 	public MeshTexture(String diffuse, String normal, String occlusion,
-			String opacity, String specularGloss, String emissive) {
-		this.diffuse = diffuse == null ? -1 : TextureLoader
+					   String opacity, String specularGloss, String emissive, ITextureLoader textureLoader) {
+		this.diffuse = diffuse == null ? -1 : textureLoader
 				.loadTexture(diffuse);
-		this.normal = normal == null ? -1 : TextureLoader.loadTexture(normal);
-		this.occlusion = occlusion == null ? -1 : TextureLoader
+		this.normal = normal == null ? -1 : textureLoader.loadTexture(normal);
+		this.occlusion = occlusion == null ? -1 : textureLoader
 				.loadTexture(occlusion);
-		this.opacity = opacity == null ? -1 : TextureLoader
+		this.opacity = opacity == null ? -1 : textureLoader
 				.loadTexture(opacity);
-		this.specularGloss = specularGloss == null ? -1 : TextureLoader
+		this.specularGloss = specularGloss == null ? -1 : textureLoader
 				.loadTexture(specularGloss);
-		this.emissive = emissive == null ? -1 : TextureLoader
+		this.emissive = emissive == null ? -1 : textureLoader
 				.loadTexture(emissive);
 	}
 
 	public MeshTexture(String diffuse, String normal, String occlusion,
-			String opacity, String specularGloss) {
-		this(diffuse, normal, occlusion, opacity, specularGloss, null);
+			String opacity, String specularGloss, ITextureLoader textureLoader) {
+		this(diffuse, normal, occlusion, opacity, specularGloss, null, textureLoader);
 	}
 
 	public MeshTexture(String diffuse, String normal, String occlusion,
-			String opacity) {
-		this(diffuse, normal, occlusion, opacity, null, null);
+			String opacity, ITextureLoader textureLoader) {
+		this(diffuse, normal, occlusion, opacity, null, null, textureLoader);
 	}
 
-	public MeshTexture(String diffuse, String normal, String occlusion) {
-		this(diffuse, normal, occlusion, null, null, null);
+	public MeshTexture(String diffuse, String normal, String occlusion, ITextureLoader textureLoader) {
+		this(diffuse, normal, occlusion, null, null, null, textureLoader);
 	}
 
-	public MeshTexture(String diffuse, String normal) {
-		this(diffuse, normal, null, null, null, null);
+	public MeshTexture(String diffuse, String normal, ITextureLoader textureLoader) {
+		this(diffuse, normal, null, null, null, null, textureLoader);
 	}
 
-	public MeshTexture(String diffuse) {
-		this(diffuse, null, null, null, null, null);
+	public MeshTexture(String diffuse, ITextureLoader textureLoader) {
+		this(diffuse, null, null, null, null, null, textureLoader);
 	}
 
-	public MeshTexture(String[] paths) {
-		this(paths[0], paths[1], paths[2], paths[3], paths[4], paths[5]);
+	public MeshTexture(String[] paths, ITextureLoader textureLoader) {
+		this(paths[0], paths[1], paths[2], paths[3], paths[4], paths[5], textureLoader);
 	}
 
 	/**
@@ -126,14 +127,14 @@ public class MeshTexture {
 	/**
 	 * Deletes all textures held by this mesh texture.
 	 */
-	public void delete() {
+	public void delete(ITextureLoader textureLoader) {
 		try {
-			TextureLoader.freeTexture(diffuse);
-			TextureLoader.freeTexture(normal);
-			TextureLoader.freeTexture(occlusion);
-			TextureLoader.freeTexture(opacity);
-			TextureLoader.freeTexture(specularGloss);
-			TextureLoader.freeTexture(emissive);
+			textureLoader.freeTexture(diffuse);
+			textureLoader.freeTexture(normal);
+			textureLoader.freeTexture(occlusion);
+			textureLoader.freeTexture(opacity);
+			textureLoader.freeTexture(specularGloss);
+			textureLoader.freeTexture(emissive);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

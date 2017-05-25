@@ -1,6 +1,6 @@
 package hills.util.texturemap;
 
-import hills.service.loader.TextureLoader;
+import hills.services.loader.ITextureLoader;
 import hills.util.shader.SamplerUniform;
 
 import org.lwjgl.opengl.GL11;
@@ -25,7 +25,7 @@ public class CubeMap {
 	 *     - NEG-Z<br>
 	 * @param flip - Flip face images.
 	 */
-	public CubeMap(String[] imagePaths, boolean flip){
+	public CubeMap(String[] imagePaths, boolean flip, ITextureLoader textureLoader){
 		if(imagePaths.length != FACES)
 			throw new IllegalArgumentException("A cube map has exactly " + FACES + " faces. Passed image paths: " + imagePaths.length);
 		
@@ -33,7 +33,7 @@ public class CubeMap {
 		String name = imagePaths[0] + LOADED_CUBEMAPS++;
 		
 		// Generate a new handle (id) and load the cube map with its face images 
-		handle = TextureLoader.loadCubeMapTexture(imagePaths, name, flip);
+		handle = textureLoader.loadCubeMapTexture(imagePaths, name, flip);
 	}
 	
 	/**
@@ -46,8 +46,8 @@ public class CubeMap {
 	 * @param negZImagePath - cube NEG-Z image.
 	 */
 	public CubeMap(String posXImagePath, String negXImagePath, String posYImagePath,
-				   String negYImagePath, String posZImagePath, String negZImagePath, boolean flip){
-		this(new String[]{posXImagePath, negXImagePath, posYImagePath, negYImagePath, posZImagePath, negZImagePath}, flip);
+				   String negYImagePath, String posZImagePath, String negZImagePath, boolean flip, ITextureLoader textureLoader){
+		this(new String[]{posXImagePath, negXImagePath, posYImagePath, negYImagePath, posZImagePath, negZImagePath}, flip, textureLoader);
 	}
 	
 	/**
@@ -61,9 +61,9 @@ public class CubeMap {
 	/**
 	 * Deletes texture.
 	 */
-	public void delete(){
+	public void delete(ITextureLoader textureLoader){
 		try {
-			TextureLoader.freeTexture(handle);
+			textureLoader.freeTexture(handle);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

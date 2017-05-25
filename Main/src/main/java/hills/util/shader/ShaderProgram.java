@@ -1,7 +1,8 @@
 package hills.util.shader;
 
+import hills.services.ServiceLocator;
 import hills.util.compatibility.BufferUtil;
-import hills.service.loader.ShaderLoader;
+import hills.services.loader.IShaderLoader;
 import hills.util.math.Mat4;
 import hills.util.math.Vec3;
 
@@ -20,9 +21,9 @@ import static org.lwjgl.opengl.GL20.glGetProgramInfoLog;
 
 public enum ShaderProgram {
 
-	STATIC("static.ver", "static.fra", null, null), TERRAIN("terrain.ver",
-			"terrain.fra", null, null), WATER("water.ver", "water.fra", null,
-			null), SKY_BOX("skybox.ver", "skybox.fra", null, null);
+	STATIC("static.ver", "static.fra", null, null, ServiceLocator.INSTANCE.getLoaderFactory().getShaderLoader()), TERRAIN("terrain.ver",
+			"terrain.fra", null, null, ServiceLocator.INSTANCE.getLoaderFactory().getShaderLoader()), WATER("water.ver", "water.fra", null,
+			null, ServiceLocator.INSTANCE.getLoaderFactory().getShaderLoader()), SKY_BOX("skybox.ver", "skybox.fra", null, null, ServiceLocator.INSTANCE.getLoaderFactory().getShaderLoader());
 
 	/**
 	 * Map of all uniform buffer objects.
@@ -41,12 +42,12 @@ public enum ShaderProgram {
 	 */
 	private final int handle;
 
-	private ShaderProgram(String vertexPath, String fragmentPath, String geometryPath, String tessellationPath) {
+	private ShaderProgram(String vertexPath, String fragmentPath, String geometryPath, String tessellationPath, IShaderLoader shaderLoader) {
 		if (vertexPath == null || fragmentPath == null)
 			throw new IllegalArgumentException("A shader program must have a vertex and fragment shader!");
 
-		int vertexShader = ShaderLoader.load(vertexPath, GL20.GL_VERTEX_SHADER);
-		int fragmentShader = ShaderLoader.load(fragmentPath, GL20.GL_FRAGMENT_SHADER);
+		int vertexShader = shaderLoader.load(vertexPath, GL20.GL_VERTEX_SHADER);
+		int fragmentShader = shaderLoader.load(fragmentPath, GL20.GL_FRAGMENT_SHADER);
 		int geometryShader = 0;
 		int tessellationShader = 0;
 

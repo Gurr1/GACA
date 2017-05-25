@@ -3,7 +3,7 @@ package hills.view;
 import hills.services.ServiceLocator;
 import hills.services.display.DisplayServiceI;
 import hills.util.display.FrameBuffer;
-import hills.services.loader.ModelLoader;
+import hills.services.loader.IModelLoader;
 import hills.util.math.Mat4;
 import hills.util.math.Vec4;
 import hills.util.model.MeshData;
@@ -40,7 +40,9 @@ public class WaterRenderer implements IRendererDrawable, IWaterRendererBatchable
 	private DisplayServiceI displayServiceI;
 
 	protected WaterRenderer() {
-		meshData = ModelLoader.load(WaterPlane.WATER_PLANE_VERTICES,
+
+		IModelLoader modelLoader = ServiceLocator.INSTANCE.getLoaderFactory().getModelLoader();
+		meshData = modelLoader.load(WaterPlane.WATER_PLANE_VERTICES,
 				WaterPlane.WATER_PLANE_INDICES, null, Mat4.identity())
 				.getMeshData();
 

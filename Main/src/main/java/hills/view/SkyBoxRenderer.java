@@ -1,6 +1,8 @@
 package hills.view;
 
-import hills.services.loader.ModelLoader;
+import hills.services.ServiceLocator;
+import hills.services.loader.IModelLoader;
+import hills.services.loader.ITextureLoader;
 import hills.util.math.Mat4;
 import hills.util.math.Vec2;
 import hills.util.math.Vec3;
@@ -24,10 +26,10 @@ public final class SkyBoxRenderer implements IRendererDrawable, ISkyBoxData {
 	
 	protected SkyBoxRenderer(){
 		shaderProgram = ShaderProgram.SKY_BOX;
-		meshData = ModelLoader.load(SKY_BOX_VERTICES, SKY_BOX_INDICES, null, Mat4.identity()).getMeshData();
+		meshData = ServiceLocator.INSTANCE.getLoaderFactory().getModelLoader().load(SKY_BOX_VERTICES, SKY_BOX_INDICES, null, Mat4.identity()).getMeshData();
 		
 		// Set default sky box
-		setSkyBoxCubeMap(new CubeMap("sky_box_pos_x" + EXTENSION + ".png", "sky_box_neg_x" + EXTENSION + ".png", "sky_box_pos_y" + EXTENSION + ".png", "sky_box_neg_y" + EXTENSION + ".png", "sky_box_pos_z" + EXTENSION + ".png", "sky_box_neg_z" + EXTENSION + ".png", false));
+		setSkyBoxCubeMap(new CubeMap("sky_box_pos_x" + EXTENSION + ".png", "sky_box_neg_x" + EXTENSION + ".png", "sky_box_pos_y" + EXTENSION + ".png", "sky_box_neg_y" + EXTENSION + ".png", "sky_box_pos_z" + EXTENSION + ".png", "sky_box_neg_z" + EXTENSION + ".png", false, ServiceLocator.INSTANCE.getLoaderFactory().getTextureLoader()));
 	}
 	
 	public void render(){

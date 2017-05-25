@@ -1,6 +1,6 @@
 package hills.util.texturemap;
 
-import hills.services.loader.TextureLoader;
+import hills.services.loader.ITextureLoader;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
@@ -31,8 +31,8 @@ public class TextureMap2D {
 	 * @param flip
 	 *            - Flip face images.
 	 */
-	public TextureMap2D(String path, int textureSlot, boolean flip) {
-		handle = TextureLoader.loadTexture(path, flip);
+	public TextureMap2D(String path, int textureSlot, boolean flip, ITextureLoader textureLoader) {
+		handle = textureLoader.loadTexture(path, flip);
 		this.textureSlot = textureSlot;
 	}
 
@@ -47,9 +47,9 @@ public class TextureMap2D {
 	/**
 	 * Deletes texture.
 	 */
-	public void delete() {
+	public void delete(ITextureLoader textureLoader) {
 		try {
-			TextureLoader.freeTexture(handle);
+			textureLoader.freeTexture(handle);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

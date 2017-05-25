@@ -17,10 +17,12 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class ShaderLoader {
+public class ShaderLoader implements IShaderLoader{
 
-	public static final String SHADER_DIRECTORY = "/shaders/";
-	
+	public final String SHADER_DIRECTORY = "/shaders/";
+
+	protected ShaderLoader(){}
+
 	/**
 	 * Load shader from source file. Will print error and terminate application if 
 	 * file not found or shader compilation fails.
@@ -28,7 +30,7 @@ public class ShaderLoader {
 	 * @param type - Type of shader. (GL_VERTEX_SHADER, GL_FRAGMENT_SHADER, GL_GEOMETRY_SHADER, GL_TESSELLATION_SHADER) (GL20)
 	 * @return Shader handle.
 	 */
-	public static int load(String fileName, int type){
+	public int load(String fileName, int type){
 		StringBuilder source = new StringBuilder(); // String to contain source code
 		
 		try{
@@ -71,5 +73,10 @@ public class ShaderLoader {
 		}
 		
 		return shader;
+	}
+
+	@Override
+	public void cleanUp() {
+
 	}
 }

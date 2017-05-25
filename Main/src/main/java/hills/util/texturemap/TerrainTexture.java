@@ -1,6 +1,6 @@
 package hills.util.texturemap;
 
-import hills.service.loader.TextureLoader;
+import hills.services.loader.ITextureLoader;
 import hills.util.shader.SamplerUniform;
 
 import org.lwjgl.opengl.GL11;
@@ -21,13 +21,13 @@ public class TerrainTexture {
 	 */
 	private final int normal;
 
-	public TerrainTexture(String height, String normal) {
-		this.height = height == null ? -1 : TextureLoader.loadTexture(height, false);
-		this.normal = normal == null ? -1 : TextureLoader.loadTexture(normal, false);
+	public TerrainTexture(String height, String normal, ITextureLoader textureLoader) {
+		this.height = height == null ? -1 : textureLoader.loadTexture(height, false);
+		this.normal = normal == null ? -1 : textureLoader.loadTexture(normal, false);
 	}
 	
-	public TerrainTexture(String diffuse){
-		this(diffuse, null);
+	public TerrainTexture(String diffuse, ITextureLoader textureLoader){
+		this(diffuse, null, textureLoader);
 	}
 	
 	/**
@@ -52,10 +52,10 @@ public class TerrainTexture {
 	/**
 	 * Deletes all textures held by this mesh texture.
 	 */
-	public void delete(){
+	public void delete(ITextureLoader textureLoader){
 		try {
-			TextureLoader.freeTexture(height);
-			TextureLoader.freeTexture(normal);
+			textureLoader.freeTexture(height);
+			textureLoader.freeTexture(normal);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

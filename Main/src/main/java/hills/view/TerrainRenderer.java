@@ -1,5 +1,6 @@
 package hills.view;
 
+import hills.services.ServiceLocator;
 import hills.services.terrain.mesh.GridMeshData;
 import hills.services.terrain.tree.LODNode;
 import hills.util.shader.SamplerUniform;
@@ -18,7 +19,7 @@ public class TerrainRenderer implements ITerrainRendererBatchable, IRendererDraw
 	private GridMeshData gridMeshData; // TerrainLoader.loadGridMesh(TerrainSystem.GRID_WIDTH, TerrainSystem.GRID_DEPTH);
 	private TerrainTexture texture;
 
-	private final TextureMap2D testTexture = new TextureMap2D("grass.png", SamplerUniform.TERRAIN_TEST_SAMPLER.getTextureSlot(), false);
+	private final TextureMap2D testTexture = new TextureMap2D("grass.png", SamplerUniform.TERRAIN_TEST_SAMPLER.getTextureSlot(), false, ServiceLocator.INSTANCE.getLoaderFactory().getTextureLoader());
 
 	private List<LODNode> nodes;
 

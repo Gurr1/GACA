@@ -1,6 +1,8 @@
 package hills.services.ModelDataService;
 
-import hills.service.loader.ModelLoader;
+import hills.services.ServiceLocator;
+import hills.services.loader.IModelLoader;
+import hills.services.loader.ITextureLoader;
 import hills.util.math.Mat4;
 import hills.util.math.Vec2;
 import hills.util.math.Vec3;
@@ -68,20 +70,22 @@ public class CubeModel implements hills.services.ModelDataService.IModelService 
     private final Model sheep, tree, coin, bug;
 
     public CubeModel(){
-        MeshTexture texture = new MeshTexture("sheepTexture.png");
-        Mesh cubeMesh = ModelLoader.load(v, ind, texture, Mat4.identity());
+        IModelLoader modelLoader = ServiceLocator.INSTANCE.getLoaderFactory().getModelLoader();
+        ITextureLoader textureLoader = ServiceLocator.INSTANCE.getLoaderFactory().getTextureLoader();
+        MeshTexture texture = new MeshTexture("sheepTexture.png", textureLoader);
+        Mesh cubeMesh = modelLoader.load(v, ind, texture, Mat4.identity());
         sheep = new Model(new Mesh[]{cubeMesh});
-        texture = new MeshTexture("barkTexture.png");
-        cubeMesh = ModelLoader.load(v, ind, texture, Mat4.identity());
+        texture = new MeshTexture("barkTexture.png", textureLoader);
+        cubeMesh = modelLoader.load(v, ind, texture, Mat4.identity());
         tree = new Model(new Mesh[]{cubeMesh});
 /*        texture = new MeshTexture("rockTexture.png");
         cubeMesh = ModelLoader.load(v, ind, texture, Mat4.identity());
         rock = new Model(new Mesh[]{cubeMesh});*/
-        texture = new MeshTexture("coinTexture.png");
-        cubeMesh = ModelLoader.load(v, ind, texture, Mat4.identity());
+        texture = new MeshTexture("coinTexture.png", textureLoader);
+        cubeMesh = modelLoader.load(v, ind, texture, Mat4.identity());
         coin = new Model(new Mesh[]{cubeMesh});
-        texture = new MeshTexture("bugTexture.png");
-        cubeMesh = ModelLoader.load(v, ind, texture, Mat4.identity());
+        texture = new MeshTexture("bugTexture.png", textureLoader);
+        cubeMesh = modelLoader.load(v, ind, texture, Mat4.identity());
         bug = new Model(new Mesh[]{cubeMesh});
     }
     @Override
