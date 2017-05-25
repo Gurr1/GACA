@@ -10,15 +10,14 @@ import hills.util.model.Model;
  */
 public class Coin extends CollectibleObject{
 
-    private float radius = 1;
+    private float radius = 3;
     private Mat4 matrix;
 
     public Coin(Vec3 pos, Model model) {
         super(pos, model);
         this.pos = pos;
-        this.radius = radius;
         matrix = Mat4.identity();
-        matrix = matrix.scale(5,5,1);
+        matrix = matrix.scale(radius,5,1);
         matrix = matrix.translate(pos);
 
     }

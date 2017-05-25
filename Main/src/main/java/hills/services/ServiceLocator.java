@@ -11,8 +11,8 @@ import hills.services.files.IPictureFileService;
 import hills.services.generation.IGenerationMediator;
 import hills.services.terrain.ITerrainHeightService;
 import hills.services.terrain.ITerrainRenderDataService;
-import hills.services.terrain.TerrainService;
 import hills.services.terrain.ITerrainTreeService;
+import hills.services.terrain.TerrainService;
 
 import static hills.services.ModelDataService.ModelFactory.getModelServiceInstance;
 import static hills.services.camera.CameraFactory.getCameraServiceInstance;

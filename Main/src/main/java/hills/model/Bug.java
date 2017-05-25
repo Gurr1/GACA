@@ -16,7 +16,7 @@ public class Bug extends CollectibleObject implements ICollectible{
         this.pos = position;
         this.model = model;
         this.healthPoints = 1;
-        this.speed = 2;
+        this.speed = 5;
     }
     @Override
     public String getCollectibleName() {
