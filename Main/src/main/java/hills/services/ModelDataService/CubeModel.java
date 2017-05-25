@@ -67,7 +67,7 @@ public class CubeModel implements hills.services.ModelDataService.IModelService 
     };
     private final Model sheep, tree, coin, bug;
 
-    protected CubeModel(){
+    public CubeModel(){
         MeshTexture texture = new MeshTexture("sheepTexture.png");
         Mesh cubeMesh = ModelLoader.load(v, ind, texture, Mat4.identity());
         sheep = new Model(new Mesh[]{cubeMesh});
