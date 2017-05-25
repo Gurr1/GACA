@@ -21,6 +21,7 @@ import static hills.services.ModelDataService.ModelFactory.getModelServiceInstan
 import static hills.services.camera.CameraFactory.getCameraServiceInstance;
 import static hills.services.display.DisplayFactory.getDisplayServiceInstance;
 import static hills.services.files.FileFactory.getFileServiceInstance;
+import static hills.services.generation.GenerationFactory.getGenerationServiceInstance;
 import static hills.services.terrain.TerrainFactory.getTerrainServiceInstance;
 
 public enum ServiceLocator {
@@ -61,14 +62,7 @@ public enum ServiceLocator {
 	}
 
 	public IGenerationMediator getGenerationService(){
-		return getGemerationServiceInstance();
-	}
-
-	private IGenerationMediator getGemerationServiceInstance() {
-		if(generationService == null){
-			generationService = new GenerationMediator();
-		}
-		return generationService;
+		return getGenerationServiceInstance();
 	}
 
 	public DisplayServiceI getDisplayService(){
