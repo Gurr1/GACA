@@ -33,7 +33,11 @@ public class DebugService implements Service {
 	/**
 	 * If culling mode is activated
 	 */
-	private boolean cullingMode = false;			
+	private boolean cullingMode = false;
+
+	protected DebugService(){
+
+	}
 	
 	// TODO Move
 //	private DebugService() {

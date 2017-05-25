@@ -24,7 +24,7 @@ public class TerrainService implements Service, ITerrainTreeService, ITerrainHei
 
 	private final float[][] heightValues;
 	
-	public TerrainService(boolean testing) {
+	protected TerrainService(boolean testing) {
 		// Load the ranges 'constant'
 		TerrainServiceLoader.INSTANCE.loadRangesConstant(TerrainServiceConstants.FIRST_RANGE);
 		

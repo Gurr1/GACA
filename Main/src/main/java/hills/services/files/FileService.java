@@ -12,6 +12,10 @@ public class FileService implements IPictureFileService{
 
     final String path = getClass().getResource("").getPath();
 
+    protected FileService(){
+
+    }
+
     @Override
     public void writeImage(BufferedImage bufferedImage, String name){
         try {

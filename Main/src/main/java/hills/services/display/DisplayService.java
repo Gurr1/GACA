@@ -53,7 +53,7 @@ public final class DisplayService implements Service, DisplayServiceI {
 													// false
 	private String title; // Title of window
 
-	public DisplayService() {}
+	protected DisplayService() {}
 
 	/**
 	 * Create new GLFW window. <br>

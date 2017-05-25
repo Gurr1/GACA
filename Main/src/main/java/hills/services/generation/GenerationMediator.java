@@ -12,7 +12,7 @@ public class GenerationMediator implements IGenerationMediator {
     Random r;
     Terrain terrain;
     NoiseMapGenerator noiseMapGenerator;
-    public GenerationMediator(){
+    protected GenerationMediator(){
         r = new Random();
         terrain = new Terrain(r.nextLong());
         walker = new RandomWalker();
