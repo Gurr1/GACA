@@ -23,7 +23,7 @@ public class Sheep extends Creature{
         this.model = model;
         this.pos = pos;
         this.healthPoints = 20;
-        this.speed = 1;
+        this.speed = 3;
         this.maxHealth = 20;
         this.radius = 3;
     }

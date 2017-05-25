@@ -15,7 +15,7 @@ public class Tree extends ImmovableObject{
     public Tree(Vec3 position, Model model) {
         super(position, model);
         matrix = Mat4.identity();
-        matrix = matrix.scale(5,150,5);
+        matrix = matrix.scale(radius,150,radius);
         matrix = matrix.translate(position);
     }
 

@@ -60,7 +60,6 @@ public class CollidableController {     // Visitor patter?
         //use collision service
         // Not the best solution. Handles each of the
     private void handleCollision(ICollidable co1, ICollidable co2, Class c, Class c2) {
-        System.out.println(c + " " + c2);
         if(c == ICollectible.class || c2 == ICollectible.class){
             if(c == PlayerCollidable.class){
                 PlayerCollidable pc = (PlayerCollidable) co1;

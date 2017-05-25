@@ -1,6 +1,5 @@
 package domainModelTests;
 
-import hills.services.generation.GenerationMediator;
 import hills.services.generation.IGenerationMediator;
 import hills.services.generation.RandomWalker;
 import junit.framework.TestCase;
@@ -14,7 +13,7 @@ public class RandomMoverTest {
     IGenerationMediator generation;
     @Before
     public void init(){
-        generation = new GenerationMediator();
+ //       generation = new GenerationMediator();
     }
     @Test
     public void testSpan(){

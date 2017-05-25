@@ -10,6 +10,7 @@ import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by gustav on 2017-05-06.
@@ -18,6 +19,7 @@ public class MovableController implements KeyboardListener, MouseListener{
     private PlayerMovable player;
     private List<IMovable> movableList = new ArrayList<>();
     int update = 1;
+    Random rand = new Random();
     public MovableController(){
         InputMediator.INSTANCE.subscribeToKeyboard(this);
         InputMediator.INSTANCE.subscribeToMouse(this);
@@ -33,25 +35,23 @@ public class MovableController implements KeyboardListener, MouseListener{
         player.updateMovable(delta);
         float h = ServiceLocator.INSTANCE.getTerrainHeightService()
                 .getHeight(player.get3DPos().getX(), player.get3DPos().getZ());
-        player.setHeight(h);
-        //if(player.get3DPos().getY()<=h) {
-        //   player.setHeight(h);
-        //}
-        //else{
-        //    player.addGravityVelocity(delta);
-        //}
+        if(player.get3DPos().getY()<=h) {
+           player.setHeight(h);
+        }
+        else{
+            player.addGravityVelocity(delta);
+        }
         if(runtime > update){
             updateDir = true;
             update++;
         }
         for(IMovable movable : movableList){
-            movable.updateMovable(delta);
-            System.out.println(movable);
-            movable.setHeight(ServiceLocator.INSTANCE.getTerrainHeightService().getHeight(movable.get3DPos()));
             if(updateDir){
-                double dir = ServiceLocator.INSTANCE.getGenerationService().generateDirection((float) runtime*1000)*360;
+                double dir = ServiceLocator.INSTANCE.getGenerationService().generateDirection((float) (runtime*1000)*360)*rand.nextFloat();
                 movable.setYaw((float) dir);
             }
+            movable.updateMovable(delta);
+            movable.setHeight(ServiceLocator.INSTANCE.getTerrainHeightService().getHeight(movable.get3DPos()));
         }
         updateCamera();
         // Send updates to all saved objects.

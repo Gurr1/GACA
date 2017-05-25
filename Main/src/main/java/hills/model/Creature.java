@@ -19,7 +19,7 @@ public abstract class Creature implements IWoundable, IMovable, ICollidable, IAI
      */
 
     protected Vec3 pos;
-    @Setter @Getter protected float speed = 5;
+    @Setter @Getter protected float speed = 1;
     protected int healthPoints;
     protected int maxHealth;
     protected Model model;
@@ -111,6 +111,7 @@ public abstract class Creature implements IWoundable, IMovable, ICollidable, IAI
             velocityX = forward.mul(xVelocity);
             velocityZ = right.mul(yVelocity);
             velocity = velocityX.add(velocityZ).normalize().mul(speed);
+        System.out.println(velocity);
     }
 
     @Override
