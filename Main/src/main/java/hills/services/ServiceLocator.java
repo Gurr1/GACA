@@ -17,12 +17,17 @@ import hills.services.terrain.ITerrainRenderDataService;
 import hills.services.terrain.TerrainService;
 import hills.services.terrain.ITerrainTreeService;
 
+import static hills.services.ModelDataService.ModelFactory.getModelServiceInstance;
+import static hills.services.camera.CameraFactory.getCameraServiceInstance;
+import static hills.services.display.DisplayFactory.getDisplayServiceInstance;
+import static hills.services.files.FileFactory.getFileServiceInstance;
+import static hills.services.terrain.TerrainFactory.getTerrainServiceInstance;
+
 public enum ServiceLocator {
 	INSTANCE;
 	
 	private DisplayService displayService;
 	private DebugService debugService;
-	private CameraService cameraService;
 	private TerrainService terrainService;
 	private FileService fileService;
 	private IGenerationMediator generationService;
@@ -74,50 +79,5 @@ public enum ServiceLocator {
 		return getModelServiceInstance();
 	}
 
-	private IModelService getModelServiceInstance() {
-		if(modelService == null){
-			modelService = new CubeModel();
-		}
-		return modelService;
-	}
-
 	public IPictureFileService getFileService() { return getFileServiceInstance(); }
-	
-	private TerrainService getTerrainServiceInstance(boolean b){
-		if(terrainService == null)
-			terrainService = new TerrainService(b);
-		
-		return terrainService;
-	}
-	
-	private DisplayService getDisplayServiceInstance(){
-		if(displayService == null)
-			displayService = new DisplayService();
-		
-		return displayService;
-	}
-
-	private CameraService getCameraServiceInstance(){
-		if(cameraService == null)
-			cameraService = new CameraService();
-
-		return cameraService;
-	}
-
-	private DebugService getDebugServiceInstance(){
-		if(debugService == null)
-			debugService = new DebugService();
-
-		return debugService;
-	}
-
-	private FileService getFileServiceInstance(){
-		if(fileService == null)
-			fileService = new FileService();
-
-		return fileService;
-	}
-
-
-
 }

@@ -10,6 +10,8 @@ import java.io.IOException;
  */
 public class FileService implements IPictureFileService{
 
+    final String path = getClass().getResource("").getPath();
+
     @Override
     public void writeImage(BufferedImage bufferedImage, String name){
         try {

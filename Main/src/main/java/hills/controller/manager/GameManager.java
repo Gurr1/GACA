@@ -40,6 +40,7 @@ public final class GameManager extends AbstractController {
 		loadStaticObjects();
 	}
 
+
     private void loadStaticObjects() {
         // Load rocks, trees etc.
     }

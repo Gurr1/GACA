@@ -16,7 +16,7 @@ public class CameraService implements Service, ICameraDataService, ICameraUpdate
 	
 	private boolean toUpdate = true;
 	
-	public CameraService(){
+	protected CameraService(){
 		data = new CameraData();
 	}
 	
