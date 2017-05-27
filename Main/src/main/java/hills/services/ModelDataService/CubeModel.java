@@ -10,7 +10,7 @@ import hills.util.model.MeshTexture;
 import hills.util.model.Model;
 
 /**
- * Created by gustav on 2017-05-15.
+ * @Author Gustav Engsmyre, Anton Annlöv
  */
 public class CubeModel implements hills.services.ModelDataService.IModelService {
     Vertex[] v = {
@@ -66,7 +66,7 @@ public class CubeModel implements hills.services.ModelDataService.IModelService 
             13, 4, 1
     };
     private final Model sheep, tree, coin, bug;
-
+    // Built like this so variables can be final.
     public CubeModel(){
         MeshTexture texture = new MeshTexture("sheepTexture.png");
         Mesh cubeMesh = ModelLoader.load(v, ind, texture, Mat4.identity());

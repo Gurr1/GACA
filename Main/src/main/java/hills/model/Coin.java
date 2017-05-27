@@ -6,7 +6,7 @@ import hills.util.math.shape.Sphere;
 import hills.util.model.Model;
 
 /**
- * Created by Anders on 2017-03-30.
+ * @Author Anders Hansson, Gustav Engsmyre
  */
 public class Coin extends CollectibleObject{
 

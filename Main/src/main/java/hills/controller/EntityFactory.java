@@ -8,7 +8,7 @@ import hills.util.model.Model;
 import java.util.Random;
 
 /**
- * Created by gustav on 2017-05-06.
+ * @Author Cornelis Sjöbeck
  */
 public class EntityFactory {
 

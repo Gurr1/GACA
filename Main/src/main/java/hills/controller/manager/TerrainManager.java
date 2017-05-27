@@ -11,6 +11,9 @@ import hills.view.TerrainRenderer;
 
 import java.util.List;
 
+/**
+ * @Author Anton Annlöv
+ */
 public final class TerrainManager extends AbstractController {
 
 	// TODO Move LODNode to Util package?

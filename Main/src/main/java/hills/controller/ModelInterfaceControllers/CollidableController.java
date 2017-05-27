@@ -3,13 +3,15 @@ package hills.controller.ModelInterfaceControllers;
 import hills.model.ICollectible;
 import hills.model.ICollidable;
 import hills.model.PlayerCollidable;
+import hills.services.ServiceLocator;
 import hills.services.collision.CollisionDetection;
+import hills.services.collision.ICollisionDetection;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Anders on 2017-05-06.
+ * @Author Gustav Engsmyre, Anders Hansson
  */
 public class CollidableController {     // Visitor patter?
 
@@ -41,7 +43,7 @@ public class CollidableController {     // Visitor patter?
     }
 
     public void update() {
-        CollisionDetection cd = new CollisionDetection();
+        ICollisionDetection cd = ServiceLocator.INSTANCE.getCollisionDetection();
         for (int i = 0; i < collidables.size()-1; i++) {
             for (int j = i+1; j < collidables.size(); j++) {
                 if (cd.isColliding(collidables.get(i), collidables.get(j))) {
@@ -60,7 +62,6 @@ public class CollidableController {     // Visitor patter?
     }
         // Not the best solution. Should handle every other collision type aswell.
     private boolean handleCollision(ICollidable co1, ICollidable co2, Class c, Class c2) {
-        System.out.println(c + " " + c2);
         if(c == ICollectible.class || c2 == ICollectible.class){
             if(c == PlayerCollidable.class){
                 PlayerCollidable pc = (PlayerCollidable) co1;

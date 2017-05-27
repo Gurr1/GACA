@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @Author Gustav Engsmyre
  */
-public final class PlayerControllerMouse implements GLFWCursorPosCallbackI{
+public final class MouseMovementController implements GLFWCursorPosCallbackI{
 
 	/**
 	 * Horizontal position of cursor in pixels.
@@ -23,7 +23,7 @@ public final class PlayerControllerMouse implements GLFWCursorPosCallbackI{
 
 	private List<MouseListener> mouseListeners = new ArrayList<>();
 
-	PlayerControllerMouse(){} // Private constructor no instances
+	MouseMovementController(){} // Private constructor no instances
 
 	/**
 	 * Called by GLFW display mouse button callback.

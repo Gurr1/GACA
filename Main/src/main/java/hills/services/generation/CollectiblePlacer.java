@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Created by Ander on 2017-05-03.
+ * @Author Anders Hansson
  */
 public class CollectiblePlacer {
     private int nrOfPlacements;

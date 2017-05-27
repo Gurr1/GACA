@@ -111,7 +111,6 @@ public abstract class Creature implements IWoundable, IMovable, ICollidable, IAI
             velocityX = forward.mul(xVelocity);
             velocityZ = right.mul(yVelocity);
             velocity = velocityX.add(velocityZ).normalize().mul(speed);
-        System.out.println(velocity);
     }
 
     @Override

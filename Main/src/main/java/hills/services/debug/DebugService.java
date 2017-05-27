@@ -46,10 +46,10 @@ public class DebugService implements Service, IDebugService {
 	
 	// TODO Move
 	protected void update(double delta) {
-//		if(PlayerControllerKeyboard.isPressed(GLFW.GLFW_KEY_F1))
+//		if(KeyboardController.isPressed(GLFW.GLFW_KEY_F1))
 //			setWireframeMode(!wireframeMode);
 //		
-//		if(PlayerControllerKeyboard.isPressed(GLFW.GLFW_KEY_F2))
+//		if(KeyboardController.isPressed(GLFW.GLFW_KEY_F2))
 //			setCullingMode(!cullingMode);
 		
 		if(fpsDebugMode)

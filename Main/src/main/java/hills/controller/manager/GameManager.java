@@ -13,6 +13,9 @@ import hills.util.math.Vec3;
 
 import java.util.Random;
 
+/**
+ * @Author Anton Annlöv, Gustav Engsmyre
+ */
 public final class GameManager extends AbstractController {
 	
 	private int nNPCs = 15;

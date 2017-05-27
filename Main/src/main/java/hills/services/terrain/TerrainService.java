@@ -124,7 +124,7 @@ public class TerrainService implements Service, ITerrainTreeService, ITerrainHei
 
 	@Override
 	public void cleanUp() {
-		System.out.println("Terrain service cleaned up!");
+		System.out.println("TerrainGenerator service cleaned up!");
 	}
 
 }

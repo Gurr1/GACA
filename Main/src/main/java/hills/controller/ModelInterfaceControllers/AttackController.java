@@ -5,7 +5,7 @@ import hills.controller.InputControllers.MouseButtonListener;
 import hills.model.IAttack;
 
 /**
- * Created by gustav on 2017-05-11.
+ * @Author Gustav Engsmyre
  */
 public class AttackController implements MouseButtonListener {
     IAttack player;
