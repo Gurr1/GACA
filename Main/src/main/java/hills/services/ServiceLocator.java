@@ -5,7 +5,11 @@ import hills.services.ModelDataService.ModelFactory;
 import hills.services.camera.CameraFactory;
 import hills.services.camera.ICameraDataService;
 import hills.services.camera.ICameraUpdateService;
+import hills.services.collision.CollisionFactory;
+import hills.services.collision.ICollisionDetection;
+import hills.services.debug.DebugFactory;
 import hills.services.debug.DebugService;
+import hills.services.debug.IDebugService;
 import hills.services.display.DisplayFactory;
 import hills.services.display.DisplayService;
 import hills.services.display.DisplayServiceI;
@@ -31,19 +35,19 @@ public enum ServiceLocator {
 	}
 	
 	public ITerrainHeightService getTerrainHeightService(boolean test){
-		return TerrainFactory.getTerrainServiceInstance(test);
+		return TerrainFactory.getTerrainHeightServiceInstance(test);
 	}
 	
 	public ITerrainRenderDataService getTerrianRenderDataService(){
-		return TerrainFactory.getTerrainServiceInstance(false);
+		return TerrainFactory.getTerrainRenderDataServiceInstance(false);
 	}
 
 	public ITerrainHeightService getTerrainHeightTestService(){
-		return TerrainFactory.getTerrainServiceInstance(true);
+		return TerrainFactory.getTerrainHeightServiceInstance(true);
 	}
 	
 	public ITerrainTreeService getTerrainTreeService(){
-		return TerrainFactory.getTerrainServiceInstance(false);
+		return TerrainFactory.getTerrainTreeServiceInstance(false);
 	}
 	
 	public ICameraUpdateService getCameraUpdateService(){
@@ -66,5 +70,9 @@ public enum ServiceLocator {
 		return ModelFactory.getModelServiceInstance();
 	}
 
-	public IPictureFileService getFileService() { return FileFactory.getFileServiceInstance(); }
+	public IPictureFileService getPictureFileService() { return FileFactory.getPictureFileServiceInstance(); }
+
+	public ICollisionDetection getCollisionDetection() { return CollisionFactory.getCollisionDetectionInstance(); }
+
+	public IDebugService getDebugService() { return DebugFactory.getDebugServiceInstance(); }
 }

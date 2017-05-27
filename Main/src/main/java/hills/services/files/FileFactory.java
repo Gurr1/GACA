@@ -11,7 +11,7 @@ public class FileFactory {
 
     private static FileService fileService = null;
 
-    public static FileService getFileServiceInstance(){
+    public static IPictureFileService getPictureFileServiceInstance(){
         if(fileService == null)
             fileService = new FileService();
 

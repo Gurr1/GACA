@@ -11,7 +11,7 @@ public class DebugFactory {
 
     public static DebugService debugService = null;
 
-    private DebugService getDebugServiceInstance(){
+    public static IDebugService getDebugServiceInstance(){
         if(debugService == null)
             debugService = new DebugService();
 

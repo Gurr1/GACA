@@ -11,7 +11,7 @@ public class DisplayFactory {
 
     private static DisplayService displayService = null;
 
-    public static DisplayService getDisplayServiceInstance(){
+    public static DisplayServiceI getDisplayServiceInstance(){
         if(displayService == null)
             displayService = new DisplayService();
 
