@@ -51,15 +51,14 @@ public class CollidableController {     // Visitor patter?
                     for (Class c : classes) {
                         for (Class c2 : classes2) {
                            if( handleCollision(collidables.get(i), collidables.get(j), c, c2))
-                               return;
+                               break;
                         }
                     }
                 }
             }
         }
     }
-        //use collision service
-        // Not the best solution. Handles each of the
+        // Not the best solution. Should handle every other collision type aswell.
     private boolean handleCollision(ICollidable co1, ICollidable co2, Class c, Class c2) {
         System.out.println(c + " " + c2);
         if(c == ICollectible.class || c2 == ICollectible.class){
