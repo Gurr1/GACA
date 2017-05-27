@@ -1,25 +1,21 @@
 package hills.services;
 
 import hills.services.ModelDataService.IModelService;
+import hills.services.ModelDataService.ModelFactory;
+import hills.services.camera.CameraFactory;
 import hills.services.camera.ICameraDataService;
 import hills.services.camera.ICameraUpdateService;
 import hills.services.debug.DebugService;
+import hills.services.display.DisplayFactory;
 import hills.services.display.DisplayService;
 import hills.services.display.DisplayServiceI;
+import hills.services.files.FileFactory;
 import hills.services.files.FileService;
 import hills.services.files.IPictureFileService;
+import hills.services.generation.GenerationFactory;
 import hills.services.generation.IGenerationMediator;
-import hills.services.terrain.ITerrainHeightService;
-import hills.services.terrain.ITerrainRenderDataService;
-import hills.services.terrain.ITerrainTreeService;
-import hills.services.terrain.TerrainService;
+import hills.services.terrain.*;
 
-import static hills.services.ModelDataService.ModelFactory.getModelServiceInstance;
-import static hills.services.camera.CameraFactory.getCameraServiceInstance;
-import static hills.services.display.DisplayFactory.getDisplayServiceInstance;
-import static hills.services.files.FileFactory.getFileServiceInstance;
-import static hills.services.generation.GenerationFactory.getGenerationServiceInstance;
-import static hills.services.terrain.TerrainFactory.getTerrainServiceInstance;
 
 public enum ServiceLocator {
 	INSTANCE;
@@ -35,40 +31,40 @@ public enum ServiceLocator {
 	}
 	
 	public ITerrainHeightService getTerrainHeightService(boolean test){
-		return getTerrainServiceInstance(test);
+		return TerrainFactory.getTerrainServiceInstance(test);
 	}
 	
 	public ITerrainRenderDataService getTerrianRenderDataService(){
-		return getTerrainServiceInstance(false);
+		return TerrainFactory.getTerrainServiceInstance(false);
 	}
 
 	public ITerrainHeightService getTerrainHeightTestService(){
-		return getTerrainServiceInstance(true);
+		return TerrainFactory.getTerrainServiceInstance(true);
 	}
 	
 	public ITerrainTreeService getTerrainTreeService(){
-		return getTerrainServiceInstance(false);
+		return TerrainFactory.getTerrainServiceInstance(false);
 	}
 	
 	public ICameraUpdateService getCameraUpdateService(){
-		return getCameraServiceInstance();
+		return CameraFactory.getCameraUpdateServiceInstance();
 	}
 
 	public ICameraDataService getCameraDataService(){
-		return getCameraServiceInstance();
+		return CameraFactory.getCameraDataServiceInstance();
 	}
 
 	public IGenerationMediator getGenerationService(){
-		return getGenerationServiceInstance();
+		return GenerationFactory.getGenerationServiceInstance();
 	}
 
 	public DisplayServiceI getDisplayService(){
-		return getDisplayServiceInstance();
+		return DisplayFactory.getDisplayServiceInstance();
 	}
 
 	public IModelService getModelService(){
-		return getModelServiceInstance();
+		return ModelFactory.getModelServiceInstance();
 	}
 
-	public IPictureFileService getFileService() { return getFileServiceInstance(); }
+	public IPictureFileService getFileService() { return FileFactory.getFileServiceInstance(); }
 }
