@@ -1,27 +1,27 @@
 package hills.model;
 
-import hills.util.math.Mat4;
 import hills.util.math.Vec3;
 import hills.util.math.shape.Sphere;
 import hills.util.model.Model;
+import lombok.Getter;
 
 /**
- * @Author Anders Hansson, Gustav Engsmyre
+ * Created by Anders on 2017-03-30.
  */
-public class Coin extends CollectibleObject{
+public class Coin implements ICollectible {
 
-    private float radius = 3;
-    private Mat4 matrix;
+    @Getter private final Vec3 pos;
+    private float radius = 1;
+    protected Model model;
 
-    public Coin(Vec3 pos, Model model) {
-        super(pos, model);
+    public Coin(Vec3 pos, float radius) {
         this.pos = pos;
-        matrix = Mat4.identity();
-        matrix = matrix.scale(radius,5,1);
-        matrix = matrix.translate(pos);
-
+        this.radius = radius;
     }
 
+    public Coin(Vec3 pos) {
+        this.pos = pos;
+    }
 
     @Override
     public Sphere getBoundingSphere() {
@@ -33,23 +33,4 @@ public class Coin extends CollectibleObject{
         return "Coin";
     }
 
-    @Override
-    public Vec3 getPos() {
-        return new Vec3(pos);
-    }
-
-    @Override
-    public Model getModel() {
-        return model;
-    }
-
-    @Override
-    public Mat4 getMatrix() {
-        return matrix;
-    }
-
-    @Override
-    public void updateMovable(float delta) {
-        // does nothing, because it shouldn't move.
-    }
 }

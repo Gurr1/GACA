@@ -19,6 +19,9 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.system.MemoryStack;
 
+/**
+ * @author Anton
+ */
 public final class ModelRenderer implements IModelRendererBatchable, IRendererDrawable {
 	
 	/**

@@ -10,9 +10,9 @@ import hills.util.model.MeshTexture;
 import hills.util.model.Model;
 
 /**
- * @Author Gustav Engsmyre, Anton Annlöv
+ * Created by gustav on 2017-05-15.
  */
-public class CubeModel implements hills.services.ModelDataService.IModelService {
+public class CubeModel implements IModelService {
     Vertex[] v = {
             new Vertex(new Vec3(-.5f, -.5f, .5f), new Vec2(0.0f, 0.0f), new Vec3(0.0f, 0.0f, 1.0f)),
             new Vertex(new Vec3(-.5f, -.5f, .5f), new Vec2(0.0f, 1.0f), new Vec3(0.0f, -1.0f, 0.0f)),
@@ -65,8 +65,8 @@ public class CubeModel implements hills.services.ModelDataService.IModelService 
             13, 16, 4,
             13, 4, 1
     };
-    private final Model sheep, tree, coin, bug;
-    // Built like this so variables can be final.
+    private final Model sheep, tree, rock;
+
     public CubeModel(){
         MeshTexture texture = new MeshTexture("sheepTexture.png");
         Mesh cubeMesh = ModelLoader.load(v, ind, texture, Mat4.identity());
@@ -74,15 +74,9 @@ public class CubeModel implements hills.services.ModelDataService.IModelService 
         texture = new MeshTexture("barkTexture.png");
         cubeMesh = ModelLoader.load(v, ind, texture, Mat4.identity());
         tree = new Model(new Mesh[]{cubeMesh});
-/*        texture = new MeshTexture("rockTexture.png");
+        texture = new MeshTexture("rockTexture.png");
         cubeMesh = ModelLoader.load(v, ind, texture, Mat4.identity());
-        rock = new Model(new Mesh[]{cubeMesh});*/
-        texture = new MeshTexture("coinTexture.png");
-        cubeMesh = ModelLoader.load(v, ind, texture, Mat4.identity());
-        coin = new Model(new Mesh[]{cubeMesh});
-        texture = new MeshTexture("bugTexture.png");
-        cubeMesh = ModelLoader.load(v, ind, texture, Mat4.identity());
-        bug = new Model(new Mesh[]{cubeMesh});
+        rock = new Model(new Mesh[]{cubeMesh});
     }
     @Override
     public Model getSheep() {
@@ -96,18 +90,6 @@ public class CubeModel implements hills.services.ModelDataService.IModelService 
 
     @Override
     public Model getRock() {
-        return null;
+        return rock;
     }
-
-    @Override
-    public Model getCoin() {
-        return coin;
-    }
-
-    @Override
-    public Model getBug() {
-        return bug;
-    }
-
-
 }

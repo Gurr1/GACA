@@ -2,6 +2,9 @@ package hills.services.terrain;
 
 import hills.util.math.Vec3;
 
+/**
+ * @author Anton
+ */
 public interface ITerrainHeightService {
 	
 	/**

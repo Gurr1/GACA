@@ -12,7 +12,7 @@ import hills.view.TerrainRenderer;
 import java.util.List;
 
 /**
- * @Author Anton Annlöv
+ * @author Anton
  */
 public final class TerrainManager extends AbstractController {
 

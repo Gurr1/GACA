@@ -3,6 +3,9 @@ package hills.services.camera;
 import hills.util.math.Vec3;
 import hills.util.math.shape.Frustrum;
 
+/**
+ * @author Anton
+ */
 public class CameraData {
 
     /**

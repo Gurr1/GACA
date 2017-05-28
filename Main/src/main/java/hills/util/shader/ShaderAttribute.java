@@ -1,5 +1,8 @@
 package hills.util.shader;
 
+/**
+ * @author Anton
+ */
 public enum ShaderAttribute {
 
 	POSITION("pos", 0),

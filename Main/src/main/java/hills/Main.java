@@ -16,7 +16,7 @@ import org.lwjgl.glfw.GLFWWindowCloseCallback;
 import org.lwjgl.opengl.GL11;
 
 /**
- * Created by gustav on 2017-03-21.
+ * @author Anton, Gustav
  */
 public class Main {
 

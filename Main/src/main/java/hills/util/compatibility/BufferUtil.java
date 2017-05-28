@@ -5,6 +5,9 @@ import java.nio.IntBuffer;
 
 import org.lwjgl.BufferUtils;
 
+/**
+ * @author Anton
+ */
 public final class BufferUtil {
 
 	private BufferUtil() {

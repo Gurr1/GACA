@@ -11,6 +11,9 @@ import lombok.Getter;
 
 import java.nio.ByteBuffer;
 
+/**
+ * @author Anton
+ */
 public class LODNode implements STD140Formatable {
 
 	/**
@@ -44,6 +47,7 @@ public class LODNode implements STD140Formatable {
 	 *            child nodes LOD level.
 	 * @return This nodes 4 child nodes.
 	 */
+	// TODO Simplify
 	protected LODNode[] getChildNodes(float[][][] nodeMinMaxHeight) {
 		LODNode[] nodes = new LODNode[4];
 
@@ -80,6 +84,7 @@ public class LODNode implements STD140Formatable {
 	 *            - Boolean array where true means clip. each index<br>
 	 *            represents a child node starting from top right going CCW.
 	 */
+	// TODO Revise
 	protected void setClipMode(boolean clipTR, boolean clipTL, boolean clipBL,
 			boolean clipBR) {
 		Vec3 nodeCenter = aaBox.getPos().add(aaBox.getSize().mul(0.5f));

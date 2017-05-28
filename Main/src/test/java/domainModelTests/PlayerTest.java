@@ -12,7 +12,7 @@ import org.lwjgl.glfw.GLFW;
  * Created by Anders on 2017-03-31.
  */
 public class PlayerTest {
-    private Player player;
+    Player player;
 
     @Before
     public void initPlayer() {

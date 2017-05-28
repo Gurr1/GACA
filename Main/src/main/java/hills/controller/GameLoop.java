@@ -16,6 +16,9 @@ import org.lwjgl.glfw.GLFW;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Anton
+ */
 public final class GameLoop {
 	
 	/**

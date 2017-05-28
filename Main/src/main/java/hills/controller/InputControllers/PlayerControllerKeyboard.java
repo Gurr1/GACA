@@ -9,14 +9,14 @@ import java.util.List;
 /**
  * @Author Gustav Engsmyre
  */
-public final class KeyboardController implements GLFWKeyCallbackI{
+public final class PlayerControllerKeyboard implements GLFWKeyCallbackI{
 
 	/**
 	 * List of Subscribers.
 	 */
 	private List<KeyboardListener> subscribers = new ArrayList<>();
 
-	public KeyboardController(){
+	public PlayerControllerKeyboard(){
 	}
 	
 	/**

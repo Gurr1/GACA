@@ -1,31 +1,31 @@
 package hills.services;
 
+import hills.services.ModelDataService.CubeModel;
 import hills.services.ModelDataService.IModelService;
-import hills.services.ModelDataService.ModelFactory;
-import hills.services.camera.CameraFactory;
 import hills.services.camera.ICameraDataService;
 import hills.services.camera.ICameraUpdateService;
-import hills.services.collision.CollisionFactory;
-import hills.services.collision.ICollisionDetection;
-import hills.services.debug.DebugFactory;
+import hills.services.camera.CameraService;
 import hills.services.debug.DebugService;
-import hills.services.debug.IDebugService;
-import hills.services.display.DisplayFactory;
 import hills.services.display.DisplayService;
 import hills.services.display.DisplayServiceI;
-import hills.services.files.FileFactory;
 import hills.services.files.FileService;
 import hills.services.files.IPictureFileService;
-import hills.services.generation.GenerationFactory;
+import hills.services.generation.GenerationMediator;
 import hills.services.generation.IGenerationMediator;
-import hills.services.terrain.*;
+import hills.services.terrain.ITerrainHeightService;
+import hills.services.terrain.ITerrainRenderDataService;
+import hills.services.terrain.TerrainService;
+import hills.services.terrain.ITerrainTreeService;
 
-
+/**
+ * @author Anton
+ */
 public enum ServiceLocator {
 	INSTANCE;
 	
 	private DisplayService displayService;
 	private DebugService debugService;
+	private CameraService cameraService;
 	private TerrainService terrainService;
 	private FileService fileService;
 	private IGenerationMediator generationService;
@@ -34,45 +34,89 @@ public enum ServiceLocator {
 	private ServiceLocator(){	
 	}
 	
-	public ITerrainHeightService getTerrainHeightService(boolean test){
-		return TerrainFactory.getTerrainHeightServiceInstance(test);
+	public ITerrainHeightService getTerrainHeightService(){
+		return getTerrainServiceInstance();
 	}
 	
 	public ITerrainRenderDataService getTerrianRenderDataService(){
-		return TerrainFactory.getTerrainRenderDataServiceInstance(false);
-	}
-
-	public ITerrainHeightService getTerrainHeightTestService(){
-		return TerrainFactory.getTerrainHeightServiceInstance(true);
+		return getTerrainServiceInstance();
 	}
 	
 	public ITerrainTreeService getTerrainTreeService(){
-		return TerrainFactory.getTerrainTreeServiceInstance(false);
+		return getTerrainServiceInstance();
 	}
 	
 	public ICameraUpdateService getCameraUpdateService(){
-		return CameraFactory.getCameraUpdateServiceInstance();
+		return getCameraServiceInstance();
 	}
 
 	public ICameraDataService getCameraDataService(){
-		return CameraFactory.getCameraDataServiceInstance();
+		return getCameraServiceInstance();
 	}
 
 	public IGenerationMediator getGenerationService(){
-		return GenerationFactory.getGenerationServiceInstance();
+		return getGemerationServiceInstance();
+	}
+
+	private IGenerationMediator getGemerationServiceInstance() {
+		if(generationService == null){
+			generationService = new GenerationMediator();
+		}
+		return generationService;
 	}
 
 	public DisplayServiceI getDisplayService(){
-		return DisplayFactory.getDisplayServiceInstance();
+		return getDisplayServiceInstance();
 	}
 
 	public IModelService getModelService(){
-		return ModelFactory.getModelServiceInstance();
+		return getModelServiceInstance();
 	}
 
-	public IPictureFileService getPictureFileService() { return FileFactory.getPictureFileServiceInstance(); }
+	private IModelService getModelServiceInstance() {
+		if(modelService == null){
+			modelService = new CubeModel();
+		}
+		return modelService;
+	}
 
-	public ICollisionDetection getCollisionDetection() { return CollisionFactory.getCollisionDetectionInstance(); }
+	public IPictureFileService getFileService() { return getFileServiceInstance(); }
+	
+	private TerrainService getTerrainServiceInstance(){
+		if(terrainService == null)
+			terrainService = new TerrainService();
+		
+		return terrainService;
+	}
+	
+	private DisplayService getDisplayServiceInstance(){
+		if(displayService == null)
+			displayService = new DisplayService();
+		
+		return displayService;
+	}
 
-	public IDebugService getDebugService() { return DebugFactory.getDebugServiceInstance(); }
+	private CameraService getCameraServiceInstance(){
+		if(cameraService == null)
+			cameraService = new CameraService();
+
+		return cameraService;
+	}
+
+	private DebugService getDebugServiceInstance(){
+		if(debugService == null)
+			debugService = new DebugService();
+
+		return debugService;
+	}
+
+	private FileService getFileServiceInstance(){
+		if(fileService == null)
+			fileService = new FileService();
+
+		return fileService;
+	}
+
+
+
 }

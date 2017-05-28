@@ -6,18 +6,18 @@ import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
 
 /**
  * @Author Gustav Engsmyre
- * Handles creating dependencies for every input method.
  */
 public enum InputMediator {
     INSTANCE();
-    MouseMovementController mouse;
-    MouseButtonController mouseButton;
-    KeyboardController keyboard;
+    PlayerControllerMouse mouse;
+    PlayerControllerMouseButton mouseButton;
+    PlayerControllerKeyboard keyboard;
     
     InputMediator(){
-       mouse = new MouseMovementController();
-       keyboard = new KeyboardController();
-       mouseButton = new MouseButtonController();
+       // keyListener = new PlayerControllerKeyboard();
+       mouse = new PlayerControllerMouse();
+       keyboard = new PlayerControllerKeyboard();
+       mouseButton = new PlayerControllerMouseButton();
     }
     
     public void subscribeToKeyboard(KeyboardListener listener){

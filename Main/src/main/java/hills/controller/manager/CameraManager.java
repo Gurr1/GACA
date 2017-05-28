@@ -5,7 +5,7 @@ import hills.services.ServiceLocator;
 import hills.services.camera.ICameraUpdateService;
 
 /**
- * @Author Anton Annlöv
+ * @author Anton
  */
 public class CameraManager extends AbstractController {
 

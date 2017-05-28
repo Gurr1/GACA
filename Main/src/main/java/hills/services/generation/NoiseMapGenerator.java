@@ -5,7 +5,7 @@ import hills.services.terrain.TerrainServiceConstants;
 import java.awt.image.BufferedImage;
 
 /**
- * @Author Gustav Engsmyre
+ * Created by gustav on 2017-03-21.
  */
 
 public class NoiseMapGenerator{

@@ -7,6 +7,9 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL13;
 
+/**
+ * @author Anton
+ */
 public class TerrainTexture {
 	
 	public static final int MAP_AMOUNT = 2;

@@ -6,6 +6,9 @@ import hills.util.texturemap.TerrainTexture;
 
 import java.util.List;
 
+/**
+ * @author Anton
+ */
 public interface ITerrainRendererBatchable {
 	public void batchNodes(List<LODNode> nodes, GridMeshData gridMeshData, TerrainTexture texture);
 	public void clearBatch();

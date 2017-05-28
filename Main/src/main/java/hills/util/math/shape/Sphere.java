@@ -3,6 +3,9 @@ package hills.util.math.shape;
 import hills.util.math.Vec3;
 import lombok.Getter;
 
+/**
+ * @author Anton
+ */
 public class Sphere {
 
 	@Getter private final Vec3 pos;
@@ -28,9 +31,9 @@ public class Sphere {
 	}
 
 	public boolean intersects(Sphere sphere){
-		Vec3 v = pos.sub(sphere.getPos());
-		float distance = v.getLength();
-		float collisionDistance = (radius + sphere.getRadius());
+		Vec3 v =  pos.sub(sphere.getPos());
+		float distance = v.dot(v);
+		float collisionDistance = (radius + sphere.getRadius())*(radius + sphere.getRadius());
 		return (distance < collisionDistance);
 	}
 }

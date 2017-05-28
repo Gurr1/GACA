@@ -28,24 +28,25 @@ public class MovableController implements KeyboardListener, MouseListener{
     public void setPlayer(PlayerMovable movable){
         player = movable;
     }
-    public void updateMovables(float delta, double runtime, boolean test){
+    public void updateMovables(float delta, double runtime){
         boolean updateDir = false;
         player.updateMovable(delta);
-        float h = ServiceLocator.INSTANCE.getTerrainHeightService(test)
+        float h = ServiceLocator.INSTANCE.getTerrainHeightService()
                 .getHeight(player.get3DPos().getX(), player.get3DPos().getZ());
-        if(player.get3DPos().getY()<=h) {
-           player.setHeight(h);
-        }
-        else{
-            player.addGravityVelocity(delta);
-        }
+        player.setHeight(h);
+        //if(player.get3DPos().getY()<=h) {
+        //   player.setHeight(h);
+        //}
+        //else{
+        //    player.addGravityVelocity(delta);
+        //}
         if(runtime > update){
             updateDir = true;
             update++;
         }
         for(IMovable movable : movableList){
             movable.updateMovable(delta);
-            movable.setHeight(ServiceLocator.INSTANCE.getTerrainHeightService(test).getHeight(movable.get3DPos()));
+            movable.setHeight(ServiceLocator.INSTANCE.getTerrainHeightService().getHeight(movable.get3DPos()));
             if(updateDir){
                 double dir = ServiceLocator.INSTANCE.getGenerationService().generateDirection((float) runtime*1000)*360;
                 movable.setYaw((float) dir);
@@ -78,6 +79,7 @@ public class MovableController implements KeyboardListener, MouseListener{
 
 
     private void setDirection(int key, int mods, boolean pressed){
+        System.out.println(key);
         if(key == GLFW.GLFW_KEY_LEFT_SHIFT){
             player.addVelocity(PlayerMovable.Direction.SPRINT, pressed);
         }
@@ -97,7 +99,7 @@ public class MovableController implements KeyboardListener, MouseListener{
             case  GLFW.GLFW_KEY_SPACE:
                 if(player.getVelocity().getY()<=0 &&
                         player.get3DPos().getY()<=ServiceLocator.
-                                INSTANCE.getTerrainHeightService(false).getHeight(player.get3DPos())+0.1) {
+                                INSTANCE.getTerrainHeightService().getHeight(player.get3DPos())+0.1) {
                     player.addVelocity(PlayerMovable.Direction.UP, pressed);
                 }
                 break;

@@ -23,22 +23,14 @@ public class Sheep extends Creature{
         this.model = model;
         this.pos = pos;
         this.healthPoints = 20;
-        this.speed = 3;
+        this.speed = 1;
         this.maxHealth = 20;
-        this.radius = 3;
+        this.radius = 1;
     }
 
     @Override
     public Sphere getBoundingSphere() {
         return new Sphere(pos, radius);
-    }
-
-    @Override
-    public Mat4 getMatrix() {
-        Mat4 matrix = Mat4.identity();
-        matrix = matrix.translate(pos);
-        matrix = matrix.scale(radius, 5, radius);
-        return matrix;
     }
 
     public void updatePosition() {

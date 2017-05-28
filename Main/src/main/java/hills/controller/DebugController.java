@@ -10,7 +10,7 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
 /**
- * @Author Gustav Engsmyre
+ * Created by gustav on 2017-05-12.
  */
 public class DebugController implements KeyboardListener{
 	

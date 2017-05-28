@@ -4,18 +4,17 @@ import java.awt.image.BufferedImage;
 import java.util.Random;
 
 /**
- * @Author Gustav Engsmyre
+ * Created by gustav on 2017-04-27.
  */
 public class GenerationMediator implements IGenerationMediator {
 
-    private RandomWalker walker;
-    private Random r;
-    private TerrainGenerator terrain;
-    private NoiseMapGenerator noiseMapGenerator;
-
-    protected GenerationMediator(){
+    RandomWalker walker;
+    Random r;
+    Terrain terrain;
+    NoiseMapGenerator noiseMapGenerator;
+    public GenerationMediator(){
         r = new Random();
-        terrain = new TerrainGenerator(r.nextLong());
+        terrain = new Terrain(r.nextLong());
         walker = new RandomWalker();
         noiseMapGenerator = new NoiseMapGenerator(r.nextLong());
     }

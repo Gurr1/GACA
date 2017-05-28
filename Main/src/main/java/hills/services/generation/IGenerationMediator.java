@@ -3,7 +3,7 @@ package hills.services.generation;
 import java.awt.image.BufferedImage;
 
 /**
- * @Author Gustav Engsmyre
+ * Created by gustav on 2017-04-27.
  */
 public interface IGenerationMediator {
     /**
