@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Created by corne on 5/10/2017.
+ * @author Cornelis T Sjöbeck
  */
 public class FileService implements IPictureFileService{
 

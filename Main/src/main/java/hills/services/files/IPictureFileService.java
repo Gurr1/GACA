@@ -3,7 +3,7 @@ package hills.services.files;
 import java.awt.image.BufferedImage;
 
 /**
- * Created by corne on 5/10/2017.
+ * @author Cornelis T Sjöbeck
  */
 public interface IPictureFileService {
 

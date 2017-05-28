@@ -1,7 +1,7 @@
 package hills.services.generation;
 
 /**
- * @Author Cornelis Sjöbeck
+ * @Author Cornelis T Sjöbeck
  */
 public class GenerationFactory {
 

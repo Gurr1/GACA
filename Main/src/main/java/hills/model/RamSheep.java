@@ -8,7 +8,7 @@ import hills.util.model.Model;
 import java.util.Random;
 
 /**
- * Created by corne on 5/6/2017.
+ * @author Cornelis T Sjöbeck
  */
 public class RamSheep extends Mob {
 
