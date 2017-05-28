@@ -24,7 +24,6 @@ public final class GameManager extends AbstractController {
 	private CollidableController collidableController;
 	private MovableController movableController;
 	private AttackController attackController;
-	private long nFrame = 0;
 	private double runtime = 0;
 	private int nCollectibles = 25;
 

@@ -13,7 +13,7 @@ import java.util.Random;
  */
 public class TerrainGenerator {
 
-    NoiseMapGenerator noise;
+    private NoiseMapGenerator noise;
     private static int  HEIGHT = TerrainServiceConstants.TERRAIN_HEIGHT;
     private static int WIDTH = TerrainServiceConstants.TERRAIN_WIDTH;
     private static String HEIGHT_MAP_NAME = TerrainServiceConstants.HEIGHT_MAP_NAME;
@@ -99,7 +99,7 @@ public class TerrainGenerator {
         return green;
     }
 
-    void createfinalIsland(){
+    protected void createfinalIsland(){
         double[][] islandMatrix = createIsland();
         int[][] noiseMatrix = createHeightMap();
         BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);

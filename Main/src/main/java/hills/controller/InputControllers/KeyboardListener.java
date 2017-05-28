@@ -9,7 +9,7 @@ public interface KeyboardListener {
      * @param key The key pressed
      * @param mods Modifiers e.g Shift pressed.
      */
-    void KeyPressed(int key, int mods);
+    void keyPressed(int key, int mods);
     /**
      * Called when a button is released.
      * @param key The key released

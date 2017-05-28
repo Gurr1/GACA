@@ -124,7 +124,6 @@ public enum SamplerUniform {
 
 		System.err
 				.println("genTextureSlot(int textureSlot) can only take in GL13.TEXTUREX values as argument.");
-		System.exit(-1);
-		return 0;
+		throw new RuntimeException("a terminal error has occurred. shutting down application");
 	}
 }
