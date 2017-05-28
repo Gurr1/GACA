@@ -19,6 +19,9 @@ public class MovableController implements KeyboardListener, MouseListener{
     private PlayerMovable player;
     private List<IMovable> movableList = new ArrayList<>();
     int update = 1;
+    
+    private boolean flyMode = false;
+    
     public MovableController(){
         InputMediator.INSTANCE.subscribeToKeyboard(this);
         InputMediator.INSTANCE.subscribeToMouse(this);
@@ -37,7 +40,7 @@ public class MovableController implements KeyboardListener, MouseListener{
         if(player.get3DPos().getY()<=h) {
            player.setHeight(h);
         }
-        else{
+        else if(!flyMode){
             player.addGravityVelocity(delta);
         }
         if(runtime > update){
@@ -102,7 +105,24 @@ public class MovableController implements KeyboardListener, MouseListener{
                     player.addVelocity(PlayerMovable.Direction.UP, pressed);
                 }
                 break;
-                default: break;
-        }
+            // Fly mode
+            case GLFW.GLFW_KEY_F4:
+            	if(!pressed)
+            		break;
+            	flyMode = !flyMode;
+            	player.setRunModifier(flyMode ? 100 : 5);
+            	break;
+            case GLFW.GLFW_KEY_U:
+            	if(pressed)
+            		player.addVelocity(PlayerMovable.Direction.UP, pressed);
+            	else
+            		player.addVelocity(PlayerMovable.Direction.DOWN, !pressed);
+            	break;
+            case GLFW.GLFW_KEY_I:
+            	if(pressed)
+            		player.addVelocity(PlayerMovable.Direction.DOWN, pressed);
+            	else
+            		player.addVelocity(PlayerMovable.Direction.UP, !pressed);
+            	break;          }
     }
 }

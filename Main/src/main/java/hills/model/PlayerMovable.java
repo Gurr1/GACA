@@ -9,10 +9,11 @@ public interface PlayerMovable extends IMovable{
     Vec3 getHeadPos();
 
     enum Direction{
-        FORWARD, RIGHT, LEFT, BACK, SPRINT, UP;
+        FORWARD, RIGHT, LEFT, BACK, SPRINT, UP, DOWN;
     }
     void addVelocity(PlayerMovable.Direction direction, boolean pressed);
     Vec3 getForwardVector();
     Vec3 getRightVector();
     Vec3 getUpVector();
+    void setRunModifier(float mod);
 }
