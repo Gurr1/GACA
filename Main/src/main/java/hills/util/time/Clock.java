@@ -1,5 +1,8 @@
 package hills.util.time;
 
+/**
+ * @Author Anton Annlöv
+ */
 public class Clock {
 
 	public static final double TICKS_PER_SECOND = 1000000000.0; // 1 tick per

@@ -4,6 +4,9 @@ import hills.util.math.Vec3;
 import hills.util.math.Vec4;
 import lombok.Getter;
 
+/**
+ * @Author Anton Annlöv
+ */
 public class Plane {
 
 	@Getter

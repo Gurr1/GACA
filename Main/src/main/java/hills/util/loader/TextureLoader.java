@@ -18,7 +18,10 @@ import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.HashMap;
 import java.util.Map;
-
+/**
+ * @Author Anton Annlöv
+ */
+// TODO Move to service
 public class TextureLoader {
 
 	public static final String DIRECTORY = "src/main/resources/textures/";

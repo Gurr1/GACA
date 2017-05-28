@@ -8,6 +8,9 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @Author Anton Annlöv
+ */
 public class LODTree {
 
 	private final int MAP_WIDTH, MAP_DEPTH;

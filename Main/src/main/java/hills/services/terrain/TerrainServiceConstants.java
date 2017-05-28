@@ -1,5 +1,8 @@
 package hills.services.terrain;
 
+/**
+ * @Author Anton Annlöv
+ */
 public class TerrainServiceConstants {
 
 	public static final String HEIGHT_MAP_DIRECTORY = "src/main/resources/textures/";

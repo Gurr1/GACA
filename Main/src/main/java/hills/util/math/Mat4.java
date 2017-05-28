@@ -1,9 +1,10 @@
 package hills.util.math;
 
 import lombok.val;
-
 import java.nio.ByteBuffer;
-
+/**
+ * @Author Anton Annlöv
+ */
 //TODO Make mutable?
 @val
 public class Mat4 implements STD140Formatable {

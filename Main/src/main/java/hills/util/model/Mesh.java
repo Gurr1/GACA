@@ -2,6 +2,9 @@ package hills.util.model;
 
 import hills.util.math.Mat4;
 
+/**
+ * @Author Anton Annlöv
+ */
 public class Mesh {
 
 	/**

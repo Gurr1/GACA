@@ -2,6 +2,9 @@ package hills.util.math.shape;
 
 import hills.util.math.Vec3;
 
+/**
+ * @Author Anton Annlöv
+ */
 public class Frustrum {
 	
 	/* TODO DELETE */

@@ -3,6 +3,9 @@ package hills.util.math.shape;
 import hills.util.math.Vec3;
 import lombok.Getter;
 
+/**
+ * @Author Anton Annlöv
+ */
 public class AABox {
 
 	@Getter private final Vec3 pos;

@@ -8,6 +8,9 @@ import org.lwjgl.system.MemoryStack;
 import hills.util.math.STD140Formatable;
 import hills.util.shader.ShaderProgram;
 
+/**
+ * @Author Anton Annlöv
+ */
 public enum TerrainServiceLoader {
 	INSTANCE;
 	
