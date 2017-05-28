@@ -1,17 +1,16 @@
 package hills.engine.water;
 
-import hills.engine.math.Mat4;
-import hills.engine.math.STD140Formatable;
-import hills.engine.math.Vec2;
-import hills.engine.math.Vec3;
-import hills.engine.math.Vertex;
-import hills.engine.math.shape.Plane;
+import hills.util.math.*;
+import hills.util.math.shape.Plane;
+import lombok.Getter;
 
 import java.nio.ByteBuffer;
 
-import lombok.Getter;
-
 public class WaterPlane implements STD140Formatable {
+
+	/**
+	 * not used anywhere. only for future uses.
+	 */
 
 	@Getter
 	private final Plane plane;
