@@ -1,5 +1,8 @@
 package hills.util.math;
 
+/**
+ * @Author Anton Annlöv
+ */
 //TODO Make mutable?
 public final class Quaternion {
 

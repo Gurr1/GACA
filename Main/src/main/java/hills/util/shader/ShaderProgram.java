@@ -18,6 +18,9 @@ import java.util.Map.Entry;
 import static org.lwjgl.opengl.GL11.GL_FALSE;
 import static org.lwjgl.opengl.GL20.glGetProgramInfoLog;
 
+/**
+ * @Author Anton Annlöv
+ */
 public enum ShaderProgram {
 
 	STATIC("static.ver", "static.fra", null, null), TERRAIN("terrain.ver",

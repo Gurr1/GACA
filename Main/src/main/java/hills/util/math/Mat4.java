@@ -4,6 +4,9 @@ import java.nio.ByteBuffer;
 
 import lombok.val;
 
+/**
+ * @Author Anton Annlöv
+ */
 //TODO Make mutable?
 @val
 public class Mat4 implements STD140Formatable {

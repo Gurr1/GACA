@@ -2,6 +2,9 @@ package hills.util.shader;
 
 import org.lwjgl.opengl.GL13;
 
+/**
+ * @Author Anton Annlöv
+ */
 public enum SamplerUniform {
 
 	DIFFUSE("diffuseMap", GL13.GL_TEXTURE0), NORMAL("normalMap",

@@ -5,6 +5,9 @@ import hills.util.loader.TextureLoader;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 
+/**
+ * @Author Anton Annlöv
+ */
 public class TextureMap2D {
 
 	/**

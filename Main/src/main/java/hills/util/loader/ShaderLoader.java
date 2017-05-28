@@ -17,6 +17,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+/**
+ * @Author Anton Annlöv
+ */
+//TODO Move to service
 public class ShaderLoader {
 
 	public static final String SHADER_DIRECTORY = "/shaders/";

@@ -3,6 +3,9 @@ package hills.util.math;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * @Author Anton Annlöv
+ */
 //TODO Make immutable?
 public class Vertex {
 

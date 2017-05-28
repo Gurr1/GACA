@@ -14,6 +14,9 @@ import hills.util.texturemap.TerrainTexture;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
+/**
+ * @Author Anton Annlöv
+ */
 public class TerrainService implements Service, ITerrainTreeService, ITerrainHeightService, ITerrainRenderDataService {
 	
 	private LODTree tree;
