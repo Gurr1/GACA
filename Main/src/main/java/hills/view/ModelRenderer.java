@@ -7,6 +7,10 @@ import hills.util.model.MeshTexture;
 import hills.util.model.Model;
 import hills.util.shader.ShaderAttribute;
 import hills.util.shader.ShaderProgram;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
+import org.lwjgl.system.MemoryStack;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -14,11 +18,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
-import org.lwjgl.system.MemoryStack;
-
+/**
+ * @Author Anton Annlöv
+ */
 public final class ModelRenderer implements IModelRendererBatchable, IRendererDrawable {
 	
 	/**

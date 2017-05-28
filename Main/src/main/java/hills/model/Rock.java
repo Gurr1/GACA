@@ -6,7 +6,7 @@ import hills.util.math.shape.Sphere;
 import hills.util.model.Model;
 
 /**
- * Created by gustav on 2017-04-25.
+ *
  */
 public class Rock extends ImmovableObject{
     private float radius = 5;

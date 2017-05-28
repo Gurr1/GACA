@@ -5,16 +5,15 @@ import hills.util.display.FrameBuffer;
 import hills.util.loader.ModelLoader;
 import hills.util.loader.TextureLoader;
 import hills.util.shader.ShaderProgram;
-import hills.view.ModelRenderer;
 import hills.view.RenderLocator;
-import hills.view.SkyBoxRenderer;
-import hills.view.TerrainRenderer;
-import hills.view.WaterRenderer;
-
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.List;
+
+/**
+ * @Author Anton Annlöv
+ */
 
 public final class GameLoop {
 	

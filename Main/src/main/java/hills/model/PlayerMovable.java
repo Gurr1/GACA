@@ -3,7 +3,7 @@ package hills.model;
 import hills.util.math.Vec3;
 
 /**
- * Created by gustav on 2017-05-06.
+ *
  */
 public interface PlayerMovable extends IMovable{
     Vec3 getHeadPos();

@@ -1,5 +1,8 @@
 package hills.view;
 
+/**
+ * @Author Anton Annlöv
+ */
 public enum RenderLocator {
 	INSTANCE();
 	

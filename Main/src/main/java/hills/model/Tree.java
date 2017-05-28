@@ -6,7 +6,7 @@ import hills.util.math.shape.Sphere;
 import hills.util.model.Model;
 
 /**
- * Created by gustav on 2017-05-15.
+ *
  */
 public class Tree extends ImmovableObject{
         private Mat4 matrix;

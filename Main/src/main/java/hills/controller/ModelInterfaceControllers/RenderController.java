@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by gustav on 2017-05-15.
+ * @Author Gustav Engsmyre
  */
 public class RenderController {
     private List<IRenderable> renderables = new ArrayList<>();

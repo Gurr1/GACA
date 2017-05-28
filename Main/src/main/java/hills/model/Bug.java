@@ -6,7 +6,8 @@ import hills.util.math.shape.Sphere;
 import hills.util.model.Model;
 
 /**
- * Created by gustav on 2017-05-23.
+ * @Author Gustav Engsmyre
+ * @RevisedBy Cornelis Sjöbeck
  */
 public class Bug extends CollectibleObject implements ICollectible{
     private float radius = 1.5f;

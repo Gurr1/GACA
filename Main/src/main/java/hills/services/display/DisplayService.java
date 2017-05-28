@@ -12,6 +12,9 @@ import java.nio.IntBuffer;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
+/**
+ * @Author Gustav Engsmyre, Anton Annlöv
+ */
 public final class DisplayService implements Service, DisplayServiceI {
 
 	// GLFW callback's

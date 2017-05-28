@@ -2,6 +2,9 @@ package hills.controller;
 
 import hills.util.time.Clock;
 
+/**
+ * @Author Anton Annlöv
+ */
 public abstract class AbstractController {
 	
 	/**

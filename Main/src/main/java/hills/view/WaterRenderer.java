@@ -1,7 +1,7 @@
 package hills.view;
 
+import hills.engine.water.WaterPlane;
 import hills.services.ServiceLocator;
-import hills.services.display.DisplayService;
 import hills.services.display.DisplayServiceI;
 import hills.util.display.FrameBuffer;
 import hills.util.loader.ModelLoader;
@@ -12,17 +12,18 @@ import hills.util.shader.SamplerUniform;
 import hills.util.shader.ShaderAttribute;
 import hills.util.shader.ShaderProgram;
 import hills.util.texturemap.TextureMap2D;
-import hills.engine.water.WaterPlane;
-
-import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.system.MemoryStack;
 
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @Author Anton Annlöv
+ */
 public class WaterRenderer implements IRendererDrawable, IWaterRendererBatchable {
 
 	private final ShaderProgram shaderProgram = ShaderProgram.WATER;

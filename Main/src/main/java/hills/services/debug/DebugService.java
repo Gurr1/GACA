@@ -5,6 +5,9 @@ import hills.util.display.FrameBuffer;
 
 import org.lwjgl.opengl.GL11;
 
+/**
+ * @Author Anton Annlöv
+ */
 public class DebugService implements Service, IDebugService {
 	
 	// FPS debug variables

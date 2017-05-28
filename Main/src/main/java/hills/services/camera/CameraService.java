@@ -1,15 +1,18 @@
 package hills.services.camera;
 
-import java.nio.ByteBuffer;
-
 import hills.services.Service;
-import org.lwjgl.system.MemoryStack;
-
 import hills.util.math.Mat4;
 import hills.util.math.Vec3;
 import hills.util.math.shape.Frustrum;
 import hills.util.shader.ShaderProgram;
+import org.lwjgl.system.MemoryStack;
 
+import java.nio.ByteBuffer;
+
+/**
+ * @Author Anton Annlöv
+ * @RevisedBy Gustav Engsmyre
+ */
 public class CameraService implements Service, ICameraDataService, ICameraUpdateService {
 	
 	private final CameraData data;

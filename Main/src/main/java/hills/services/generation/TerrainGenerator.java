@@ -4,11 +4,8 @@ import hills.services.ServiceLocator;
 import hills.services.terrain.TerrainServiceConstants;
 import hills.util.math.Vec3;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.Random;
 
 /**
@@ -29,7 +26,6 @@ public class TerrainGenerator {
     
     private int[][] createHeightMap() {
         Random rand = new Random();
-        Thread t = new Thread();
         double[][] noise1 = noise.createMatrix(500, 1, false);
         noise.setSeed(rand.nextLong());
         double[][] noise2 = noise.createMatrix(250, 0.8, false);

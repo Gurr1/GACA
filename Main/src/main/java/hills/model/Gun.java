@@ -1,7 +1,7 @@
 package hills.model;
 
 /**
- * Created by gustav on 2017-04-19.
+ *
  */
 public class Gun extends Weapon{
     private double baseDamage = 10;

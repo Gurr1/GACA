@@ -12,7 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by gustav on 2017-05-06.
+ * @Author Gustav Engsmyre
+ * @RevisedBy Cornelis Sjöbeck
  */
 public class MovableController implements KeyboardListener, MouseListener{
     private PlayerMovable player;

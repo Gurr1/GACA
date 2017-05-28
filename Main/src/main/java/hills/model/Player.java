@@ -11,7 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Anders on 2017-03-30.
+ * @Author Gustav Engsmyre, Anders Hansson
+ * @RevisedBy Cornelis Sjöbeck
+ *
  */
 public class Player implements PlayerMovable, PlayerCollidable, IAttack {
     // Add a method that recalculates reworks the base into global base from addVelocity.

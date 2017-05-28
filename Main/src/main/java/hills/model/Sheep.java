@@ -8,7 +8,7 @@ import hills.util.model.Model;
 import java.util.Random;
 
 /**
- * Created by Anders on 2017-04-03.
+ *
  */
 public class Sheep extends Creature{
     /**

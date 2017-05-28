@@ -4,7 +4,8 @@ import hills.model.ICollidable;
 import hills.services.Service;
 
 /**
- * Created by gustav on 2017-05-22.
+ * @Author Gustav Engsmyre
+ * @RevisedBy Anders Hansson
  */
 public class CollisionDetection implements Service, ICollisionDetection{
 
