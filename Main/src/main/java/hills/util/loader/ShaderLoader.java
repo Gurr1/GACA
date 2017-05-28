@@ -1,21 +1,13 @@
 package hills.util.loader;
 
-import static org.lwjgl.opengl.GL11.GL_FALSE;
-import static org.lwjgl.opengl.GL20.GL_COMPILE_STATUS;
-import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
-import static org.lwjgl.opengl.GL20.GL_INFO_LOG_LENGTH;
-import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
-import static org.lwjgl.opengl.GL20.glCompileShader;
-import static org.lwjgl.opengl.GL20.glCreateShader;
-import static org.lwjgl.opengl.GL20.glGetShaderInfoLog;
-import static org.lwjgl.opengl.GL20.glGetShaderi;
-import static org.lwjgl.opengl.GL20.glShaderSource;
-import static org.lwjgl.opengl.GL32.GL_GEOMETRY_SHADER;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+
+import static org.lwjgl.opengl.GL11.GL_FALSE;
+import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL32.GL_GEOMETRY_SHADER;
 
 public class ShaderLoader {
 
@@ -64,6 +56,7 @@ public class ShaderLoader {
 				case GL_VERTEX_SHADER: strShaderType = "vertex"; break;
 				case GL_GEOMETRY_SHADER: strShaderType = "geometry"; break;
 				case GL_FRAGMENT_SHADER: strShaderType = "fragment"; break;
+				default: break;
 			}
 			
 			System.err.println("Compile failure in " + strShaderType + " shader:\n" + strInfoLog + "\n");

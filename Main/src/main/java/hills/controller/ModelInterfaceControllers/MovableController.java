@@ -68,7 +68,7 @@ public class MovableController implements KeyboardListener, MouseListener{
     }
 
     @Override
-    public void KeyPressed(int key, int mods) {
+    public void keyPressed(int key, int mods) {
         setDirection(key, mods, true);
     }
 
@@ -102,6 +102,7 @@ public class MovableController implements KeyboardListener, MouseListener{
                     player.addVelocity(PlayerMovable.Direction.UP, pressed);
                 }
                 break;
+                default: break;
         }
     }
 }

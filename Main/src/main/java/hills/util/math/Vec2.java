@@ -156,10 +156,10 @@ public class Vec2 implements STD140Formatable {
 
 	/**
 	 * @param vector
-	 *            - Vector to equals with.
+	 *            - Vector to isEqualTo with.
 	 * @return True if This vector is equal to vector
 	 */
-	public boolean equals(Vec2 vector) {
+	public boolean isEqualTo(Vec2 vector) {
 		if (x == vector.x && y == vector.y)
 			return true;
 

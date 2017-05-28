@@ -1,6 +1,5 @@
 package hills;
 
-import hills.controller.DebugController;
 import hills.controller.GameLoop;
 import hills.controller.InputControllers.InputMediator;
 import hills.controller.manager.CameraManager;
@@ -50,7 +49,6 @@ public class Main {
     	FrameBuffer.setClearColor(0.55f, 0.55f, 1.0f, 1.0f);		// Set clear color
     	FrameBuffer.enableDepthTesting(0.0f, 1.0f);					// Enable depth testing
     	FrameBuffer.setClearDepth(1.0f);							// Clear depth buffer to 1.0
-		DebugController debugController = new DebugController();
     	FrameBuffer.setDepthFunction(GL11.GL_LEQUAL);				// Set OpenGL depth function.
 
     	ServiceLocator.INSTANCE.getTerrainGenerationService().generateWorldImage();

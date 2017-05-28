@@ -25,7 +25,7 @@ public class DebugController implements KeyboardListener{
     }
     
     @Override
-    public void KeyPressed(int key, int mods) {
+    public void keyPressed(int key, int mods) {
         if(key == GLFW.GLFW_KEY_F1){
              displayService.captureMouse(!displayService.isMouseCaptured());
         }
