@@ -6,26 +6,27 @@ import hills.controller.ModelInterfaceControllers.AttackController;
 import hills.controller.ModelInterfaceControllers.CollidableController;
 import hills.controller.ModelInterfaceControllers.MovableController;
 import hills.controller.ModelInterfaceControllers.RenderController;
-import hills.model.Creature;
-import hills.model.ImmovableObject;
-import hills.model.Player;
+import hills.model.*;
 import hills.services.ServiceLocator;
 import hills.services.terrain.TerrainServiceConstants;
 import hills.util.math.Vec3;
-import hills.util.model.Model;
 
 import java.util.Random;
 
+/**
+ * @Author Anton Annlöv, Gustav Engsmyre
+ */
 public final class GameManager extends AbstractController {
 	
-	private int nNPCs = 20;
-	private int nImmovables = 200;
+	private int nNPCs = 15;
+	private int nImmovables = 20;
 	private RenderController renderController;
 	private CollidableController collidableController;
 	private MovableController movableController;
 	private AttackController attackController;
 	private long nFrame = 0;
 	private double runtime = 0;
+	private int nCollectibles = 25;
 
 	public GameManager(float scale, boolean isPaused, float startTime) {
 		super(scale, isPaused, startTime);
@@ -42,6 +43,7 @@ public final class GameManager extends AbstractController {
 		loadStaticObjects();
 	}
 
+
     private void loadStaticObjects() {
         // Load rocks, trees etc.
     }
@@ -54,14 +56,21 @@ public final class GameManager extends AbstractController {
 		collidableController.addCollidable(p);
 		attackController.setPlayer(p);
 		for(int i = 0; i < nNPCs; i++){
-            Creature sheep = EntityFactory.createSheep(ServiceLocator.INSTANCE.getModelService().getSheep(), generateSpawnLocation());
+            Creature sheep = EntityFactory.createSheep(generateSpawnLocation());
 			movableController.addAIMovable(sheep);
 			collidableController.addCollidable(sheep);
 			renderController.addRenderable(sheep);
 		}
 		for (int i = 0; i<nImmovables; i++){
-			ImmovableObject tree = EntityFactory.createTree(ServiceLocator.INSTANCE.getModelService().getTree(), generateTreeSpawnLocation());
+			ImmovableObject tree = EntityFactory.createTree(generateTreeSpawnLocation());
 			renderController.addRenderable(tree);
+			collidableController.addCollidable(tree);
+		}
+		for(int i = 0; i<nCollectibles; i++){
+			CollectibleObject collectible = EntityFactory.createAnyCollectible(generateSpawnLocation());		// Change model.
+			renderController.addRenderable(collectible);
+			collidableController.addCollidable(collectible);
+			movableController.addAIMovable(collectible);
 		}
 	}
 
@@ -69,7 +78,7 @@ public final class GameManager extends AbstractController {
     	Vec3 spawn;
     	do {
 			spawn = generateSpawnLocation();
-		}while (spawn.getY()>40);
+		}while (spawn.getY()>TerrainServiceConstants.WATER_HEIGHT + 10);
     	return spawn;
 
 
@@ -83,7 +92,7 @@ public final class GameManager extends AbstractController {
 		do {
 			x = random.nextInt(TerrainServiceConstants.TERRAIN_WIDTH-1);
 			z = random.nextInt(TerrainServiceConstants.TERRAIN_HEIGHT-1);
-			y = ServiceLocator.INSTANCE.getTerrainHeightService().getHeight(x,z);
+			y = ServiceLocator.INSTANCE.getTerrainHeightService(false).getHeight(x,z);
 		}while(y < TerrainServiceConstants.WATER_HEIGHT);
 		return new Vec3(x, y, z);
 	}
@@ -91,8 +100,13 @@ public final class GameManager extends AbstractController {
 	@Override
 	protected void update(double delta) {
 		runtime += delta;
-		movableController.updateMovables((float) delta, runtime);
+		movableController.updateMovables((float) delta, runtime, true);
 		collidableController.update();
+		if(collidableController.isRemoved()){
+			ICollidable collidable = collidableController.getObjectToRemove();
+			renderController.removeObject(collidable);
+			collidable = null;
+		}
 	}
 
 	@Override

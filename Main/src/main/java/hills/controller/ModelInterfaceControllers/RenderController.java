@@ -1,8 +1,7 @@
 package hills.controller.ModelInterfaceControllers;
 
+import hills.model.ICollidable;
 import hills.model.IRenderable;
-import hills.util.math.Mat4;
-import hills.util.math.Vec3;
 import hills.util.shader.ShaderProgram;
 import hills.view.RenderLocator;
 
@@ -26,5 +25,9 @@ public class RenderController {
             RenderLocator.INSTANCE.getModelBatchable().batch(ShaderProgram.STATIC,
                     renderable.getModel(), renderable.getMatrix());
         }
+    }
+
+    public void removeObject(ICollidable objectToRemove) {
+        renderables.remove(objectToRemove);
     }
 }

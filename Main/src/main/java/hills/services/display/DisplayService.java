@@ -1,8 +1,6 @@
 package hills.services.display;
 
 import hills.services.Service;
-import hills.services.terrain.TerrainService;
-
 import org.lwjgl.BufferUtils;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.glfw.*;
@@ -14,9 +12,6 @@ import java.nio.IntBuffer;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
-/**
- * @author Anton
- */
 public final class DisplayService implements Service, DisplayServiceI {
 
 	// GLFW callback's
@@ -58,7 +53,7 @@ public final class DisplayService implements Service, DisplayServiceI {
 													// false
 	private String title; // Title of window
 
-	public DisplayService() {}
+	protected DisplayService() {}
 
 	/**
 	 * Create new GLFW window. <br>
@@ -203,7 +198,6 @@ public final class DisplayService implements Service, DisplayServiceI {
 	public void setKeyCallback(GLFWKeyCallbackI keyCallback) {
 		this.keyCallback = keyCallback;
 		GLFWKeyCallback callback = glfwSetKeyCallback(HANDLE, this.keyCallback);
-		System.out.println(keyCallback);
 		if(callback != null)
 			callback.free();
 	}
@@ -328,6 +322,8 @@ public final class DisplayService implements Service, DisplayServiceI {
 	public  int getWidth(){
 		IntBuffer width = BufferUtils.createIntBuffer(1);
 		GLFW.glfwGetFramebufferSize(HANDLE, width, null);
+		System.out.println("DEBUG: " + width.get(0));
+
 		return width.get(0);
 	}
 	
@@ -337,6 +333,7 @@ public final class DisplayService implements Service, DisplayServiceI {
 	public  int getHeight(){
 		IntBuffer height = BufferUtils.createIntBuffer(1);
 		GLFW.glfwGetFramebufferSize(HANDLE, null, height);
+		System.out.println("DEBUG: " + height.get(0));
 		return height.get(0);
 	}
 	

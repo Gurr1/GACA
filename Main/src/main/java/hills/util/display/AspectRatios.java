@@ -1,8 +1,5 @@
 package hills.util.display;
 
-/**
- * @author Anton
- */
 public final class AspectRatios {
 	/**
 	 * Square

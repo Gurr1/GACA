@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by Anders on 2017-03-30.
  */
-public class Player implements PlayerMovable, ICollidable, IAttack {
+public class Player implements PlayerMovable, PlayerCollidable, IAttack {
     // Add a method that recalculates reworks the base into global base from addVelocity.
     /**
      * {@inheritDoc}
@@ -25,7 +25,7 @@ public class Player implements PlayerMovable, ICollidable, IAttack {
     @Setter private float radius = 1;
     private Vec3 velocity = new Vec3(0,0,0);
     private List<Coin> coinsCollected = new ArrayList<>();
-    private List/*<>*/ bugsCollected = new ArrayList();
+    private List<Bug> bugsCollected = new ArrayList<>();
     private int playerHealth = 100;
     private float runModifier = 5;
     private Weapon gun = new Gun();
@@ -50,7 +50,7 @@ public class Player implements PlayerMovable, ICollidable, IAttack {
     Vec3 velocityZ = new Vec3(0,0,0);
     Vec3 velocityY = new Vec3(0,0,0);
     Vec3 gravityVelocity = new Vec3(0,-9.82f, 0);
-    Vec3 jumpVelocity = new Vec3(0,2.0f, 0);
+    Vec3 jumpVelocity = new Vec3(0,1.0f, 0);
     //<editor-fold desc="Constructors">
 
     public Player(Vec3 pos) {
@@ -185,7 +185,6 @@ public class Player implements PlayerMovable, ICollidable, IAttack {
     }
 
     public void setPitch(float pitch) {
-        System.out.println(pitch);
         if(pitch>180){
             return;
         }
@@ -233,13 +232,6 @@ public class Player implements PlayerMovable, ICollidable, IAttack {
         right = forward.cross(up);
         forwardXZ = new Vec3(forward.getX(), 0, forward.getZ()).normalize();        // to fix velocity vector so speed always is the same, no matter elevation of focus.
     }
-
-    public void collected(ICollectible collectible) {
-        if(collectible.getClass() == Coin.class){
-            coinsCollected.add((Coin) collectible);
-        }
-    }
-
     @Override
     public Vec3 getForwardVector() {
         return forward;
@@ -258,5 +250,15 @@ public class Player implements PlayerMovable, ICollidable, IAttack {
     @Override
     public void setAttacking(boolean attacking) {
         this.attacking = attacking;
+    }
+
+    @Override
+    public void collectCollectible(ICollectible collectible) {
+        if(collectible.getClass() == Coin.class){
+            coinsCollected.add((Coin)collectible);
+        }
+        else if(collectible.getClass() == Bug.class){
+            bugsCollected.add((Bug)collectible);
+        }
     }
 }

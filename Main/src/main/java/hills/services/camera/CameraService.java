@@ -10,16 +10,13 @@ import hills.util.math.Vec3;
 import hills.util.math.shape.Frustrum;
 import hills.util.shader.ShaderProgram;
 
-/**
- * @author Anton
- */
 public class CameraService implements Service, ICameraDataService, ICameraUpdateService {
 	
 	private final CameraData data;
 	
 	private boolean toUpdate = true;
 	
-	public CameraService(){
+	protected CameraService(){
 		data = new CameraData();
 	}
 	

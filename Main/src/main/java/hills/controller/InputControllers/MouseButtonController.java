@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @Author Gustav Engsmyre
  */
-public class PlayerControllerMouseButton implements GLFWMouseButtonCallbackI {
+public class MouseButtonController implements GLFWMouseButtonCallbackI {
     List<MouseButtonListener> subscribers = new ArrayList<>();
     @Override
     public void invoke(long window, int button, int action, int mods) {

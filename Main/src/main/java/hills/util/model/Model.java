@@ -1,8 +1,6 @@
 package hills.util.model;
 
-/**
- * @author Anton
- */
+
 public class Model {
 
 	private final Mesh[] meshes;

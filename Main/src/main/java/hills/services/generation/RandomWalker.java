@@ -1,7 +1,8 @@
 package hills.services.generation;
 
 /**
- * Created by gustav on 2017-04-24.
+ * @Author Gustav Engsmyre
+ * This is loosely based on a StackOverflow code suggestion
  */
 public class RandomWalker {
 

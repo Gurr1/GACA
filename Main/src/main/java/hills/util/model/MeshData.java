@@ -2,9 +2,6 @@ package hills.util.model;
 
 import lombok.Getter;
 
-/**
- * @author Anton
- */
 public class MeshData {
 
 	/**

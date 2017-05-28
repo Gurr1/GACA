@@ -13,9 +13,6 @@ import org.lwjgl.system.MemoryStack;
 import java.nio.ByteBuffer;
 import java.util.List;
 
-/**
- * @author Anton
- */
 public class TerrainRenderer implements ITerrainRendererBatchable, IRendererDrawable {
 	private final ShaderProgram shaderProgram = ShaderProgram.TERRAIN;
 	private GridMeshData gridMeshData; // TerrainLoader.loadGridMesh(TerrainSystem.GRID_WIDTH, TerrainSystem.GRID_DEPTH);
@@ -32,7 +29,6 @@ public class TerrainRenderer implements ITerrainRendererBatchable, IRendererDraw
 		this.nodes = nodes;
 		this.gridMeshData = gridMeshData;
 		this.texture = texture;
-		System.out.println(nodes.size());
 	}
 
 	public void render() {
