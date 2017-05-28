@@ -44,7 +44,6 @@ void main(){
 	COLOR = vec4((ambient + diffuse) * brightness, 1.0f);
 	
 	// DEBUG STUFF //
-	/*
 	diffuse = vec3(0.5f, 0.5f, 0.5f);
 	if(mod(lodLevel, 3) == 0)
 		diffuse = vec3(0.6f, 1.0f, 0.6f);
@@ -54,5 +53,4 @@ void main(){
 		diffuse = vec3(1.0f, 0.6f, 0.6f);
 	
 	COLOR = vec4(diffuse, 1.0f);
-	*/
 }

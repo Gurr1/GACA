@@ -101,9 +101,11 @@ public class Player implements PlayerMovable, PlayerCollidable, IAttack {
         if(direction == Direction.UP){
             velocityY = velocityY.add(jumpVelocity.mul(mOs));
         }
+        if(direction == Direction.DOWN){
+            velocityY = velocityY.add(jumpVelocity.mul(-mOs));
+        }
         velocity = velocityX.add(velocityZ).normalize().mul(speed);
     }
-
 
     //</editor-fold>
 
@@ -252,6 +254,10 @@ public class Player implements PlayerMovable, PlayerCollidable, IAttack {
     @Override
     public void setAttacking(boolean attacking) {
         this.attacking = attacking;
+    }
+    
+    public void setRunModifier(float mod){
+    	runModifier = mod;
     }
 
     @Override
