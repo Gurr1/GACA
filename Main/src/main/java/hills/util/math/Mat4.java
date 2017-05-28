@@ -1,9 +1,7 @@
 package hills.util.math;
 
-import java.nio.ByteBuffer;
-
 import lombok.val;
-
+import java.nio.ByteBuffer;
 /**
  * @Author Anton Annlöv
  */
@@ -552,7 +550,7 @@ public class Mat4 implements STD140Formatable {
 	 *         factors set to x, y, z.
 	 */
 	public static Mat4 scaleMatrix(Vec3 scale) {
-		return Mat4.scaleMatrix(scale);
+		return Mat4.scaleMatrix(scale.getX(), scale.getY(), scale.getZ());
 	}
 
 	/**
@@ -642,7 +640,7 @@ public class Mat4 implements STD140Formatable {
 	public static Mat4 look(Vec3 pos, Vec3 forward, Vec3 up, Vec3 right,
 			boolean normalize) {
 		if (normalize) {
-			forward.normalize();
+			forward = forward.normalize();
 			up.normalize();
 			right.normalize();
 		}
@@ -674,12 +672,12 @@ public class Mat4 implements STD140Formatable {
 	}
 
 	public String toString() {
-		String output = "";
+		StringBuilder sb = new StringBuilder("");
 		for (int i = 0; i < 4; i++)
-			output += "| " + m[i] + ", " + m[i + 4] + ", " + m[i + 8] + ", "
-					+ m[i + 12] + " |\n";
-
-		return output;
+			sb.append("| ").append(m[i]).append(", ").append(m[i + 4]).
+					append(", ").append(m[i + 8]).append(", ").
+					append(m[i + 12]).append(" |\n");
+		return sb.toString();
 	}
 
 	@Override

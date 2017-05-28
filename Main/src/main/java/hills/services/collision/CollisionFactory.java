@@ -9,7 +9,7 @@ public class CollisionFactory {
 
     }
 
-    public static CollisionDetection collisionDetection = null;
+    private static CollisionDetection collisionDetection = null;
 
     public static ICollisionDetection getCollisionDetectionInstance(){
         if(collisionDetection == null)

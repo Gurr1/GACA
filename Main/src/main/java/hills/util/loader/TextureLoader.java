@@ -31,7 +31,7 @@ public class TextureLoader {
 	 */
 	private static Map<String, Integer> loadedTextures = new HashMap<String, Integer>();
 	
-	public static int WRAP_S = GL12.GL_CLAMP_TO_EDGE,
+	private static int WRAP_S = GL12.GL_CLAMP_TO_EDGE,
 			WRAP_T = GL12.GL_CLAMP_TO_EDGE, WRAP_R = GL12.GL_CLAMP_TO_EDGE,
 			MAG = GL11.GL_LINEAR, MIN = GL11.GL_LINEAR;
 

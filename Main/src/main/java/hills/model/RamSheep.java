@@ -3,7 +3,6 @@ package hills.model;
 import hills.util.math.Mat4;
 import hills.util.math.Vec3;
 import hills.util.math.shape.Sphere;
-import hills.util.model.Model;
 
 import java.util.Random;
 
@@ -12,11 +11,10 @@ import java.util.Random;
  */
 public class RamSheep extends Mob {
 
-    float radius;
-    Random rand = new Random();
+    private float radius;
+    protected Random rand = new Random();
     private float move = 0;
     private final int damagePoints = 10;
-    protected Model model;
 
     public RamSheep(Vec3 pos){
         this.pos = pos;

@@ -71,7 +71,7 @@ public class MovableController implements KeyboardListener, MouseListener{
     }
 
     @Override
-    public void KeyPressed(int key, int mods) {
+    public void keyPressed(int key, int mods) {
         setDirection(key, mods, true);
     }
 
@@ -105,7 +105,6 @@ public class MovableController implements KeyboardListener, MouseListener{
                     player.addVelocity(PlayerMovable.Direction.UP, pressed);
                 }
                 break;
-               
             // Fly mode
             case GLFW.GLFW_KEY_F4:
             	if(!pressed)
@@ -124,8 +123,6 @@ public class MovableController implements KeyboardListener, MouseListener{
             		player.addVelocity(PlayerMovable.Direction.DOWN, pressed);
             	else
             		player.addVelocity(PlayerMovable.Direction.UP, !pressed);
-            	break;
-            		
-        }
+            	break;          }
     }
 }

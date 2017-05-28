@@ -165,10 +165,10 @@ import java.nio.ByteBuffer;
 	}
 	
 	/**
-	 * @param vector - Vector to equals with.
+	 * @param vector - Vector to isEqualTo with.
 	 * @return True if this vector is equal to vector
 	 */
-	public boolean equals(Vec3 vector){
+	public boolean isEqualTo(Vec3 vector){
 		if(x == vector.x && y == vector.y && z == vector.z)
 			return true;
 		

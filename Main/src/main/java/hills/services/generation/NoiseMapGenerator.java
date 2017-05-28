@@ -12,18 +12,18 @@ public class NoiseMapGenerator{
     private final int WIDTH = TerrainServiceConstants.TERRAIN_WIDTH;
     private final int HEIGHT = TerrainServiceConstants.TERRAIN_HEIGHT;
 
-    OpenSimplexNoise noise;
-    double[][] greenMatrix = new double[WIDTH][HEIGHT];
+    private OpenSimplexNoise noise;
+    private double[][] greenMatrix = new double[WIDTH][HEIGHT];
 
-    NoiseMapGenerator(long seed) {
+    protected NoiseMapGenerator(long seed) {
 		noise = new OpenSimplexNoise(seed);
 	}
 
-	void setSeed(long seed){
+	protected void setSeed(long seed){
     	noise.setSeed(seed); 
     }
 
-    BufferedImage createNoiseMap(double frequency, double scale){
+    protected BufferedImage createNoiseMap(double frequency, double scale){
 	    double map[][] = createMatrix(frequency, scale, true);
         BufferedImage bf = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 	    for(int x = 0; x < WIDTH; x++){
@@ -34,7 +34,7 @@ public class NoiseMapGenerator{
         return bf;
     }
 
-    double[][] createMatrix(double frequency, double scale, boolean zeroToOne){
+    protected double[][] createMatrix(double frequency, double scale, boolean zeroToOne){
         double[][] matrix = new double[WIDTH+1][HEIGHT+1];
         for(int y = 0; y <= HEIGHT; y++) {
             for (int x = 0; x <= WIDTH; x++) {

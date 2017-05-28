@@ -40,7 +40,7 @@ public final class KeyboardController implements GLFWKeyCallbackI{
 
 	private void keyPressed(int key, int mods) {
 		for(KeyboardListener listener : subscribers){
-			listener.KeyPressed(key, mods);
+			listener.keyPressed(key, mods);
 		}
 	}
 	private void keyReleased(int key, int mods){

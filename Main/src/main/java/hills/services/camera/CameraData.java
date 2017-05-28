@@ -156,7 +156,7 @@ public class CameraData {
 		Vec3 right = new Vec3(x, y, z);
 		
 		if(normalize)
-			right.normalize();
+			right = right.normalize();
 		
 		this.right = right;
 	}
@@ -169,7 +169,7 @@ public class CameraData {
 		Vec3 up = new Vec3(x, y, z);
 		
 		if(normalize)
-			up.normalize();
+			up = up.normalize();
 		
 		this.up = up;
 	}
@@ -182,7 +182,7 @@ public class CameraData {
 		Vec3 forward = new Vec3(x, y, z);
 		
 		if(normalize)
-			forward.normalize();
+			forward = forward.normalize();
 		
 		this.forward = forward;
 	}

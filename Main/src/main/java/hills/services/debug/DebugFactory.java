@@ -9,7 +9,7 @@ public class DebugFactory {
 
     }
 
-    public static DebugService debugService = null;
+    private static DebugService debugService = null;
 
     public static IDebugService getDebugServiceInstance(){
         if(debugService == null)
