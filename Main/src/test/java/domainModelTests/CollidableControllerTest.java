@@ -2,8 +2,6 @@ package domainModelTests;
 
 import hills.controller.ModelInterfaceControllers.CollidableController;
 import hills.model.Coin;
-import hills.model.ICollectible;
-import hills.model.ICollidable;
 import hills.model.Player;
 import hills.util.math.Vec3;
 import hills.util.model.Mesh;
@@ -16,9 +14,9 @@ import org.junit.Test;
  * Created by Anders on 2017-05-25.
  */
 public class CollidableControllerTest {
-    Coin coin;
-    Player player;
-    CollidableController collidableController;
+    private Coin coin;
+    private Player player;
+    private CollidableController collidableController;
 
     @Before
     public void init(){

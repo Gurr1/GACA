@@ -6,7 +6,7 @@ import java.util.Random;
 /**
  * @Author Gustav Engsmyre
  */
-public class GenerationMediator implements IGenerationMediator {
+public class GenerationMediator implements ITerrainGenerationService, IDirectionGenerationService {
 
     private RandomWalker walker;
     private Random r;

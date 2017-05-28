@@ -11,7 +11,13 @@ public class GenerationFactory {
 
     private static GenerationMediator generationService = null;
 
-    public static IGenerationMediator getGenerationServiceInstance() {
+    public static ITerrainGenerationService getTerrainGenerationService() {
+        if(generationService == null){
+            generationService = new GenerationMediator();
+        }
+        return generationService;
+    }
+    public static IDirectionGenerationService getDirectionGenerationService(){
         if(generationService == null){
             generationService = new GenerationMediator();
         }

@@ -1,9 +1,7 @@
 package domainModelTests;
 
-import hills.services.generation.GenerationFactory;
-import hills.services.generation.GenerationMediator;
-import hills.services.generation.IGenerationMediator;
-import hills.services.generation.RandomWalker;
+import hills.services.ServiceLocator;
+import hills.services.generation.IDirectionGenerationService;
 import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,10 +10,10 @@ import org.junit.Test;
  * Created by gustav on 2017-04-24.
  */
 public class RandomMoverTest {
-    IGenerationMediator generation;
+    private IDirectionGenerationService generation;
     @Before
     public void init(){
-        generation = GenerationFactory.getGenerationServiceInstance();
+        generation = ServiceLocator.INSTANCE.getDirectionGenerationService();
     }
     @Test
     public void testSpan(){
@@ -26,7 +24,6 @@ public class RandomMoverTest {
     }
     @Test
     public void testProximity(){
-        RandomWalker randomWalker = new RandomWalker();
         for(int i = 0 ; i<10000; i++){
             TestCase.assertEquals(generation.generateDirection(i), generation.generateDirection(i), 0.02);
         }
@@ -34,7 +31,6 @@ public class RandomMoverTest {
 
     @Test
     public void testIsRandom(){
-        RandomWalker randomWalker = new RandomWalker();
         boolean wasBigger = false;
         boolean wasSmaller = false;
         for(int i = 0 ; i<10000; i++){

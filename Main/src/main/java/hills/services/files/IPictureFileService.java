@@ -18,5 +18,5 @@ public interface IPictureFileService {
      * Reads a png file.
      * @param name - name of the file to be read.
      */
-    public void readImage(String name);
+    public BufferedImage readImage(String name);
 }

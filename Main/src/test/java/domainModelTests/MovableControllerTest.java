@@ -45,14 +45,9 @@ public class MovableControllerTest {
     }
 
     private void testPos(Vec2 prev, Vec2 neew) {
-        System.out.println(prev.getX() + " " + prev.getY());
-        System.out.println(neew.getX() + " " + neew.getY());
-
         Vec2 diff = neew.sub(prev);
-        System.out.println(diff.getX() + " " + diff.getY());
-
         Assert.assertNotSame(prev,neew);
-        Assert.assertEquals(0.5,diff.getLength(),0.1);
+        Assert.assertEquals(0.5*sheep.getVelocity().getLength(),diff.getLength(),0.1);
     }
 
 }

@@ -1,6 +1,7 @@
 package hills.services.terrain;
 
 import hills.services.Service;
+import hills.services.ServiceLocator;
 import hills.services.terrain.mesh.GridMeshData;
 import hills.services.terrain.tree.LODNode;
 import hills.services.terrain.tree.LODTree;
@@ -10,10 +11,7 @@ import hills.util.math.Vec3;
 import hills.util.math.shape.Frustrum;
 import hills.util.texturemap.TerrainTexture;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 public class TerrainService implements Service, ITerrainTreeService, ITerrainHeightService, ITerrainRenderDataService {
@@ -31,12 +29,8 @@ public class TerrainService implements Service, ITerrainTreeService, ITerrainHei
 		// Get height map and normal map images for reading terrain data that should be cached.
 		BufferedImage heightMap = null;
 		BufferedImage heightNormalMap = null;
-		try {
-			heightMap = ImageIO.read(new File(TerrainServiceConstants.HEIGHT_MAP_DIRECTORY + TerrainServiceConstants.HEIGHT_MAP_NAME));
-			heightNormalMap = ImageIO.read(new File(TerrainServiceConstants.HEIGHT_MAP_DIRECTORY + TerrainServiceConstants.HEIGHT_MAP_NORMAL_MAP_NAME));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+			heightMap = ServiceLocator.INSTANCE.getPictureFileService().readImage(TerrainServiceConstants.HEIGHT_MAP_NAME);
+			heightNormalMap = ServiceLocator.INSTANCE.getPictureFileService().readImage(TerrainServiceConstants.HEIGHT_MAP_NORMAL_MAP_NAME);
 			// Cache height and normal values of the height/normal map
 			heightValues = TerrainServiceLoader.INSTANCE.loadHeightValues(heightMap);
 			// TODO Cache normal values

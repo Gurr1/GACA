@@ -32,14 +32,12 @@ public class MouseButtonController implements GLFWMouseButtonCallbackI {
         }
     }
     private void mouseReleased(int button, int mods) {
-        System.out.println("released");
         for(MouseButtonListener listener : subscribers){
             listener.mouseReleased(button, mods);
         }
     }
 
     private void mousePressed(int button, int mods) {
-        System.out.println("pressed");
         for(MouseButtonListener listener : subscribers){
             listener.mousePressed(button, mods);
         }

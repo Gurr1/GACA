@@ -21,7 +21,8 @@ import hills.services.files.FileFactory;
 import hills.services.files.FileService;
 import hills.services.files.IPictureFileService;
 import hills.services.generation.GenerationFactory;
-import hills.services.generation.IGenerationMediator;
+import hills.services.generation.IDirectionGenerationService;
+import hills.services.generation.ITerrainGenerationService;
 import hills.services.terrain.*;
 
 
@@ -32,7 +33,7 @@ public enum ServiceLocator {
 	private DebugService debugService;
 	private TerrainService terrainService;
 	private FileService fileService;
-	private IGenerationMediator generationService;
+	private ITerrainGenerationService generationService;
 	private IModelService modelService;
 	
 	private ServiceLocator(){	
@@ -62,13 +63,18 @@ public enum ServiceLocator {
 		return CameraFactory.getCameraDataServiceInstance();
 	}
 
-	public IGenerationMediator getGenerationService(){
-		return GenerationFactory.getGenerationServiceInstance();
+	public ITerrainGenerationService getTerrainGenerationService(){
+		return GenerationFactory.getTerrainGenerationService();
+	}
+
+	public IDirectionGenerationService getDirectionGenerationService(){
+		return GenerationFactory.getDirectionGenerationService();
 	}
 
 	public DisplayServiceI getDisplayService(){
 		return DisplayFactory.getDisplayServiceInstance();
 	}
+
 
 	public IModelService getModelService(){
 		return ModelFactory.getModelServiceInstance();

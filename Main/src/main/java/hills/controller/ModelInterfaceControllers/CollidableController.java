@@ -4,7 +4,6 @@ import hills.model.ICollectible;
 import hills.model.ICollidable;
 import hills.model.PlayerCollidable;
 import hills.services.ServiceLocator;
-import hills.services.collision.CollisionDetection;
 import hills.services.collision.ICollisionDetection;
 
 import java.util.ArrayList;
@@ -52,8 +51,10 @@ public class CollidableController {     // Visitor patter?
                     Class[] classes2 = collidables.get(j).getClass().getSuperclass().getInterfaces();
                     for (Class c : classes) {
                         for (Class c2 : classes2) {
-                           if( handleCollision(collidables.get(i), collidables.get(j), c, c2))
-                               break;
+                            if(collidables.size() <= j){
+                                break;
+                            }
+                           handleCollision(collidables.get(i), collidables.get(j), c, c2);
                         }
                     }
                 }

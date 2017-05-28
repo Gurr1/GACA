@@ -12,7 +12,7 @@ import java.util.Random;
 public class HeightCalculationTest {
     @Test
     public void testHeightCalculations(){
-        ServiceLocator.INSTANCE.getGenerationService().generateWorldImage();
+        ServiceLocator.INSTANCE.getTerrainGenerationService().generateWorldImage();
         ITerrainHeightService ts = ServiceLocator.INSTANCE.getTerrainHeightTestService();       // why doesn't this work
         double[][] terrain = new double[TerrainServiceConstants.TERRAIN_WIDTH][TerrainServiceConstants.TERRAIN_HEIGHT];
         Random rand = new Random();

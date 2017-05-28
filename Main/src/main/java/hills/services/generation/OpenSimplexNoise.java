@@ -39,7 +39,7 @@ public class OpenSimplexNoise {
 		this(DEFAULT_SEED);
 	}
 
-	OpenSimplexNoise(long seed) {
+	protected OpenSimplexNoise(long seed) {
 		this.perm = new short[256];
 		this.permGradIndex3D = new short[256];
 		setSeed(seed);

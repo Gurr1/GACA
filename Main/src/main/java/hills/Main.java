@@ -52,7 +52,7 @@ public class Main {
 		DebugController debugController = new DebugController();
     	FrameBuffer.setDepthFunction(GL11.GL_LEQUAL);				// Set OpenGL depth function.
 
-    	ServiceLocator.INSTANCE.getGenerationService().generateWorldImage();
+    	ServiceLocator.INSTANCE.getTerrainGenerationService().generateWorldImage();
 
     	GameLoop gameLoop = new GameLoop();							// Create a new game loop
 
