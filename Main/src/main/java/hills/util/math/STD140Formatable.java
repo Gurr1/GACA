@@ -2,9 +2,6 @@ package hills.util.math;
 
 import java.nio.ByteBuffer;
 
-/**
- * @author Anton
- */
 public interface STD140Formatable {
 
 	/**

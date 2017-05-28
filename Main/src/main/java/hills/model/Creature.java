@@ -19,7 +19,7 @@ public abstract class Creature implements IWoundable, IMovable, ICollidable, IAI
      */
 
     protected Vec3 pos;
-    @Setter @Getter protected float speed = 5;
+    @Setter @Getter protected float speed = 1;
     protected int healthPoints;
     protected int maxHealth;
     protected Model model;
@@ -31,6 +31,7 @@ public abstract class Creature implements IWoundable, IMovable, ICollidable, IAI
     protected Vec3 up = new Vec3(0,1.0f,0);
     protected Vec3 velocityX = new Vec3(1,0,0);
     protected Vec3 velocityZ = new Vec3(1,0,0);
+    protected Mat4 matrix;
 
     @Override
     public abstract Sphere getBoundingSphere();
@@ -46,7 +47,7 @@ public abstract class Creature implements IWoundable, IMovable, ICollidable, IAI
 
     @Override
     public Vec2 get2DPos() {
-        return new Vec2(pos.getX(), pos.getY());
+        return new Vec2(pos.getX(), pos.getZ());
     }
 
     @Override
@@ -144,10 +145,5 @@ public abstract class Creature implements IWoundable, IMovable, ICollidable, IAI
     }
 
     @Override
-    public Mat4 getMatrix() {
-        Mat4 matrix = Mat4.identity();
-        matrix = matrix.scale(5,5,10);
-        matrix = matrix.translate(pos);
-        return matrix;
-    }
+    public abstract Mat4 getMatrix();
 }

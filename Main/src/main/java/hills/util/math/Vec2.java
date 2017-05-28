@@ -4,9 +4,6 @@ import lombok.Value;
 
 import java.nio.ByteBuffer;
 
-/**
- * @author Anton
- */
 @Value
 public class Vec2 implements STD140Formatable {
 

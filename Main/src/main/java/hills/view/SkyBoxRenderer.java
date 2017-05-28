@@ -14,9 +14,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
-/**
- * @author Anton
- */
 public final class SkyBoxRenderer implements IRendererDrawable, ISkyBoxData {
 	
 	private final ShaderProgram shaderProgram;

@@ -16,18 +16,15 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * @author Anton
- */
 public class TerrainService implements Service, ITerrainTreeService, ITerrainHeightService, ITerrainRenderDataService {
 	
-	private final LODTree tree;
-	private final GridMeshData gridMeshData;
-	private final TerrainTexture heightMapTexture;
+	private LODTree tree;
+	private GridMeshData gridMeshData;
+	private TerrainTexture heightMapTexture;
 
 	private final float[][] heightValues;
 	
-	public TerrainService() {
+	protected TerrainService(boolean testing) {
 		// Load the ranges 'constant'
 		TerrainServiceLoader.INSTANCE.loadRangesConstant(TerrainServiceConstants.FIRST_RANGE);
 		
@@ -40,22 +37,22 @@ public class TerrainService implements Service, ITerrainTreeService, ITerrainHei
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		// Cache height and normal values of the height/normal map
-		heightValues = TerrainServiceLoader.INSTANCE.loadHeightValues(heightMap);
-		// TODO Cache normal values
-		
-		// Load grid mesh
-		gridMeshData = TerrainLoader.loadGridMesh(TerrainServiceConstants.GRID_WIDTH, TerrainServiceConstants.GRID_DEPTH, TerrainServiceConstants.TERRAIN_WIDTH, TerrainServiceConstants.TERRAIN_HEIGHT);
-		
-		// Load height map texture ready for GPU usage
-		heightMapTexture = new TerrainTexture(TerrainServiceConstants.HEIGHT_MAP_NAME, TerrainServiceConstants.HEIGHT_MAP_NORMAL_MAP_NAME);
-		
-		// TODO Move? Upload terrain-shader terrain constants to the GPU
-		TerrainServiceLoader.INSTANCE.uploadTerrainShaderConstants();
-		
-		// Initiate terrain tree with a height map for it to analyze
-		tree = new LODTree(heightMap);
+			// Cache height and normal values of the height/normal map
+			heightValues = TerrainServiceLoader.INSTANCE.loadHeightValues(heightMap);
+			// TODO Cache normal values
+		if(!testing) {
+			// Load grid mesh
+			gridMeshData = TerrainLoader.loadGridMesh(TerrainServiceConstants.GRID_WIDTH, TerrainServiceConstants.GRID_DEPTH, TerrainServiceConstants.TERRAIN_WIDTH, TerrainServiceConstants.TERRAIN_HEIGHT);
+
+			// Load height map texture ready for GPU usage
+			heightMapTexture = new TerrainTexture(TerrainServiceConstants.HEIGHT_MAP_NAME, TerrainServiceConstants.HEIGHT_MAP_NORMAL_MAP_NAME);
+
+			// TODO Move? Upload terrain-shader terrain constants to the GPU
+			TerrainServiceLoader.INSTANCE.uploadTerrainShaderConstants();
+
+			// Initiate terrain tree with a height map for it to analyze
+			tree = new LODTree(heightMap);
+		}
 	}
 
 	/**
@@ -89,22 +86,23 @@ public class TerrainService implements Service, ITerrainTreeService, ITerrainHei
 		if(x < 0.0f || x > TerrainServiceConstants.TERRAIN_WIDTH - 1 || z < 0.0f || z > TerrainServiceConstants.TERRAIN_HEIGHT - 1)
 			return 0.0f;
 
+
 		int intX = (int) x;
 		int intZ = (int) z;
 
 		boolean xGreater = x - intX > z - intZ;
 
-		float heightA = heightValues[intX][intZ],
-			  heightB = xGreater ? heightValues[intX + 1][intZ] : heightValues[intX][intZ + 1],
-			  heightC = heightValues[intX + 1][intZ + 1];
+		float
+				heightA = xGreater ? heightValues[intX + 1][intZ] : heightValues[intX][intZ + 1],
+				heightB = heightValues[intX + 1][intZ + 1],
+				heightC = heightValues[intX][intZ];
 
 		// Calculate barycentric coordinates of terrain triangle at x, 0.0, z.
 		Vec2 A = new Vec2(intX, intZ);
 		Vec2 v0 = (xGreater ? new Vec2(intX + 1, intZ) : new Vec2(intX, intZ + 1)).sub(A),
 			 v1 = new Vec2(intX + 1, intZ + 1).sub(A),
 			 v2 = new Vec2(x, z).sub(A);
-
-	    float d00 = v0.getLengthSqr();
+		float d00 = v0.getLengthSqr();
 	    float d01 = v0.dot(v1);
 	    float d11 = v1.getLengthSqr();
 	    float d20 = v2.dot(v0);
@@ -116,8 +114,8 @@ public class TerrainService implements Service, ITerrainTreeService, ITerrainHei
 	    float a = (d11 * d20 - d01 * d21) / denom;
 	    float b = (d00 * d21 - d01 * d20) / denom;
 	    float c = 1.0f - a - b;
-
-		return heightA * a + heightB * b + heightC * c;
+		float sss =  heightC * c + heightA * a + heightB * b;
+		return sss;
 	}
 
 	public float getHeight(Vec3 pos){
@@ -126,7 +124,7 @@ public class TerrainService implements Service, ITerrainTreeService, ITerrainHei
 
 	@Override
 	public void cleanUp() {
-		System.out.println("Terrain service cleaned up!");
+		System.out.println("TerrainGenerator service cleaned up!");
 	}
 
 }

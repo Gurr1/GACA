@@ -6,9 +6,6 @@ import hills.util.shader.SamplerUniform;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 
-/**
- * @author Anton
- */
 public class CubeMap {
 	
 	public static final int FACES = 6;

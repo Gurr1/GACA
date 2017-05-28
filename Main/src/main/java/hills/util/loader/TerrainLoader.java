@@ -13,10 +13,6 @@ import hills.util.shader.ShaderAttribute;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 
-/**
- * @author Anton
- */
-// TODO Move to service
 public final class TerrainLoader {
 
 	public static GridMeshData loadGridMesh(int width, int depth, int terrainWidth, int terrainDepth) {

@@ -8,9 +8,6 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author Anton
- */
 public class LODTree {
 
 	private final int MAP_WIDTH, MAP_DEPTH;
@@ -116,7 +113,6 @@ public class LODTree {
 	/**
 	 * Calculate nodes min/max heights and store in nodeMinMaxHeights.
 	 */
-	// TODO Simplify
 	private void calcNodesMinMaxHeights(BufferedImage heightMapImage) {
 		// First calculate highest detailed LOD heights
 		int gridWidth = TerrainServiceConstants.GRID_WIDTH;
@@ -159,7 +155,6 @@ public class LODTree {
 		}
 	}
 
-	// TODO Simplify
 	private float[][][] calcSingleLODNodesMinMaxHeights(float[][][] minMaxHeightNextLOD) {
 		int tilesX = minMaxHeightNextLOD.length;
 		int tilesY = minMaxHeightNextLOD[0].length;

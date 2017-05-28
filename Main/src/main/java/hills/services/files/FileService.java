@@ -10,10 +10,16 @@ import java.io.IOException;
  */
 public class FileService implements IPictureFileService{
 
+    final String path = getClass().getResource("").getPath();
+
+    protected FileService(){
+
+    }
+
     @Override
     public void writeImage(BufferedImage bufferedImage, String name){
         try {
-            ImageIO.write(bufferedImage, "png", new File("Main/src/main/resources/" + name + ".png"));
+            ImageIO.write(bufferedImage, "png", new File("src/main/resources/" + name + ".png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -22,7 +28,7 @@ public class FileService implements IPictureFileService{
     @Override
     public void readImage(String name){
         try {
-            ImageIO.read(new File("Main/src/main/resources/" + name + ".png"));
+            ImageIO.read(new File("src/main/resources/" + name + ".png"));
         } catch (IOException e){
             e.printStackTrace();
         }

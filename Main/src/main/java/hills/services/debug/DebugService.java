@@ -5,10 +5,7 @@ import hills.util.display.FrameBuffer;
 
 import org.lwjgl.opengl.GL11;
 
-/**
- * @author Anton
- */
-public class DebugService implements Service {
+public class DebugService implements Service, IDebugService {
 	
 	// FPS debug variables
 	/**
@@ -36,7 +33,11 @@ public class DebugService implements Service {
 	/**
 	 * If culling mode is activated
 	 */
-	private boolean cullingMode = false;			
+	private boolean cullingMode = false;
+
+	protected DebugService(){
+
+	}
 	
 	// TODO Move
 //	private DebugService() {
@@ -45,10 +46,10 @@ public class DebugService implements Service {
 	
 	// TODO Move
 	protected void update(double delta) {
-//		if(PlayerControllerKeyboard.isPressed(GLFW.GLFW_KEY_F1))
+//		if(KeyboardController.isPressed(GLFW.GLFW_KEY_F1))
 //			setWireframeMode(!wireframeMode);
 //		
-//		if(PlayerControllerKeyboard.isPressed(GLFW.GLFW_KEY_F2))
+//		if(KeyboardController.isPressed(GLFW.GLFW_KEY_F2))
 //			setCullingMode(!cullingMode);
 		
 		if(fpsDebugMode)

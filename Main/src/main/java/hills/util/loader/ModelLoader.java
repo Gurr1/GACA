@@ -15,10 +15,6 @@ import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author Anton
- */
-// TODO Move to service
 public final class ModelLoader {
 
 	/**

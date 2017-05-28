@@ -10,9 +10,6 @@ import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL31;
 
-/**
- * @author Anton
- */
 public class UniformBuffer {
 
 	/**

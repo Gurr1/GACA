@@ -2,9 +2,6 @@ package hills.services.terrain.mesh;
 
 import lombok.Getter;
 
-/**
- * @author Anton
- */
 public class GridMeshData {
 
 	/**

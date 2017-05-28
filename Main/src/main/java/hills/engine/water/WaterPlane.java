@@ -11,9 +11,6 @@ import java.nio.ByteBuffer;
 
 import lombok.Getter;
 
-/**
- * @author Anton
- */
 public class WaterPlane implements STD140Formatable {
 
 	@Getter
