@@ -1,7 +1,7 @@
 package hills.services.camera;
 
 /**
- * Created by corne on 5/24/2017.
+ * @author Cornelis T Sjöbeck
  */
 public class CameraFactory {
 

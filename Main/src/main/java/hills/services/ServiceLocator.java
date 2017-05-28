@@ -1,5 +1,9 @@
 package hills.services;
 
+/**
+ * @author Anton Annlöv, Cornelis T Sjöbeck
+ */
+
 import hills.services.ModelDataService.IModelService;
 import hills.services.ModelDataService.ModelFactory;
 import hills.services.camera.CameraFactory;

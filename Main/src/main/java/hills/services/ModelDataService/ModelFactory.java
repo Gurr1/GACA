@@ -1,7 +1,7 @@
 package hills.services.ModelDataService;
 
 /**
- * Created by corne on 5/25/2017.
+ * @author Cornelis T Sjöbeck
  */
 public class ModelFactory {
 

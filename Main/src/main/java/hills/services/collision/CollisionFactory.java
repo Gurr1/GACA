@@ -1,7 +1,7 @@
 package hills.services.collision;
 
 /**
- * Created by corne on 5/27/2017.
+ * @author Cornelis T Sjöbeck
  */
 public class CollisionFactory {
 
