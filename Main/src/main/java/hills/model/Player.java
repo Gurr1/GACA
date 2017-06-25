@@ -79,7 +79,7 @@ public class Player implements PlayerMovable, PlayerCollidable, IAttack {
 
     @Override
     public void addVelocity(Direction direction, boolean pressed) {
-        int mOs = 1;
+        int mOs = 2;
         if(!pressed){
             mOs = 0;
         }

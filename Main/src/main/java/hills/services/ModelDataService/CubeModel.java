@@ -65,7 +65,7 @@ public class CubeModel implements hills.services.ModelDataService.IModelService 
             13, 16, 4,
             13, 4, 1
     };
-    private final Model sheep, tree, coin, bug;
+    private final Model sheep, tree, coin, bug,rock;
     // Built like this so variables can be final.
     public CubeModel(){
         MeshTexture texture = new MeshTexture("sheepTexture.png");
@@ -74,9 +74,9 @@ public class CubeModel implements hills.services.ModelDataService.IModelService 
         texture = new MeshTexture("barkTexture.png");
         cubeMesh = ModelLoader.load(v, ind, texture, Mat4.identity());
         tree = new Model(new Mesh[]{cubeMesh});
-/*        texture = new MeshTexture("rockTexture.png");
+        texture = new MeshTexture("rockTexture.png");
         cubeMesh = ModelLoader.load(v, ind, texture, Mat4.identity());
-        rock = new Model(new Mesh[]{cubeMesh});*/
+        rock = new Model(new Mesh[]{cubeMesh});
         texture = new MeshTexture("coinTexture.png");
         cubeMesh = ModelLoader.load(v, ind, texture, Mat4.identity());
         coin = new Model(new Mesh[]{cubeMesh});
@@ -96,7 +96,7 @@ public class CubeModel implements hills.services.ModelDataService.IModelService 
 
     @Override
     public Model getRock() {
-        return null;
+        return rock;
     }
 
     @Override

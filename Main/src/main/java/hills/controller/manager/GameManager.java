@@ -7,10 +7,14 @@ import hills.controller.ModelInterfaceControllers.CollidableController;
 import hills.controller.ModelInterfaceControllers.MovableController;
 import hills.controller.ModelInterfaceControllers.RenderController;
 import hills.model.*;
+import hills.services.ModelDataService.ModelFactory;
 import hills.services.ServiceLocator;
+import hills.services.generation.ObjectPlacer;
 import hills.services.terrain.TerrainServiceConstants;
 import hills.util.math.Vec3;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -45,7 +49,23 @@ public final class GameManager extends AbstractController {
 
 
     private void loadStaticObjects() {
-        // Load rocks, trees etc.
+		ObjectPlacer ob = new ObjectPlacer();
+		List<Vec3> v;
+		v = ob.placeObjects();
+		for(Vec3 vec3 : v){
+			ImmovableObject t = EntityFactory.createTree(vec3);
+			renderController.addRenderable(t);
+			collidableController.addCollidable(t);
+		}
+		ob = new ObjectPlacer();
+		ob.setOptimalHeight(0.5);
+		v = ob.placeObjects();
+		for(Vec3 vec3 : v){
+			ImmovableObject t = new Rock(vec3, ModelFactory.getModelServiceInstance().getTree());
+			renderController.addRenderable(t);
+			collidableController.addCollidable(t);
+		}
+
     }
 
     Player p;
@@ -61,11 +81,11 @@ public final class GameManager extends AbstractController {
 			collidableController.addCollidable(sheep);
 			renderController.addRenderable(sheep);
 		}
-		for (int i = 0; i<nImmovables; i++){
+		/*for (int i = 0; i<nImmovables; i++){
 			ImmovableObject tree = EntityFactory.createTree(generateTreeSpawnLocation());
 			renderController.addRenderable(tree);
 			collidableController.addCollidable(tree);
-		}
+		}*/
 		for(int i = 0; i<nCollectibles; i++){
 			CollectibleObject collectible = EntityFactory.createAnyCollectible(generateSpawnLocation());		// Change model.
 			renderController.addRenderable(collectible);
