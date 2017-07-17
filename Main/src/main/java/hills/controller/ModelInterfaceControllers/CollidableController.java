@@ -2,9 +2,12 @@ package hills.controller.ModelInterfaceControllers;
 
 import hills.model.ICollectible;
 import hills.model.ICollidable;
+import hills.model.IMovable;
 import hills.model.PlayerCollidable;
 import hills.services.ServiceLocator;
 import hills.services.collision.ICollisionDetection;
+import hills.util.math.Vec2;
+import hills.util.math.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,17 +65,32 @@ public class CollidableController {     // Visitor patter?
         }
     }
         // Not the best solution. Should handle every other collision type aswell.
-    private boolean handleCollision(ICollidable co1, ICollidable co2, Class c, Class c2) {
+    private void handleCollision(ICollidable co1, ICollidable co2, Class c, Class c2) {
         if(c == ICollectible.class || c2 == ICollectible.class){
             if(c == PlayerCollidable.class){
                 PlayerCollidable pc = (PlayerCollidable) co1;
                 pc.collectCollectible((ICollectible) co2);
                 collidables.remove(co2);
                 objectToRemove = co2;
-                return true;
             }
         }
-        return false;
+       /* else if(c == IMovable.class || c2 == IMovable.class){
+            IMovable collide;
+            ICollidable non;
+            if(c == IMovable.class){
+                 collide = (IMovable) co1;
+                 non = co2;
+            }
+            else {
+                collide = (IMovable) co2;
+                non = co1;
+            }
+
+            Vec3 v = non.getBoundingSphere().getPos().sub(collide.get3DPos()).add(collide.getVelocity());
+            //v.normalize();
+            collide.setPosition(collide.get3DPos().add(v).sub(collide.getVelocity()));
+
+        }*/
     }
 
 

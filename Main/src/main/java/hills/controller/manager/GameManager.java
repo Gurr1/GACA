@@ -10,6 +10,8 @@ import hills.model.*;
 import hills.services.ModelDataService.ModelFactory;
 import hills.services.ServiceLocator;
 import hills.services.generation.ObjectPlacer;
+import hills.services.terrain.Chunk;
+import hills.services.terrain.ITerrainChunkService;
 import hills.services.terrain.TerrainServiceConstants;
 import hills.util.math.Vec3;
 
@@ -28,6 +30,7 @@ public final class GameManager extends AbstractController {
 	private CollidableController collidableController;
 	private MovableController movableController;
 	private AttackController attackController;
+	private ITerrainChunkService chunkService;
 	private long nFrame = 0;
 	private double runtime = 0;
 	private int nCollectibles = 25;
@@ -38,6 +41,7 @@ public final class GameManager extends AbstractController {
 		collidableController = new CollidableController();
 		attackController = new AttackController();
 		renderController = new RenderController();
+		chunkService = ServiceLocator.INSTANCE.getTerrainChunkService();
 		loadGame();
 	}
 
@@ -51,18 +55,22 @@ public final class GameManager extends AbstractController {
     private void loadStaticObjects() {
 		ObjectPlacer ob = new ObjectPlacer();
 		List<Vec3> v;
+		//ob.setDensity(0.05);
 		v = ob.placeObjects();
 		for(Vec3 vec3 : v){
 			ImmovableObject t = EntityFactory.createTree(vec3);
-			renderController.addRenderable(t);
+			chunkService.addObject(t);
+			//renderController.addRenderable(t);
 			collidableController.addCollidable(t);
 		}
 		ob = new ObjectPlacer();
+		//ob.setDensity(0.05);
 		ob.setOptimalHeight(0.5);
 		v = ob.placeObjects();
 		for(Vec3 vec3 : v){
 			ImmovableObject t = new Rock(vec3, ModelFactory.getModelServiceInstance().getTree());
-			renderController.addRenderable(t);
+			//renderController.addRenderable(t);
+			chunkService.addObject(t);
 			collidableController.addCollidable(t);
 		}
 
@@ -131,7 +139,12 @@ public final class GameManager extends AbstractController {
 
 	@Override
 	public void render() {
-		renderController.updateRender();
+		List<IRenderable> renderables = new ArrayList<>();
+		List<Chunk> chunks = chunkService.getChunks(movableController.getPlayer().getHeadPos());
+		for (Chunk c: chunks) {
+			renderables.addAll(c.getStaticObjects());
+		}
+		renderController.updateRender(renderables);
 		//.scale(16.0f * 2, 16.0f * 2, 16.0f * 2).translate(CameraSystem.getInstance().getPosition().mul(new Vec3(1.0f, 0.0f, 1.0f))));
 	}
 

@@ -6,6 +6,7 @@ import hills.controller.InputControllers.MouseListener;
 import hills.model.IMovable;
 import hills.model.PlayerMovable;
 import hills.services.ServiceLocator;
+import lombok.Getter;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
@@ -13,10 +14,10 @@ import java.util.List;
 
 /**
  * @Author Gustav Engsmyre
- * @RevisedBy Cornelis Sjöbeck
+ * @RevisedBy Cornelis Sjöbeck, Anders Hansson
  */
 public class MovableController implements KeyboardListener, MouseListener{
-    private PlayerMovable player;
+    @Getter private PlayerMovable player;
     private List<IMovable> movableList = new ArrayList<>();
     int update = 1;
     

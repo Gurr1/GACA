@@ -16,12 +16,16 @@ public class RenderController {
     public RenderController(){
 
     }
-    public void addRenderable(IRenderable renderable){
+   public void addRenderable(IRenderable renderable){
         renderables.add(renderable);
     }
 
-    public void updateRender(){
+    public void updateRender(List<IRenderable> renderables2){
         for(IRenderable renderable : renderables) {
+            RenderLocator.INSTANCE.getModelBatchable().batch(ShaderProgram.STATIC,
+                    renderable.getModel(), renderable.getMatrix());
+        }
+        for(IRenderable renderable : renderables2){
             RenderLocator.INSTANCE.getModelBatchable().batch(ShaderProgram.STATIC,
                     renderable.getModel(), renderable.getMatrix());
         }
@@ -30,4 +34,5 @@ public class RenderController {
     public void removeObject(ICollidable objectToRemove) {
         renderables.remove(objectToRemove);
     }
+
 }

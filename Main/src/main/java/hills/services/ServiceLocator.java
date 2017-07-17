@@ -67,6 +67,10 @@ public enum ServiceLocator {
 		return GenerationFactory.getTerrainGenerationService();
 	}
 
+	public ITerrainChunkService getTerrainChunkService(){
+		return TerrainFactory.getTerrainChunkServiceInstance(false);
+	}
+
 	public IDirectionGenerationService getDirectionGenerationService(){
 		return GenerationFactory.getDirectionGenerationService();
 	}
