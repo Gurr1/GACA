@@ -27,7 +27,7 @@ public class CollidableControllerTest {
         collidableController.addCollidable(coin);
 
         for (int i = 0; i < 5; i++) {
-            collidableController.update();
+          //  collidableController.update(chunkService.getChunk(movableController.getPlayer().get3DPos()).getStaticObjects());
         }
     }
 
@@ -39,7 +39,7 @@ public class CollidableControllerTest {
         Assert.assertFalse(player.getBoundingSphere().intersects(coin.getBoundingSphere()));
         Assert.assertNull(collidableController.getObjectToRemove());
         player.setPosition(new Vec3(3,3,3));
-        collidableController.update();
+        //collidableController.update(chunkService.getChunk(movableController.getPlayer().get3DPos()).getStaticObjects());
         Assert.assertTrue(player.getBoundingSphere().intersects(coin.getBoundingSphere()));
         Assert.assertNotNull("NonNull",collidableController.getObjectToRemove());
         Assert.assertEquals(coin, collidableController.getObjectToRemove());

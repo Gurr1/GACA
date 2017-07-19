@@ -11,5 +11,6 @@ import java.util.List;
  */
 public interface ITerrainChunkService {
     List<Chunk> getChunks(Vec3 PlayerPos);
+    Chunk getChunk(Vec3 PlayerPos);
     void addObject(ImmovableObject object);
 }

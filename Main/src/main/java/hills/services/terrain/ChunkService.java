@@ -47,4 +47,11 @@ public class ChunkService implements ITerrainChunkService{
         }
         return chunks;
     }
+
+
+    public Chunk getChunk(Vec3 PlayerPos){
+        int x = (int) (PlayerPos.getX()/delta);
+        int y = (int) (PlayerPos.getZ()/delta);
+        return map[y][x];
+    }
 }

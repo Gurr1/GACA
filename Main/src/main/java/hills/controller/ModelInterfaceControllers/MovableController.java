@@ -106,7 +106,7 @@ public class MovableController implements KeyboardListener, MouseListener{
                     player.addVelocity(PlayerMovable.Direction.UP, pressed);
                 }
                 break;
-               
+
             // Fly mode
             case GLFW.GLFW_KEY_F4:
             	if(!pressed)

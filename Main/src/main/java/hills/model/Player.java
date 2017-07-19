@@ -53,6 +53,7 @@ public class Player implements PlayerMovable, PlayerCollidable, IAttack {
     Vec3 velocityY = new Vec3(0,0,0);
     Vec3 gravityVelocity = new Vec3(0,-9.82f, 0);
     Vec3 jumpVelocity = new Vec3(0,1.0f, 0);
+    Quaternion rotQuat;
     //<editor-fold desc="Constructors">
 
     public Player(Vec3 pos) {
@@ -107,6 +108,14 @@ public class Player implements PlayerMovable, PlayerCollidable, IAttack {
         velocity = velocityX.add(velocityZ).normalize().mul(speed);
     }
 
+    public void addVelocity(Vec3 v){
+        v = v.normalize();
+       // float angle = (float) Math.acos(new Vec3(1,0,0).dot(velocity.normalize()));
+       // Vec3 axis = (new Vec3(1,0,0).cross(velocity.normalize())).normalize();
+      //  rotQuat = new Quaternion(axis, angle);
+        v = rotQuat.mul(v).normalize();
+        velocity = velocity.add(v).normalize();
+    }
     //</editor-fold>
 
     //<editor-fold desc="Updates">
@@ -218,7 +227,6 @@ public class Player implements PlayerMovable, PlayerCollidable, IAttack {
     }
 
 
-
     @Override
     public Vec2 get2DPos() {
         return new Vec2(pos.getX(),pos.getZ());
@@ -230,7 +238,7 @@ public class Player implements PlayerMovable, PlayerCollidable, IAttack {
     }
 
     private void updateVectors(Vec3 axis, float angle) {
-        Quaternion rotQuat = new Quaternion(axis, angle);
+        rotQuat = new Quaternion(axis, angle);
         forward = rotQuat.mul(forward).normalize();
         up = rotQuat.mul(up).normalize();
         right = forward.cross(up);

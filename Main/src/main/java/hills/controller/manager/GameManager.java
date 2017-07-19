@@ -61,7 +61,7 @@ public final class GameManager extends AbstractController {
 			ImmovableObject t = EntityFactory.createTree(vec3);
 			chunkService.addObject(t);
 			//renderController.addRenderable(t);
-			collidableController.addCollidable(t);
+			//collidableController.addCollidable(t);
 		}
 		ob = new ObjectPlacer();
 		//ob.setDensity(0.05);
@@ -71,7 +71,7 @@ public final class GameManager extends AbstractController {
 			ImmovableObject t = new Rock(vec3, ModelFactory.getModelServiceInstance().getTree());
 			//renderController.addRenderable(t);
 			chunkService.addObject(t);
-			collidableController.addCollidable(t);
+			//collidableController.addCollidable(t);
 		}
 
     }
@@ -129,7 +129,8 @@ public final class GameManager extends AbstractController {
 	protected void update(double delta) {
 		runtime += delta;
 		movableController.updateMovables((float) delta, runtime, true);
-		collidableController.update();
+		collidableController.update(chunkService.getChunk(movableController.getPlayer().get3DPos()).getStaticObjects());
+
 		if(collidableController.isRemoved()){
 			ICollidable collidable = collidableController.getObjectToRemove();
 			renderController.removeObject(collidable);

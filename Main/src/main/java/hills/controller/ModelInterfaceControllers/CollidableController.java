@@ -1,12 +1,8 @@
 package hills.controller.ModelInterfaceControllers;
 
-import hills.model.ICollectible;
-import hills.model.ICollidable;
-import hills.model.IMovable;
-import hills.model.PlayerCollidable;
+import hills.model.*;
 import hills.services.ServiceLocator;
 import hills.services.collision.ICollisionDetection;
-import hills.util.math.Vec2;
 import hills.util.math.Vec3;
 
 import java.util.ArrayList;
@@ -20,6 +16,8 @@ public class CollidableController {     // Visitor patter?
     private List<ICollidable> collidables;
 
     private ICollidable objectToRemove;
+
+    private PlayerCollidable player;
 
     public ICollidable getObjectToRemove(){
         return objectToRemove;
@@ -41,10 +39,18 @@ public class CollidableController {     // Visitor patter?
 
 
     public void addCollidable(ICollidable collidable){
+        Class[] classes = collidable.getClass().getInterfaces();
+        for (Class c : classes){
+            if(c == PlayerCollidable.class) {
+                player = (PlayerCollidable) collidable;
+                break;
+            }
+        }
+
         collidables.add(collidable);
     }
 
-    public void update() {
+    public void update(List<ImmovableObject> staticObjects) {
         ICollisionDetection cd = ServiceLocator.INSTANCE.getCollisionDetection();
         for (int i = 0; i < collidables.size()-1; i++) {
             for (int j = i+1; j < collidables.size(); j++) {
@@ -63,6 +69,11 @@ public class CollidableController {     // Visitor patter?
                 }
             }
         }
+        if(player != null)
+            for (ICollidable c : staticObjects ) {
+                if(c.getBoundingSphere().intersects(player.getBoundingSphere()))
+                    handleCollision(player, c, PlayerMovable.class, ICollidable.class);
+            }
     }
         // Not the best solution. Should handle every other collision type aswell.
     private void handleCollision(ICollidable co1, ICollidable co2, Class c, Class c2) {
@@ -74,23 +85,23 @@ public class CollidableController {     // Visitor patter?
                 objectToRemove = co2;
             }
         }
-       /* else if(c == IMovable.class || c2 == IMovable.class){
-            IMovable collide;
+       else if(c == PlayerMovable.class || c2 == PlayerMovable.class){
+            PlayerMovable collide;
             ICollidable non;
-            if(c == IMovable.class){
-                 collide = (IMovable) co1;
+            if(c == PlayerMovable.class){
+                 collide = (PlayerMovable) co1;
                  non = co2;
             }
             else {
-                collide = (IMovable) co2;
+                collide = (PlayerMovable) co2;
                 non = co1;
             }
 
-            Vec3 v = non.getBoundingSphere().getPos().sub(collide.get3DPos()).add(collide.getVelocity());
-            //v.normalize();
-            collide.setPosition(collide.get3DPos().add(v).sub(collide.getVelocity()));
+            Vec3 v = non.getBoundingSphere().getPos().sub(collide.get3DPos());
+            if(!collide.getVelocity().equals(new Vec3(0,0,0)))
+                collide.addVelocity(collide.get3DPos().sub(non.getBoundingSphere().getPos()));
 
-        }*/
+        }
     }
 
 
