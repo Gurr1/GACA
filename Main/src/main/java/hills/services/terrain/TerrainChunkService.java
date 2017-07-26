@@ -11,11 +11,11 @@ import java.util.List;
  * Created by Anders on 2017-07-17.
  * @Author Anders Hansson
  */
-public class ChunkService implements ITerrainChunkService{
+public class TerrainChunkService implements ITerrainChunkService{
     private Chunk[][] map;
     private int delta;
 
-    ChunkService (){
+    TerrainChunkService(){
         map = new Chunk[16][16];
         delta = 128;
         for (int i = 0; i < map.length ; i++) {

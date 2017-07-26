@@ -84,6 +84,7 @@ public class CollidableController {     // Visitor patter?
                 collidables.remove(co2);
                 objectToRemove = co2;
             }
+            return;
         }
 
        else if(c == PlayerMovable.class || c2 == PlayerMovable.class){
@@ -101,7 +102,7 @@ public class CollidableController {     // Visitor patter?
             if(!movable.getVelocity().equals(new Vec3(0,0,0)))
                 movable.addVelocity(movable.get3DPos().sub(object.getBoundingSphere().getPos()));
             //Adds the vector from the object to the player to get the new direction
-
+            return;
         }
     }
 

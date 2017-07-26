@@ -10,7 +10,7 @@ public class TerrainFactory {
     }
 
     private static TerrainService terrainService = null;
-    private static ChunkService chunkService = null;
+    private static TerrainChunkService terrainChunkService = null;
 
 
     public static ITerrainHeightService getTerrainHeightServiceInstance(boolean b){
@@ -35,9 +35,9 @@ public class TerrainFactory {
     }
 
     public static ITerrainChunkService getTerrainChunkServiceInstance(boolean b){
-        if(chunkService == null)
-            chunkService = new ChunkService();
+        if(terrainChunkService == null)
+            terrainChunkService = new TerrainChunkService();
 
-        return chunkService;
+        return terrainChunkService;
     }
 }
