@@ -46,14 +46,16 @@ public class Player implements PlayerMovable, PlayerCollidable, IAttack {
     @Getter private Vec3 forward;
     @Getter private float playerHeight = 3;
     private Vec3 forwardXZ;
-    Vec3 velocityX = new Vec3(0,0,0);
-    float speed = 5;
+    private Vec3 velocityX = new Vec3(0,0,0);
+    private float speed = 5;
     private float defaultSpeed = 5;
-    Vec3 velocityZ = new Vec3(0,0,0);
-    Vec3 velocityY = new Vec3(0,0,0);
-    Vec3 gravityVelocity = new Vec3(0,-9.82f, 0);
-    Vec3 jumpVelocity = new Vec3(0,1.0f, 0);
-    Quaternion rotQuat;
+    private Vec3 velocityZ = new Vec3(0,0,0);
+    private Vec3 velocityY = new Vec3(0,0,0);
+    private Vec3 gravityVelocity = new Vec3(0,-9.82f, 0);
+    private Vec3 jumpVelocity = new Vec3(0,1.0f, 0);
+    private  Vec3 v = new Vec3(0, 0, 0);
+    private Direction direction = Direction.DOWN;
+    private Quaternion rotQuat;
     //<editor-fold desc="Constructors">
 
     public Player(Vec3 pos) {
@@ -106,15 +108,29 @@ public class Player implements PlayerMovable, PlayerCollidable, IAttack {
             velocityY = velocityY.add(jumpVelocity.mul(-mOs));
         }
         velocity = velocityX.add(velocityZ).normalize().mul(speed);
+        this.direction = direction;
     }
 
     public void addVelocity(Vec3 v){
-        v = v.normalize();
-       // float angle = (float) Math.acos(new Vec3(1,0,0).dot(velocity.normalize()));
-       // Vec3 axis = (new Vec3(1,0,0).cross(velocity.normalize())).normalize();
-      //  rotQuat = new Quaternion(axis, angle);
-        v = rotQuat.mul(v).normalize();
-        velocity = velocity.add(v).normalize();
+
+        if(!velocity.equals(new Vec3(0,0,0))) {
+            if (direction == Direction.BACK) {
+                rotQuat = new Quaternion(rotQuat.getAxis(), rotQuat.getAngle() + 180);
+            }
+            if (direction == Direction.SPRINT) {
+                v = v.mul(2);
+            }
+            if (direction == Direction.LEFT) {
+                rotQuat = new Quaternion(rotQuat.getAxis(), rotQuat.getAngle() - 90);
+
+            }
+            if (direction == Direction.RIGHT) {
+                rotQuat = new Quaternion(rotQuat.getAxis(), rotQuat.getAngle() + 90);
+
+            }
+            this.v = rotQuat.mul(v);
+            this.v = v.normalize().mul(velocity.getLength());
+        }
     }
     //</editor-fold>
 
@@ -151,10 +167,10 @@ public class Player implements PlayerMovable, PlayerCollidable, IAttack {
     private void updateVelocity() {
         int yDir = 1;
         int xDir = 1;
-        if((velocityZ.add(right).getLength())<1){       // Checks if velocity is backwards
+        if((velocityZ.add(right).getLength())<2){       // Checks if velocity is backwards
             yDir = -1;
         }
-        if((velocityX.add(forwardXZ).getLength())<1){     // Checks is velocity is to the left.
+        if((velocityX.add(forwardXZ).getLength())<2){     // Checks is velocity is to the left.
             xDir = -1;
         }
         float xVelocity = velocityX.getLength()*xDir;
@@ -166,8 +182,11 @@ public class Player implements PlayerMovable, PlayerCollidable, IAttack {
 
     @Override
     public void updateMovable(float delta) {
+        velocity = velocity.add(v);
         velocity = velocity.add(velocityY);
         pos = pos.add(velocity.mul(delta));
+        velocity = velocity.sub(v);
+        v = v.mul(0);
     }
 
     @Override
