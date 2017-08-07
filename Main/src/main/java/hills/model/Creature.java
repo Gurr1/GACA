@@ -13,7 +13,7 @@ import lombok.Setter;
  * @Author Anders Hansson
  * @RevisedBy Gustav Engsmyre
  */
-public abstract class Creature implements IWoundable, IMovable, ICollidable, IAIMovable, IRenderable{
+public abstract class Creature implements IWoundable, IMovable, ICollidable, IAIMovable, IRenderable, IHarmful{
 
     /**
      * {@inheritDoc}
@@ -147,4 +147,9 @@ public abstract class Creature implements IWoundable, IMovable, ICollidable, IAI
 
     @Override
     public abstract Mat4 getMatrix();
+
+    @Override
+    public int getDamagePoints(){
+        return 0;
+    }
 }

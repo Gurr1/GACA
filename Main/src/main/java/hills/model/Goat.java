@@ -5,7 +5,7 @@ import hills.util.math.Vec3;
 import hills.util.math.shape.Sphere;
 import hills.util.model.Model;
 
-public class Goat extends Creature implements IHarmful{
+public class Goat extends Creature{
 
     float radius;
     int damagePoints;
