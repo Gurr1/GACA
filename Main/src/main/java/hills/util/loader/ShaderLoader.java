@@ -36,7 +36,7 @@ public class ShaderLoader {
 		StringBuilder source = new StringBuilder(); // String to contain source code
 		
 		try{
-			BufferedReader reader = new BufferedReader(new FileReader(new File(ShaderLoader.class.getResource(SHADER_DIRECTORY + fileName).getPath()))); // Reader to read source code from file
+			BufferedReader reader = new BufferedReader(new FileReader(new File("Main/src/main/resources/shaders/" + fileName))); // Reader to read source code from file
 			
 			String line;
 			while((line = reader.readLine()) != null)
