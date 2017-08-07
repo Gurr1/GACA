@@ -263,6 +263,7 @@ public class Player implements PlayerMovable, PlayerCollidable, IAttack {
         right = forward.cross(up);
         forwardXZ = new Vec3(forward.getX(), 0, forward.getZ()).normalize();        // to fix velocity vector so speed always is the same, no matter elevation of focus.
     }
+
     @Override
     public Vec3 getForwardVector() {
         return forward;

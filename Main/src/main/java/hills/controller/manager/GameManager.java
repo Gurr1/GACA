@@ -25,6 +25,7 @@ import java.util.Random;
 public final class GameManager extends AbstractController {
 	
 	private int nNPCs = 15;
+	private int nHarmfulNPCs = 5;
 	private int nImmovables = 20;
 	private RenderController renderController;
 	private CollidableController collidableController;
@@ -77,17 +78,19 @@ public final class GameManager extends AbstractController {
 		movableController.setPlayer(p);
 		collidableController.addCollidable(p);
 		attackController.setPlayer(p);
-		for(int i = 0; i < nNPCs; i++){
+		for (int i = 0; i < nNPCs; i++){
             Creature sheep = EntityFactory.createSheep(generateSpawnLocation());
 			movableController.addAIMovable(sheep);
 			collidableController.addCollidable(sheep);
 			renderController.addRenderable(sheep);
-
-			Creature goat = EntityFactory.createGoat(generateSpawnLocation());
-			movableController.addAIMovable(goat);
-			collidableController.addCollidable(goat);
-			renderController.addRenderable(goat);
 		}
+
+		for (int i = 0; i < nHarmfulNPCs; i++){
+            Creature goat = EntityFactory.createGoat(generateSpawnLocation());
+            movableController.addAIMovable(goat);
+            collidableController.addCollidable(goat);
+            renderController.addRenderable(goat);
+        }
 
 		for(int i = 0; i<nCollectibles; i++){
 			CollectibleObject collectible = EntityFactory.createAnyCollectible(generateSpawnLocation());		// Change model.
