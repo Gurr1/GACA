@@ -20,28 +20,28 @@ public class EntityFactory {
         Model model = ServiceLocator.INSTANCE.getModelService().getSheep();
         return new Sheep(position, model); }
 
-    public static RamSheep createRamSheep(Vec3 position) {return new RamSheep(position); }
+    public static Goat createGoat(Vec3 position) {
+        Model model = ServiceLocator.INSTANCE.getModelService().getSheep();
+        return new Goat(position, model); }
 
-    public static Creature createAnySheep(Vec3 position) {
+    public static Creature createSheepOrGoat(Vec3 position) {
         Random random = new Random();
         int x = random.nextInt(2);
-        Model model;
+        Model model = ServiceLocator.INSTANCE.getModelService().getSheep();
         if (x == 0){
-            model = ServiceLocator.INSTANCE.getModelService().getSheep();
             return new Sheep(position, model);
         }
-        else return new RamSheep(position);
+        else return new Goat(position, model);
     }
 
-    public static Creature createAnySheep(Vec3 position, int sheepChance){
+    public static Creature createSheepOrGoat(Vec3 position, int sheepChance){
         Random random = new Random();
         int x = random.nextInt(100);
-        Model model;
+        Model model = ServiceLocator.INSTANCE.getModelService().getSheep();
         if ((sheepChance >= 100) || (x <= sheepChance)){
-            model = ServiceLocator.INSTANCE.getModelService().getSheep();
             return new Sheep(position, model); }
 
-        else return new RamSheep(position);
+        else return new Goat(position, model);
     }
 
     public static CollectibleObject createCoin(Vec3 position) {

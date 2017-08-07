@@ -82,6 +82,11 @@ public final class GameManager extends AbstractController {
 			movableController.addAIMovable(sheep);
 			collidableController.addCollidable(sheep);
 			renderController.addRenderable(sheep);
+
+			Creature goat = EntityFactory.createGoat(generateSpawnLocation());
+			movableController.addAIMovable(goat);
+			collidableController.addCollidable(goat);
+			renderController.addRenderable(goat);
 		}
 
 		for(int i = 0; i<nCollectibles; i++){
