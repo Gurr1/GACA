@@ -22,9 +22,9 @@ public class Sheep extends Creature{
     public Sheep(Vec3 pos, Model model){
         this.model = model;
         this.pos = pos;
-        this.healthPoints = 20;
+        this.healthPoints = 5;
         this.speed = 3;
-        this.maxHealth = 20;
+        this.maxHealth = 5;
         this.radius = 3;
     }
 
@@ -49,5 +49,22 @@ public class Sheep extends Creature{
     public void updateMovable(float delta) {
         pos = pos.add(velocity.mul(delta));
         //TODO
+    }
+
+    @Override
+    public void takeShotDamage(int shotDamage){
+        healthPoints -= shotDamage;
+        if (healthPoints <= 0){
+            //System.out.println("Goat is dead!");
+            healthPoints = maxHealth;
+            Random rand = new Random();
+            pos = new Vec3(rand.nextInt(2000), 0, rand.nextInt(2000));
+        }
+        //System.out.println("Sheep damaged!");
+    }
+
+    @Override
+    public Sphere getInteractionSphere(){
+        return new Sphere(pos, radius);
     }
 }

@@ -15,7 +15,7 @@ import java.util.List;
  * @RevisedBy Cornelis Sjöbeck
  *
  */
-public class Player implements PlayerMovable, PlayerCollidable, IAttack {
+public class Player implements PlayerMovable, PlayerCollidable, IAttack, IShooter {
     // Add a method that recalculates reworks the base into global base from addVelocity.
     /**
      * {@inheritDoc}
@@ -308,5 +308,15 @@ public class Player implements PlayerMovable, PlayerCollidable, IAttack {
 
             pos = spawnPos;
         }
+    }
+
+    @Override
+    public int getShootDamage() {
+        return 5;
+    }
+
+    @Override
+    public Vec3 getStartPos() {
+        return pos;
     }
 }

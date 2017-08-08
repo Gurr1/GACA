@@ -68,6 +68,22 @@ public class CameraService implements Service, ICameraDataService, ICameraUpdate
 			ShaderProgram.map("VIEW", "PERSPECTIVE", dataBuffer);
 		}
 	}
+
+	public Mat4 getPerspectiveMatrix(){
+
+		return Mat4.perspective(data.getNear(), data.getFar(), data.getAspect(), data.getFov());
+
+	}
+
+	public Mat4 getCameraMatrix(){
+
+		Vec3 position = data.getPosition();
+		Vec3 forward = data.getForward();
+		Vec3 up = data.getUp();
+		Vec3 right = data.getRight();
+
+		return Mat4.look(position, forward, up, right, false);
+	}
 	
 	public void setPosition(Vec3 position){
 		data.setPosition(position);

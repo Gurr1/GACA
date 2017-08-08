@@ -5,6 +5,8 @@ import hills.util.math.Vec3;
 import hills.util.math.shape.Sphere;
 import hills.util.model.Model;
 
+import java.util.Random;
+
 public class Goat extends Creature{
 
     float radius;
@@ -19,6 +21,7 @@ public class Goat extends Creature{
         this.radius = 10;
         this.damagePoints = 3;
     }
+
     @Override
     public Sphere getBoundingSphere() {
         return new Sphere(pos, radius);
@@ -40,5 +43,22 @@ public class Goat extends Creature{
     @Override
     public void updateMovable(float delta) {
         pos = pos.add(velocity.mul(delta));
+    }
+
+    @Override
+    public void takeShotDamage(int shotDamage){
+        healthPoints -= shotDamage;
+        if (healthPoints <= 0){
+            //System.out.println("Goat is dead!");
+            healthPoints = maxHealth;
+            Random rand = new Random();
+            pos = new Vec3(rand.nextInt(2000), 0, rand.nextInt(2000));
+        }
+        //System.out.println("Goat damaged!");
+    }
+
+    @Override
+    public Sphere getInteractionSphere(){
+        return new Sphere(pos, radius);
     }
 }

@@ -7,7 +7,6 @@ import lombok.Value;
 /**
  * @Author Anton Annlöv
  */
-@Value
 public class Vec4 implements STD140Formatable {
 
 	/**
@@ -80,6 +79,10 @@ public class Vec4 implements STD140Formatable {
 		this.y = y;
 		this.z = z;
 		this.w = w;
+	}
+
+	public static int getSIZE() {
+		return SIZE;
 	}
 
 	/**
@@ -222,5 +225,25 @@ public class Vec4 implements STD140Formatable {
 	@Override
 	public int get140DataSize() {
 		return STD140Formatable.VECTOR_4_ALIGNMENT;
+	}
+
+	public float getX() {
+		return x;
+	}
+
+	public float getY() {
+		return y;
+	}
+
+	public float getZ() {
+		return z;
+	}
+
+	public float getW() {
+		return w;
+	}
+
+	public String toString(){
+		return x+" "+y+" "+z+" "+w;
 	}
 }
