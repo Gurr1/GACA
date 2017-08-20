@@ -24,7 +24,7 @@ import java.util.Map;
 // TODO Move to service
 public class TextureLoader {
 
-	public static final String DIRECTORY = "src/main/resources/textures/";
+	public static final String DIRECTORY = "Main/src/main/resources/textures/";
 
 	/**
 	 * Mapping of handle loaded from what file.

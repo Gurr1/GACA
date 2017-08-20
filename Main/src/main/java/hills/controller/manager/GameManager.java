@@ -2,10 +2,7 @@ package hills.controller.manager;
 
 import hills.controller.AbstractController;
 import hills.controller.EntityFactory;
-import hills.controller.ModelInterfaceControllers.AttackController;
-import hills.controller.ModelInterfaceControllers.CollidableController;
-import hills.controller.ModelInterfaceControllers.MovableController;
-import hills.controller.ModelInterfaceControllers.RenderController;
+import hills.controller.ModelInterfaceControllers.*;
 import hills.model.*;
 import hills.services.ModelDataService.ModelFactory;
 import hills.services.ServiceLocator;
@@ -25,12 +22,14 @@ import java.util.Random;
 public final class GameManager extends AbstractController {
 	
 	private int nNPCs = 15;
+	private int nHarmfulNPCs = 5;
 	private int nImmovables = 20;
 	private RenderController renderController;
 	private CollidableController collidableController;
 	private MovableController movableController;
 	private AttackController attackController;
 	private ITerrainChunkService chunkService;
+	private ShootController shootController;
 	private long nFrame = 0;
 	private double runtime = 0;
 	private int nCollectibles = 25;
@@ -42,6 +41,7 @@ public final class GameManager extends AbstractController {
 		attackController = new AttackController();
 		renderController = new RenderController();
 		chunkService = ServiceLocator.INSTANCE.getTerrainChunkService();
+		shootController = new ShootController();
 		loadGame();
 	}
 
@@ -77,12 +77,22 @@ public final class GameManager extends AbstractController {
 		movableController.setPlayer(p);
 		collidableController.addCollidable(p);
 		attackController.setPlayer(p);
-		for(int i = 0; i < nNPCs; i++){
+		shootController.setShooter(p);
+		for (int i = 0; i < nNPCs; i++){
             Creature sheep = EntityFactory.createSheep(generateSpawnLocation());
 			movableController.addAIMovable(sheep);
 			collidableController.addCollidable(sheep);
 			renderController.addRenderable(sheep);
+			shootController.addShootable(sheep);
 		}
+
+		for (int i = 0; i < nHarmfulNPCs; i++){
+            Creature goat = EntityFactory.createGoat(generateSpawnLocation());
+            movableController.addAIMovable(goat);
+            collidableController.addCollidable(goat);
+            renderController.addRenderable(goat);
+            shootController.addShootable(goat);
+        }
 
 		for(int i = 0; i<nCollectibles; i++){
 			CollectibleObject collectible = EntityFactory.createAnyCollectible(generateSpawnLocation());		// Change model.

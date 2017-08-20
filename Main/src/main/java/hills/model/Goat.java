@@ -7,25 +7,19 @@ import hills.util.model.Model;
 
 import java.util.Random;
 
-/**
- *
- */
-public class Sheep extends Creature{
-    /**
-     * {@inheritDoc}
-     */
+public class Goat extends Creature{
+
     float radius;
-    Random rand = new Random();
-    private float move = 0;
+    int damagePoints;
 
-
-    public Sheep(Vec3 pos, Model model){
+    public Goat(Vec3 pos, Model model){
         this.model = model;
         this.pos = pos;
-        this.healthPoints = 5;
+        this.healthPoints = 20;
         this.speed = 3;
-        this.maxHealth = 5;
-        this.radius = 3;
+        this.maxHealth = 20;
+        this.radius = 10;
+        this.damagePoints = 3;
     }
 
     @Override
@@ -41,14 +35,14 @@ public class Sheep extends Creature{
         return matrix;
     }
 
-    public void updatePosition() {
-        //TODO
+    @Override
+    public int getDamagePoints() {
+        return damagePoints;
     }
 
     @Override
     public void updateMovable(float delta) {
         pos = pos.add(velocity.mul(delta));
-        //TODO
     }
 
     @Override
@@ -60,7 +54,7 @@ public class Sheep extends Creature{
             Random rand = new Random();
             pos = new Vec3(rand.nextInt(2000), 0, rand.nextInt(2000));
         }
-        //System.out.println("Sheep damaged!");
+        //System.out.println("Goat damaged!");
     }
 
     @Override

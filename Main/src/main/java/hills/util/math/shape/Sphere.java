@@ -36,4 +36,18 @@ public class Sphere {
 		float collisionDistance = (radius + sphere.getRadius());
 		return (distance < collisionDistance);
 	}
+
+	public boolean intersects(Vec3 pos, Vec3 ray){
+		System.out.println("pos: "+pos +" "+ "ray: "+ray);
+		System.out.println("spherepos: "+this.pos +" "+ this.radius);
+		float b = ray.dot(this.pos.sub(pos));
+		float c = this.pos.sub(pos).getLengthSqr() - (radius*radius);
+
+		if (b * b - c >= 0){
+			return
+					true;
+		}
+		return
+				false;
+	}
 }

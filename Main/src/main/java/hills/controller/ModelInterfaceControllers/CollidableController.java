@@ -77,6 +77,16 @@ public class CollidableController {     // Visitor patter?
     }
         // Not the best solution. Should handle every other collision type aswell.
     private void handleCollision(ICollidable co1, ICollidable co2, Class c, Class c2) {
+        if (c == PlayerCollidable.class && c2 == IHarmful.class){
+
+            PlayerCollidable player = (PlayerCollidable) co1;
+
+            IHarmful harmful = (IHarmful) co2;
+
+            player.takeDamage(harmful.getDamagePoints());
+
+        }
+
         if(c == ICollectible.class || c2 == ICollectible.class){
             if(c == PlayerCollidable.class){
                 PlayerCollidable pc = (PlayerCollidable) co1;
@@ -87,10 +97,10 @@ public class CollidableController {     // Visitor patter?
             return;
         }
 
-       else if(c == PlayerMovable.class || c2 == PlayerMovable.class){
+       else if (c == PlayerMovable.class || c2 == PlayerMovable.class){
             PlayerMovable movable;
             ICollidable object;
-            if(c == PlayerMovable.class){
+            if (c == PlayerMovable.class){
                  movable = (PlayerMovable) co1;
                  object = co2;
             }
@@ -99,11 +109,14 @@ public class CollidableController {     // Visitor patter?
                 object = co1;
             }
 
-            if(!movable.getVelocity().equals(new Vec3(0,0,0)))
+            if (!movable.getVelocity().equals(new Vec3(0,0,0)))
                 movable.addVelocity(movable.get3DPos().sub(object.getBoundingSphere().getPos()));
             //Adds the vector from the object to the player to get the new direction
+
             return;
         }
+
+
     }
 
 

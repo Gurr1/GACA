@@ -15,13 +15,14 @@ import java.util.List;
  * @RevisedBy Cornelis Sjöbeck
  *
  */
-public class Player implements PlayerMovable, PlayerCollidable, IAttack {
+public class Player implements PlayerMovable, PlayerCollidable, IAttack, IShooter {
     // Add a method that recalculates reworks the base into global base from addVelocity.
     /**
      * {@inheritDoc}
      */
 
     private Vec3 pos;
+    private Vec3 spawnPos;
     @Getter private float pitch = 0;
     @Getter private float yaw = 0;
     @Setter private float radius = 1;
@@ -60,6 +61,7 @@ public class Player implements PlayerMovable, PlayerCollidable, IAttack {
 
     public Player(Vec3 pos) {
         this.pos = pos;
+        spawnPos = pos;
         forward = new Vec3(0.0f, 0.0f, -1.0f);
         up = new Vec3(0.0f, 1.0f, 0.0f);
         globalUp = up;
@@ -69,8 +71,8 @@ public class Player implements PlayerMovable, PlayerCollidable, IAttack {
         right = forward.cross(up);
         updateYaw(0);
         updatePitch(0);
-
     }
+
     public Vec3 getVelocity(){
         return new Vec3(velocity);
     }
@@ -263,6 +265,7 @@ public class Player implements PlayerMovable, PlayerCollidable, IAttack {
         right = forward.cross(up);
         forwardXZ = new Vec3(forward.getX(), 0, forward.getZ()).normalize();        // to fix velocity vector so speed always is the same, no matter elevation of focus.
     }
+
     @Override
     public Vec3 getForwardVector() {
         return forward;
@@ -295,5 +298,25 @@ public class Player implements PlayerMovable, PlayerCollidable, IAttack {
         else if(collectible.getClass() == Bug.class){
             bugsCollected.add((Bug)collectible);
         }
+    }
+
+    @Override
+    public void takeDamage(int damage) {
+        playerHealth -= damage;
+        if (playerHealth <= 0){
+            playerHealth = 100;
+
+            pos = spawnPos;
+        }
+    }
+
+    @Override
+    public int getShootDamage() {
+        return 5;
+    }
+
+    @Override
+    public Vec3 getStartPos() {
+        return pos;
     }
 }

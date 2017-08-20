@@ -19,7 +19,7 @@ public class FileService implements IPictureFileService{
     @Override
     public void writeImage(BufferedImage bufferedImage, String name){
         try {
-            ImageIO.write(bufferedImage, "png", new File("src/main/resources/textures/" + name));
+            ImageIO.write(bufferedImage, "png", new File("Main/src/main/resources/textures/" + name));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -29,7 +29,7 @@ public class FileService implements IPictureFileService{
     public BufferedImage readImage(String name){
         BufferedImage bf = null;
         try {
-            bf = ImageIO.read(new File("src/main/resources/textures/" + name));
+            bf = ImageIO.read(new File("Main/src/main/resources/textures/" + name));
         } catch (IOException e){
             e.printStackTrace();
         }
